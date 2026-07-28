@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#020202" />
+  <title>Vantage H1 Review · Racing Stage Demo C</title>
+  <!--
+    Demo C assumptions:
+    - Precision Black remains the shell and the visual baseline for every non-data scene.
+    - Only the ten operating-data pages receive the racing-stage layout.
+    - All current Q1 facts remain unchanged; layout normalizes mismatched chart/KPI labels.
+    - The racing image is a clean, unbranded co-brand visual plate generated from the supplied reference.
+    - Formal H1, Amber and Precision Black files remain untouched.
+  -->
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #020202;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 64% 40%, rgba(190, 18, 38, .18), transparent 34%),
+        #020202;
+      transition: opacity .5s ease;
+    }
+    body.demo-ready::before { opacity: 0; }
+    iframe {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #020202;
+    }
+  </style>
+</head>
+<body data-demo-theme="precision-black">
+  <iframe
+    data-demo-frame
+    src="vantage-h1-immersive.html"
+    title="Vantage H1 Racing Stage Demo C"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
+  <script src="h1-demo-wrapper.js"></script>
+  <script src="h1-demo-racing-stage.js"></script>
+</body>
+</html>

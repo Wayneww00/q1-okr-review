@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260729-figma-source-okr-v2">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -366,7 +367,7 @@ const { useState, useEffect, useRef, useCallback } = React;
 const {ResponsiveContainer, ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, LabelList} = Recharts;
 
 // ═══ Dashboard Data ═══
-const DASHBOARDS = [
+const Q1_DASHBOARDS = [
   {id:1,title:"Retail 整体表现",subtitle:"2026 Q1 Retail FTD",description:"2026 年 Q1 vs 2025 Q4 Retail FTD 绝对值增加 19.2%，\n但占比有所下降，主要下降来自于印度停止拉新",metricLabel1:"Retail FTD",metricLabel2:"Retail FTD 集团占比",tableData:{q2025:{label:"2025 Q4",absoluteText:"68,598",percentText:"40.7%",absolute:68598,percent:40.7},q2026:{label:"2026 Q1",absoluteText:"81,751",percentText:"34.3%",absolute:81751,percent:34.3}},kpi1:{label:"Retail FTD 绝对值",value:"+19.2%",subtext:"2026 Q1 vs 2025 Q4",isUp:true},kpi2:{label:"集团占比下降",value:"-6.4%",subtext:"40.7% → 34.3%",isUp:false},chart:{title:"2026 Q1 Retail FTD表现及整体占比变化",leftAxisLabel:"Retail FTD (绝对值)",rightAxisLabel:"FTD 占 VANTAGE% (占比)",barLegend:"Retail FTD (绝对值)",lineLegend:"FTD 占 VANTAGE% (占比)",leftDomain:[0,100000],leftTicks:[0,25000,50000,75000,100000],format:"number"}},
   {id:2,title:"Retail 整体表现",subtitle:"2026 Q1 Retail ND",description:"2026 年 Q1 vs 2025 Q4 Retail ND 绝对值增加 55.9%，\n占比从 24.6% 上升到 28.9%，主要 ND 占比上升来自印度",metricLabel1:"Retail ND",metricLabel2:"Retail ND 集团占比",tableData:{q2025:{label:"2025 Q4",absoluteText:"$83.3M",percentText:"24.6%",absolute:83.3,percent:24.6},q2026:{label:"2026 Q1",absoluteText:"$129.9M",percentText:"28.9%",absolute:129.9,percent:28.9}},kpi1:{label:"Retail ND 绝对值",value:"+55.9%",subtext:"2026 Q1 vs 2025 Q4",isUp:true},kpi2:{label:"集团占比上升",value:"+4.3%",subtext:"24.6% → 28.9%",isUp:true},chart:{title:"2026 Q1 Retail ND表现及整体占比变化",leftAxisLabel:"Net Deposit (M)",rightAxisLabel:"ND 占 VANTAGE% (占比)",barLegend:"NET DEPOSIT (绝对值)",lineLegend:"ND 占 VANTAGE% (占比)",leftDomain:[0,150],leftTicks:[0,50,100,150],format:"currencyM"}},
   {id:3,title:"Retail 整体表现",subtitle:"2026 Q1 Retail TV",description:"2026 年 Q1 vs 2025 Q4 TV 绝对值增加 29.7%，\n占比稍有下降，从 29.1% 下降到 28.1%",metricLabel1:"Retail TV",metricLabel2:"Retail TV 集团占比",tableData:{q2025:{label:"2025 Q4",absoluteText:"$2,306.48 Bn",percentText:"29.1%",absolute:2306.48,percent:29.1},q2026:{label:"2026 Q1",absoluteText:"$2,990.70 Bn",percentText:"28.1%",absolute:2990.70,percent:28.1}},kpi1:{label:"Retail TV 绝对值",value:"+29.7%",subtext:"2026 Q1 vs 2025 Q4",isUp:true},kpi2:{label:"集团占比下降",value:"-1.0%",subtext:"29.1% → 28.1%",isUp:false},chart:{title:"2026 Q1 Retail TV表现及整体占比变化",leftAxisLabel:"Trading Volume (Bn)",rightAxisLabel:"TV 占 VANTAGE% (占比)",barLegend:"TRADING VOLUME (绝对值)",lineLegend:"TV 占 VANTAGE% (占比)",leftDomain:[0,3000],leftTicks:[0,750,1500,2250,3000],format:"currencyBn"}},
@@ -379,26 +380,253 @@ const DASHBOARDS = [
   {id:10,layoutType:'simple_bar',title:"Clicks 表现",subtitle:"2026 Q1 Clicks",description:"2026 年 Q1 vs 2025 Q4 Clicks 呈现增长趋势",metricLabel1:"Clicks",tableData:{q2025:{label:"2025 Q4",absoluteText:"1,118,428",percentText:"",absolute:1118428},q2026:{label:"2026 Q1",absoluteText:"1,316,959",percentText:"",absolute:1316959}},chart:{title:"Clicks",leftAxisLabel:"Clicks",rightAxisLabel:"",barLegend:"Clicks",lineLegend:"",leftDomain:[0,1500000],leftTicks:[0,500000,1000000,1500000],format:"number"}}
 ];
 
+const H1_DASHBOARDS = [
+  {
+    id:1, periodLabel:"Half", title:"Retail 整体表现", subtitle:"2026 H1 Retail FTD",
+    description:"Retail 整体 FTD 绝对值同比增长 27.8%，\n然而增速仍落后于大盘整体水平，大盘占比因此收窄 5.2%。",
+    metricLabel1:"Retail FTD", metricLabel2:"Retail FTD 集团占比",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"105,743",percentText:"37.8%",absolute:105743,percent:37.8},q2026:{label:"2026 H1",absoluteText:"135,103",percentText:"32.6%",absolute:135103,percent:32.6}},
+    kpi1:{label:"Retail FTD 绝对值",value:"+27.8%",subtext:"2026 H1 vs 2025 H2",isUp:true},
+    kpi2:{label:"集团占比下降",value:"-5.2%",subtext:"37.8% → 32.6%",isUp:false},
+    chart:{title:"2026 H1 Retail FTD 表现及整体占比变化",leftAxisLabel:"Retail FTD (绝对值)",rightAxisLabel:"FTD 占 Vantage% (占比)",barLegend:"Retail FTD (绝对值)",lineLegend:"FTD 占 Vantage% (占比)",leftDomain:[0,150000],leftTicks:[0,30000,60000,90000,120000,150000],format:"number"}
+  },
+  {
+    id:2, periodLabel:"Half", title:"Retail 整体表现", subtitle:"2026 H1 Retail ND",
+    description:"Retail 整体 ND 绝对值同比增长 52.5%，\n大盘占比上升 0.9%。",
+    metricLabel1:"Retail ND", metricLabel2:"Retail ND 集团占比",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"$145.4M",percentText:"24.3%",absolute:145.4,percent:24.3},q2026:{label:"2026 H1",absoluteText:"$221.6M",percentText:"25.2%",absolute:221.6,percent:25.2}},
+    kpi1:{label:"Retail ND 绝对值",value:"+52.5%",subtext:"2026 H1 vs 2025 H2",isUp:true},
+    kpi2:{label:"集团占比上升",value:"+0.9%",subtext:"24.3% → 25.2%",isUp:true},
+    chart:{title:"2026 H1 Retail ND 表现及整体占比变化",leftAxisLabel:"Net Deposit (M)",rightAxisLabel:"ND 占 Vantage% (占比)",barLegend:"NET DEPOSIT (绝对值)",lineLegend:"ND 占 Vantage% (占比)",leftDomain:[0,250],leftTicks:[0,50,100,150,200,250],format:"currencyM"}
+  },
+  {
+    id:3, periodLabel:"Half", title:"Retail 整体表现", subtitle:"2026 H1 Retail TV",
+    description:"Retail 整体 TV 绝对值同比增长 39.8%，\n但增速仍明显落后于大盘整体水平，大盘占比因此收窄 0.8%。",
+    metricLabel1:"Retail TV", metricLabel2:"Retail TV 集团占比",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"3,247.35 Bn",percentText:"23.9%",absolute:3247.35,percent:23.9},q2026:{label:"2026 H1",absoluteText:"4,540.25 Bn",percentText:"23.1%",absolute:4540.25,percent:23.1}},
+    kpi1:{label:"Retail TV 绝对值",value:"+39.8%",subtext:"2026 H1 vs 2025 H2",isUp:true},
+    kpi2:{label:"集团占比下降",value:"-0.8%",subtext:"23.9% → 23.1%",isUp:false},
+    chart:{title:"2026 H1 Retail TV 表现及整体占比变化",leftAxisLabel:"Trading Volume (Bn)",rightAxisLabel:"TV 占 Vantage% (占比)",barLegend:"TRADING VOLUME (绝对值)",lineLegend:"TV 占 Vantage% (占比)",leftDomain:[0,5000],leftTicks:[0,1000,2000,3000,4000,5000],format:"bn"}
+  },
+  {
+    id:4, periodLabel:"Half", title:"Paid Ads 整体表现", subtitle:"Paid Ads 2026 H1 FTD",
+    description:"Paid Ads FTD 绝对值同比增长 39.3%，\n但受 Q1 印度停投影响，大盘占比仍收窄 0.9%。",
+    metricLabel1:"Paid Ads FTD", metricLabel2:"Paid Ads 集团占比",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"39,650",percentText:"14.2%",absolute:39650,percent:14.2},q2026:{label:"2026 H1",absoluteText:"55,226",percentText:"13.3%",absolute:55226,percent:13.3}},
+    kpi1:{label:"Paid Ads FTD 绝对值",value:"+39.3%",subtext:"2026 H1 vs 2025 H2",isUp:true},
+    kpi2:{label:"集团占比下降",value:"-0.9%",subtext:"14.2% → 13.3%",isUp:false},
+    chart:{title:"Paid Ads 2026 H1 FTD 表现及整体占比变化",leftAxisLabel:"Paid Ads FTD (绝对值)",rightAxisLabel:"FTD 占 Vantage% (占比)",barLegend:"Paid Ads FTD (绝对值)",lineLegend:"FTD 占 Vantage% (占比)",leftDomain:[0,60000],leftTicks:[0,15000,30000,45000,60000],format:"number"}
+  },
+  {
+    id:5, periodLabel:"Half", title:"Paid Ads 整体表现", subtitle:"Paid Ads 2026 H1 ND",
+    description:"Paid Ads ND 绝对值同比增长 73.4%，\n大盘占比上涨 1.3%。",
+    metricLabel1:"Paid Ads ND", metricLabel2:"Paid Ads 集团占比",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"$42.5M",percentText:"7.1%",absolute:42.5,percent:7.1},q2026:{label:"2026 H1",absoluteText:"$73.8M",percentText:"8.4%",absolute:73.8,percent:8.4}},
+    kpi1:{label:"Paid Ads ND 绝对值",value:"+73.4%",subtext:"2026 H1 vs 2025 H2",isUp:true},
+    kpi2:{label:"集团占比上升",value:"+1.3%",subtext:"7.1% → 8.4%",isUp:true},
+    chart:{title:"Paid Ads 2026 H1 ND 表现及整体占比变化",leftAxisLabel:"Net Deposit (M)",rightAxisLabel:"ND 占 Vantage% (占比)",barLegend:"NET DEPOSIT (绝对值)",lineLegend:"ND 占 Vantage% (占比)",leftDomain:[0,80],leftTicks:[0,20,40,60,80],format:"currencyM"}
+  },
+  {
+    id:6, periodLabel:"Half", title:"Paid Ads 整体表现", subtitle:"Paid Ads 2026 H1 TV",
+    description:"Paid Ads 整体 TV 绝对值同比增长 73.0%，\n增速略优于大盘整体水平，大盘占比提升 1.2%。",
+    metricLabel1:"Paid Ads TV", metricLabel2:"Paid Ads 集团占比",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"818.42 Bn",percentText:"6.0%",absolute:818.42,percent:6.0},q2026:{label:"2026 H1",absoluteText:"1,415.59 Bn",percentText:"7.2%",absolute:1415.59,percent:7.2}},
+    kpi1:{label:"Paid Ads TV 绝对值",value:"+73.0%",subtext:"2026 H1 vs 2025 H2",isUp:true},
+    kpi2:{label:"集团占比上升",value:"+1.2%",subtext:"6.0% → 7.2%",isUp:true},
+    chart:{title:"Paid Ads 2026 H1 TV 表现及整体占比变化",leftAxisLabel:"Trading Volume (Bn)",rightAxisLabel:"TV 占 Vantage% (占比)",barLegend:"TRADING VOLUME (绝对值)",lineLegend:"TV 占 Vantage% (占比)",leftDomain:[0,1500],leftTicks:[0,300,600,900,1200,1500],format:"bn"}
+  },
+  {
+    id:7, layoutType:"profit", periodLabel:"Half", title:"Paid Ads 整体表现", subtitle:"Paid Ads 2026 H1 利润",
+    description:"Paid Ads H1 利润同比增长 89.3%。",
+    metricLabel1:"2025 H2 利润", metricLabel2:"2026 H1 利润",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"$33.3M",percentText:"",absolute:33.3},q2026:{label:"2026 H1",absoluteText:"$63.0M",percentText:"",absolute:63.0}},
+    kpi1:{label:"2026 H1 利润",value:"$63.0M",subtext:"Paid Ads",isUp:true},
+    kpi2:{label:"同比增长",value:"+89.3%",subtext:"2026 H1 vs 2025 H2",isUp:true},
+    chart:{title:"Paid Ads 2026 H1 利润",leftAxisLabel:"利润绝对值 (M)",rightAxisLabel:"",barLegend:"Paid Ads 利润",lineLegend:"",leftDomain:[0,70],leftTicks:[0,10,20,30,40,50,60,70],format:"currencyM"}
+  },
+  {
+    id:8, layoutType:"region_table", periodLabel:"Half", title:"Paid Ads 地域表现",
+    subtitle:"Paid Ads 2026 H1 各区域 ROI", description:"广告整体 ROI 从 4.6 增长到 6.8；各区域 ROI 稳定增长，其中 APAC 的 ROI 将近翻倍。",
+    tableRegionsQuarter1:[
+      {quarter:"2025 H2",region:"APAC",register:"255,848",ftd:"20,845",nd:"$10.69M",tv:"177.22 Bn",roi:"5.6"},
+      {quarter:"2025 H2",region:"EU",register:"79,367",ftd:"12,917",nd:"$26.03M",tv:"524.68 Bn",roi:"5.9"},
+      {quarter:"2025 H2",region:"LATAM",register:"46,440",ftd:"3,649",nd:"$1.30M",tv:"33.95 Bn",roi:"1.3"},
+      {quarter:"2025 H2",region:"MENA",register:"50,628",ftd:"1,834",nd:"$2.84M",tv:"55.10 Bn",roi:"2.5"}
+    ],
+    tableRegionsQuarter2:[
+      {quarter:"2026 H1",region:"APAC",register:"314,795",ftd:"30,954",nd:"$23.65M",tv:"469.77 Bn",roi:"10.7"},
+      {quarter:"2026 H1",region:"EU",register:"73,229",ftd:"16,846",nd:"$38.24M",tv:"770.59 Bn",roi:"7.8"},
+      {quarter:"2026 H1",region:"LATAM",register:"62,701",ftd:"3,439",nd:"$2.35M",tv:"45.30 Bn",roi:"1.4"},
+      {quarter:"2026 H1",region:"MENA",register:"41,644",ftd:"3,249",nd:"$7.43M",tv:"99.24 Bn",roi:"5.0"}
+    ]
+  },
+  {
+    id:9, layoutType:"simple_bar", periodLabel:"Half", title:"SEO 数据", subtitle:"SEO 日均曝光",
+    description:"SEO 日均曝光同比提升 22.5%。", metricLabel1:"日均曝光",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"338K",percentText:"",absolute:338000},q2026:{label:"2026 H1",absoluteText:"414K",percentText:"",absolute:414000}},
+    chart:{title:"SEO 日均曝光",leftAxisLabel:"日均曝光",rightAxisLabel:"",barLegend:"日均曝光",lineLegend:"",leftDomain:[0,500000],leftTicks:[0,100000,200000,300000,400000,500000],format:"number"}
+  },
+  {
+    id:10, layoutType:"simple_bar", periodLabel:"Half", title:"SEO 数据", subtitle:"SEO 日均点击",
+    description:"SEO 日均点击同比提升 28.7%。", metricLabel1:"日均点击",
+    tableData:{q2025:{label:"2025 H2",absoluteText:"10,571",percentText:"",absolute:10571},q2026:{label:"2026 H1",absoluteText:"13,609",percentText:"",absolute:13609}},
+    chart:{title:"SEO 日均点击",leftAxisLabel:"日均点击",rightAxisLabel:"",barLegend:"日均点击",lineLegend:"",leftDomain:[0,15000],leftTicks:[0,5000,10000,15000],format:"number"}
+  },
+  {
+    id:11, layoutType:"brand_voice", moduleTitle:"品牌整体数据 品牌SOV",
+    title:"品牌整体数据 品牌SOV", subtitle:"2025 H2 vs 2026 年 H1 月度表现及整体对比",
+    sourceLine:"2025 H2 → 2026 H1 同比 · Vantage · 数据源：Meltwater（声量 / 口碑）+ Google Trends（品牌搜索）",
+    description:"竞品声量对比中 Vantage 位列第 2(29.3%,仅次于 Exness 30.3%);自身同比从 2025 H2 高点回落 30%(36.8k → 25.7k)——主因2025 H2 有一波高声量、今年回归常态。同期主动品牌搜索 +43%、口碑正面且定位专业可信。整体:声量竞争力强、需求与口碑向好。H2 核心:缩小与 Exness 的差距、冲击第一。",
+    takeaway:"H2核心：把已有的口碑和专业优势，扩大到更大的认知与声量",
+    voiceMetrics:{
+      title:"声量 · Meltwater SoV", figureTitle:"Share of Voice by Mentions", change:"−30% 同比",
+      comparison:"2025 H2 36.8k → 2026 H1 25.7k",
+      share:"2026全球声量占比 29.3%（仅次于Exness）", competitor:"Exness 30.3%",
+      sentimentTitle:"正面情感第 2", sentimentDetail:"约 37%，仅次于xm",
+      axisLabel:"MENTIONS (IN THOUSANDS)", axisTicks:[5,10,15,20,25,30,35,40],
+      points:[
+        {period:"2026 H1",sourceCategory:"H1-VTG",value:25.7,valueText:"25.7k"},
+        {period:"2025 H2",sourceCategory:"H2-VTG",value:36.8,valueText:"36.8k"}
+      ]
+    }
+  },
+  {
+    id:12, layoutType:"brand_search_reputation",
+    title:"品牌整体数据 品牌SOV", subtitle:"品牌搜索与口碑定位",
+    contextLine:"2025 H2 vs 2026 年 H1 月度表现及整体对比",
+    sourceLine:"2025 H2 → 2026 H1 同比 · Vantage · 数据源：Meltwater（声量 / 口碑）+ Google Trends（品牌搜索）",
+    description:"主动品牌搜索持续上行，口碑集中在“专业 · 稳健 · 可信”；以专业可信定位区别于竞品的促销 / 信号导向。",
+    searchMetrics:{
+      title:"品牌搜索 · Google Trends", change:"+43% 同比",
+      comparison:"2025 H2 月均 9.1 → 2026 H1 13.0",
+      previousPhase:"2025 H2 · 月均 9.1", currentPhase:"2026 H1 · 月均 13.0",
+      direction:"主动品牌搜索 · Jul’25 → Jun’26 上行",
+      note:"数据源：Google Trends（0-100 相对指数，非绝对搜索量），全球，周度数据按月汇总。",
+      months:["7月","8月","9月","10月","11月","12月","1月","2月","3月","4月","5月","6月"]
+    },
+    reputation:{
+      title:"口碑关键词 · Meltwater",
+      keywords:["transparent ecosystem","reliable platform","multi-asset brokerage","editorial criteria"],
+      conclusion:"集中在“专业 · 稳健 · 可信”，区别于竞品的促销 / 信号导向。"
+    }
+  },
+  {
+    id:13, layoutType:"social_sov_trend", title:"整体数据 GM Social Media",
+    subtitle:"2025 H2 vs 2026 年 H1 月度表现及整体占比走势",
+    description:"尽管 2026 年上半年整体行业讨论热度有所回落，Vantage 仍成功提升品牌曝光份额。在行业整体提及量普遍下降的背景下，Vantage 的社交媒体 Share of Voice 从 8.1% 提升至 10.23%（增长 26.3%），反映出品牌在行业讨论中的竞争力和可见度持续增强。",
+    socialMonthly:[
+      {month:"Jan",period:"2026 H1",vantage:62.3,vantageText:"62.3",industry:1078.9,industryText:"1,078.9",sov:5.79,sovText:"5.79%"},
+      {month:"Feb",period:"2026 H1",vantage:59.6,vantageText:"59.6",industry:1072.6,industryText:"1,072.6",sov:5.53,sovText:"5.53%"},
+      {month:"Mar",period:"2026 H1",vantage:68.2,vantageText:"68.2",industry:1079.3,industryText:"1,079.3",sov:6.33,sovText:"6.33%"},
+      {month:"Apr",period:"2026 H1",vantage:84.0,vantageText:"84.0",industry:1077.6,industryText:"1,077.6",sov:7.80,sovText:"7.80%"},
+      {month:"May",period:"2026 H1",vantage:96.9,vantageText:"96.9",industry:1023.7,industryText:"1,023.7",sov:9.43,sovText:"9.43%"},
+      {month:"Jun",period:"2026 H1",vantage:104.7,vantageText:"104.7",industry:1023.5,industryText:"1,023.5",sov:10.23,sovText:"10.23%"},
+      {month:"Jul",period:"2025 H2",vantage:51.8,vantageText:"51.8",industry:1081.7,industryText:"1,081.7",sov:4.79,sovText:"4.79%"},
+      {month:"Aug",period:"2025 H2",vantage:61.0,vantageText:"61.0",industry:1554.6,industryText:"1,554.6",sov:4.61,sovText:"4.61%"},
+      {month:"Sep",period:"2025 H2",vantage:76.5,vantageText:"76.5",industry:1721.5,industryText:"1,721.5",sov:5.65,sovText:"5.65%"},
+      {month:"Oct",period:"2025 H2",vantage:122.1,vantageText:"122.1",industry:2011.5,industryText:"2,011.5",sov:6.06,sovText:"6.06%"},
+      {month:"Nov",period:"2025 H2",vantage:158.1,vantageText:"158.1",industry:2062.9,industryText:"2,062.9",sov:7.66,sovText:"7.66%"},
+      {month:"Dec",period:"2025 H2",vantage:163.7,vantageText:"163.7",industry:2017.1,industryText:"2,017.1",sov:8.10,sovText:"8.10%"}
+    ],
+    chart:{
+      title:"SHARE OF VOICE (SOV) TREND",
+      subtitle:"Monthly Vantage Mentions vs. Industry Mentions (2026 H1 vs 2025 H2)",
+      legends:["Vantage Mentions (in thousands)","Total Industry Mentions (in thousands)","Vantage SOV (%)"],
+      leftAxisLabel:"MENTIONS (IN THOUSANDS)", leftTicks:[0,50,100,150,200,250,300,350,400,450,500],
+      rightAxisLabel:"SOV (%)", rightTicks:[0,2,4,6,8,10,12,14,16,18,20],
+      sourceNote:"Note: Mentions include major social media platforms. Data checked on 24 July 2026."
+    }
+  },
+  {
+    id:14, layoutType:"followers_share", title:"整体数据 GM Social Media",
+    subtitle:"VANTAGE MARKETS’ SHARE OF CFD INDUSTRY FOLLOWERS",
+    description:"Vantage 在全球官方 CFD 经纪商账号中占据 21.3% 的关注者份额。随着统计范围扩大至区域账号及子账号，行业整体受众规模增长超过 50%，而 Vantage 在更广泛的竞争格局中仍保持 16.2% 的份额。",
+    followerScopes:[
+      {scope:"Global Accounts Only",industry:10783372,industryText:"10,783,372",vantage:2291951,vantageText:"2,291,951",share:21.3,shareText:"21.3%"},
+      {scope:"Global + Regional/Sub-Accounts",industry:16420972,industryText:"16,420,972",vantage:2653508,vantageText:"2,653,508",share:16.2,shareText:"16.2%"}
+    ],
+    chart:{
+      title:"VANTAGE MARKETS’ SHARE OF CFD INDUSTRY FOLLOWERS",
+      subtitle:"Comparison of global-only accounts vs. global + regional/sub-accounts",
+      legends:["Total Industry Followers","Vantage Markets Followers","Vantage Markets Share (%)"],
+      leftAxisLabel:"FOLLOWERS", leftTicks:[0,2000000,4000000,6000000,8000000,10000000,12000000,14000000,16000000,18000000,20000000],
+      rightAxisLabel:"VANTAGE MARKETS SHARE (%)", rightTicks:[0,5,10,15,20,25,30,35,40]
+    }
+  },
+  {
+    id:15, layoutType:"followers_trend", title:"整体数据 GM Social Media",
+    subtitle:"FOLLOWERS TREND COMPARISON",
+    description:"2026 年上半年，全球社交媒体关注者保持稳健增长，绝大多数月份的环比增速均超过 2025 年下半年，体现了更强劲的受众增长势头和持续扩大的社区规模。",
+    followersTrend:[
+      {month:"Month 1",h2:1949275,h2Text:"1,949,275",h1:2064174,h1Text:"2,064,174",h2Growth:null,h2GrowthText:"—",h1Growth:null,h1GrowthText:"—"},
+      {month:"Month 2",h2:2023234,h2Text:"2,023,234",h1:2107418,h1Text:"2,107,418",h2Growth:3.80,h2GrowthText:"+3.80%",h1Growth:2.10,h1GrowthText:"+2.10%"},
+      {month:"Month 3",h2:2015010,h2Text:"2,015,010",h1:2144591,h1Text:"2,144,591",h2Growth:-0.41,h2GrowthText:"-0.41%",h1Growth:1.77,h1GrowthText:"+1.77%"},
+      {month:"Month 4",h2:2014077,h2Text:"2,014,077",h1:2191985,h1Text:"2,191,985",h2Growth:-0.05,h2GrowthText:"-0.05%",h1Growth:2.21,h1GrowthText:"+2.21%"},
+      {month:"Month 5",h2:2014469,h2Text:"2,014,469",h1:2234889,h1Text:"2,234,889",h2Growth:0.02,h2GrowthText:"+0.02%",h1Growth:1.96,h1GrowthText:"+1.96%"},
+      {month:"Month 6",h2:2044947,h2Text:"2,044,947",h1:2267829,h1Text:"2,267,829",h2Growth:1.51,h2GrowthText:"+1.51%",h1Growth:1.47,h1GrowthText:"+1.47%"}
+    ],
+    chart:{
+      title:"FOLLOWERS TREND COMPARISON",
+      subtitle:"2026 H1 vs 2025 H2 Monthly Performance",
+      legends:["2026 H1 Followers","2025 H2 Followers","2026 H1 MoM Growth (%)","2025 H2 MoM Growth (%)"],
+      leftAxisLabel:"FOLLOWERS", leftTicks:[0,500000,1000000,1500000,2000000,2500000,3000000],
+      rightAxisLabel:"MoM GROWTH (%)", rightTicks:[-8,-6,-4,-2,0,2,4,6,8]
+    }
+  }
+];
+
+const REPORT_MODE = new URLSearchParams(window.location.search).get('report');
+const EMBEDDED_REPORT_MODE = new URLSearchParams(window.location.search).get('embedded') === '1';
+if (REPORT_MODE === 'h1') document.documentElement.classList.add('h1-figma-racing-report');
+const DASHBOARDS = REPORT_MODE === 'h1' ? H1_DASHBOARDS : Q1_DASHBOARDS;
+
 // ═══ Dashboard Components ═══
 const CustomAbsoluteLabel = (props) => {
   const { x, y, width, absoluteText } = props;
   return (
-    React.createElement('g', null,
-      React.createElement('text', {x:x+width/2, y:y-15, fill:'rgba(255,60,60,0.4)', textAnchor:'middle', dominantBaseline:'middle', fontWeight:'bold', fontSize:14, style:{filter:'blur(4px)'}}, absoluteText),
-      React.createElement('text', {x:x+width/2, y:y-15, fill:'#fff', textAnchor:'middle', dominantBaseline:'middle', fontWeight:'bold', fontSize:14}, absoluteText)
-    )
+    React.createElement('text', {
+      x:x+width/2,
+      y:y-16,
+      className:'h1-figma-chart-value-text',
+      textAnchor:'middle',
+      dominantBaseline:'middle'
+    }, absoluteText)
   );
 };
 
 const CustomPercentLabel = (props) => {
   const { x, y, index, percentText } = props;
   const isFirst = index === 0;
-  const bubbleY = y + (isFirst ? 30 : -30);
+  const percentValue = Number.parseFloat(percentText);
+  const isNearXAxis = Number.isFinite(percentValue) && percentValue <= 12;
+  const bubbleOffset = isNearXAxis ? 48 : 32;
+  const placeBelow = isFirst && !isNearXAxis && y <= 190;
+  const bubbleY = y + (placeBelow ? 32 : -bubbleOffset);
+  const bubbleWidth = Math.max(58, String(percentText || "").length * 8 + 20);
+  const bubbleHeight = 32;
   return (
     React.createElement('g', null,
-      React.createElement('rect', {x:x-24, y:bubbleY-14, width:48, height:28, rx:4, fill:'#7f1d1d', stroke:'#ef4444', strokeWidth:0.5}),
-      React.createElement('text', {x:x, y:bubbleY, fill:'#fff', textAnchor:'middle', dominantBaseline:'middle', fontSize:12, fontWeight:'bold'}, percentText),
-      React.createElement('path', {d:'M '+(x-4)+' '+(isFirst?bubbleY-14:bubbleY+14)+' L '+x+' '+(isFirst?bubbleY-18:bubbleY+18)+' L '+(x+4)+' '+(isFirst?bubbleY-14:bubbleY+14)+' Z', fill:'#7f1d1d', stroke:'#ef4444', strokeWidth:0.5, strokeLinejoin:'miter'})
+      React.createElement('rect', {
+        x:x-bubbleWidth/2,
+        y:bubbleY-bubbleHeight/2,
+        width:bubbleWidth,
+        height:bubbleHeight,
+        rx:5,
+        className:'h1-figma-percent-pill'
+      }),
+      React.createElement('text', {
+        x:x,
+        y:bubbleY,
+        className:'h1-figma-percent-pill-text',
+        textAnchor:'middle',
+        dominantBaseline:'middle'
+      }, percentText),
+      React.createElement('path', {
+        d:'M '+(x-5)+' '+(placeBelow?bubbleY-bubbleHeight/2:bubbleY+bubbleHeight/2)
+          +' L '+x+' '+(placeBelow?bubbleY-bubbleHeight/2-5:bubbleY+bubbleHeight/2+5)
+          +' L '+(x+5)+' '+(placeBelow?bubbleY-bubbleHeight/2:bubbleY+bubbleHeight/2)+' Z',
+        className:'h1-figma-percent-pill'
+      })
     )
   );
 };
@@ -406,6 +634,590 @@ const CustomPercentLabel = (props) => {
 const ArrowUpIcon = () => React.createElement('svg',{width:28,height:28,viewBox:'0 0 24 24',fill:'none',stroke:'#fff',strokeWidth:2.5,strokeLinecap:'round',strokeLinejoin:'round'},React.createElement('line',{x1:12,y1:19,x2:12,y2:5}),React.createElement('polyline',{points:'5 12 12 5 19 12'}));
 const ArrowDownIcon = () => React.createElement('svg',{width:28,height:28,viewBox:'0 0 24 24',fill:'none',stroke:'#ef4444',strokeWidth:2.5,strokeLinecap:'round',strokeLinejoin:'round'},React.createElement('line',{x1:12,y1:5,x2:12,y2:19}),React.createElement('polyline',{points:'19 12 12 19 5 12'}));
 const BarChartIcon = () => React.createElement('svg',{width:20,height:20,viewBox:'0 0 24 24',fill:'none',stroke:'#ef4444',strokeWidth:1.5,strokeLinecap:'round',strokeLinejoin:'round'},React.createElement('line',{x1:18,y1:20,x2:18,y2:10}),React.createElement('line',{x1:12,y1:20,x2:12,y2:4}),React.createElement('line',{x1:6,y1:20,x2:6,y2:14}));
+
+const H1_FIGMA_ASSETS = {
+  flag:"/previews/assets/figma-racing/checkered-flag.svg",
+  chevrons:"/previews/assets/figma-racing/chevrons-a.svg",
+  kpiShare:"/previews/assets/figma-racing/kpi-tab-share.svg",
+  kpiValue:"/previews/assets/figma-racing/kpi-tab-value.svg"
+};
+
+const h1FormatTick = (value, format) => {
+  if (value === 0) return "0";
+  if (format === "currencyM") return "$" + value + "M";
+  if (format === "currencyBn") return "$" + value.toLocaleString() + "\u00A0Bn";
+  if (format === "bn") return value.toLocaleString() + "\u00A0Bn";
+  if (Math.abs(value) >= 1000000) return (value / 1000000).toFixed(value % 1000000 ? 1 : 0) + "M";
+  if (Math.abs(value) >= 1000) return (value / 1000).toFixed(value % 1000 ? 1 : 0) + "K";
+  return value.toLocaleString();
+};
+
+function H1FigmaComparison({data, readOnly}) {
+  if (data.comparisonRows?.length) {
+    return (
+      <div className="h1-figma-summary-table is-comparison">
+        {data.comparisonRows.map((row) => (
+          <div key={row.label}>
+            <b>{row.label}</b>
+            <span>{row.previous}</span>
+            <span>{row.current}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (data.layoutType === "region_table") {
+    const previous = data.tableRegionsQuarter1 || [];
+    const current = data.tableRegionsQuarter2 || [];
+    const previousAverage = previous.length ? previous.reduce((sum,row)=>sum+Number(row.roi),0)/previous.length : 0;
+    const currentAverage = current.length ? current.reduce((sum,row)=>sum+Number(row.roi),0)/current.length : 0;
+    return (
+      <div className="h1-figma-summary-table is-region">
+        <div><b>PERIOD</b><span>{previous[0]?.quarter || "2025 H2"}</span><span>{current[0]?.quarter || "2026 H1"}</span></div>
+        <div><b>AVG. ROI</b><span>{previousAverage.toFixed(1)}</span><span>{currentAverage.toFixed(1)}</span></div>
+        <div><b>APAC ROI</b><span>{previous.find(row=>row.region==="APAC")?.roi || "—"}</span><span>{current.find(row=>row.region==="APAC")?.roi || "—"}</span></div>
+      </div>
+    );
+  }
+  return (
+    <div className={"h1-figma-summary-table" + (data.layoutType === "simple_bar" ? " is-simple" : "")}>
+      <div>
+        <b>{data.periodLabel || "HALF"}</b>
+        <span>{data.tableData.q2025.label}</span>
+        <span>{data.tableData.q2026.label}</span>
+      </div>
+      <div>
+        <b><Ed readOnly={readOnly}>{data.metricLabel1 || data.metricLabel2}</Ed></b>
+        <span>{data.tableData.q2025.absoluteText}</span>
+        <span>{data.tableData.q2026.absoluteText}</span>
+      </div>
+      {data.tableData.q2025.percentText && (
+        <div>
+          <b>集团占比</b>
+          <span>{data.tableData.q2025.percentText}</span>
+          <span>{data.tableData.q2026.percentText}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function H1FigmaKpi({kpi, position, fallbackLabel, fallbackValue, fallbackSubtext}) {
+  const value = kpi?.value || fallbackValue || "—";
+  const label = kpi?.label || fallbackLabel || "KEY RESULT";
+  const subtext = kpi?.subtext || fallbackSubtext || "";
+  return (
+    <article className={"h1-figma-kpi " + position}>
+      <img src={position === "top" ? H1_FIGMA_ASSETS.kpiShare : H1_FIGMA_ASSETS.kpiValue} alt="" aria-hidden="true"/>
+      <span>{label}</span>
+      <strong>{value}</strong>
+      <small>{subtext}</small>
+    </article>
+  );
+}
+
+function H1FigmaStandardChart({data}) {
+  const chartData = [
+    {name:data.tableData.q2025.label, absolute:data.tableData.q2025.absolute, percent:data.tableData.q2025.percent, absoluteText:data.tableData.q2025.absoluteText, percentText:data.tableData.q2025.percentText},
+    {name:data.tableData.q2026.label, absolute:data.tableData.q2026.absolute, percent:data.tableData.q2026.percent, absoluteText:data.tableData.q2026.absoluteText, percentText:data.tableData.q2026.percentText}
+  ];
+  const hasPercent = chartData.some(row => Number.isFinite(row.percent));
+  return (
+    <div className="h1-figma-chart-area">
+      <span className="h1-figma-axis-note is-left">{data.chart.leftAxisLabel}</span>
+      {hasPercent && <span className="h1-figma-axis-note is-right">{data.chart.rightAxisLabel}</span>}
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart data={chartData} margin={{top:50,right:hasPercent?34:14,left:4,bottom:6}}>
+          <defs>
+            <linearGradient id={"h1FigmaBar-"+data.id} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#ff6b1b"/>
+              <stop offset="48%" stopColor="#c51700"/>
+              <stop offset="100%" stopColor="#621d00"/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid stroke="rgba(255,255,255,.22)" vertical={false} strokeDasharray="5 7"/>
+          <XAxis dataKey="name" axisLine={{stroke:"rgba(255,255,255,.36)"}} tickLine={false} tick={{fill:"#fff",fontSize:14.423,fontWeight:500}} dy={12}/>
+          <YAxis yAxisId="left" axisLine={false} tickLine={false} width={62} domain={data.chart.leftDomain} ticks={data.chart.leftTicks} tick={{fill:"rgba(255,255,255,.82)",fontSize:14.423}} tickFormatter={(value)=>h1FormatTick(value,data.chart.format)}/>
+          {hasPercent && <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} width={42} domain={[0,60]} ticks={[0,15,30,45,60]} tick={{fill:"rgba(255,255,255,.82)",fontSize:14.423}} tickFormatter={(value)=>value+"%"}/>}
+          <Bar yAxisId="left" dataKey="absolute" barSize={74} fill={"url(#h1FigmaBar-"+data.id+")"} radius={[7,7,0,0]}>
+            <LabelList dataKey="absoluteText" content={(props)=>{var row=chartData[props.index];return <CustomAbsoluteLabel {...props} absoluteText={row.absoluteText}/>;}}/>
+          </Bar>
+          {hasPercent && <Line yAxisId="right" type="linear" dataKey="percent" stroke="#fff" strokeWidth={2} strokeDasharray="5 7" dot={{r:6,fill:"#c61b21",stroke:"#fff",strokeWidth:3}} activeDot={{r:7,fill:"#c61b21",stroke:"#fff",strokeWidth:3}}>
+            <LabelList dataKey="percentText" content={(props)=>{var row=chartData[props.index];return <CustomPercentLabel {...props} percentText={row.percentText}/>;}}/>
+          </Line>}
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function H1FigmaProfitChart({data}) {
+  const chartData = [
+    {name:data.tableData.q2025.label, absolute:data.tableData.q2025.absolute, absoluteText:data.tableData.q2025.absoluteText},
+    {name:data.tableData.q2026.label, absolute:data.tableData.q2026.absolute, absoluteText:data.tableData.q2026.absoluteText}
+  ];
+  return (
+    <div className="h1-figma-chart-area">
+      <span className="h1-figma-axis-note is-left">{data.chart.leftAxisLabel}</span>
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart data={chartData} margin={{top:50,right:14,left:4,bottom:6}}>
+          <defs>
+            <linearGradient id={"h1FigmaBar-"+data.id} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#ff6b1b"/>
+              <stop offset="48%" stopColor="#c51700"/>
+              <stop offset="100%" stopColor="#621d00"/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid stroke="rgba(255,255,255,.22)" vertical={false} strokeDasharray="5 7"/>
+          <XAxis dataKey="name" axisLine={{stroke:"rgba(255,255,255,.36)"}} tickLine={false} tick={{fill:"#fff",fontSize:14.423,fontWeight:500}} dy={12}/>
+          <YAxis axisLine={false} tickLine={false} width={62} domain={data.chart.leftDomain} ticks={data.chart.leftTicks} tick={{fill:"rgba(255,255,255,.82)",fontSize:14.423}} tickFormatter={(value)=>h1FormatTick(value,data.chart.format)}/>
+          <Bar dataKey="absolute" barSize={74} fill={"url(#h1FigmaBar-"+data.id+")"} radius={[7,7,0,0]}>
+            <LabelList dataKey="absoluteText" content={(props)=>{var row=chartData[props.index];return <CustomAbsoluteLabel {...props} absoluteText={row.absoluteText}/>;}}/>
+          </Bar>
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+const H1ExactBarLabel = ({x,y,width,value,className="h1-figma-chart-value-text",dy=-12}) => (
+  <text
+    x={x+width/2}
+    y={y+dy}
+    className={className}
+    textAnchor="middle"
+    dominantBaseline="middle"
+  >{value}</text>
+);
+
+const H1GrowthPointLabel = ({x,y,value,color="#fff",dx=0,dy=-14}) => {
+  if (value === undefined || value === null || value === "") return null;
+  const labelX = x+dx;
+  return (
+    <g>
+      <rect x={labelX-25} y={y+dy-10} width="50" height="20" rx="4" className="h1-extended-growth-pill"/>
+      <text x={labelX} y={y+dy} fill={color} className="h1-extended-growth-text" textAnchor="middle" dominantBaseline="middle">{value}</text>
+    </g>
+  );
+};
+
+function H1EditorialLegend({items}) {
+  return (
+    <div className="h1-editorial-legend">
+      {items.map((item,index)=>(
+        <span key={item.label}>
+          <i className={item.kind || ("kind-"+index)}></i>
+          <b>{item.label}</b>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function H1SearchTrendGlyph({data}) {
+  const monthStep = 820 / (data.months.length - 1);
+  return (
+    <svg className="h1-brand-search-trend" viewBox="0 0 900 300" role="img" aria-label="Jul 2025 到 Jun 2026 品牌搜索相对趋势">
+      <defs>
+        <linearGradient id="h1SearchTrendFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ff4c23" stopOpacity=".48"/>
+          <stop offset="100%" stopColor="#ff4c23" stopOpacity="0"/>
+        </linearGradient>
+      </defs>
+      <line x1="447" y1="42" x2="447" y2="246" className="h1-brand-search-divider"/>
+      <text x="225" y="28" className="h1-brand-search-phase" textAnchor="middle">{data.previousPhase}</text>
+      <text x="675" y="28" className="h1-brand-search-phase is-current" textAnchor="middle">{data.currentPhase}</text>
+      <path d="M38 236 C72 154 106 121 144 132 C188 144 222 165 263 152 C306 139 338 128 382 150 C417 169 438 166 456 112 C480 40 523 31 567 51 C609 71 641 100 683 96 C734 92 786 77 858 55 L858 246 L38 246 Z" fill="url(#h1SearchTrendFill)"/>
+      <path d="M38 236 C72 154 106 121 144 132 C188 144 222 165 263 152 C306 139 338 128 382 150 C417 169 438 166 456 112 C480 40 523 31 567 51 C609 71 641 100 683 96 C734 92 786 77 858 55" className="h1-brand-search-line"/>
+      {data.months.map((month,index)=>(
+        <g key={month+"-"+index}>
+          <line x1={38+index*monthStep} y1="246" x2={38+index*monthStep} y2="252" className="h1-brand-search-tick"/>
+          <text x={38+index*monthStep} y="274" textAnchor="middle">{month}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function H1BrandVoiceChart({data}) {
+  const chartData = data.voiceMetrics.points;
+  return (
+    <div className="h1-brand-voice-layout">
+      <section className="h1-editorial-chart-surface">
+        <div className="h1-editorial-chart-title">
+          <div><span>{data.voiceMetrics.title}</span><h2>{data.voiceMetrics.figureTitle}</h2></div>
+          <strong>{data.voiceMetrics.change}</strong>
+        </div>
+        <div className="h1-editorial-axis-label is-left">{data.voiceMetrics.axisLabel}</div>
+        <div className="h1-brand-voice-plot">
+          <ResponsiveContainer width="100%" height="100%">
+            <ComposedChart data={chartData} margin={{top:34,right:28,left:16,bottom:32}}>
+              <defs>
+                <linearGradient id="h1VoiceBar" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#ff6b1b"/>
+                  <stop offset="52%" stopColor="#d31d08"/>
+                  <stop offset="100%" stopColor="#6b1900"/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="rgba(255,255,255,.16)" vertical={false} strokeDasharray="4 7"/>
+              <XAxis
+                dataKey="period"
+                axisLine={{stroke:"rgba(255,255,255,.38)"}}
+                tickLine={false}
+                height={58}
+                tick={({x,y,payload})=>{
+                  const row = chartData.find(item=>item.period===payload.value);
+                  return <g transform={`translate(${x},${y})`}><text y="20" textAnchor="middle" className="h1-editorial-x-tick">{row.period}</text><text y="40" textAnchor="middle" className="h1-editorial-x-subtick">{row.sourceCategory}</text></g>;
+                }}
+              />
+              <YAxis
+                domain={[0,40]}
+                ticks={data.voiceMetrics.axisTicks}
+                axisLine={false}
+                tickLine={false}
+                width={54}
+                tick={{fill:"rgba(255,255,255,.72)",fontSize:13}}
+                tickFormatter={(value)=>value+"k"}
+              />
+              <Bar dataKey="value" barSize={118} fill="url(#h1VoiceBar)" radius={[8,8,0,0]}>
+                <LabelList dataKey="valueText" content={(props)=><H1ExactBarLabel {...props} value={chartData[props.index].valueText} className="h1-editorial-bar-label" dy={-16}/>}/>
+              </Bar>
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="h1-editorial-comparison-line">{data.voiceMetrics.comparison}</div>
+      </section>
+      <aside className="h1-editorial-insight-rail">
+        <article><small>2026 全球声量占比</small><strong>29.3%</strong><p>{data.voiceMetrics.share}</p><em>{data.voiceMetrics.competitor}</em></article>
+        <article><small>{data.voiceMetrics.sentimentTitle}</small><strong>≈ 37%</strong><p>{data.voiceMetrics.sentimentDetail}</p></article>
+        <article className="is-accent"><small>竞争格局</small><strong>行业第 2</strong><p>缩小与 Exness 的差距、冲击第一</p></article>
+      </aside>
+    </div>
+  );
+}
+
+function H1BrandSearchReputationChart({data}) {
+  return (
+    <div className="h1-brand-search-layout">
+      <section className="h1-editorial-chart-surface">
+        <div className="h1-editorial-chart-title">
+          <div><span>{data.searchMetrics.title}</span><h2>{data.searchMetrics.comparison}</h2></div>
+          <strong>{data.searchMetrics.change}</strong>
+        </div>
+        <H1SearchTrendGlyph data={data.searchMetrics}/>
+        <div className="h1-search-direction">{data.searchMetrics.direction}</div>
+        <small className="h1-editorial-source-note">{data.searchMetrics.note}</small>
+      </section>
+      <aside className="h1-reputation-panel">
+        <header><span></span><h2>{data.reputation.title}</h2></header>
+        <div className="h1-reputation-keywords">
+          {data.reputation.keywords.map(keyword=><strong key={keyword}>{keyword}</strong>)}
+        </div>
+        <p>{data.reputation.conclusion}</p>
+      </aside>
+    </div>
+  );
+}
+
+function H1SocialSovTrendChart({data}) {
+  const chartData = data.socialMonthly;
+  return (
+    <section className="h1-editorial-chart-surface h1-social-sov-surface">
+      <div className="h1-editorial-chart-title">
+        <div><span>{data.chart.title}</span><h2>{data.chart.subtitle}</h2></div>
+      </div>
+      <H1EditorialLegend items={[
+        {kind:"vantage",label:data.chart.legends[0]},
+        {kind:"industry",label:data.chart.legends[1]},
+        {kind:"sov-line",label:data.chart.legends[2]}
+      ]}/>
+      <div className="h1-editorial-axis-label is-left">{data.chart.leftAxisLabel}</div>
+      <div className="h1-editorial-axis-label is-right">{data.chart.rightAxisLabel}</div>
+      <div className="h1-social-sov-plot">
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={chartData} barGap={2} margin={{top:34,right:54,left:4,bottom:8}}>
+            <CartesianGrid stroke="rgba(255,255,255,.14)" vertical={false} strokeDasharray="4 7"/>
+            <XAxis dataKey="month" axisLine={{stroke:"rgba(255,255,255,.34)"}} tickLine={false} tick={{fill:"rgba(255,255,255,.84)",fontSize:12,fontWeight:650}} dy={10}/>
+            <YAxis yAxisId="vantage" domain={[0,500]} ticks={data.chart.leftTicks} axisLine={false} tickLine={false} width={48} tick={{fill:"rgba(255,255,255,.68)",fontSize:10}}/>
+            <YAxis yAxisId="industry" hide domain={[0,2500]}/>
+            <YAxis yAxisId="sov" orientation="right" domain={[0,20]} ticks={data.chart.rightTicks} axisLine={false} tickLine={false} width={42} tick={{fill:"rgba(255,255,255,.72)",fontSize:10}} tickFormatter={(value)=>value+"%"}/>
+            <Bar yAxisId="vantage" dataKey="vantage" barSize={17} fill="#8f1620" radius={[3,3,0,0]}/>
+            <Bar yAxisId="industry" dataKey="industry" barSize={17} fill="#ff5b11" radius={[3,3,0,0]}/>
+            <Line yAxisId="sov" type="linear" dataKey="sov" stroke="#fff" strokeWidth={2.2} strokeDasharray="5 5" dot={{r:4.5,fill:"#8f1620",stroke:"#fff",strokeWidth:1.5}}>
+              <LabelList dataKey="sovText" content={(props)=><text x={props.x} y={props.y-12} className="h1-extended-line-label" textAnchor="middle">{chartData[props.index].sovText}</text>}/>
+            </Line>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="h1-social-period-bands"><span>2026 H1</span><span>2025 H2</span></div>
+      <div className="h1-social-values">
+        <div><b>MONTH</b>{chartData.map(row=><span key={"m-"+row.period+row.month}>{row.month}</span>)}</div>
+        <div><b>VANTAGE</b>{chartData.map(row=><span key={"v-"+row.period+row.month}>{row.vantageText}</span>)}</div>
+        <div><b>INDUSTRY</b>{chartData.map(row=><span key={"i-"+row.period+row.month}>{row.industryText}</span>)}</div>
+        <div><b>SOV</b>{chartData.map(row=><span key={"s-"+row.period+row.month}>{row.sovText}</span>)}</div>
+      </div>
+      <small className="h1-editorial-source-note">{data.chart.sourceNote}</small>
+    </section>
+  );
+}
+
+function H1FollowersShareChart({data}) {
+  const chartData = data.followerScopes;
+  return (
+    <section className="h1-editorial-chart-surface h1-followers-share-surface">
+      <div className="h1-editorial-chart-title">
+        <div><span>{data.chart.title}</span><h2>{data.chart.subtitle}</h2></div>
+      </div>
+      <H1EditorialLegend items={[
+        {kind:"vantage",label:data.chart.legends[0]},
+        {kind:"industry",label:data.chart.legends[1]},
+        {kind:"sov-line",label:data.chart.legends[2]}
+      ]}/>
+      <div className="h1-editorial-axis-label is-left">{data.chart.leftAxisLabel}</div>
+      <div className="h1-editorial-axis-label is-right">{data.chart.rightAxisLabel}</div>
+      <div className="h1-followers-share-plot">
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={chartData} barGap={8} margin={{top:48,right:56,left:16,bottom:28}}>
+            <CartesianGrid stroke="rgba(255,255,255,.16)" vertical={false} strokeDasharray="4 7"/>
+            <XAxis dataKey="scope" axisLine={{stroke:"rgba(255,255,255,.34)"}} tickLine={false} tick={{fill:"#fff",fontSize:14,fontWeight:700}} dy={14}/>
+            <YAxis yAxisId="followers" domain={[0,20000000]} ticks={data.chart.leftTicks} axisLine={false} tickLine={false} width={86} tick={{fill:"rgba(255,255,255,.72)",fontSize:11}} tickFormatter={(value)=>value.toLocaleString()}/>
+            <YAxis yAxisId="share" orientation="right" domain={[0,40]} ticks={data.chart.rightTicks} axisLine={false} tickLine={false} width={46} tick={{fill:"rgba(255,255,255,.72)",fontSize:11}} tickFormatter={(value)=>value+"%"}/>
+            <Bar yAxisId="followers" dataKey="industry" barSize={116} fill="#8f1620" radius={[7,7,0,0]}>
+              <LabelList dataKey="industryText" content={(props)=><H1ExactBarLabel {...props} value={chartData[props.index].industryText} className="h1-editorial-bar-label" dy={-14}/>}/>
+            </Bar>
+            <Bar yAxisId="followers" dataKey="vantage" barSize={116} fill="#ff5b11" radius={[7,7,0,0]}>
+              <LabelList dataKey="vantageText" content={(props)=><H1ExactBarLabel {...props} value={chartData[props.index].vantageText} className="h1-editorial-bar-label is-orange" dy={-14}/>}/>
+            </Bar>
+            <Line yAxisId="share" type="linear" dataKey="share" stroke="#fff" strokeWidth={2.4} strokeDasharray="6 6" dot={{r:7,fill:"#8f1620",stroke:"#fff",strokeWidth:2}}>
+              <LabelList dataKey="shareText" content={(props)=><text x={props.x} y={props.y-18} className="h1-extended-share-label" textAnchor="middle">{chartData[props.index].shareText}</text>}/>
+            </Line>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+    </section>
+  );
+}
+
+function H1FollowersTrendChart({data}) {
+  const followerMax = Math.max(...data.chart.leftTicks);
+  const growthMin = Math.min(...data.chart.rightTicks);
+  const growthMax = Math.max(...data.chart.rightTicks);
+  const chartData = data.followersTrend.map(row => {
+    const h1GrowthPlot = row.h1Growth ?? -2;
+    const h2GrowthPlot = row.h2Growth ?? -2;
+    const h1IsUpper = h1GrowthPlot >= h2GrowthPlot;
+    const upperGrowthPlot = Math.max(h1GrowthPlot,h2GrowthPlot);
+    const barTopRatio = 1-(Math.max(row.h1,row.h2)/followerMax);
+    const upperPointRatio = (growthMax-upperGrowthPlot)/(growthMax-growthMin);
+    const upperLabelDy = upperPointRatio-barTopRatio < .06 ? -42 : -22;
+    return {
+      ...row,
+      h1GrowthPlot,
+      h2GrowthPlot,
+      h1GrowthLabelDy: h1IsUpper ? upperLabelDy : 32,
+      h2GrowthLabelDy: h1IsUpper ? 32 : upperLabelDy,
+      h1GrowthLabelDx: row.h1Growth === null ? -34 : 0,
+      h2GrowthLabelDx: row.h2Growth === null ? 34 : 0
+    };
+  });
+  return (
+    <section className="h1-editorial-chart-surface h1-followers-trend-surface">
+      <div className="h1-editorial-chart-title">
+        <div><span>{data.chart.title}</span><h2>{data.chart.subtitle}</h2></div>
+      </div>
+      <H1EditorialLegend items={[
+        {kind:"vantage",label:data.chart.legends[0]},
+        {kind:"industry",label:data.chart.legends[1]},
+        {kind:"sov-line",label:data.chart.legends[2]},
+        {kind:"orange-line",label:data.chart.legends[3]}
+      ]}/>
+      <div className="h1-editorial-axis-label is-left">{data.chart.leftAxisLabel}</div>
+      <div className="h1-editorial-axis-label is-right">{data.chart.rightAxisLabel}</div>
+      <div className="h1-followers-trend-plot">
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={chartData} barGap={6} margin={{top:52,right:54,left:14,bottom:22}}>
+            <CartesianGrid stroke="rgba(255,255,255,.14)" vertical={false} strokeDasharray="4 7"/>
+            <XAxis dataKey="month" axisLine={{stroke:"rgba(255,255,255,.34)"}} tickLine={false} tick={{fill:"rgba(255,255,255,.86)",fontSize:13,fontWeight:650}} dy={12}/>
+            <YAxis yAxisId="followers" domain={[0,3000000]} ticks={data.chart.leftTicks} axisLine={false} tickLine={false} width={80} tick={{fill:"#d8cbc5",fontSize:12,fontWeight:600}} tickFormatter={(value)=>value.toLocaleString()}/>
+            <YAxis yAxisId="growth" orientation="right" domain={[-8,8]} ticks={data.chart.rightTicks} axisLine={false} tickLine={false} width={42} tick={{fill:"#d8cbc5",fontSize:12,fontWeight:600}} tickFormatter={(value)=>value+"%"}/>
+            <Bar yAxisId="followers" dataKey="h1" barSize={58} fill="#8f1620" radius={[5,5,0,0]}>
+              <LabelList dataKey="h1Text" content={(props)=><H1ExactBarLabel {...props} value={chartData[props.index].h1Text} className="h1-extended-bar-label is-small" dy={-28}/>}/>
+            </Bar>
+            <Bar yAxisId="followers" dataKey="h2" barSize={58} fill="#ff5b11" radius={[5,5,0,0]}>
+              <LabelList dataKey="h2Text" content={(props)=><H1ExactBarLabel {...props} value={chartData[props.index].h2Text} className="h1-extended-bar-label is-small is-orange" dy={-28}/>}/>
+            </Bar>
+            <Line yAxisId="growth" type="linear" dataKey="h2GrowthPlot" stroke="#ff762e" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round" dot={{r:5.5,fill:"#ff762e",stroke:"#fff7f2",strokeWidth:2}} connectNulls>
+              <LabelList dataKey="h2GrowthText" content={(props)=><H1GrowthPointLabel {...props} value={chartData[props.index].h2GrowthText} color="#ffb184" dx={chartData[props.index].h2GrowthLabelDx} dy={chartData[props.index].h2GrowthLabelDy}/>}/>
+            </Line>
+            <Line yAxisId="growth" type="linear" dataKey="h1GrowthPlot" stroke="#fff1e3" strokeWidth={3.2} strokeLinecap="round" strokeLinejoin="round" dot={{r:5.5,fill:"#8f1620",stroke:"#fff1e3",strokeWidth:2}} connectNulls>
+              <LabelList dataKey="h1GrowthText" content={(props)=><H1GrowthPointLabel {...props} value={chartData[props.index].h1GrowthText} color="#fff1e3" dx={chartData[props.index].h1GrowthLabelDx} dy={chartData[props.index].h1GrowthLabelDy}/>}/>
+            </Line>
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+    </section>
+  );
+}
+
+function H1ExtendedEditorialPage({data,count}) {
+  const pageTitle = data.layoutType === "brand_voice" ? "品牌声量与竞争格局"
+    : data.layoutType === "brand_search_reputation" ? "品牌搜索与口碑定位"
+    : data.layoutType === "social_sov_trend" ? "社交声量份额趋势"
+    : data.layoutType === "followers_share" ? "CFD 行业关注者份额"
+    : "关注者增长趋势对比";
+  const contextLine = data.contextLine || (data.layoutType === "brand_voice" ? data.subtitle : data.subtitle);
+  const chart = data.layoutType === "brand_voice" ? <H1BrandVoiceChart data={data}/>
+    : data.layoutType === "brand_search_reputation" ? <H1BrandSearchReputationChart data={data}/>
+    : data.layoutType === "social_sov_trend" ? <H1SocialSovTrendChart data={data}/>
+    : data.layoutType === "followers_share" ? <H1FollowersShareChart data={data}/>
+    : <H1FollowersTrendChart data={data}/>;
+  return (
+    <div className={"h1-extended-editorial-page is-"+data.layoutType.replaceAll("_","-")}>
+      <div className="h1-extended-editorial-canvas">
+        <header className="h1-extended-editorial-header">
+          <div className="h1-extended-editorial-section"><span></span><b>{data.title}</b></div>
+          <h1>{pageTitle}</h1>
+          <p>{contextLine}</p>
+          {data.sourceLine && <small>{data.sourceLine}</small>}
+        </header>
+        <main className="h1-extended-editorial-main">{chart}</main>
+        <footer className={"h1-extended-editorial-conclusion"+(data.takeaway ? " has-takeaway" : "")}>
+          <div><b>关键结论</b><p>{data.description}</p></div>
+          {data.takeaway && <strong>{data.takeaway}</strong>}
+        </footer>
+        <div className="h1-extended-editorial-page-number">{String(data.id).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span></div>
+      </div>
+    </div>
+  );
+}
+
+function H1FigmaRegionTable({data}) {
+  const previous = data.tableRegionsQuarter1 || [];
+  const current = data.tableRegionsQuarter2 || [];
+  const rows = [
+    ...previous.map(row=>({...row,isCurrent:false})),
+    ...current.map(row=>({...row,isCurrent:true}))
+  ];
+  return (
+    <div className="h1-figma-region-table-wrap">
+      <table className="h1-figma-region-table">
+        <colgroup><col className="is-half"/><col className="is-region"/><col className="is-register"/><col className="is-ftd"/><col className="is-nd"/><col className="is-tv"/><col className="is-roi"/></colgroup>
+        <thead><tr><th>HALF</th><th>REGION</th><th>REGISTER</th><th>FTD</th><th>NET DEPOSIT</th><th>TRADING VOLUME</th><th>ROI</th></tr></thead>
+        <tbody>{rows.map((row,index)=>(
+          <tr
+            key={row.quarter+"-"+row.region}
+            className={[
+              row.isCurrent ? "is-current" : "",
+              row.isCurrent && index === previous.length ? "is-period-start" : ""
+            ].filter(Boolean).join(" ")}
+          >
+            <td>{row.quarter}</td><td>{row.region}</td><td>{row.register}</td><td>{row.ftd}</td><td>{row.nd}</td><td>{row.tv}</td><td><strong>{row.roi}</strong></td>
+          </tr>
+        ))}</tbody>
+      </table>
+    </div>
+  );
+}
+
+function H1FigmaDataPage({data, count, editMode}) {
+  const isExtendedEditorial = [
+    "brand_voice",
+    "brand_search_reputation",
+    "social_sov_trend",
+    "followers_share",
+    "followers_trend"
+  ].includes(data.layoutType);
+  if (isExtendedEditorial) {
+    return <H1ExtendedEditorialPage data={data} count={count}/>;
+  }
+  const readOnly = !editMode;
+  const isOperationalOverview = data.id === 1;
+  const isPaidAdsChapter = data.id === 4;
+  const isBrandChapter = data.layoutType === "brand_sov";
+  const isExtendedChart = ["brand_sov","social_sov_trend","followers_share","followers_trend"].includes(data.layoutType);
+  const hasModuleTitle = isOperationalOverview || isPaidAdsChapter || Boolean(data.moduleTitle);
+  const isRegion = data.layoutType === "region_table";
+  const isProfit = data.layoutType === "profit";
+  const isSimple = data.layoutType === "simple_bar";
+  const numericGrowth = !isRegion && data.tableData?.q2025?.absolute
+    ? ((data.tableData.q2026.absolute / data.tableData.q2025.absolute - 1) * 100).toFixed(1)
+    : null;
+  const moduleTitle = data.moduleTitle || (data.id <= 3 ? "RETAIL整体表现" : data.id <= 7 ? "PAID ADS整体表现" : data.id === 8 ? "PAID ADS区域效率" : "SEO数据表现");
+  const regionPrevious = isRegion ? (data.tableRegionsQuarter1 || []).find(row=>row.region==="APAC") : null;
+  const regionCurrent = isRegion ? (data.tableRegionsQuarter2 || []).find(row=>row.region==="APAC") : null;
+  const regionGrowth = regionPrevious && regionCurrent ? ((Number(regionCurrent.roi)/Number(regionPrevious.roi)-1)*100).toFixed(1) : "—";
+  return (
+    <div className={
+      "h1-figma-data-page"
+      + (isOperationalOverview ? " is-overview" : "")
+      + (hasModuleTitle ? " has-module-title" : "")
+      + (isPaidAdsChapter ? " is-paid-ads-chapter" : "")
+      + (isBrandChapter ? " is-brand-chapter" : "")
+      + (isExtendedChart ? " is-extended-data" : "")
+      + (isRegion ? " is-region" : "")
+    }>
+      <div className="h1-figma-page-content">
+        {isOperationalOverview && (
+          <header className="h1-figma-operational-title">
+            <span>OPERATIONAL DATA</span>
+            <strong>经营数据</strong>
+          </header>
+        )}
+        {hasModuleTitle && (
+          <div className="h1-figma-module-title">
+            <img className="h1-figma-title-chevrons" src={H1_FIGMA_ASSETS.chevrons} alt="" aria-hidden="true"/>
+            <h1><Ed readOnly={readOnly}>{moduleTitle}</Ed></h1>
+            <img className="h1-figma-title-chevrons is-right" src={H1_FIGMA_ASSETS.chevrons} alt="" aria-hidden="true"/>
+          </div>
+        )}
+
+        <section className="h1-figma-summary-panel">
+          <div className="h1-figma-summary-copy">
+            <div className="h1-figma-summary-kicker"><img src={H1_FIGMA_ASSETS.flag} alt="" aria-hidden="true"/><Ed readOnly={readOnly}>{data.subtitle}</Ed></div>
+            <p><Ed readOnly={readOnly}>{data.description}</Ed></p>
+          </div>
+          <H1FigmaComparison data={data} readOnly={readOnly}/>
+        </section>
+
+        <section className={"h1-figma-data-stage" + (isRegion ? " is-region" : "")}>
+          <div className={"h1-figma-chart-panel" + (isExtendedChart ? " is-custom-chart" : "")}>
+            <div className="h1-figma-chart-heading"><span></span><h2><Ed readOnly={readOnly}>{data.chart?.title || data.subtitle}</Ed></h2></div>
+            {!isRegion && !isExtendedChart && (
+              <div className="h1-figma-chart-legend">
+                <span className="bar"></span><b>{data.chart.barLegend}</b>
+                {!isSimple && !isProfit && <><span className="line">—○—</span><b>{data.chart.lineLegend}</b></>}
+              </div>
+            )}
+            {data.layoutType === "brand_sov" ? <H1BrandSovChart data={data}/>
+              : data.layoutType === "social_sov_trend" ? <H1SocialSovTrendChart data={data}/>
+              : data.layoutType === "followers_share" ? <H1FollowersShareChart data={data}/>
+              : data.layoutType === "followers_trend" ? <H1FollowersTrendChart data={data}/>
+              : isRegion ? <H1FigmaRegionTable data={data}/>
+              : isProfit ? <H1FigmaProfitChart data={data}/>
+              : <H1FigmaStandardChart data={data}/>}
+          </div>
+          <aside className="h1-figma-kpi-stack">
+            <H1FigmaKpi
+              position="top"
+              kpi={data.kpi2}
+              fallbackLabel={isRegion ? "APAC ROI同比" : "同比增长"}
+              fallbackValue={isRegion ? "+"+regionGrowth+"%" : "+"+numericGrowth+"%"}
+              fallbackSubtext={isRegion ? (regionPrevious?.roi+" → "+regionCurrent?.roi) : (data.tableData?.q2025?.absoluteText+" → "+data.tableData?.q2026?.absoluteText)}
+            />
+            <H1FigmaKpi
+              position="bottom"
+              kpi={data.kpi1}
+              fallbackLabel={isRegion ? "2026 H1 APAC ROI" : data.metricLabel1}
+              fallbackValue={isRegion ? regionCurrent?.roi : data.tableData?.q2026?.absoluteText}
+              fallbackSubtext={isRegion ? "2026 H1" : "2025 H2 VS 2026 H1"}
+            />
+          </aside>
+        </section>
+        <div className="h1-figma-page-number">{String(data.id).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span></div>
+      </div>
+    </div>
+  );
+}
 
 function DashboardCard({data, count, editMode}) {
   const ro = !editMode;
@@ -417,6 +1229,7 @@ function DashboardCard({data, count, editMode}) {
     if (val === 0) return '0';
     if (format === 'currencyM') return '$' + val + 'M';
     if (format === 'currencyBn') return '$' + val.toLocaleString() + ' Bn';
+    if (format === 'bn') return val.toLocaleString() + ' Bn';
     return val.toLocaleString();
   };
   const cardBg = {background:'rgba(30,10,10,0.2)', border:'1px solid rgba(100,20,20,0.3)', borderRadius:16, padding:24, backdropFilter:'blur(8px)', position:'relative', overflow:'hidden'};
@@ -437,7 +1250,7 @@ function DashboardCard({data, count, editMode}) {
             <div style={hoverOverlay}/>
             <table style={{width:'100%', position:'relative', zIndex:10, textAlign:'left', borderCollapse:'collapse'}}>
               <thead><tr style={{borderBottom:'1px solid rgba(127,29,29,0.4)', color:'#d1d5db'}}>
-                <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px'}}><Ed readOnly={ro}>Quarter</Ed></th>
+                <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px'}}><Ed readOnly={ro}>{data.periodLabel || 'Quarter'}</Ed></th>
                 <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px'}}><Ed readOnly={ro}>{data.metricLabel1}</Ed></th>
                 <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px', textAlign:'right'}}><Ed readOnly={ro}>{data.metricLabel2}</Ed></th>
               </tr></thead>
@@ -528,6 +1341,7 @@ function ProfitSection({data, count, editMode}) {
     if (val === 0) return '0';
     if (format === 'currencyM') return '$' + val + 'M';
     if (format === 'currencyBn') return '$' + val.toLocaleString() + ' Bn';
+    if (format === 'bn') return val.toLocaleString() + ' Bn';
     return val.toLocaleString();
   };
   const cardBg = {background:'rgba(30,10,10,0.2)', border:'1px solid rgba(100,20,20,0.3)', borderRadius:16, padding:24, backdropFilter:'blur(8px)', position:'relative', overflow:'hidden'};
@@ -548,7 +1362,7 @@ function ProfitSection({data, count, editMode}) {
             <div style={hoverOverlay}/>
             <table style={{width:'100%', position:'relative', zIndex:10, textAlign:'left', borderCollapse:'collapse'}}>
               <thead><tr style={{borderBottom:'1px solid rgba(127,29,29,0.4)', color:'#d1d5db'}}>
-                <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px'}}><Ed readOnly={ro}>Quarter</Ed></th>
+                <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px'}}><Ed readOnly={ro}>{data.periodLabel || 'Quarter'}</Ed></th>
                 <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px', textAlign:'right'}}><Ed readOnly={ro}>{data.metricLabel2}</Ed></th>
               </tr></thead>
               <tbody style={{color:'#fff', fontSize:18}}>
@@ -582,12 +1396,12 @@ function ProfitSection({data, count, editMode}) {
           <div style={{display:'flex', flexDirection:'column', marginBottom:32, gap:12, textAlign:'center'}}>
             <div style={{display:'flex', alignItems:'center', gap:8}}>
               <BarChartIcon/>
-              <h3 style={{fontSize:15, fontWeight:700, color:'#fff', lineHeight:1.3}}><Ed readOnly={ro}>Paid Ads 2026 Q1 利润趋势</Ed></h3>
+              <h3 style={{fontSize:15, fontWeight:700, color:'#fff', lineHeight:1.3}}><Ed readOnly={ro}>{data.chart.title}</Ed></h3>
             </div>
             <div style={{display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, color:'#d1d5db', width:'100%', marginTop:8}}>
               <div style={{display:'flex', alignItems:'center', gap:8}}>
                 <div style={{width:16, height:16, background:'#dc2626', borderRadius:2, boxShadow:'0 0 8px rgba(220,38,38,0.5)'}}/>
-                <span>PROFIT (绝对值)</span>
+                <span>{data.chart.barLegend}</span>
               </div>
             </div>
           </div>
@@ -608,7 +1422,7 @@ function ProfitSection({data, count, editMode}) {
                 <defs><linearGradient id={'barGlow-'+data.id+'-m'} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#ff4545" stopOpacity={1}/><stop offset="30%" stopColor="#e11d48" stopOpacity={0.8}/><stop offset="100%" stopColor="#881337" stopOpacity={0.4}/></linearGradient></defs>
                 <CartesianGrid stroke="#4a0e0e" vertical={false} strokeDasharray="3 3" opacity={0.6}/>
                 <XAxis dataKey="name" axisLine={{stroke:'#4a0e0e'}} tickLine={false} tick={{fill:'#ffffff',fontSize:11,fontWeight:500}} dy={10}/>
-                <YAxis yAxisId="left" hide={true} domain={data.chart.leftDomain}/>
+                <YAxis yAxisId="left" hide={true} domain={data.chart.monthlyDomain || data.chart.leftDomain}/>
                 <Bar yAxisId="left" dataKey="absolute" barSize={35} fill={'url(#barGlow-'+data.id+'-m)'} radius={[2,2,0,0]}>
                   <LabelList dataKey="absoluteText" content={(props)=>{var row=mChartData[props.index];return <CustomAbsoluteLabel {...props} absoluteText={row.absoluteText}/>;}}/>
                 </Bar>
@@ -630,6 +1444,7 @@ function RegionTableSection({data, count, editMode}) {
   const tdStyle = {padding:'12px 16px', fontWeight:300};
   const tdRight = {padding:'12px 16px', fontWeight:300, textAlign:'right'};
   const roiStyle = {padding:'12px 16px', fontWeight:700, textAlign:'right', color:'#ef4444'};
+  const hasConvCost = [...(data.tableRegionsQuarter1||[]), ...(data.tableRegionsQuarter2||[])].some(row => row.convCost);
   return (
     <div style={{maxWidth:1400, margin:'0 auto', padding:'16px 32px', position:'relative', zIndex:10, scrollSnapAlign:'center', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'center'}}>
       <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:40}}>
@@ -643,11 +1458,12 @@ function RegionTableSection({data, count, editMode}) {
         </div>
         <div style={{...cardBg, overflowX:'auto'}}>
           <div style={hoverOverlay}/>
-          <table style={{width:'100%', position:'relative', zIndex:10, textAlign:'left', borderCollapse:'collapse', minWidth:800}}>
+          <table style={{width:'100%', position:'relative', zIndex:10, textAlign:'left', borderCollapse:'collapse', minWidth:hasConvCost?980:800}}>
             <thead><tr style={{borderBottom:'1px solid rgba(127,29,29,0.4)', color:'#d1d5db', fontSize:14}}>
-              <th style={thStyle}>Quarter</th><th style={thStyle}>Region</th>
+              <th style={thStyle}>{data.periodLabel || 'Quarter'}</th><th style={thStyle}>Region</th>
               <th style={{...thStyle, textAlign:'right'}}>Register</th><th style={{...thStyle, textAlign:'right'}}>FTD</th>
               <th style={{...thStyle, textAlign:'right'}}>Net Deposit</th><th style={{...thStyle, textAlign:'right'}}>Trading volume</th>
+              {hasConvCost && <th style={{...thStyle, textAlign:'right'}}>Conv. Cost</th>}
               <th style={{...thStyle, textAlign:'right'}}>ROI</th>
             </tr></thead>
             <tbody style={{color:'#fff', fontSize:16}}>
@@ -659,6 +1475,7 @@ function RegionTableSection({data, count, editMode}) {
                   <td style={tdRight}><Ed readOnly={ro}>{r.ftd}</Ed></td>
                   <td style={tdRight}><Ed readOnly={ro}>{r.nd}</Ed></td>
                   <td style={tdRight}><Ed readOnly={ro}>{r.tv}</Ed></td>
+                  {hasConvCost && <td style={tdRight}><Ed readOnly={ro}>{r.convCost}</Ed></td>}
                   <td style={roiStyle}><Ed readOnly={ro}>{r.roi}</Ed></td>
                 </tr>
               ))}
@@ -670,6 +1487,7 @@ function RegionTableSection({data, count, editMode}) {
                   <td style={tdRight}><Ed readOnly={ro}>{r.ftd}</Ed></td>
                   <td style={tdRight}><Ed readOnly={ro}>{r.nd}</Ed></td>
                   <td style={tdRight}><Ed readOnly={ro}>{r.tv}</Ed></td>
+                  {hasConvCost && <td style={tdRight}><Ed readOnly={ro}>{r.convCost}</Ed></td>}
                   <td style={{...roiStyle, color:'#f87171'}}><Ed readOnly={ro}>{r.roi}</Ed></td>
                 </tr>
               ))}
@@ -692,6 +1510,7 @@ function SimpleBarSection({data, count, editMode}) {
     if (val === 0) return '0';
     if (format === 'currencyM') return '$' + val + 'M';
     if (format === 'currencyBn') return '$' + val.toLocaleString() + ' Bn';
+    if (format === 'bn') return val.toLocaleString() + ' Bn';
     return val.toLocaleString();
   };
   const cardBg = {background:'rgba(30,10,10,0.2)', border:'1px solid rgba(100,20,20,0.3)', borderRadius:16, padding:24, backdropFilter:'blur(8px)', position:'relative', overflow:'hidden'};
@@ -712,7 +1531,7 @@ function SimpleBarSection({data, count, editMode}) {
             <div style={hoverOverlay}/>
             <table style={{width:'100%', position:'relative', zIndex:10, textAlign:'left', borderCollapse:'collapse'}}>
               <thead><tr style={{borderBottom:'1px solid rgba(127,29,29,0.4)', color:'#d1d5db'}}>
-                <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px'}}><Ed readOnly={ro}>Quarter</Ed></th>
+                <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px'}}><Ed readOnly={ro}>{data.periodLabel || 'Quarter'}</Ed></th>
                 <th style={{paddingBottom:16, fontWeight:500, padding:'0 8px', textAlign:'right'}}><Ed readOnly={ro}>{data.metricLabel1}</Ed></th>
               </tr></thead>
               <tbody style={{color:'#fff', fontSize:18}}>
@@ -763,6 +1582,17 @@ function SimpleBarSection({data, count, editMode}) {
 
 function DashboardSection({editMode}) {
   const wrapRef = useRef(null);
+  const isH1Report = REPORT_MODE === 'h1';
+  useEffect(() => {
+    if (!isH1Report) return;
+    const syncFigmaScale = () => {
+      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080, 1);
+      document.documentElement.style.setProperty('--h1-figma-scale', String(scale));
+    };
+    syncFigmaScale();
+    window.addEventListener('resize', syncFigmaScale);
+    return () => window.removeEventListener('resize', syncFigmaScale);
+  }, [isH1Report]);
   useEffect(() => {
     if (!wrapRef.current) return;
     const pages = wrapRef.current.querySelectorAll('.dash-page');
@@ -773,18 +1603,22 @@ function DashboardSection({editMode}) {
     return () => obs.disconnect();
   }, []);
   return (
-    <div ref={wrapRef} style={{position:'relative', background:'#0a0000', overflow:'hidden'}}>
+    <div ref={wrapRef} data-report-section="data" className={isH1Report ? "h1-figma-dashboard" : ""} style={{position:'relative', background:'#0a0000', overflow:'hidden'}}>
+      {isH1Report && <div className="h1-figma-fixed-stage" data-h1-racing-stage aria-hidden="true"/>}
       {/* V-light rays */}
-      <div style={{position:'fixed', inset:0, pointerEvents:'none', zIndex:0, overflow:'hidden', mixBlendMode:'screen', opacity:0.8}}>
+      {!isH1Report && <div style={{position:'fixed', inset:0, pointerEvents:'none', zIndex:0, overflow:'hidden', mixBlendMode:'screen', opacity:0.8}}>
         <div style={{position:'absolute', top:'-10%', right:'35%', width:150, height:'150vh', background:'linear-gradient(to bottom, rgba(239,68,68,0.5), rgba(127,29,29,0.2), transparent)', transform:'rotate(35deg)', transformOrigin:'top', filter:'blur(24px)'}}/>
         <div style={{position:'absolute', top:'-5%', right:'20%', width:200, height:'150vh', background:'linear-gradient(to bottom, rgba(248,113,113,0.4), rgba(127,29,29,0.1), transparent)', transform:'rotate(45deg)', transformOrigin:'top', filter:'blur(36px)'}}/>
         <div style={{position:'absolute', top:'5%', right:'10%', width:100, height:'150vh', background:'linear-gradient(to bottom, rgba(252,165,165,0.2), transparent)', transform:'rotate(55deg)', transformOrigin:'top', filter:'blur(36px)'}}/>
         <div style={{position:'absolute', top:'-10%', right:'35%', width:150, height:'150vh', background:'linear-gradient(to bottom, rgba(239,68,68,0.4), rgba(127,29,29,0.2), transparent)', transform:'rotate(-25deg)', transformOrigin:'top', filter:'blur(24px)'}}/>
-      </div>
+      </div>}
       {/* Decorative V */}
-      <div style={{position:'fixed', top:10, right:10, fontSize:250, fontWeight:900, color:'rgba(220,38,38,0.1)', lineHeight:1, userSelect:'none', zIndex:0, fontStyle:'italic', mixBlendMode:'screen', pointerEvents:'none', filter:'drop-shadow(0 0 15px rgba(220,38,38,0.2))'}}>V</div>
+      {!isH1Report && <div style={{position:'fixed', top:10, right:10, fontSize:250, fontWeight:900, color:'rgba(220,38,38,0.1)', lineHeight:1, userSelect:'none', zIndex:0, fontStyle:'italic', mixBlendMode:'screen', pointerEvents:'none', filter:'drop-shadow(0 0 15px rgba(220,38,38,0.2))'}}>V</div>}
       <div style={{position:'relative', zIndex:10, width:'100%'}}>
         {DASHBOARDS.map((board) => {
+          if (isH1Report) {
+            return <div key={board.id} className="dash-page" data-report-page data-page-id={`data-${String(board.id).padStart(2,'0')}`}><H1FigmaDataPage data={board} count={DASHBOARDS.length} editMode={editMode}/></div>;
+          }
           if (board.layoutType === 'simple_bar') {
             return <div key={board.id} className="dash-page"><SimpleBarSection data={board} count={DASHBOARDS.length} editMode={editMode}/></div>;
           }
@@ -852,18 +1686,6 @@ const T={primary:'#e8dcd4',accent:'#D44040',accentLight:'#E8585A',accentSoft:'rg
 // ═══ Ed (editable) ═══
 function Ed({children,tag:Tag='span',style,readOnly}){if(readOnly)return <Tag style={{...style,display:'inline'}}>{children}</Tag>;return <Tag contentEditable suppressContentEditableWarning style={{...style,display:'inline'}}>{children}</Tag>;}
 
-// ═══ Edit helpers ═══
-function DelBtn({onClick,label}){
-  return <button className="edit-btn edit-btn-del" onClick={onClick} title={`删除${label||''}`}>✕</button>;
-}
-function AddItemForm({fields,onSubmit,label}){
-  const[vals,setVals]=useState(()=>{const o={};fields.forEach(f=>o[f.key]='');return o;});
-  const set=(k,v)=>setVals(p=>({...p,[k]:v}));
-  return <div className="edit-form">
-    {fields.map(f=><input key={f.key} placeholder={f.placeholder} value={vals[f.key]} onChange={e=>set(f.key,e.target.value)}/>)}
-    <button className="edit-btn edit-btn-add" onClick={()=>{onSubmit(vals);setVals(()=>{const o={};fields.forEach(f=>o[f.key]='');return o;});}}>{label||'添加'}</button>
-  </div>;
-}
 function ConfirmDialog({onSave,onDiscard,onCancel}){
   const saveSvg=<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>;
   return <div className="confirm-overlay" onClick={onCancel}>
@@ -948,94 +1770,6 @@ function getInitialData(){return{
   title:'全球营销团队 Q1 OKR 复盘',titleEn:'Global Marketing Team · Q1 OKR Review',
   subtitle:'2026 年度第一季度回顾与策略复盘',subtitleEn:'2026 First Quarter Review & Strategy Recap',
   date:'2026.04.30',nextReview:'2026.07.10',
-  statusLegend:[
-    {color:'#E8585A',label:'On Track',desc:'进度符合计划'},
-    {color:'#fbbf24',label:'At Risk',desc:'进度滞后，已有缓解方案'},
-    {color:'#8a2020',label:'Off Track',desc:'进度停滞或关键里程碑未达'},
-    {color:'#383838',label:'Not Started',desc:'尚未启动'},
-  ],
-  summaryMetrics:[
-    {label:'总用户触达',labelEn:'Total User Reach',value:'2.2M',sub:'年度目标 8M',subEn:'Annual Goal 8M',icon:'users'},
-    {label:'品牌知名度增长',labelEn:'Brand Awareness Growth',value:'+14.5%',sub:'同比',subEn:'YoY',icon:'trend',good:true},
-    {label:'关键区域市场份额',labelEn:'Key Region Market Share',value:'6.5%',sub:'平均',subEn:'Average',icon:'chart'},
-    {label:'总体评审状态',labelEn:'Overall Status',value:'On Track',icon:'check',good:true},
-  ],
-  headlineMetrics:[
-    {label:'Q1 用户触达',labelEn:'Q1 User Reach',value:'2.2M',sub:'年度目标 8M',subEn:'Annual 8M',icon:'users'},
-    {label:'品牌知名度',labelEn:'Brand Awareness',value:'+14.5%',sub:'同比',subEn:'YoY',icon:'trend',good:true},
-    {label:'区域市场份额',labelEn:'Regional Share',value:'6.5%',sub:'平均',subEn:'Avg',icon:'chart'},
-    {label:'CPA 降幅',labelEn:'CPA Reduction',value:'-6.2%',sub:'超目标 -5%',subEn:'Target -5%',icon:'dollar',good:true},
-    {label:'新增 KOL',labelEn:'New KOLs',value:'12',sub:'目标 10',subEn:'Target 10',icon:'star',good:true},
-    {label:'合规审计',labelEn:'Compliance Audit',value:'0',sub:'重大发现',subEn:'Major Findings',icon:'shield',good:true},
-  ],
-  objectives:[
-    {id:'o1',status:'On Track',statusEn:'On Track',statusColor:'#E8585A',title:'将Vantage建设成全球一线品牌',subtitle:'组织架构 · 慈善领军 · 品牌生态',description:'Brand Search x5、FTD 50%、ND&TV 40%。KR1重塑组织架构；KR2慈善领军；KR3品牌生态。',krs:[
-      {id:'kr1.1',code:'KR 1',title:'重塑组织架构以适应最新目标，提高产出质量、效率',items:[
-        {id:'item1.1.1',title:'Social Momentum team（社交声量与热度小组）',details:'基于营销日历的造势\n日常方法论探索 | Daily methodology exploration\n造势话题\n事件营销方法论探索 | Event marketing playbook development\n指标｜Metrics\nSocial media mentions ×10\nAverage content engagement rate ≥ 2%\nShare Rate × 3\n≥2 viral/event-driven campaigns',metrics:'社交媒体提及量 ×10\n平均内容互动率 ≥ 2%\n分享率 × 3\n≥2 场病毒式/事件驱动活动',owner:'@Lyn Chang\n@Eira Li',image:['okr-images/corrected/img-36.png'],results:'由0-1搭建团队，并临时组建BIT顾问团队作为临时团队搭建支撑日常业务过度\nA级全案 落地（3）场\n总曝光量 (Total Impressions): 约 2,426,461 次\nPremium Unlimited: 2,197,126 次\nCopy Trade: 181,776 次\nSuperapp: 47,559 次(不完全统计)\n总互动量 (Total Engagements): 约 36,312 次, 平均互动率: 约为1.52%\nPremium Unlimited: 29,130 次\nCopy Trade: 6,385 次\nSuperapp: 797 次 (不完全统计)\n媒体触达与提及 (Media Mentions & PR)\n累计获得 444+ 次 高质量转载（Premium Unlimited 272次 + Copy Trade 172次），成功覆盖 Yahoo Finance、Associated Press (美联社)、MarketWatch 等核心流量门户及越南本土垂直媒体。',rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item1.1.2',title:'Value Proposition Project（价值主张小组）',details:'全网粉丝量提高X倍\n指标 | Metrics\nS:×10 (≥30% organic share) | A3-10 | B2-3\n核心内容曝光度破千万+/地区 | Core content reach exceeds 10M+ per region\n核心内容：Product No.1 / Trust / S级宣发\n核心区域：VN等\n指标 | Metrics\nS≥10M impressions | A≥3M and <10M impressions | B<3M impressions\n内容用户认可度负面比例控制在x%\n指标 | Metrics\nS6%-8% | A<15% | B>15%\nSales团队eNPS | Sales team Employee Net Promoter Score\neNPS=(Number of positive respondents/Total respondents)×100-(Number of critics/Total respondents)×100\n分数 | Score bands\nS 40 | A 10-39 | B <= 10',metrics:'S:×10 (≥30% organic share) A3-10 B2-3\nS≥10M impressions | A≥3M and <10M | B<3M impressions\nS6%-8% | A<15% | B>15%\neNPS分数 S 40 | A 10-39 | B ≤10',owner:'@Lyn Chang @Eira Li @Raphael Zou',image:['okr-images/corrected/img-37.png'],results:'vantage no.1 升级\nQ1基于调研结果进一步深化了一份基于\'行业重要性×差异化优势×客观竞争力\'多维评估模型的《Vantage 核心卖点竞争力调研报告》，通过将卖点归纳为信任安全、交易条件、平台体验、激励机制四大类别，确立了以\'无限杠杆、All-in-One APP 生态、20 分钟闭环客服\'等为核心的高竞争力卖点矩阵\n启动品牌升级，品牌屋梳理完成\n完成品牌屋方向梳理和确认，Q2后针对细化物料进行产出\n负面内容下架处理建立了沟通机制和方式，总计处理下架负面内容16条\n团队搭建招聘',success:'从product no.1定位vtg no.1\n品牌层面（Global）：经营不可证伪的共识。不陷入点差、杠杆等易被追平的参数内耗，转而强化合规历史、平台底蕴等具有护城河的品牌背书。目标是建立\'顶级全球平台\'的品牌默认感，为所有产品线提供天然的信任溢价。\n产品层面（Local）：实施\'1+N\'的差异化打击。在全球统一的Narrative（叙事）框架下，根据各地区竞争生态（如越南的交易速度、亚太的特定工具），下放Product No.1的具体功能话术，实现全球认知统一与本地战略的平衡。\n策略转型：从单向输出转向生态影响\nAI 语料资产化：品牌认知不再仅取决于官方渠道，更取决于AI引擎的评价。后续需通过PR及外部语料喂养，确保Vantage锁定AI推荐的头部地位。\n对外营销材料标准化：需将模糊的优势提炼为结构化的谈资，赋能渠道侧实现高效获客。\n品牌屋 | 规划 | 产出：品牌升级',rating:null,problems:null,improvement:null,quarterly:null},
-        {id:'item1.1.3',title:'Delivery & Solutions Project（交付小组）',details:'前期以交付Creative为主，后续考虑 Campaign & Ads\n指标 | Metrics\nSales团队eNPS\neNPS = (正向人数 / 总受访人数) × 100 - (批评者人数 / 总受访人数) × 100\nS: ≥40, with SOP completed in at least one region\nA: 10-39, with SOP completed in at least one region\nB: ≤10, with SOP completed in at least one region',metrics:'Sales团队eNPS\nS: ≥40，至少一个区域完成SOP\nA: 10-39\nB: ≤10',owner:'@Lyn Chang',image:null,results:'组建了交付团队',rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item1.1.4',title:'CMO Office 从0-1 搭建组 | CMO Office 0→1 build',details:'Research&Strategy\nResearch\n产品体验官 | Product experience specialists\n用户研究 | User research\n竞品调研 | Competitor analysis\n已经有两位候选人 | Two candidates already identified\nStrategy\n了解竞品 | Understand competitors\n了解战略 | Understand corporate strategy\n了解公司 | Understand the company\nData\n爬虫mason | Web crawler (Mason)\n数据 | Data infrastructure\nCOS | Chief of Staff (COS)\n指标 | Metrics\nS: 100% completion\nA: 70% completion\nB: 50% completion',metrics:'S: 100% 完成\nA: 70% 完成\nB: 50% 完成',owner:'@Leo Wu',image:['okr-images/corrected/img-38.png'],results:'团队搭建初步完成：\nResearch Strategy\nMKT Data团队',rating:null,success:null,problems:null,improvement:null,quarterly:null}
-      ]},
-      {id:'kr1.2',code:'KR 2',title:'慈善领军，通过公益合作提升品牌社会影响力',items:[
-        {id:'item1.2.1',title:'与联合国3+机构合作、与5+个ngo合作、与2+个国家部门合作',details:'指标 | Metrics\nS: 100% completion\nA: 70% completion\nB: 50% completion',metrics:'S: 100% 完成\nA: 70% 完成\nB: 50% 完成',owner:'@Lyn Chang\n@Edric Liu',image:['okr-images/corrected/img-39.png'],results:'核心数据：\n日常线：累计接触及建立联系 NGO 6家\n阿联酋：4家\n越南：2家\n头部机构 / 联合国合作线\n已接触头部机构：4家\n联合国机构：2家进入实质合作阶段\n进展：\n日常线：从批量建联进入实际转化阶段，形成初步合作方向\n越南2家完成合作方向和模式的梳理，推进方案敲定\n阿联酋4家进行处于沟通阶段\n头部线：进入实际沟通阶段：已进入实质沟通阶段\n联合国难民署UNHCR：已明确合作方向与时间节点，拟推进「难民世界杯」项目\n联合国儿童基金会UNICEF：已初步确定合作议题，处于建联深化及方案细化阶段',success:'卡点和思考：\n整个外联建联周期长，存在建联后话题匹配度和传播价值低的情况；\n同时外部机构（尤其是UN及大型NGO）整体决策与执行周期较长。\n针对此类情况，需进一步扩大建联数量，漏斗筛选商业价值大的合作伙伴，进行评估和适度的资源投入保证合作落地。',problems:null,improvement:null,quarterly:'Q1搭体系 → Q2跑规模 → Q3放大 → Q4收成果\nQ1（从0到1）：公益合作整体策略设计、建立全球合作框架（APAC/MENA/Europe初步覆盖）、试点NGO/UN及平台型机构建联、人才补充\nQ2：全面建联+首批落地——中小型NGO（数量型）、头部机构（战略型）、事件营销（传播型）\nQ3：放大与品牌建立——持续扩大NGO合作、深化头部机构合作、打造1-2个重点事件、强化IB参与机制\nQ4：收口与行业定位——固化核心合作伙伴、总结年度项目、深化政府及UN合作关系、输出年度品牌成果'},
-        {id:'item1.2.2',title:'打造至少2个现象级事件，撬动 IB 全网共振',details:'受邀IB人数/总影响力 30人以上/场\nIB参与后主动转发比例及曝光程度 >300w\n指标 | Metrics\nS完成2场，且全网曝光达标\nA完成1场且全网曝光达标\nB完成1场曝光达标50%以上',metrics:'S: 完成2场，且全网曝光达标\nA: 完成1场且全网曝光达标\nB: 完成1场曝光达标50%以上',owner:'@Lyn Chang\n@Edric Liu',image:['okr-images/corrected/img-40.png'],results:'项目定位：围绕难民议题的社区体育项目，通过与联合国一起在世界杯期间举办足球赛事实现结合强品牌背书和热点完成传播与社会影响力结合；同时，我们将邀请IB参与项目增加客户粘性。\n当前进展：\n已与 UNHCR 完成初步对接，明确合作方向\n正在与各国家及地区办公室沟通具体执行模式\n初步方案：\n非洲地区：以社区足球赛为核心，在难民社区开展小型赛事\n亚洲地区：探索与当地 UN 机构联合举办示范性赛事（执行模式待细化，风险点在于亚洲普遍难民较少或者与当地社会融合较好）\n规模规划：\n计划落地 5–10 场赛事\n覆盖非洲及亚洲重点国家\n关键资源与形式：\n联合 UN 官方及本地政府/社区代表参与\n结合赛事进行品牌露出与传播\n具备 PR 放大与区域影响力潜力',rating:null,success:null,problems:null,improvement:null,quarterly:'Q2规划：依托世界杯流量窗口，完成「难民世界杯」系列赛事（5-10场）落地，并配套线上线下整合传播（媒体+PR），实现规模化品牌曝光与社会影响力提升。'}
-      ]},
-      {id:'kr1.3',code:'KR 3',title:'品牌生态建设，构建多维度品牌触点',items:[
-        {id:'item1.3.1',title:'周边 | Merchandising',details:'完成SOP，eNPS正向60%\n破圈周边1+',metrics:'SKU count ≥ 12\nProduct lines ≥ 3\nR&D projects ≥ 5',owner:'@Lyn Chang\n@Miranda Chen',image:null,results:'团队搭建以及SOP梳理与业务支持\n完成SOP流程梳理，有效支持业务团队\n累计支持周边产品 6890件\n覆盖 28个地区\n相关统计链接：截止26年3月份合计整体费用、周边需求进度及反馈\n新品开发\n新增 12个SKU\n覆盖品类：\n法拉利周边\n包装物料\n日常家居、服配类周边（茶杯、冰箱贴、红包、书包）\n重点研发项目（共5个大项目，持续跟进中Q2陆续可量产）\nAI玩具：上市时间预计7月中\nVTG德州：上市时间预计6月初\nVTG麻将：上市时间预计7月初\n金融电子相框：上市时间预计6月初\n法拉利礼盒：5月中上线',rating:null,success:null,problems:null,improvement:null,quarterly:null,products:[{title:'德州扑克-盖茨比款',series:'盖茨比系列',image:'okr-images/merch/德州.png',sampleDate:'6月底',massDate:'7月大货',id:'TX-SPEC-V2'},{title:'德州扑克-基础款',series:'基础系列',image:'okr-images/merch/德州基础.png',sampleDate:'6月中',massDate:'6月底',id:'TX-BASE-V1'},{title:'麻将礼盒-奢华款黑色',series:'麻将奢华系列',image:'okr-images/merch/麻将奢华款-黑色.png',sampleDate:'6月底',massDate:'7月',id:'MJ-LUX-B1'},{title:'麻将礼盒-奢华款红色',series:'麻将奢华系列',image:'okr-images/merch/麻将奢华款红色.png',sampleDate:'6月底',massDate:'7月',id:'MJ-LUX-R1'},{title:'法拉利车模礼盒基础款',series:'法拉利车模系列',image:'okr-images/merch/车模基础.png',sampleDate:'5月初',massDate:'5月中下旬',id:'FER-BASE-V1'},{title:'法拉利车模礼盒奢华款',series:'法拉利车模系列',image:'okr-images/merch/车模VIP.png',sampleDate:'5月初',massDate:'5月中下旬',id:'FER-LUX-V1'},{title:'AI潮玩周边1.0',series:'AI创意系列',image:'okr-images/merch/潮玩IP.png',sampleDate:'6月初',massDate:'6月底',id:'AI-IP-V1'},{title:'新年茶杯礼盒',series:'新年系列',image:'okr-images/merch/新年杯子.png',sampleDate:'1月',massDate:'1月',id:'NY-CUP-V1'},{title:'新年书包套装礼盒',series:'新年系列',image:'okr-images/merch/新年书包套装礼盒.png',sampleDate:'1月',massDate:'1月',id:'NY-BAG-V1'}]},
-        {id:'item1.3.2',title:'赞助',details:'应用场景增加5+\neNPS正向占比60%',metrics:'Sponsorship activations ≥ 7\nBrand exposure 10M+\nLead generation 5K+',owner:'@Lyn Chang\n@Edric Liu\n@Eric Jiang',image:['okr-images/corrected/img-41.png'],results:'目标1：深化法拉利合作应用场景，提升品牌曝光与业务转化能力\n关键指标1：拓展多元应用场景5+，提升赞助资产使用效率\n结果：\nQ1共推动落地 7类应用场景（已达成目标）：资产复用：法拉利TVC拍摄，素材和资产复用作为重要策略\n品牌触点类：完成法拉利元素在Email EDM Footer及Signature中的应用（覆盖Global / AU / UK）\n衍生品开发类：法拉利1:18车模礼盒开发（已打样，5月量产）\n品牌内容生产类：年度TVC拍摄项目（预计5月20日执行）\n客户体验类（IB）：完成F1上海站IB体验活动组织，并推动内部社媒团队对IB体验素材进行剪辑，并进行社媒传播放大\n线下业务场景类：在The Wealth Expo Peru展台融入法拉利视觉元素\n付费投放转化类：在AU市场进行YouTube + Meta & IG渠道广告投放\n关键指标2：提升品牌传播效果与用户感知\n结果：\nAU市场法拉利视频广告投放（YouTube + Meta & IG） YouTube渠道新增品牌记忆用户：14,200人\n社媒表现： 法拉利赛事相关内容互动及观看数据显著高于其他内容主题，且Q1整体社媒粉丝增长：+5.1%\n\n目标 2：推动UAE市场赞助布局，为区域业务进入建立基础\n关键指标1：完成赞助策略框架搭建与方向验证\n结果：\n完成基于市场调研与内部共识的三层赞助框架设计： 大型头部赞助≠官方机构/联盟合作≠小型赞助组合\n关键指标2：建立潜在合作资源池并推进初步接洽\n结果：\n已完成第一批大型赞助资源梳理：4家潜在合作方，包含重点IP如：UFC Fight Night、UAE Pro League等，现已启动建联与持续拓展中',success:'Ferrari合作深化，7个场景全部激活\nUAE赞助获得当地政府支持',problems:'部分赞助场景执行周期长，影响即时效果评估',improvement:'建立赞助效果实时监控看板\n优化赞助场景优先级排序',quarterly:'Q1: Ferrari场景激活+UAE签约\nQ2: 赛事赞助扩展\nQ3: 赞助效果中期评估\nQ4: 年度赞助策略复盘'},
-        {id:'item1.3.3',title:'Offline',details:'沙龙10+场\n完成1个生态的落地 例如匹克球',metrics:'Events ≥ 3\nTotal attendees ≥ 100\nConversion rate ≥ 15%',owner:'@Raphael Zou',image:['okr-images/corrected/img-42.jpeg'],results:'已经在越南河内/胡志明市举办 3 场线下沙龙，沙龙形式涵盖主旨演讲 / talk show / round table等\n线下沙龙累计出席人数约120人，其中IB 60人，直客 60 人；转化效果（活动后周期内新增ND）仍在统计期内，待回收数据。',success:'市场层面：需求已被验证，线下场景具备战略价值\n从沙龙的报名与互动两端验证了目标客群对高质量内容与面对面交流存在需求。线下活动不仅是品牌曝光工具，更是建立信任与加深关系的重要触点，尤其在越南这样的增长型市场中，线下沙龙具有战略价值。\n增长链路：已跑通「内容 → 兴趣 → 转化」的闭环\n从多渠道报名表现到业务转化，整体链路顺畅，说明当前内容选题、表达方式及渠道组合具备较强的市场适配性。沙龙不仅是「做活动」，而是初步建立起一套可持续复用的获客与转化机制。\n投产效率：单位获客成本可控，具备放大空间\nCPL、CPA较优，证明了该模式在当前阶段具备良好的投入产出比。长期看，这类线下活动可以被纳入常规增长手段，而非一次性品牌动作，具备预算放大的基础。\n运营能力：已形成初步标准化，为规模化复制打基础\n通过本项目，团队已开始沉淀线下活动的关键流程与执行方法（SOP），降低了组织对单次项目经验的依赖。这为未来在越南持续举办，或复制到其他市场提供了「操作说明书」。\nVN Seminar Review (0329 胡志明市)',problems:null,improvement:'扩大线下活动覆盖城市\n增加活动后续跟进机制',quarterly:null},
-        {id:'item1.3.4',title:'公关 | Public Relations (PR)',details:'公关稿占比SEO结果50%\n直接建联大媒体50+，重点地区top媒体10+\n行业生态建联重点地区5+',metrics:'Media contacts ≥ 50\nArticles published ≥ 20\nDirect publish ≥ 40',owner:'@Lyn Chang\n@Raphael Zou',image:['okr-images/corrected/img-43.png'],results:'头部媒体直联资源积累67家\\nQ1共计发布稿件21篇，其中13篇稿件实现头部媒体直发，共48家头部媒体完成直发',rating:'0.6',success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item1.3.5',title:'KOL | KOL partnerships',details:'直接建联行业品牌KOL 50，重点地区top KOL 50+/地区',metrics:'KOL pool ≥ 1000\nCollaborations ≥ 50\nTotal impressions 1M+',owner:'@Lyn Chang\n@Hedy Xie',image:['okr-images/corrected/img-44.png'],results:'触达KOL总数：1500，其中Tier 1 KOL 400位\\nQ1累计合作80位KOL，共计发文183篇，总曝光量1,774,041，总互动量74,120\\n落地的关键项目与结果：\\n项目一：Vantage Winners，合作21位KOL，共发布64篇post，Impression 296,483，engagement 20,484，平均ER值6.9%\\n项目二：无限杠杆Unlimited Leverage，合作58位KOL，共发布103篇post，Impression 1,334,151，engagement 49,991，平均ER值3.7%\\n项目三：跟单交易Copy Trading，合作8位KOL，共发布16篇post，Impression 143,407，engagement 3,645，平均ER值3%\\n项目四：超级应用Vantage Superapp，合作8位KOL，内容制作中，暂未发布。',rating:null,success:null,problems:null,improvement:null,quarterly:null}
-      ]}
-    ]},
-    {id:'o2',status:'On Track',statusEn:'On Track',statusColor:'#E8585A',title:'注重增长质量，通过精细化运营提升全渠道获客效率',subtitle:'Ads精细化 · 曝光基建 · 竞品情报 · 用户运营',description:'聚焦广告精细化管理、自然曝光基建、竞品情报体系、用户全生命周期运营四大方向。',krs:[
-      {id:'kr2.1',code:'KR 1',title:'加强Ads的数据化、精细化管理，提高广告投放效果',items:[
-        {id:'item2.1.1',title:'预算/花费 监控 Budget and Spend Monitoring',details:'Progress Update',metrics:'Budget monitoring coverage 100%\nBudget utilization 95-100%\nAlert response time < 1h',owner:'@Hu Yang\n@Jessica Li',image:null,results:'已完成国家维度/每日维度/渠道月维度数据监控记录\\n三份实际花费文件记录数据误差值控制在0.5%以下',success:'建立多维度花费校验机制，保障数据一致性与准确性\n通过不定期抽查国家 / 渠道 / 平台等多维度花费数据，交叉校验不同记录口径\n及时发现并修正数据偏差，提升数据可靠性\n结果：\n成功将月度花费误差稳定控制在 0.5%以内',problems:'部分渠道数据回传延迟',improvement:'优化数据回传链路，缩短延迟至15分钟内',rating:'0.7'},
-        {id:'item2.1.2',title:'重点国家ROI 监控 | ROI monitoring for key countries',details:'APAC\n*ROI: S:+50% A:+50% B:+20%\nGS\n*ROI: S:+50% A:+10% B:+5%\n*Determine detailed ROI target',metrics:'ROI dashboard coverage ≥ 10 countries\nData refresh frequency ≤ 1h\nDecision turnaround < 24h',owner:'@Hu Yang\n@Jessica Li',image:null,results:'APAC\\n25-Q4：8.8\\n26-Q1：16.4\\nGS\\n25-Q4：5.7\\n26-Q1：6.3',success:'通过国家分级，实现ROI显著提升\n建立 T0–T3 国家分层策略，分级扩量投放\n基于ROI与风险，对各区域国家进行分层（T0–T3）\n不同层级采用差异化投放策略：\nT0/T1：重点放量，作为核心ROI贡献来源\nT2：控制成本，稳定补量\nT3：小规模测试，持续挖掘潜力\n从「统一投放」到「区域精细化运营」\n针对不同区域（如 LATAM / MENA / APAC）制定差异化策略\n根据区域策略重点动态调整预算与投放节奏',problems:'部分小市场数据样本量不足',improvement:'引入贝叶斯估计处理小样本市场',rating:'0.8'},
-        {id:'item2.1.3',title:'获客渠道LTV/CAC 监控 | LTV/CAC monitoring by acquisition channel',details:'社媒 LTV/CAC S:+XX% A:+XX% B:+XX%\nDSP\nSEM\n25年Q4 - 26年Q1 各渠道LTV cohort ROI对比\n*Determine detailed LTV/CAC target',metrics:'LTV/CAC model coverage ≥ 80% channels\nPrediction accuracy ≥ 85%\nModel update frequency weekly',owner:'@Hu Yang\n@Jessica Li',image:['okr-images/corrected/img-49.png','okr-images/corrected/img-50.png','okr-images/corrected/img-51.png','okr-images/corrected/img-52.png'],results:'SEM搜索 - Bing, Google：Google 26-Q1回本周期缩短，Bing首月LTV/CAC呈上升趋势\\n商店 - ASA, App Store：首月LTV/CAC均有明显上升，ASA首月LTV/CAC在2,3月均翻倍\\nDSP：首月LTV/CAC显著上升\\n社媒 - Meta, TikTok：META前三月LTV/CAC数值上升/回本周期缩短，TikTok无明显变化',success:'从统一投放升级为渠道分级策略，提升整体LTV/CAC\n针对高转化率渠道优化，如高转化率的搜索渠道增加针对性的关键词，热点词，收割高潜力高价值用户\n针对回本周期较长的社媒渠道，通过优化更适合渠道受众人群的素材方式，通过降低CAC来优化回本周期',problems:'新渠道历史数据不足影响模型准确性',improvement:'建立新渠道快速评估框架',rating:'0.8'},
-        {id:'item2.1.4',title:'Campaign、素材层级获客成本监控 | Campaign and creative-level CAC monitoring',details:'USP素材 获客成本降低 S: -15% A:-10%\nUSP creatives CAC reduction: S: -15% / A: -10% / B: -5%\nPromo素材 | Promotional creatives\n强竞品素材 | Competitive benchmarking creatives',metrics:'Creative-level CAC tracking 100%\nA/B test velocity ≥ 20/month\nWinning creative identification < 48h',owner:'@Hu Yang\n@Jessica Li',image:null,results:'CAC\\n以VN为起点，精细化监控TikTok 1-3月份素材成效，并进行投放素材迭代优化',success:'识别出3组高效素材模板',problems:'测试速度未达目标，受限于素材产能',improvement:'引入AI辅助素材生成提升产能',rating:'0.6'},
-        {id:'item2.1.5',title:'Web 落地页转化率 | Web landing page conversion rate',details:'落地页PV到leads提交转化率 S: +15% A:+10% B:+5%\nLanding page PV → lead submission CVR: S: +15% / A: +10% / B: +5%',metrics:'Landing page CR +15%\nTest variants ≥ 10/month\nBounce rate reduction ≥ 10%',owner:'@Hu Yang\n@Jessica Li\n@Chelsea Luo',image:null,results:'Webflow落地页模板\\n已完成服务订阅采购，账号基础设置\\nVFSC监管站点webH5模板配置\\n1个已完成页面模板\\n多监管footer模板设置完成\\n黄金/非黄金流程表单搭建完成\\nGTM/神策数据追踪埋点测试/CRM数据回传/UTM数据追踪完成\\nSEO配置和页面加载速度优化完成\\n浏览器和多响应模式测试完成',success:'将落地页从「逐个定制」转为「模板化生产」，提升复用率\n降低制作与沟通成本，加快上线节奏',problems:'A/B测试基础设施需完善',improvement:'部署专业A/B测试平台',rating:'0.6'}
-      ]},
-      {id:'kr2.2',code:'KR 2',title:'加强「曝光基建」，通过SEO、ASO、GEO全面提高自然曝光能力',items:[
-        {id:'item2.2.1',title:'SEO基础能力加强 | Strengthen SEO foundation',details:'域名权威增长（基于Semrush）\n核心关键词排名表现（重点区域）\n核心关键词排名表现（印度市场）\nAI驱动内容生产与多市场扩展能力',metrics:'Organic traffic +30%\nTop 10 keywords +50\nPage load speed < 2s',owner:'@Jeff He\n@Ken Toh',image:['okr-images/corrected/img-53.png','okr-images/corrected/img-54.png','okr-images/corrected/img-55.png'],results:'域名权威增长（Domain Authority Growth）\\nQ1：50，过去一年整体维持在相同水平\\n核心关键词排名（重点区域）：Forex 6.17% | CFD 8.01% | 黄金 4.69% | 股票 1.20% | MetaTrader 5.10%\\n核心关键词排名（印度市场）：Forex 36.03% | CFD 27.65% | 黄金 9.72% | 股票 1.33% | MetaTrader 2.42%\\nAI驱动内容生产：计划于Q2启动',success:'全新 AI 内容生产引擎\n以 AI 流程取代传统 3–4 天/篇的内容制作，现每篇仅需约 1 天\n4 周内产出 20 篇高质量文章（传统团队需 6–8 周才能达到同等产出）\n技术问题已全面解决\n完成服务端渲染、结构化数据（FAQ + 作者标记）及页面速度优化\n首页与博客页面 PageSpeed 均达 90 分以上；核心网页指标（CWV）问题页面自 4 月 10 日起持续减少\n关键词排名成果（截至 4 月 28 日）\n我们已在以上市场发布英文内容，并已在 4 个地区斩获合计 116 个关键词的第一名排名，各市场可见度与平均排名均大幅提升。',problems:'Google算法更新影响部分页面排名',improvement:'建立算法更新快速响应机制',rating:null},
-        {id:'item2.2.2',title:'ASO评分和评价运营体系建立 | Establish ASO rating and review management system',details:'应用市场评分\n每月新增评论数\n负评响应SLA',metrics:'App Store rating ≥ 4.5\nReview response rate 100%\nKeyword ranking top 10 ≥ 30',owner:'@Hu Yang\n@Juno Chen',image:null,results:'评论评分优化\\nGP：4个国家GP首次到4分以上\\nGS 2个国家：MENA|QA(4.2) | LATAM|MX(4)\\nAPAC 2个国家：VN(4.8), IN(4.5)\\niOS由于政策变动Q1暂时没开启\\n关键词优化\\n7个国家首批关键词到榜Top3\\nGS 6个国家：EU|FR/DE/IT/NL/ES | ASIC|AU\\nAPAC 1个国家：VN',success:'评论评分优化\n质量 > 数量，真人 > 机器\n评分提升的关键不在「量」，而在「真实性 + 留存稳定性」。\n关键词优化\n关键词增长不是单点行为，而是「结构性放大效应」\n优化一个核心词（如品牌词），会带动同一语义簇内的子关键词同步提升\n在一个核心市场做优化，会影响其他国家的关键词排名\n账号质量是影响 ASO 成效的「隐藏杠杆」\n账号「可信度」显著影响关键词排名爬升速度\n使用老账号 + 近3个月无黑帽行为，相比普通账号，关键词排名提升更快、更稳定\nGP 排名存在「锁榜机制」，需匹配节奏而非线性投放\n关键词排名不是线性增长，而是「延迟释放 + 突破式上涨」\n避免「短期无效果就停止投放」的误判\n投放策略应：锁榜期：稳定打量（维持信号）；解锁期：加速放量（抢排名）；结合竞品观察：评论节奏、版本更新频率',problems:'部分市场用户评论参与度低',improvement:'设计激励机制提升用户评论意愿',rating:'0.7'},
-        {id:'item2.2.3',title:'GEO高频搜索内容的加强 | Enhance GEO high-frequency search content',details:'Semrush AI可见性\n品牌在高意图问题的可见度',metrics:'GEO content pieces ≥ 100\nLocal search visibility +40%\nContent production velocity 20/week',owner:'@Jeff He\n@Ken Toh',image:['okr-images/corrected/img-56.png','okr-images/corrected/img-57.png','okr-images/corrected/img-58.png','okr-images/corrected/img-59.png'],results:'SemRush AI可见性\\nQ1: 31\\nAI整体可见性保持同一水平，Gemini/AI Overview可见性均有所改善\\nBrand Visibility (Average)\\nQ1完成了GEO工具采购，Q2开始监控对常见关键词进行监控',success:'AI平台整体表现稳步向好：\n月度受众激增至1.668亿，6个月内增长 +68.6%，AI平台触达能力大幅提升\n引用量达6,400次，较前期增长 +9.6%，内容被AI平台引用的频率持续攀升\nAI Overview可见度提升至31（+1），Gemini升至33（+2），在主要AI平台上的曝光度稳中有升\n整体AI可见度维持在 31–33 的稳定区间，显示品牌在各大AI平台已建立一定的基础存在感',problems:null,improvement:null,rating:null},
-        {id:'item2.2.4',title:'品牌reputation加强 | Strengthen brand reputation',details:'Trustpilot全年评分维护计划\nBroker Listing全球Top10覆盖\n重点国家Top5覆盖',metrics:'Positive mention ratio ≥ 80%\nNegative response time < 2h\nBrand sentiment score +15%',owner:'@Jeff He\n@Jessica Zhou',image:['okr-images/corrected/img-60.png'],results:'Trustpilot\\n评分因为客服邀请链接发送大幅减少的原因，从4.5降到4.3分\\nBroker Listing\\n保持原策略维护存量listing，并停止低质listing购买',success:'Trustpilot\n通过对客服团队的工作流程进行深入调研，Trurstpilot团队已经建立了一套全面的从zendesk服务好评->生成邀请链接->发送邀请->完成评论->评论后续监测的数据监控体系，已经可以实现数据异常的细节分析和归因\n通过与Trustpilot团队直接建联，了解分析平台规则，开始尝试新的评分方式，新的方式已经得到初步验证\nBroker Listing\n中止低质listing的购买',problems:'监控工具覆盖语言有限',improvement:'扩展多语言监控能力',rating:null}
-      ]},
-      {id:'kr2.3',code:'KR 3',title:'加强整体数据基础设施建设，尤其是外部和第三方数据系统',items:[
-        {id:'item2.3.1',title:'行情 | Market data',details:'Progress update',metrics:'Data sources ≥ 3\nData freshness < 5min\nData accuracy ≥ 99%',owner:'TBC',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item2.3.2',title:'高热度关键词 | Trending high-volume keywords',details:'Progress update',metrics:'Keyword tracking ≥ 500\nTrend prediction accuracy ≥ 75%\nContent alignment rate ≥ 80%',owner:'TBC',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item2.3.3',title:'竞品流量趋势、来源（App下载、Web） | Competitor traffic trends and sources (App downloads, Web)',details:'Progress update',metrics:'Competitors monitored ≥ 10\nReport frequency weekly\nStrategy recommendations ≥ 2/month',owner:'TBC',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null}
-      ]},
-      {id:'kr2.4',code:'KR 4',title:'加强系统化用户运营能力，全面提升用户转化与LTV',items:[
-        {id:'item2.4.1',title:'针对新人拉新获客中的断点进行营销，提高新人转化率 | Target marketing at breakpoints in new user acquisition and conversion, improve new user conversion rate',details:'注册->FTD的转化率 | Registration → FTD conversion rate\nS: 4.8%, A: 4.6%, B: 4.4%',metrics:'New user FTD rate +20%\nOnboarding completion ≥ 80%\nDay-7 retention +15%',owner:'@Jeff He',image:null,results:'招聘',rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item2.4.2',title:'梳理完整的用户触达系统、站内曝光位、统一收口 | Sort out complete user touchpoint system, in-platform exposure positions, unified intake',details:'Process update',metrics:'Omnichannel coverage 100%\nMessage delivery rate ≥ 98%\nPersonalization rate ≥ 60%',owner:'@Jeff He\n@Kayley Toh',image:null,results:'活动相关的触达、站内曝光都已经统一收口',rating:null,success:null,problems:'无法全面了解向用户发送的通讯内容，多个独立运营团队各自为政，运作不同CRM操作，可能导致过度推送\nBraze与数据源之间缺乏数据同步管理\n同步逻辑周期未正确设置，Braze中数据点不完整\nBraze到内部数据源的转化事件设置不完整\n无法设置实时事件触发器\n现有运营方式人力密集且耗时',improvement:'Q2：为所有CRM运营建立标准作业程序，清理数据同步周期逻辑，设置转化事件\nQ3：审计现有数据点并更新CRM表格，完善Braze到Marketo用户退订列表闭环\nQ4：利用Braze AI功能精简操作流程，模板化减少人工处理',quarterly:null},
-        {id:'item2.4.3',title:'梳理完整的用户触达系统、打造通知&活动联动 | Sort out complete user lifecycle operations system, connect notifications & activity linkage',details:'Progress update',metrics:'Automation rules ≥ 20\nTrigger accuracy ≥ 95%\nCTR improvement +25%',owner:'@Jeff He\n@Kayley Toh',image:null,results:'与AI团队合作在ROW探索流失用户预警测试\nCRM策略招聘',rating:null,success:null,problems:'缺少全面端到端用户参与策略及整合旅程图\n缺少衡量CRM价值的工具：缺少通用对照组、缺乏仪表盘\n现有平台结构（应用端与网页端）导致运营重复与工作流碎片化',improvement:'Q2：制定生命周期定义，设计注册后30天参与计划，与BI合作定义通用对照组，创建营销活动数据仪表盘和自动化周/月报仪表盘，重组CRM团队架构\nQ3：制定用户生命周期维系方案，创建自动化周报/月报仪表盘\nQ4：优化Q2-Q3实验并规模化，探索注册渠道个性化，优化KYC及首笔存款流程',quarterly:null},
-        {id:'item2.4.4',title:'梳理高效率的活动系统，更高效的赋能区域、IB | Sort out an efficient activity system to more effectively empower regions and IBs',details:'活动交付周期缩短\nSales满意度\n建立E2E的活动SOP，覆盖活动策划、创建、上线、复盘等流程',metrics:'Campaign launch time < 2 days\nTemplate library ≥ 20\nSystem uptime ≥ 99.9%',owner:'@Jeff He',image:null,results:'在1月的年度账单活动成功实现E2E全流程交付，10天内完成活动策略、开发、上线、推广\n引入Webflow第三方活动页面设计工具，大幅提高页面产出效率\n招聘，待原子化活动系统上线',rating:null,success:null,problems:'营销活动的数据报表失效，无法有效追踪活动效果',improvement:null,quarterly:null},
-        {id:'item2.4.5',title:'打造大型创意Mega活动，赋能品牌、公域等需求 | Build large-scale creative Mega events to empower branding, public welfare, and other needs',details:'打造大型创意Mega活动，赋能品牌、公域等需求',metrics:'Mega events ≥ 1/quarter\nParticipation rate ≥ 30%\nRevenue uplift ≥ 20%',owner:'@Jeff He',image:null,results:'1月的年度账单活动，活动期间全球一共吸引了92,096人访问',rating:null,success:null,problems:null,improvement:null,quarterly:'Q2：世界杯活动\nQ3：世界交易大战\nQ4：2026年度账单2.0'},
-        {id:'item2.4.6',title:'梳理长期增长系统，如VIP系统、Referral/全IB系统 | Sort out long-term growth systems, such as VIP system, Referral / All-People IB system',details:'Progress update',metrics:'VIP retention ≥ 95%\nReferral conversion ≥ 10%\nLTV uplift ≥ 30%',owner:'@Jeff He',image:null,results:'招聘',rating:null,success:null,problems:null,improvement:null,quarterly:'Q2：与客服团队合作共同推进VIP项目上线\nQ3：主导VIP项目的运营\nQ4：提高VIP用户的留存'}
-      ]}
-    ]},
-    {id:'o3',status:'On Track',statusEn:'On Track',statusColor:'#E8585A',title:'在关键区域实现破局与增长，确立市场领导地位',subtitle:'强化信任 · 增加触点 · 提高转化',description:'聚焦UAE市场，通过信任建设、触点扩展和转化提升三大方向实现区域突破。',krs:[
-      {id:'kr3.1',code:'KR 1',title:'UAE市场深耕，建立品牌信任与市场地位',items:[
-        {id:'item3.1.1',title:'强化信任',details:'大媒体/品牌联合活动 10次 | 10 major media campaigns\nS级公益活动 2次，KOC 3+ | 2 flagship charity events\n政府级别 | Government-level initiatives\nIB联动类型 | Top 100 KOL program\n公益话题KOC 3位 | 3 KOCs on public welfare\n线下场景落地0-1 | Pickleball court launch 0-1\nSEO+大评分 | SEO + high ratings',metrics:'Trust score +25%\nCompliance badge visibility 100%\nLocal endorsements ≥ 5',owner:'@Lyn Chang\n@Jeff He\n@Edric Liu\n@Ken Toh',image:null,results:'公益 @Edric Liu\n初步明确不同项目类型的定位与作用：媒体/品牌活动→曝光与背书，公益项目→信任与长期价值\n对重点方向进行初步筛选（公益议题、媒体合作形式、潜在资源）\n\n@SEO+大评分 @Ken Toh',rating:null,success:'自然流量导向的话题更具传播潜力（如自然灾害、AI等热点议题）',problems:'政府官员等高层级资源参与难度较高，推进周期长、不确定性强\n大型项目依赖外部资源较多，整体执行节奏较慢\n当前团队资源有限，对多项目并行支撑能力不足',improvement:'优先推动可落地资源，降低对高不确定性资源的依赖\n补充关键岗位（策略、社媒运营、项目执行）\n提前规划重点项目，提升执行效率\n优化传播策略，强化KOC与自然流量能力',quarterly:'Q1（框架搭建阶段）：明确全年项目分层结构、梳理重点话题与传播方向、初步筛选潜在合作资源\nQ2（启动与试点阶段）：推动KOC话题传播、启动第一个公益项目、尝试对接政府或高层级资源\nQ3（放大与爆点阶段）：推动重点媒体合作、落地S级公益项目、建立KOC传播矩阵、推进至少1个旗舰级项目\nQ4（沉淀与背书阶段）：对全年项目进行复盘与内容沉淀、输出旗舰项目成果，形成品牌背书'},
-        {id:'item3.1.2',title:'增加触点',details:'增加高质量触点 | Touchpoints\nProgress on offline seminar\nProgress on social media amplification\nOffline 沙龙 | Offline seminar\nTop 100 KOL 合作计划\nSocial media 矩阵账号\n大学 | University\n教育 | Education\nnews\nLife',metrics:'Touchpoints +50%\nLocal media partnerships ≥ 10\nCommunity events ≥ 5',owner:'@Lyn Chang\n@Raphael Zou\n@Edric Liu',image:null,results:'沙龙\n梳理业内沙龙形式，完成从0到1的框架搭建，从主题到沙龙形式进行布局\n成功举办1场沙龙，到场36人；完成上半年沙龙的规划（保证每月至少1场，增加与客户粘性和转化场景）。\n获得新leads 11人，占活动参与者30.5%\n完成1个社群的搭建',rating:'0.7',success:'成功验证了IB带IB的邀约模式，具备可复制性\n完成多方资源初步整合（活动 + 内容 + 渠道）',problems:'团队人才情况偏弱，培养周期较长，增补人才仍待招聘\n沙龙活动转化链路不够清晰（注册/入金/IB转化未完全打通）\n有受国家金融和执法机构的监管风险\nKOL合作仍处于探索阶段，尚未形成规模化产出',improvement:'在Q2完成总部、local人员招聘\n从\'活动执行\'升级为\'增长模型\'，通过IB带人完成用户转化，形成清晰裂变机制\n强化社媒与KOL联动：将沙龙内容进行二次传播（短视频和社媒），推动KOL带人参与',quarterly:'Q1：验证阶段——团队组建，跑通offline沙龙模型，越南市场完成验证\nQ2：优化和初步复制——沙龙迭代形成基础SOP，启动UAE/Thailand试点\nQ3：规模化复制——沙龙升级为品牌级项目（Regional Event IP），多市场复制落地\nQ4：体系化沉淀——沙龙能力嵌入组织能力模型，从活动到增长模型的转化'},
-        {id:'item3.1.3',title:'提高转化',details:'提高转化 | Conversion\nFirst S-campaign plan progress update\nAds ROI improvement\nLive streaming progress\nS级campaign 2场：如世界杯\n广告：Web | SEM | register-FTD% S:+XX% A:+XX% B:+xx% | DMB | App | DSP\n社媒 | Social Media\nTop VIB扶持计划\nCampaign转化活动\nMKT AI Agent',metrics:'UAE conversion rate +30%\nLocal payment methods ≥ 5\nArabic UX satisfaction ≥ 4.5',owner:'@Hu Yang\n@Jeff He',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null}
-      ]},
-      {id:'kr3.2',code:'KR 2',title:'全球关键市场品牌建设与增长',items:[
-        {id:'item3.2.1',title:'Brand first (Marketing North Star)',details:'Brand Position\nCore Global Slogan\nCore USP\nKey Messages\nLocal Market Calibration\n*Progress Update (Completion Rate %)',metrics:'Brand consistency score ≥ 90%\nBrand guideline adoption 100%\nBrand audit pass rate ≥ 95%',owner:'',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item3.2.2',title:'Reputation & Trust',details:'第一层：主动搜索信任 | Layer 1: Active search trust\n第二层：产品体验信任 | Layer 2: Product experience trust\n第三层：社会证明信任 | Layer 3: Social proof trust\n*Progress Update (Completion Rate %)',metrics:'Global trust index +20%\nCrisis response time < 1h\nPositive coverage ratio ≥ 85%',owner:'@Lyn Chang @Jeff He\n@Raphael Zou',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item3.2.3',title:'PR',details:'正向中立PR | Positive / Neutral PR\nSocial/垂直论坛/Google Search 负面评价控制\nNegative review management on Social media / Niche forums / Google Search\n*Progress Update (Completion Rate %)',metrics:'PR coverage +40%\nTier-1 media placements ≥ 10\nSOV improvement +15%',owner:'@Lyn Chang @Raphael Zou',image:null,results:'Q1完善UAE市场相关工作方案，辅助公司高层决策，制定UAE市场方案顶层设计',rating:'0.7',success:null,problems:null,improvement:null,quarterly:'Q1：公司高层制定UAE市场方案顶层设计\nQ2：正向/中立PR占比≥80%，Tier 1媒体累计发布5+，负面占比＜25%\nQ3：正向/中立PR占比≥85%，Tier 1媒体累计发布10+，负面占比＜20%\nQ4：正向/中立PR占比≥90%，Tier 1媒体累计发布15+，负面占比＜15%'},
-        {id:'item3.2.4',title:'Product Optimization',details:'官网本地化优化 | Official website localization optimization\nNew Clients Onboarding\nEmail\n*Progress Update (Completion Rate %)',metrics:'NPS +10\nFeature delivery speed +30%\nBug resolution time < 24h',owner:'@Jeff He',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item3.2.5',title:'Product No.1',details:'Align UAE Core Product\n梳理并建立UAE市场关键第三方平台基础\nOrganize and establish the foundation for key third-party platforms in the UAE market\nBroker listing与推广信息调研\n*Progress Update (Completion Rate %)',metrics:'Product ranking top 3\nUnique features ≥ 5\nUser satisfaction ≥ 4.5',owner:'@Lyn Chang\n@Eira Li',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item3.2.6',title:'Advertising',details:'调研竞品，制定与头部对手相比有竞争优势的投放方案和预算规划\n跑通所有大媒体和本地50%以上广告渠道建联\nSEM、商城广告搜索结果优化\n品效广告素材准备进度\n*Progress Update (Completion Rate %)',metrics:'Ad efficiency +20%\nBrand ad recall +15%\nCPM optimization -10%',owner:'@Hu Yang\n@Katrina Li',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item3.2.7',title:'Promotion',details:'重新review要不要搞一个拉新活动\n一个出圈活动（比如AI交易赛，或者“迪拜导师交易大赛”）\n*Progress Update (Completion Rate %)',metrics:'Promotion ROI ≥ 3x\nParticipation rate ≥ 25%\nIncremental revenue +15%',owner:'@Jeff He',image:null,results:null,rating:null,success:null,problems:null,improvement:null,quarterly:null},
-        {id:'item3.2.8',title:'Integrated Marketing',details:'KOL合作准备 | KOL Collaboration Preparation\n线下顶级资源准备\n顶级PR资源准备\nOmnichannel渠道可行性与推进方式评估\n*Progress Update (Completion Rate %)',metrics:'Campaign integration score ≥ 85%\nCross-channel synergy +20%\nAttribution accuracy ≥ 80%',owner:'@Lyn Chang\n@Raphael Zou',image:null,results:'Q1完善UAE市场相关工作方案，辅助公司高层决策，制定UAE市场方案顶层设计',rating:'0.7',success:null,problems:null,improvement:null,quarterly:'Q1：公司高层制定UAE市场方案顶层设计\nQ2：迎接牌照颁发里程碑，完成KOL、线下顶级资源、顶级PR资源对接，Omnichannel评估\nQ3：配合gala dinner时点，完成资源铺设\nQ4：升级合作模式，沉淀快速实施落地SOP'},
-        {id:'item3.2.9',title:'IB',details:'Alignment with GS Sales\n全民IB | Universal IB program\n线下大赛 | Offline competition\n*Progress Update (Completion Rate %)',metrics:'IB partners +30%\nIB revenue contribution +20%\nPartner satisfaction ≥ 4.0',owner:'@Edric Liu',image:null,results:'Q1主要是围绕\'Universal IB program\'进行概念层探讨，初步梳理IB可参与的场景类型（中国好交易、权威媒体共建财经频道等）',rating:null,success:'基于对竞品及市场案例的调研，丰富了IB相关活动形式（如交易比赛、内容类节目、线下活动等），拓宽了整体设计思路',problems:'媒体类项目（如交易节目、财经内容共建）整体周期较长，尤其在媒体建联与档期确认上存在不确定性',improvement:'明确优先策略，聚焦1-2个核心方向（如交易比赛或内容共建）\n加快从概念到执行的转化，尽快推进首批试点项目落地\n提前启动媒体及外部资源建联，预留充足时间窗口',quarterly:'Q1：内部探讨与概念构想——明确Universal IB program整体思路、推进节奏与关键抓手\nQ2：对齐试点落地——与GS Sales重点对齐，梳理IB参与机制，搭建基础执行框架，确定重点区域推进路径\nQ3：执行与放量——启动线下交易比赛，推动与权威财经媒体共建内容，结合重点活动推动IB参与\nQ4：收口与成果转化——复盘全年IB参与项目，梳理可复制的IB参与模型'},
-        {id:'item3.2.10',title:'Only Vantage can do',details:'地标性空间占领 | Landmark space takeover OOH\n顶级运动IP绑定 | Top sports IP binding\n*Progress Update (Completion Rate %)',metrics:'Unique value propositions ≥ 3\nCompetitor differentiation score top 2\nBrand moat index +25%',owner:'@Raphael Zou',image:null,results:'Q1完善UAE市场相关工作方案，辅助公司高层决策，制定UAE市场方案顶层设计',rating:'0.7',success:null,problems:null,improvement:null,quarterly:'Q1：公司高层制定UAE市场方案顶层设计\nQ2：迎接牌照颁发里程碑，启动UAE OOH投放工作\nQ3：OOH投放落地，配合gala dinner进行升级\nQ4：OOH常态化占位'}
-      ]}
-    ]}
-  ],
   nextReviewDate:'2026.07.10',
   heroTitle:'VANTAGE',
   heroSubtitle:'Q1 2026 OKR REVIEW',
@@ -1137,83 +1871,17 @@ function TopNav({active}){
   return(
     <nav ref={navRef} className="top-nav">
       <div style={{width:'100%',padding:'0 48px',display:'flex',alignItems:'center',height:52,justifyContent:'space-between'}}>
-        <a href="#hero" onClick={e=>{e.preventDefault();document.getElementById('hero')?.scrollIntoView({behavior:'smooth'});}} style={{textDecoration:'none',cursor:'pointer',display:'flex',alignItems:'center',gap:10}}>
-          <img src="vantage-logo.svg" style={{height:22}}/>
-          <span style={{fontSize:9,color:'rgba(212,64,64,0.4)',fontFamily:T.font.en,letterSpacing:'0.08em'}}>Q1 OKR</span>
-        </a>
-        <div style={{display:'flex',gap:3}}>
+        {REPORT_MODE!=='h1'&&(
+          <a href="#hero" onClick={e=>{e.preventDefault();document.getElementById('hero')?.scrollIntoView({behavior:'smooth'});}} style={{textDecoration:'none',cursor:'pointer',display:'flex',alignItems:'center',gap:10}}>
+            <img src="vantage-logo.svg" style={{height:22}}/>
+            <span style={{fontSize:9,color:'rgba(212,64,64,0.4)',fontFamily:T.font.en,letterSpacing:'0.08em'}}>Q1 OKR</span>
+          </a>
+        )}
+        <div style={{display:'flex',gap:3,marginLeft:REPORT_MODE==='h1'?'auto':0}}>
           {items.map(it=><a key={it.id} href={`#${it.id}`} onClick={e=>{e.preventDefault();document.getElementById(it.id)?.scrollIntoView({behavior:'smooth'});}} className={`nav-pill${active===it.id?' active':''}`}>{it.label}{it.full&&<span style={{fontSize:9,opacity:0.4,fontFamily:T.font.en,marginLeft:4,display:'none'}}>{it.full}</span>}</a>)}
         </div>
       </div>
     </nav>
-  );
-}
-
-// ═══ Metric Card ═══
-function MetricCard({m,delay,readOnly,onDel}){
-  return(
-    <div className="metric-card edge-glow" style={{border:`1px solid ${m.accent?T.accentBorder:T.border}`,animation:`metricPop 0.6s ${delay}s cubic-bezier(0.16,1,0.3,1) both`,position:'relative'}}>
-      {onDel&&<button onClick={onDel} style={{position:'absolute',top:4,right:4,background:'rgba(248,113,113,0.12)',border:'1px solid rgba(248,113,113,0.25)',color:'#f87171',borderRadius:'50%',width:16,height:16,fontSize:9,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',zIndex:5}}>✕</button>}
-      <div style={{display:'flex',alignItems:'center',gap:7,marginBottom:6}}><Icon name={m.icon} size={16} color={m.accent?T.accentLight:T.textMuted} glow={m.accent}/><span style={{fontSize:10,fontWeight:600,fontFamily:T.font.cn,color:T.textSec}}><Ed readOnly={readOnly}>{m.label}</Ed></span></div>
-      <div style={{fontSize:9,color:T.textMuted,fontFamily:T.font.en,marginBottom:6,display:'none'}}><Ed readOnly={readOnly}>{m.labelEn}</Ed></div>
-      <div className="num-glow" style={{fontSize:26,fontWeight:700,fontFamily:T.font.mono,color:m.good?'#e8dcd4':T.accentLight,letterSpacing:'-0.03em'}}><Ed readOnly={readOnly}>{m.valueEn||m.value}</Ed></div>
-      {m.target&&<div style={{fontSize:10,color:T.textMuted,marginTop:4,fontFamily:T.font.en}}>Target: <Ed readOnly={readOnly}>{m.target}</Ed></div>}
-      {m.sub&&<div style={{fontSize:9,color:T.textMuted,marginTop:3}}><Ed readOnly={readOnly}>{m.sub}</Ed> <span style={{fontFamily:T.font.en,display:'none'}}><Ed readOnly={readOnly}>{m.subEn}</Ed></span></div>}
-    </div>
-  );
-}
-
-// ═══ KR Card ═══
-function KRCard({kr,expanded,onToggle,editMode,objId,delKR,addMetric,delMetric}){
-  const ro=!editMode;
-  return(
-    <div className="kr-card glow-card glass-card" style={{background:T.bgCard,borderRadius:T.r.lg,border:`1px solid ${expanded?T.accentBorder:T.border}`,boxShadow:expanded?'0 0 30px rgba(212,64,64,0.08)':T.shadow.sm,marginBottom:16,overflow:'hidden',position:'relative'}}>
-      {editMode&&delKR&&<button onClick={()=>delKR(objId,kr.id)} className="edit-btn edit-btn-del" style={{position:'absolute',top:10,right:10,zIndex:5}} title="删除此 KR">✕</button>}
-      <div onClick={onToggle} onMouseEnter={e=>e.currentTarget.style.background=T.bgCardHover} onMouseLeave={e=>e.currentTarget.style.background='transparent'} style={{padding:'20px 24px',cursor:'pointer',display:'flex',alignItems:'flex-start',gap:16,transition:'background 0.3s'}}>
-        <div style={{flex:1}}>
-          <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:9,flexWrap:'wrap'}}>
-            <span style={{fontSize:11,fontWeight:700,padding:'3px 11px',borderRadius:5,background:T.accentSoft,color:T.accentLight,fontFamily:T.font.mono}}>{kr.code}</span>
-            {kr.tags.map(t=><span key={t} style={{fontSize:9,padding:'2px 7px',borderRadius:4,background:'rgba(255,255,255,0.03)',color:T.textMuted,fontFamily:T.font.en,border:`1px solid ${T.borderLight}`,fontWeight:500,display:'none'}}>{t}</span>)}
-          </div>
-          <div style={{fontSize:16,fontWeight:600,color:T.text,lineHeight:1.5,fontFamily:T.font.cn,marginBottom:3}}><Ed readOnly={ro}>{kr.title}</Ed></div>
-          <div style={{fontSize:12,color:T.textSec,fontFamily:T.font.en,marginBottom:8,display:'none'}}><Ed readOnly={ro}>{kr.titleEn}</Ed></div>
-          <div style={{fontSize:13,color:T.textBody,fontFamily:T.font.cn}}><Ed readOnly={ro}>{kr.summary}</Ed></div>
-          <div style={{fontSize:11,color:T.textMuted,fontFamily:T.font.en,marginTop:2,display:'none'}}><Ed readOnly={ro}>{kr.summaryEn}</Ed></div>
-        </div>
-        <ChevronIcon open={expanded}/>
-      </div>
-      {expanded&&(
-        <div className="kr-expanded" style={{padding:'0 24px 24px'}}>
-          <div style={{height:1,background:T.border,marginBottom:22}}/>
-          <div style={{marginBottom:22,padding:'16px 20px',background:T.bgElevated,borderRadius:T.r.md,borderLeft:`3px solid ${T.accent}`}}>
-            <div style={{fontSize:10,fontWeight:700,color:T.accentLight,letterSpacing:'0.1em',marginBottom:8,fontFamily:T.font.en}}>Q1 RESULT DETAIL</div>
-            <div style={{fontSize:14,color:T.textBody,lineHeight:1.8,fontFamily:T.font.cn}}><Ed readOnly={ro}>{kr.result}</Ed></div>
-            <div style={{fontSize:12,color:T.textSec,fontFamily:T.font.en,marginTop:6,lineHeight:1.6,display:'none'}}><Ed readOnly={ro}>{kr.resultEn}</Ed></div>
-          </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(155px,1fr))',gap:12,marginBottom:20}}>
-            {kr.metrics.map((m,i)=><MetricCard key={i} m={m} delay={i*0.06} readOnly={ro} onDel={editMode&&delMetric?()=>delMetric(objId,kr.id,i):null}/>)}
-          </div>
-          {editMode&&addMetric&&<button className="edit-btn edit-btn-add" onClick={()=>addMetric(objId,kr.id,{label:'新指标',labelEn:'New Metric',value:'0',icon:'chart'})} style={{marginBottom:16}}>+ 添加指标</button>}
-          {kr.extraSection&&(
-            <div style={{marginBottom:20}}>
-              <div style={{fontSize:11,fontWeight:700,color:T.textSec,letterSpacing:'0.06em',marginBottom:12}}><span style={{fontFamily:T.font.cn}}><Ed readOnly={ro}>{kr.extraSection.title}</Ed></span><span style={{fontFamily:T.font.en,marginLeft:8,color:T.textMuted,fontWeight:400}}><Ed readOnly={ro}>{kr.extraSection.titleEn}</Ed></span></div>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(155px,1fr))',gap:12}}>{kr.extraSection.metrics.map((m,i)=><MetricCard key={i} m={m} delay={0.12+i*0.06} readOnly={ro}/>)}</div>
-            </div>
-          )}
-          <div style={{marginBottom:20}}>
-            <div style={{fontSize:10,fontWeight:700,color:T.textSec,letterSpacing:'0.1em',marginBottom:12,fontFamily:T.font.en}}>2026 ANNUAL GOALS</div>
-            {kr.annual.map((g,i)=>(<div key={i} style={{display:'flex',alignItems:'flex-start',gap:10,marginBottom:10,animation:`fadeUp 0.35s ${0.15+i*0.07}s cubic-bezier(0.16,1,0.3,1) both`}}><span style={{color:T.accentLight,fontWeight:700,flexShrink:0,marginTop:2}}>▸</span><div><div style={{fontSize:13,color:T.textBody,lineHeight:1.7,fontFamily:T.font.cn}}><Ed readOnly={ro}>{g}</Ed></div><div style={{fontSize:11,color:T.textSec,fontFamily:T.font.en,marginTop:1,display:'none'}}><Ed readOnly={ro}>{kr.annualEn[i]}</Ed></div></div></div>))}
-          </div>
-          {kr.owner&&(
-            <div style={{marginBottom:16,padding:'12px 16px',background:'rgba(212,64,64,0.05)',borderRadius:T.r.sm,border:`1px solid ${T.borderLight}`}}>
-              <div style={{fontSize:10,fontWeight:700,color:T.accentLight,letterSpacing:'0.08em',marginBottom:4,fontFamily:T.font.en}}>OWNER</div>
-              <div style={{fontSize:13,color:T.textBody,fontFamily:T.font.en}}><Ed readOnly={ro}>{kr.owner}</Ed></div>
-            </div>
-          )}
-          {kr.improvement&&(<div style={{background:T.amberBg,borderRadius:T.r.md,padding:'16px 20px',border:`1px solid ${T.amberBorder}`,animation:'fadeUp 0.4s 0.3s cubic-bezier(0.16,1,0.3,1) both'}}><div style={{fontSize:10,fontWeight:700,color:T.amber,letterSpacing:'0.08em',marginBottom:8,fontFamily:T.font.en}}>AREA FOR IMPROVEMENT</div><div style={{fontSize:13,color:T.amber,lineHeight:1.6,fontFamily:T.font.cn,opacity:0.85}}><Ed readOnly={ro}>{kr.improvement}</Ed></div><div style={{fontSize:11,color:'rgba(212,64,64,0.5)',fontFamily:T.font.en,marginTop:3}}><Ed readOnly={ro}>{kr.improvementEn}</Ed></div></div>)}
-        </div>
-      )}
-    </div>
   );
 }
 
@@ -1381,327 +2049,286 @@ function FooterVideo(){
   );
 }
 
-// ═══ ImageThumbnail (with replace support in edit mode) ═══
-function ImageThumbnail({src,editMode,onClick,onReplace,style:extra}){
-  const fileRef=useRef(null);
-  const handleFile=(e)=>{
-    const file=e.target.files[0]; if(!file)return;
-    const reader=new FileReader();
-    reader.onload=ev=>{if(onReplace)onReplace(ev.target.result);};
-    reader.readAsDataURL(file);
-    e.target.value='';
-  };
-  return(
-    <div style={{position:'relative',...(extra||{})}} onClick={editMode?undefined:onClick}>
-      <img src={src} style={{width:'100%',height:'100%',objectFit:'cover',display:'block',borderRadius:6,border:'1px solid rgba(212,64,64,0.15)',cursor:editMode?'default':'pointer',transition:'all 0.2s'}}/>
-      {editMode&&(
-        <div onClick={()=>fileRef.current&&fileRef.current.click()} style={{position:'absolute',inset:0,background:'rgba(0,0,0,0.5)',borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',opacity:0,transition:'opacity 0.2s'}}
-          onMouseEnter={e=>e.currentTarget.style.opacity='1'}
-          onMouseLeave={e=>e.currentTarget.style.opacity='0'}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </div>
-      )}
-      <input ref={fileRef} type="file" accept="image/*" style={{display:'none'}} onChange={handleFile}/>
-    </div>
-  );
-}
-
-// ═══ ImagePreview ═══
-function ImagePreview({src,onClose}){
-  return(
-    <div onClick={onClose} style={{position:'fixed',inset:0,zIndex:99998,background:'rgba(0,0,0,0.92)',backdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',animation:'fadeIn 0.3s ease'}}>
-      <img src={src} style={{maxWidth:'90vw',maxHeight:'90vh',borderRadius:8,boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}/>
-      <div style={{position:'absolute',top:20,right:20,color:'#fff',fontSize:24,cursor:'pointer'}}>✕</div>
-    </div>
-  );
-}
-
-// ═══ NestedOKRSection ═══
-function NestedOKRSection({objectives,editMode,lightboxSrc,setLightboxSrc}){
-  const [selectedModule,setSelectedModule]=useState(null);
-  const ro=!editMode;
-  const renderNl=(s)=>{if(!s)return null;return s.split('\n').map((line,i)=><div key={i} style={{marginBottom:2}}>{line}</div>);};
-  const ratingColor=(r)=>{const v=parseFloat(r);if(v>=0.8)return '#4ade80';if(v>=0.6)return '#fbbf24';return '#f87171';};
-  const detailBg='rgba(255,255,255,0.02)';
-  const detailBorder='rgba(255,255,255,0.06)';
-
-  /* DetailSection helper */
-  function DSec({title,icon,children,style:extra}){
-    return(
-      <div style={{marginBottom:32,...(extra||{})}}>
-        <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
-          <div style={{color:'rgba(255,255,255,0.4)'}}>{icon}</div>
-          <h3 style={{fontSize:18,fontWeight:700,color:'#fff',margin:0,fontFamily:T.font.cn,letterSpacing:'-0.01em'}}>{title}</h3>
-        </div>
-        {children}
-      </div>
+function OkrInsightIcon({type}){
+  if(type==='system'){
+    return (
+      <svg className="h1-okr-insight-icon is-system" viewBox="0 0 88 88" fill="none" aria-hidden="true">
+        <circle cx="32.297" cy="32.357" r="8.357"/>
+        <circle cx="55.697" cy="32.357" r="8.357"/>
+        <circle cx="32.297" cy="54.647" r="8.357"/>
+        <circle cx="55.697" cy="54.647" r="8.357"/>
+      </svg>
     );
   }
+  const src=type==='touchpoints'
+    ?'previews/assets/h1-okr-p25-icon-share-340-243.svg'
+    :'previews/assets/h1-okr-p25-icon-global-340-253.svg';
+  return <img className={`h1-okr-insight-icon is-${type}`} src={src} alt="" aria-hidden="true"/>;
+}
 
-  /* SVG icons */
-  const I={target:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,check:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>,warn:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>,bolt:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>,chart:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>,light:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>,cal:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,user:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>,ext:<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,back:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,img:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>,star:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,box:<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>};
+function useOkrCanvasScale(){
+  const pageRef=useRef(null);
+  const canvasRef=useRef(null);
+  useEffect(()=>{
+    const page=pageRef.current;
+    const canvas=canvasRef.current;
+    if(!page || !canvas)return;
+    const updateScale=()=>{
+      const scale=Math.min(page.clientWidth/1920,page.clientHeight/1080);
+      canvas.style.setProperty('--h1-okr-scale',String(scale));
+      canvas.classList.add('is-scaled');
+    };
+    const resizeObserver=new ResizeObserver(updateScale);
+    resizeObserver.observe(page);
+    updateScale();
+    return()=>resizeObserver.disconnect();
+  },[]);
+  return {pageRef,canvasRef};
+}
 
-  return(
-    <div>
-      {objectives.map((obj,oi)=>(
-        <section key={obj.id} id={obj.id} style={{marginBottom:96,paddingTop:80}}>
-          {/* ── Objective Header ── */}
-          <div className="sec-anim">
-            <div style={{display:'inline-flex',alignItems:'center',gap:8,padding:'5px 14px',borderRadius:6,background:'rgba(212,64,64,0.08)',border:'1px solid rgba(212,64,64,0.15)',marginBottom:28}}>
-              {I.target}
-              <span style={{fontSize:10,color:T.accentLight,fontFamily:T.font.mono,letterSpacing:'0.1em',fontWeight:600}}>CORE OBJECTIVE</span>
+function OkrBrandSystemPage(){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  const insights=[
+    {
+      tone:'gold',
+      icon:'system',
+      art:'previews/assets/h1-okr-p25-card-gold-340-222.svg',
+      title:'从分散表达,走向统一品牌资产',
+      description:'Build a premium and consistent visual-verbal system across every market.',
+    },
+    {
+      tone:'ivory',
+      icon:'touchpoints',
+      art:'previews/assets/h1-okr-p25-card-ivory-340-236.svg',
+      title:'从单点传播,走向线上线下一体化体验',
+      description:'Connect campaigns, products and touchpoints into one coherent experience.',
+    },
+    {
+      tone:'charcoal',
+      icon:'global',
+      art:'previews/assets/h1-okr-p25-card-charcoal-340-250.svg',
+      title:'从一次性项目,走向全球可复制的品牌经营系统',
+      description:'Turn isolated execution into a scalable brand operating model for global growth.',
+    },
+  ];
+  return (
+    <section ref={pageRef} className="h1-okr-page" data-report-page data-page-id="okr-review" aria-labelledby="h1-okr-title">
+      <div ref={canvasRef} className="h1-okr-canvas">
+        <div className="h1-okr-title-group">
+          <div className="h1-okr-outline-title" aria-hidden="true">
+            <span>ONE BRAND ONE SYSTEM</span>
+          </div>
+          <h1 id="h1-okr-title" aria-label="将Vantage建设成全球一线品牌">
+            <span>将</span><span className="h1-okr-title-latin">Vantage</span><span>建设成全球一线品牌</span>
+          </h1>
+        </div>
+        <div className="h1-okr-insight-rail" aria-label="品牌经营系统的三项转变">
+          {insights.map((insight,index)=>(
+            <article className={`h1-okr-insight-card is-${insight.tone}`} key={insight.title} style={{'--h1-okr-card-index':index}}>
+              <img className="h1-okr-card-art" src={insight.art} alt="" aria-hidden="true"/>
+              <div className="h1-okr-icon-medallion"><OkrInsightIcon type={insight.icon}/></div>
+              <h2>{insight.title}</h2>
+              <p>{insight.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OkrBrandResultsPage(){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  const results=[
+    {
+      tone:'ivory',
+      number:'01',
+      title:'被快速识别',
+      description:'用户在官网、广告、展会、活动、销售材料、客户礼赠中，都能迅速认出 Vantage。',
+    },
+    {
+      tone:'gold',
+      number:'02',
+      title:'被持续信任',
+      description:'用户能够稳定感知到 Vantage 的专业、可靠、权威和长期主义。',
+    },
+    {
+      tone:'charcoal',
+      number:'03',
+      title:'被优先选择',
+      description:'品牌不仅有知名度，还能形成明确的偏好和高端认知。',
+    },
+    {
+      tone:'ivory',
+      number:'04',
+      title:'被一致地高品质体验',
+      description:'无论用户在哪个国家、哪个渠道、哪个客户等级接触 Vantage，体验标准是一致的。',
+    },
+  ];
+  return (
+    <section ref={pageRef} className="h1-okr-page h1-okr-results-page" data-report-page data-page-id="okr-brand-results" aria-labelledby="h1-okr-results-title">
+      <div ref={canvasRef} className="h1-okr-canvas h1-okr-results-canvas">
+        <div className="h1-okr-results-title-group">
+          <div className="h1-okr-results-outline" aria-hidden="true">GLOBAL TOP-TIER BRAND</div>
+          <h1 id="h1-okr-results-title">什么是全球一线品牌</h1>
+        </div>
+
+        <div className="h1-okr-results-rail">
+          <div className="h1-okr-results-definition">
+            <strong>不只是“有知名度”，而是让用户在每一次接触中，持续获得统一、</strong>
+            <strong>可靠且高品质的品牌感知。</strong>
+          </div>
+
+          <section className="h1-okr-results-panel" aria-labelledby="h1-okr-results-panel-title">
+            <header>
+              <h2 id="h1-okr-results-panel-title">
+                <span aria-hidden="true">≫</span>
+                全球一线品牌的四个可衡量结果
+                <span aria-hidden="true">≪</span>
+              </h2>
+              <p>从认知、信任、偏好到体验的一致性</p>
+            </header>
+            <div className="h1-okr-results-grid">
+              {results.map((result,index)=>(
+                <article className={`h1-okr-result-card is-${result.tone}`} key={result.number} style={{'--h1-okr-result-index':index}}>
+                  <div className="h1-okr-result-number" aria-label={`结果 ${result.number}`}>{result.number}</div>
+                  <h3>{result.title}</h3>
+                  <p>{result.description}</p>
+                </article>
+              ))}
             </div>
-            <h1 style={{fontSize:56,fontWeight:900,color:'#fff',marginBottom:16,lineHeight:1.1,letterSpacing:'-0.02em'}}>
-              <span style={{color:'#fff',marginRight:12}}>{obj.id.toUpperCase()}</span>
-              <Ed readOnly={ro}>{obj.title}</Ed>
-            </h1>
-            <p style={{fontSize:28,color:'rgba(255,255,255,0.35)',fontWeight:700,marginBottom:16,lineHeight:1.3,letterSpacing:'-0.01em',fontFamily:T.font.cn}}><Ed readOnly={ro}>{obj.subtitle}</Ed></p>
-            <div style={{width:96,height:4,background:T.accent,marginBottom:16,borderRadius:2}}/>
-            {obj.description&&<p style={{fontSize:15,color:'rgba(255,255,255,0.35)',maxWidth:800,lineHeight:1.7,fontFamily:T.font.cn}}><Ed readOnly={ro}>{obj.description}</Ed></p>}
+          </section>
+
+          <div className="h1-okr-results-summary">
+            <strong>“全球一线品牌”不再是一个抽象愿景，而是一组可以被明确建设的品牌结果</strong>
+            <span>Brand Result：可建设 · 可管理 · 可复利</span>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          {/* ── KR Grid ── 3 columns */}
-          <div className="sec-anim d1" style={{display:'grid',gridTemplateColumns:'repeat(3, minmax(0, 1fr))',gap:24,marginTop:48}}>
-            {obj.krs.map((kr,ki)=>(
-              <div key={kr.id} style={{display:'flex',flexDirection:'column',height:'100%',background:detailBg,border:`1px solid ${detailBorder}`,borderRadius:24,padding:28,transition:'all 0.3s',position:'relative',minWidth:0,overflow:'hidden'}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(255,255,255,0.12)';}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=detailBorder;}}>
-                {/* KR ID watermark */}
-                <div style={{position:'absolute',top:16,right:24,fontSize:56,fontWeight:900,color:'rgba(255,255,255,0.04)',fontFamily:T.font.mono,lineHeight:1}}>{kr.code}</div>
-                {/* KR header */}
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:16}}>
-                  <span style={{fontSize:11,fontWeight:700,padding:'4px 12px',borderRadius:6,background:'rgba(212,64,64,0.1)',color:T.accentLight,fontFamily:T.font.mono,letterSpacing:'0.04em'}}>{kr.code}</span>
-                  <span style={{padding:'4px 10px',background:'rgba(255,255,255,0.04)',borderRadius:6,fontSize:9,color:'rgba(255,255,255,0.3)',fontFamily:T.font.mono,letterSpacing:'0.06em'}}>TIER 2 SUPPORT</span>
-                </div>
-                {/* KR title */}
-                <h3 style={{fontSize:20,fontWeight:900,color:'#fff',marginBottom:24,lineHeight:1.35,minHeight:40,fontFamily:T.font.cn,wordBreak:'break-word'}}>
-                  <Ed readOnly={ro}>{kr.title}</Ed>
-                </h3>
-                {/* Module list */}
-                <div style={{flex:1}}>
-                  {kr.items.map((item,ii)=>{
-                    const hasDetail=!!(item.details||item.metrics);
-                    return(
-                      <div key={item.id}
-                        onClick={()=>{if(hasDetail)setSelectedModule({obj,kr,item});}}
-                        style={{padding:18,borderRadius:16,background:detailBg,border:`1px solid ${hasDetail?'rgba(212,64,64,0.12)':detailBorder}`,marginBottom:12,cursor:hasDetail?'pointer':'default',transition:'all 0.25s',position:'relative'}}
-                        onMouseEnter={e=>{if(hasDetail){e.currentTarget.style.background='rgba(255,255,255,0.04)';e.currentTarget.style.transform='translateX(4px)';e.currentTarget.style.borderColor='rgba(212,64,64,0.25)';}}}
-                        onMouseLeave={e=>{if(hasDetail){e.currentTarget.style.background=detailBg;e.currentTarget.style.transform='translateX(0)';e.currentTarget.style.borderColor='rgba(212,64,64,0.12)';}}}>
-                        <div style={{display:'flex',alignItems:'flex-start',gap:12}}>
-                          <div style={{marginTop:2,padding:8,borderRadius:12,background:hasDetail?'rgba(212,64,64,0.08)':'rgba(255,255,255,0.03)',color:hasDetail?'rgba(212,64,64,0.6)':'rgba(255,255,255,0.15)',flexShrink:0,transition:'all 0.3s'}}>
-                            {I.target}
-                          </div>
-                          <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:13,fontWeight:700,color:'#fff',fontFamily:T.font.cn,marginBottom:4,display:'flex',alignItems:'center',justifyContent:'space-between',minWidth:0}}>
-                              <Ed readOnly={ro}>{item.title}</Ed>
-                              <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-                                {item.rating&&<span style={{fontSize:10,fontWeight:700,padding:'2px 8px',borderRadius:4,background:'rgba(212,64,64,0.1)',color:ratingColor(item.rating),fontFamily:T.font.mono}}>{item.rating}</span>}
-                                {hasDetail&&I.ext}
-                              </div>
-                            </div>
-                            {item.owner&&<p style={{fontSize:10,color:'rgba(255,255,255,0.3)',margin:'0 0 3px',fontFamily:T.font.en,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{item.owner.split('\n')[0]}</p>}
-                            {item.results&&<p style={{fontSize:10,color:'rgba(74,222,128,0.6)',margin:0,fontFamily:T.font.en,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>✓ {item.results.split('\n')[0].substring(0,50)}</p>}
-                            {item.image&&item.image.length>0&&(
-                              <div style={{display:'flex',gap:5,marginTop:8}}>
-                                {item.image.slice(0,4).map((img,ii2)=>
-                                  <ImageThumbnail key={ii2} src={img} editMode={editMode} style={{width:42,height:32,flexShrink:0}}
-                                    onClick={e=>{e.stopPropagation();setLightboxSrc(img);}}
-                                    onReplace={newSrc=>{item.image[ii2]=newSrc;}}/>
-                                )}
-                                {item.image.length>4&&<span style={{fontSize:9,color:T.textMuted,alignSelf:'center'}}>+{item.image.length-4}</span>}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        {hasDetail&&<div style={{position:'absolute',bottom:0,left:20,right:20,height:1,background:'linear-gradient(90deg,transparent,rgba(212,64,64,0.2),transparent)'}}/>}
-                      </div>
-                    );
-                  })}
-                </div>
-                {/* Footer */}
-                <div style={{marginTop:20,paddingTop:14,borderTop:`1px solid ${detailBorder}`,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                  <span style={{fontSize:9,color:'rgba(255,255,255,0.15)',fontFamily:T.font.mono,letterSpacing:'0.06em'}}>SYSTEM READY</span>
-                  <div style={{width:6,height:6,borderRadius:'50%',background:T.accent,animation:'pulse 2s ease-in-out infinite'}}/>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
+const OKR_FIGMA_PAGES=[
+  {
+    id:'okr-review',
+    label:'将 Vantage 建设成全球一线品牌',
+    src:'previews/assets/figma-exact/p25-source.png',
+  },
+  {
+    id:'okr-brand-results',
+    label:'什么是全球一线品牌',
+    src:'previews/assets/figma-exact/p27-source.png',
+  },
+  {
+    id:'okr-awards',
+    label:'奖项',
+    src:'previews/assets/figma-exact/awards-source.png',
+  },
+  {
+    id:'okr-offline-event-01',
+    label:'线下活动：01 沙龙',
+    src:'previews/assets/figma-exact/salon.jpg',
+    modalSrc:'previews/assets/figma-exact/salon-modal-source.png',
+    hotspotClass:'is-salon',
+  },
+  {
+    id:'okr-offline-event-02',
+    label:'线下活动：02 展会',
+    src:'previews/assets/figma-exact/expo-source.png',
+    modalSrc:'previews/assets/figma-exact/expo-modal-source.png',
+    hotspotClass:'is-expo',
+  },
+];
 
-      {/* ── Detail Overlay ── */}
-      {selectedModule&&(()=>{
-        const {obj,kr,item}=selectedModule;
-        return(
-          <div style={{position:'fixed',inset:0,zIndex:999,background:'rgba(10,6,6,0.95)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',overflow:'auto',animation:'fadeIn 0.35s ease'}}>
-            <div style={{maxWidth:1200,margin:'0 auto',padding:'40px 60px 80px'}}>
-              {/* Back button */}
-              <button onClick={()=>setSelectedModule(null)}
-                style={{display:'flex',alignItems:'center',gap:8,background:'none',border:`1px solid ${detailBorder}`,color:'rgba(255,255,255,0.5)',padding:'10px 24px',borderRadius:999,cursor:'pointer',fontSize:13,fontFamily:T.font.en,marginBottom:48,transition:'all 0.25s'}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(212,64,64,0.3)';e.currentTarget.style.color='#e8dcd4';e.currentTarget.style.background='rgba(212,64,64,0.06)';}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=detailBorder;e.currentTarget.style.color='rgba(255,255,255,0.5)';e.currentTarget.style.background='none';}}>
-                {I.back} Back to {obj.id.toUpperCase()}
-              </button>
+function OkrExactFigmaPage({page,onPreview}){
+  return (
+    <section
+      id={page.id}
+      className="h1-okr-page h1-okr-exact-page"
+      data-report-page
+      data-page-id={page.id}
+      aria-label={page.label}
+      style={{'--h1-okr-page-image':`url("${page.src}")`}}
+    >
+      <div className="h1-okr-exact-artboard">
+        <img
+          className="h1-okr-exact-frame"
+          src={page.src}
+          alt={page.label}
+          width="1920"
+          height="1080"
+          loading="eager"
+          decoding="sync"
+          draggable="false"
+        />
+        {page.modalSrc&&(
+          <button
+            type="button"
+            className={`h1-okr-exact-hotspot ${page.hotspotClass}`}
+            aria-label={`放大查看：${page.label}`}
+            onClick={()=>onPreview(page)}
+          />
+        )}
+      </div>
+    </section>
+  );
+}
 
-              <div style={{display:'grid',gridTemplateColumns:'1fr 2fr',gap:60}}>
-                {/* ── Sidebar ── */}
-                <div>
-                  <h1 style={{fontSize:32,fontWeight:900,color:'#fff',marginBottom:12,lineHeight:1.2,fontFamily:T.font.cn}}><Ed readOnly={ro}>{item.title}</Ed></h1>
-                  <div style={{display:'inline-block',padding:'4px 12px',borderRadius:6,background:'rgba(212,64,64,0.08)',border:'1px solid rgba(212,64,64,0.15)',color:T.accentLight,fontSize:10,fontFamily:T.font.mono,letterSpacing:'0.08em',marginBottom:28}}>MODULE DETAILS</div>
-
-                  {/* Owner */}
-                  {item.owner&&<div style={{marginBottom:28}}>
-                    <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.2)',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12,fontFamily:T.font.en}}>Task Owner</div>
-                    <div style={{padding:20,borderRadius:16,background:detailBg,border:`1px solid ${detailBorder}`}}>
-                      <div style={{fontSize:14,color:T.textBody,whiteSpace:'pre-wrap',lineHeight:1.8,fontFamily:T.font.en}}><Ed readOnly={ro}>{item.owner}</Ed></div>
-                    </div>
-                  </div>}
-
-                  {/* Self Rating */}
-                  <div style={{marginBottom:28}}>
-                    <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.2)',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:12,fontFamily:T.font.en}}>Self Rating</div>
-                    <div style={{padding:28,borderRadius:20,background:'rgba(212,64,64,0.05)',border:'1px solid rgba(212,64,64,0.15)',display:'flex',flexDirection:'column',alignItems:'center'}}>
-                      <div style={{fontSize:48,fontWeight:900,color:item.rating?ratingColor(item.rating):'rgba(255,255,255,0.15)',fontFamily:T.font.mono,lineHeight:1,marginBottom:8}}>{item.rating?parseFloat(item.rating).toFixed(1):'N/A'}</div>
-                      <div style={{fontSize:9,color:'rgba(212,64,64,0.4)',fontFamily:T.font.mono,letterSpacing:'0.08em'}}>PERFORMANCE SCORE</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── Main Content ── */}
-                <div>
-                  {/* KR Subject */}
-                  <DSec title="KR Subject 事项" icon={I.target}>
-                    <div style={{padding:24,borderRadius:16,background:detailBg,border:`1px solid ${detailBorder}`}}>
-                      <div style={{fontSize:14,color:'rgba(255,255,255,0.7)',fontFamily:T.font.cn,lineHeight:1.6,marginBottom:10}}>{kr.code} — {kr.title}</div>
-                      {item.details&&<div style={{whiteSpace:'pre-wrap',fontSize:14,lineHeight:1.8,color:T.textBody,fontFamily:T.font.cn}}><Ed readOnly={ro}>{item.details}</Ed></div>}
-                    </div>
-                  </DSec>
-
-                  {/* Metrics */}
-                  {item.metrics&&<DSec title="Metrics 指标" icon={I.chart}>
-                    <div style={{padding:24,borderRadius:16,background:'rgba(52,211,153,0.03)',border:'1px solid rgba(52,211,153,0.1)'}}>
-                      <div style={{whiteSpace:'pre-wrap',fontSize:13,lineHeight:1.8,color:T.textBody,fontFamily:T.font.mono}}><Ed readOnly={ro}>{item.metrics}</Ed></div>
-                    </div>
-                  </DSec>}
-
-                  {/* Images */}
-                  {item.image&&item.image.length>0&&<DSec title="Reference Images" icon={I.img}>
-                    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(180px,1fr))',gap:14}}>
-                      {item.image.map((img,ii)=>
-                        <div key={ii} style={{borderRadius:12,overflow:'hidden',border:`1px solid ${detailBorder}`,transition:'all 0.3s',position:'relative'}}
-                          onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(212,64,64,0.3)';e.currentTarget.style.transform='translateY(-4px)';e.currentTarget.style.boxShadow='0 8px 32px rgba(0,0,0,0.4)';}}
-                          onMouseLeave={e=>{e.currentTarget.style.borderColor=detailBorder;e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='none';}}>
-                          <ImageThumbnail src={img} editMode={editMode} style={{width:'100%',height:140}}
-                            onClick={()=>setLightboxSrc(img)}
-                            onReplace={newSrc=>{item.image[ii]=newSrc;}}/>
-                          <div style={{padding:'8px 12px',background:'rgba(10,6,6,0.8)',fontSize:9,color:T.textMuted,fontFamily:T.font.mono,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                            <span>图片 {ii+1}</span><span style={{color:T.accentLight}}>{editMode?'点击替换':'点击查看'}</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </DSec>}
-
-                  {/* Products (merchandise) */}
-                  {item.products&&item.products.length>0&&<DSec title="Product Lineup" icon={I.box}>
-                    <div style={{display:'flex',flexDirection:'column',gap:20}}>
-                      {item.products.map((p,pi)=>(
-                        <div key={pi} style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20,alignItems:'stretch'}}>
-                          <div onClick={()=>p.image&&setLightboxSrc(p.image)} style={{borderRadius:16,overflow:'hidden',cursor:p.image?'pointer':'default',background:'rgba(10,6,6,0.5)',border:`1px solid ${detailBorder}`,minHeight:280,display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.3s'}}
-                            onMouseEnter={e=>{if(p.image){e.currentTarget.style.borderColor='rgba(212,64,64,0.3)';e.currentTarget.style.transform='scale(1.01)';}}}
-                            onMouseLeave={e=>{e.currentTarget.style.borderColor=detailBorder;e.currentTarget.style.transform='scale(1)';}}>
-                            {p.image&&<img src={p.image} style={{width:'100%',height:'100%',objectFit:'contain',padding:20,display:'block'}}/>}
-                            <div style={{position:'absolute',bottom:12,left:16}}>
-                              <span style={{fontSize:9,color:T.textMuted,fontFamily:T.font.mono,letterSpacing:'0.06em'}}>MODEL SHOWCASE</span>
-                              <div style={{fontSize:16,fontWeight:700,color:T.text,fontFamily:T.font.cn,marginTop:4}}>{p.title}</div>
-                            </div>
-                          </div>
-                          <div style={{background:detailBg,border:`1px solid ${detailBorder}`,borderRadius:16,padding:24,display:'flex',flexDirection:'column',justifyContent:'center',gap:16}}>
-                            <div>
-                              <span style={{fontSize:9,color:'rgba(255,255,255,0.3)',fontFamily:T.font.en,letterSpacing:'0.15em',textTransform:'uppercase',fontWeight:700}}>Configuration</span>
-                              <h4 style={{fontSize:20,fontWeight:700,color:T.text,fontFamily:T.font.cn,marginTop:8,marginBottom:8}}>{p.series}</h4>
-                              <div style={{width:48,height:3,background:T.accent,borderRadius:2}}/>
-                            </div>
-                            <div>
-                              <span style={{fontSize:9,color:'rgba(255,255,255,0.3)',fontFamily:T.font.en,letterSpacing:'0.15em',textTransform:'uppercase',fontWeight:700}}>Timeline</span>
-                              <div style={{marginTop:10,display:'flex',flexDirection:'column',gap:10}}>
-                                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 16px',borderRadius:10,background:'rgba(255,255,255,0.02)',border:`1px solid ${detailBorder}`}}>
-                                  <span style={{fontSize:12,color:T.textBody,fontFamily:T.font.cn}}>样品交付</span>
-                                  <span style={{fontSize:14,fontWeight:600,color:T.text,fontFamily:T.font.mono}}>{p.sampleDate}</span>
-                                </div>
-                                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 16px',borderRadius:10,background:'rgba(255,255,255,0.02)',border:`1px solid ${detailBorder}`}}>
-                                  <span style={{fontSize:12,color:T.textBody,fontFamily:T.font.cn}}>正式生产</span>
-                                  <span style={{fontSize:14,fontWeight:600,color:T.text,fontFamily:T.font.mono}}>{p.massDate}</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',paddingTop:12,borderTop:`1px solid ${detailBorder}`}}>
-                              <span style={{fontSize:9,color:'rgba(255,255,255,0.2)',fontFamily:T.font.mono,letterSpacing:'0.06em'}}>{p.id}</span>
-                              <div style={{display:'flex',alignItems:'center',gap:6}}>
-                                <div style={{width:6,height:6,borderRadius:'50%',background:T.accent,animation:'pulse 2s ease-in-out infinite'}}/>
-                                <span style={{fontSize:9,color:'rgba(255,255,255,0.3)',fontFamily:T.font.mono,letterSpacing:'0.04em'}}>LIVE PREVIEW</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </DSec>}
-
-                  {/* Results */}
-                  {item.results&&<DSec title="Q1 结果产出 Results" icon={I.check}>
-                    <div style={{padding:24,borderRadius:16,background:'rgba(74,222,128,0.03)',border:'1px solid rgba(74,222,128,0.1)'}}>
-                      <div style={{whiteSpace:'pre-wrap',fontSize:14,lineHeight:1.8,color:T.textBody,fontFamily:T.font.cn}}><Ed readOnly={ro}>{item.results}</Ed></div>
-                    </div>
-                  </DSec>}
-
-                  {/* Success */}
-                  {item.success&&<DSec title="做得好的地方 Success" icon={I.light}>
-                    <div style={{padding:24,borderRadius:16,background:'rgba(251,191,36,0.03)',border:'1px solid rgba(251,191,36,0.1)'}}>
-                      <div style={{whiteSpace:'pre-wrap',fontSize:14,lineHeight:1.8,color:T.textBody,fontFamily:T.font.cn}}><Ed readOnly={ro}>{item.success}</Ed></div>
-                    </div>
-                  </DSec>}
-
-                  {/* Problems */}
-                  {item.problems&&<DSec title="发现的问题 Problems" icon={I.warn}>
-                    <div style={{padding:24,borderRadius:16,background:'rgba(239,68,68,0.03)',border:'1px solid rgba(239,68,68,0.1)'}}>
-                      <div style={{whiteSpace:'pre-wrap',fontSize:14,lineHeight:1.8,color:T.textBody,fontFamily:T.font.cn}}><Ed readOnly={ro}>{item.problems}</Ed></div>
-                    </div>
-                  </DSec>}
-
-                  {/* Improvement */}
-                  {item.improvement&&<DSec title="改进方向 Improvement" icon={I.bolt}>
-                    <div style={{padding:24,borderRadius:16,background:'rgba(212,64,64,0.03)',border:'1px solid rgba(212,64,64,0.1)'}}>
-                      <div style={{whiteSpace:'pre-wrap',fontSize:14,lineHeight:1.8,color:T.textBody,fontFamily:T.font.cn}}><Ed readOnly={ro}>{item.improvement}</Ed></div>
-                    </div>
-                  </DSec>}
-
-                  {/* Quarterly */}
-                  {item.quarterly&&<DSec title="季度路线图 Quarterly Roadmap" icon={I.cal}>
-                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
-                      {item.quarterly.split('\n').filter(l=>l.trim()).map((q,qi)=>(
-                        <div key={qi} style={{padding:20,borderRadius:16,background:detailBg,border:`1px solid ${detailBorder}`,transition:'border-color 0.3s'}}
-                          onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(212,64,64,0.2)'}
-                          onMouseLeave={e=>e.currentTarget.style.borderColor=detailBorder}>
-                          <div style={{whiteSpace:'pre-wrap',fontSize:13,lineHeight:1.6,color:'rgba(255,255,255,0.6)',fontFamily:T.font.cn}}>{q}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </DSec>}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
+function OkrExactModal({preview,onClose}){
+  useEffect(()=>{
+    if(!preview)return;
+    const onKeyDown=(event)=>{if(event.key==='Escape')onClose();};
+    document.addEventListener('keydown',onKeyDown);
+    return()=>document.removeEventListener('keydown',onKeyDown);
+  },[preview,onClose]);
+  if(!preview)return null;
+  return (
+    <div
+      className="h1-okr-exact-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`图片预览：${preview.label}`}
+      onClick={onClose}
+      style={{'--h1-okr-modal-image':`url("${preview.modalSrc}")`}}
+    >
+      <div className="h1-okr-exact-modal-artboard" onClick={event=>event.stopPropagation()}>
+        <img
+          className="h1-okr-exact-modal-frame"
+          src={preview.modalSrc}
+          alt={`${preview.label}放大预览`}
+          width="1920"
+          height="1080"
+          decoding="sync"
+          draggable="false"
+        />
+        <button
+          type="button"
+          className="h1-okr-exact-modal-close"
+          aria-label="关闭图片预览"
+          onClick={onClose}
+        />
+      </div>
     </div>
+  );
+}
+
+function OkrReportDeck(){
+  const [preview,setPreview]=useState(null);
+  const closePreview=useCallback(()=>setPreview(null),[]);
+  return (
+    <main data-report-section="okr" className="h1-okr-report" style={{margin:0,padding:0}}>
+      {OKR_FIGMA_PAGES.map(page=>(
+        <OkrExactFigmaPage key={page.id} page={page} onPreview={setPreview}/>
+      ))}
+      <OkrExactModal preview={preview} onClose={closePreview}/>
+    </main>
   );
 }
 
 // ═══ App ═══
 function App(){
-  const [authed,setAuthed]=useState(()=>sessionStorage.getItem('vantage-auth')==='ok');
-  const [lightboxSrc,setLightboxSrc]=useState(null);
+  const [authed,setAuthed]=useState(()=>EMBEDDED_REPORT_MODE || sessionStorage.getItem('vantage-auth')==='ok');
   const [activeSection,setActiveSection]=useState('o1');
   const [data,setData]=useState(getInitialData);
   const [editMode,setEditMode]=useState(false);
@@ -1732,9 +2359,7 @@ function App(){
         <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at center,transparent 30%,rgba(10,6,6,0.4) 70%,rgba(10,6,6,0.8) 100%)',borderRadius:8,pointerEvents:'none'}}/>
       </div>
       <DashboardSection editMode={editMode}/>
-      <main style={{maxWidth:1400,margin:'0 auto',padding:'30px 60px 120px'}}>
-        <NestedOKRSection objectives={data.objectives} editMode={editMode} lightboxSrc={lightboxSrc} setLightboxSrc={setLightboxSrc}/>
-      </main>
+      <OkrReportDeck/>
 
       {/* Thank You image — above footer video, with vignette */}
       <div style={{maxWidth:1400,margin:'0 auto',padding:'0 60px',marginBottom:50,position:'relative'}}>
@@ -1755,7 +2380,6 @@ function App(){
 
       <SaveBar editMode={editMode} onToggleEdit={()=>setEditMode(true)} onRequestExit={handleRequestExit}/>
       {showConfirm&&<ConfirmDialog onSave={handleConfirmSave} onDiscard={handleConfirmDiscard} onCancel={()=>setShowConfirm(false)}/>}
-      {lightboxSrc&&<ImagePreview src={lightboxSrc} onClose={()=>setLightboxSrc(null)}/>}
     </div>
   );
 }

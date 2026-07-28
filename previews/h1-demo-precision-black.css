@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+/* Shell theme · Precision Black */
+.h1-demo-precision-black-shell {
+  --ink: #020202;
+  --ink-2: #050505;
+  --ink-3: #090909;
+  --paper: #f7f5f1;
+  --muted: rgba(247,245,241,.55);
+  --line: rgba(247,245,241,.12);
+  --line-strong: rgba(247,245,241,.26);
+  --orange: #ff7a00;
+  --orange-soft: #ffac52;
+  background: #020202;
+}
+
+.h1-demo-precision-black-shell body,
+.h1-demo-precision-black-shell button { font-family: "Noto Sans SC", "PingFang SC", sans-serif; }
+
+.h1-demo-precision-black-shell .display,
+.h1-demo-precision-black-shell .title,
+.h1-demo-precision-black-shell .hero-title,
+.h1-demo-precision-black-shell .metric-value,
+.h1-demo-precision-black-shell .profit-hero .big,
+.h1-demo-precision-black-shell .objective-index,
+.h1-demo-precision-black-shell .kr-summary .score strong,
+.h1-demo-precision-black-shell .pillar h3 {
+  font-family: "Archivo", "Noto Sans SC", sans-serif !important;
+  font-variation-settings: "wdth" 92;
+}
+
+.h1-demo-precision-black-shell .scene:not(.opening-film):not(.closing) {
+  background: #020202;
+}
+
+.h1-demo-precision-black-shell .scene:not(.opening-film):not(.closing)::before {
+  opacity: .92;
+  background-image:
+    linear-gradient(rgba(255,255,255,.027) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.027) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+
+.h1-demo-precision-black-shell .top-hud {
+  height: 64px;
+  background: linear-gradient(to bottom, rgba(2,2,2,.98), rgba(2,2,2,.7), transparent);
+}
+
+.h1-demo-precision-black-shell .hud-chapter,
+.h1-demo-precision-black-shell .eyebrow,
+.h1-demo-precision-black-shell .chapter-no,
+.h1-demo-precision-black-shell .report-next {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.h1-demo-precision-black-shell .hud-button {
+  border-color: rgba(255,255,255,.18);
+  background: rgba(2,2,2,.72);
+  border-radius: 0;
+}
+
+.h1-demo-precision-black-shell .hud-button:hover {
+  border-color: #ff7a00;
+  background: rgba(255,122,0,.08);
+}
+
+.h1-demo-precision-black-shell .progress { height: 1px; }
+.h1-demo-precision-black-shell .progress > span,
+.h1-demo-precision-black-shell .rail button.active::after {
+  background: #ff7a00;
+  box-shadow: 0 0 12px rgba(255,122,0,.48);
+}
+
+.h1-demo-precision-black-shell .rail { gap: 14px; }
+.h1-demo-precision-black-shell .rail button.active::after { width: 34px; }
+
+.h1-demo-precision-black-shell .hero-visual .image-bg { filter: grayscale(.18) brightness(.56) contrast(1.34) saturate(.9); }
+.h1-demo-precision-black-shell .hero-visual.active .image-bg { animation: precisionReveal 2.15s cubic-bezier(.16,.78,.18,1) forwards; }
+
+@keyframes precisionReveal {
+  0% { opacity:.02; transform:scale(1.025); filter:grayscale(.75) brightness(.14) contrast(1.55) blur(4px); }
+  58% { opacity:.82; filter:grayscale(.25) brightness(.48) contrast(1.38) blur(0); }
+  100% { opacity:.9; transform:scale(1); filter:grayscale(.18) brightness(.58) contrast(1.32) saturate(.94); }
+}
+
+.h1-demo-precision-black-shell .hero-visual::after {
+  background:
+    linear-gradient(90deg, rgba(2,2,2,.48), transparent 36%, transparent 64%, rgba(2,2,2,.48)),
+    linear-gradient(180deg, rgba(2,2,2,.16), transparent 48%, rgba(2,2,2,.82));
+}
+
+.h1-demo-precision-black-shell .hero-light-bloom {
+  background:
+    radial-gradient(ellipse at 50% 83%, rgba(255,122,0,.31), transparent 26%),
+    linear-gradient(90deg, transparent 49.9%, rgba(255,122,0,.18) 50%, transparent 50.1%);
+  filter: blur(10px);
+}
+
+.h1-demo-precision-black-shell .hero-light-sweep {
+  background: linear-gradient(108deg, transparent 34%, rgba(255,255,255,.02) 44%, rgba(255,172,82,.36) 49%, rgba(255,122,0,.12) 52%, transparent 61%);
+}
+
+.h1-demo-precision-black-shell .hero-grid-reveal {
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, transparent 2%, #000 24%, #000 84%, transparent);
+}
+
+.h1-demo-precision-black-shell .hero-visual .hero-title {
+  letter-spacing: -.06em;
+  text-shadow: 0 4px 30px rgba(0,0,0,.88);
+}
+
+.h1-demo-precision-black-shell .hero-visual .hero-title span {
+  color: rgba(247,245,241,.7);
+  letter-spacing: .42em;
+}
+
+.h1-demo-precision-black-shell .eyebrow::before { width: 48px; }
+.h1-demo-precision-black-shell .report-scene,
+.h1-demo-precision-black-shell .report-frame-wrap,
+.h1-demo-precision-black-shell .report-frame { background: #020202; }
+
+.h1-demo-precision-black-shell .report-next {
+  height: 44px;
+  border-top-color: rgba(255,255,255,.14);
+  background: rgba(2,2,2,.96);
+  color: rgba(255,255,255,.58);
+}
+
+.h1-demo-precision-black-shell .report-next:hover {
+  color: #fff;
+  border-color: #ff7a00;
+  background: rgba(255,122,0,.06);
+}
+
+.h1-demo-precision-black-shell .outlook { background: #030303; }
+.h1-demo-precision-black-shell .outlook::after { color: rgba(255,122,0,.034); }
+
+/* Embedded report theme · Precision Black */
+.h1-demo-precision-black-report {
+  --h1-ink: #020202;
+  --h1-panel: #050505;
+  --h1-panel-2: #080808;
+  --h1-paper: #f7f5f1;
+  --h1-muted: rgba(247,245,241,.55);
+  --h1-line: rgba(247,245,241,.12);
+  --h1-line-strong: rgba(247,245,241,.27);
+  --h1-orange: #ff7a00;
+  --h1-orange-soft: #ffac52;
+  background: #020202 !important;
+}
+
+.h1-demo-precision-black-report body.h1-embedded-report {
+  color: var(--h1-paper) !important;
+  background: #020202 !important;
+}
+
+.h1-demo-precision-black-report body.h1-embedded-report,
+.h1-demo-precision-black-report body.h1-embedded-report * {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+}
+
+.h1-demo-precision-black-report body.h1-embedded-report h1,
+.h1-demo-precision-black-report body.h1-embedded-report h2,
+.h1-demo-precision-black-report body.h1-embedded-report h3,
+.h1-demo-precision-black-report body.h1-embedded-report h4,
+.h1-demo-precision-black-report .h1-report-title,
+.h1-demo-precision-black-report .num-glow {
+  font-family: "Archivo", "Noto Sans SC", sans-serif !important;
+  font-variation-settings: "wdth" 92;
+}
+
+.h1-demo-precision-black-report body.h1-embedded-report table,
+.h1-demo-precision-black-report body.h1-embedded-report svg text,
+.h1-demo-precision-black-report body.h1-embedded-report [style*="monospace"] {
+  font-family: "IBM Plex Mono", "Noto Sans SC", monospace !important;
+}
+
+.h1-demo-precision-black-report body.h1-embedded-report::after {
+  opacity: .75;
+  background-image:
+    linear-gradient(rgba(255,255,255,.027) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.027) 1px, transparent 1px) !important;
+  background-size: 64px 64px !important;
+}
+
+.h1-demo-precision-black-report .top-nav {
+  height: 72px;
+  background: rgba(2,2,2,.95) !important;
+  border-bottom-color: rgba(255,255,255,.15) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+.h1-demo-precision-black-report .nav-pill {
+  letter-spacing: .16em !important;
+  border-left: 1px solid transparent !important;
+  border-right: 1px solid transparent !important;
+}
+
+.h1-demo-precision-black-report .nav-pill.active {
+  color: #fff !important;
+  background: rgba(255,122,0,.055) !important;
+  border-left-color: rgba(255,122,0,.22) !important;
+  border-right-color: rgba(255,122,0,.22) !important;
+}
+
+.h1-demo-precision-black-report .nav-pill.active::before {
+  height: 1px !important;
+  background: #ff7a00 !important;
+  box-shadow: 0 0 10px rgba(255,122,0,.42);
+}
+
+.h1-demo-precision-black-report .h1-report-chapter::after {
+  background: linear-gradient(90deg, #ff7a00, rgba(255,122,0,.14) 22%, rgba(255,255,255,.12) 54%, transparent) !important;
+}
+
+.h1-demo-precision-black-report .dash-page [style*="border-radius: 16px"],
+.h1-demo-precision-black-report .dash-page [style*="borderRadius: 16px"],
+.h1-demo-precision-black-report .glass-card,
+.h1-demo-precision-black-report .metric-card,
+.h1-demo-precision-black-report .kr-card,
+.h1-demo-precision-black-report .inner-content,
+.h1-demo-precision-black-report main section > .sec-anim.d1 > div {
+  border-radius: 0 !important;
+  background: rgba(4,4,4,.86) !important;
+  border-color: rgba(255,255,255,.14) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.025) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+.h1-demo-precision-black-report .glow-card:hover,
+.h1-demo-precision-black-report .glass-card:hover,
+.h1-demo-precision-black-report .metric-card:hover,
+.h1-demo-precision-black-report main section > .sec-anim.d1 > div:hover {
+  border-color: rgba(255,122,0,.46) !important;
+  background: #070707 !important;
+  box-shadow: inset 0 -1px #ff7a00 !important;
+}
+
+.h1-demo-precision-black-report .num-glow,
+.h1-demo-precision-black-report [style*="#f36b16"],
+.h1-demo-precision-black-report [style*="#ff9a55"] { color: #ff9a32 !important; }
+
+.h1-demo-precision-black-report .dash-page { border-bottom-color: rgba(255,255,255,.15) !important; }
+.h1-demo-precision-black-report .recharts-cartesian-grid line { stroke: rgba(255,255,255,.09) !important; stroke-dasharray: 2 4; }
+.h1-demo-precision-black-report .recharts-cartesian-axis line { stroke: rgba(255,255,255,.2) !important; }
+.h1-demo-precision-black-report [id^="barGlow"] stop:nth-child(1) { stop-color: #ffad4a !important; }
+.h1-demo-precision-black-report [id^="barGlow"] stop:nth-child(2) { stop-color: #ff7a00 !important; }
+.h1-demo-precision-black-report [id^="barGlow"] stop:nth-child(3) { stop-color: #4d1b00 !important; }
+.h1-demo-precision-black-report main img { filter: saturate(.72) contrast(1.11); }
+
+@media (prefers-reduced-motion: reduce) {
+  .h1-demo-precision-black-shell *,
+  .h1-demo-precision-black-report * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

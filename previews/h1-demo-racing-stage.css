@@ -1,0 +1,729 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,700;1,800;1,900&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Demo C · Racing Stage
+   The data pages are presentation canvases, not dashboard cards. */
+.h1-demo-racing-stage-report {
+  --race-black: #020202;
+  --race-panel: rgba(7, 5, 6, .9);
+  --race-panel-soft: rgba(12, 8, 9, .76);
+  --race-white: #f7f5f2;
+  --race-muted: rgba(247, 245, 242, .66);
+  --race-faint: rgba(247, 245, 242, .34);
+  --race-line: rgba(247, 245, 242, .18);
+  --race-red: #c4122f;
+  --race-red-bright: #f04455;
+  --race-orange: #ff6a13;
+  --race-orange-hot: #ff8a2b;
+}
+
+.h1-demo-racing-stage-report body.h1-embedded-report {
+  background: var(--race-black) !important;
+}
+
+.h1-demo-racing-stage-report body.h1-embedded-report::after {
+  opacity: .2 !important;
+}
+
+.h1-demo-racing-stage-report .race-fixed-bg {
+  position: fixed;
+  z-index: 0;
+  inset: 72px 0 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+
+.h1-demo-racing-stage-report .race-fixed-bg.is-visible {
+  opacity: 1;
+}
+
+.h1-demo-racing-stage-report .race-fixed-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(.9) contrast(1.06) brightness(.68);
+  transform: scale(1.01);
+}
+
+.h1-demo-racing-stage-report .race-fixed-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .34), rgba(0, 0, 0, .08) 42%, rgba(0, 0, 0, .22)),
+    linear-gradient(90deg, rgba(0, 0, 0, .32), transparent 48%, rgba(0, 0, 0, .12));
+}
+
+.h1-demo-racing-stage-report .race-stage-chapter {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: none;
+  height: calc(100vh - 72px);
+  margin: 0;
+  padding: 0 clamp(54px, 8vw, 154px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: transparent !important;
+}
+
+.h1-demo-racing-stage-report .race-stage-chapter::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .82), rgba(0, 0, 0, .3) 52%, transparent 78%);
+}
+
+.h1-demo-racing-stage-report .race-stage-chapter::after {
+  width: min(800px, 58vw);
+  margin-top: 44px;
+}
+
+.h1-demo-racing-stage-report .race-stage-chapter .h1-report-kicker {
+  color: var(--race-orange-hot);
+}
+
+.h1-demo-racing-stage-report .race-stage-chapter .h1-report-title {
+  max-width: none;
+  margin-top: 30px;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(88px, 8vw, 150px);
+  font-weight: 800;
+  line-height: .84;
+  letter-spacing: -.065em;
+  white-space: nowrap;
+}
+
+.h1-demo-racing-stage-report .race-stage-dashboard {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+.h1-demo-racing-stage-report .race-stage-dashboard > div:nth-child(1),
+.h1-demo-racing-stage-report .race-stage-dashboard > div:nth-child(2) {
+  display: none !important;
+}
+
+.h1-demo-racing-stage-report .dash-page {
+  position: relative !important;
+  min-height: calc(100vh - 72px) !important;
+  height: calc(100vh - 72px) !important;
+  overflow: hidden !important;
+  scroll-margin-top: 72px;
+  scroll-snap-align: start;
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .08) !important;
+}
+
+.h1-demo-racing-stage-report .dash-page > :not(.race-stage-page) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+.h1-demo-racing-stage-report .race-stage-page,
+.h1-demo-racing-stage-report .race-stage-page * {
+  box-sizing: border-box;
+}
+
+.h1-demo-racing-stage-report .race-stage-page {
+  position: absolute;
+  z-index: 80;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 650px;
+  overflow: hidden;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: 24% minmax(0, 76%);
+  padding: clamp(18px, 2.2vh, 28px) clamp(32px, 3.6vw, 70px) clamp(20px, 2.6vh, 34px);
+  color: var(--race-white);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  background: transparent;
+}
+
+.h1-demo-racing-stage-report .race-stage-page::before {
+  content: "";
+  position: absolute;
+  z-index: -4;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .34) 0%, rgba(0, 0, 0, .1) 35%, rgba(0, 0, 0, .18) 58%, rgba(0, 0, 0, .04) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, .3), transparent 48%, rgba(0, 0, 0, .12));
+}
+
+.h1-demo-racing-stage-report .race-stage-page::after {
+  content: "";
+  position: absolute;
+  z-index: -3;
+  inset: 0;
+  pointer-events: none;
+  opacity: .28;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+}
+
+.h1-demo-racing-stage-report .race-masthead {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 0;
+}
+
+.h1-demo-racing-stage-report .performance-ghost {
+  position: absolute;
+  top: 49%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  margin: 0;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .38);
+  font-family: "Barlow Condensed", sans-serif !important;
+  font-size: clamp(86px, 8.4vw, 156px);
+  font-style: italic;
+  font-weight: 900;
+  line-height: .74;
+  letter-spacing: -.045em;
+  opacity: .9;
+  user-select: none;
+}
+
+.h1-demo-racing-stage-report .race-title {
+  position: relative;
+  z-index: 2;
+  margin: .12em 0 0;
+  color: var(--race-white);
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(38px, 3.25vw, 64px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  text-shadow: 0 10px 34px rgba(0, 0, 0, .68);
+}
+
+.h1-demo-racing-stage-report .race-subtitle {
+  position: relative;
+  z-index: 2;
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, .86);
+  font-family: "Barlow Condensed", sans-serif !important;
+  font-size: clamp(13px, 1.02vw, 20px);
+  font-weight: 500;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+}
+
+.h1-demo-racing-stage-report .race-info-band {
+  position: relative;
+  z-index: 3;
+  width: calc(100% + clamp(64px, 7.2vw, 140px));
+  margin-left: calc(clamp(32px, 3.6vw, 70px) * -1);
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(470px, 1fr);
+  align-items: center;
+  gap: clamp(34px, 5vw, 96px);
+  padding: clamp(14px, 1.8vh, 24px) clamp(38px, 7.8vw, 150px);
+  background:
+    linear-gradient(90deg, rgba(2, 2, 2, .94), rgba(15, 4, 7, .86) 34%, rgba(75, 10, 24, .7) 62%, rgba(2, 2, 2, .93)),
+    rgba(2, 2, 2, .88);
+  box-shadow:
+    0 0 70px rgba(131, 15, 39, .13),
+    inset 0 1px rgba(255, 255, 255, .03),
+    inset 0 -1px rgba(255, 255, 255, .035);
+}
+
+.h1-demo-racing-stage-report .race-summary {
+  min-width: 0;
+}
+
+.h1-demo-racing-stage-report .race-summary-heading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 19px;
+  margin-bottom: 14px;
+  color: var(--race-white);
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(24px, 2vw, 38px);
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -.015em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.h1-demo-racing-stage-report .race-summary-heading > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.h1-demo-racing-stage-report .race-checkers {
+  flex: 0 0 auto;
+  width: 90px;
+  height: 34px;
+  display: grid;
+  grid-template-columns: repeat(5, 14px);
+  grid-template-rows: repeat(2, 14px);
+  gap: 2px;
+  transform: skewX(-15deg);
+}
+
+.h1-demo-racing-stage-report .race-checkers i {
+  display: block;
+  background: #fff;
+}
+
+.h1-demo-racing-stage-report .race-checkers i:nth-child(2),
+.h1-demo-racing-stage-report .race-checkers i:nth-child(4),
+.h1-demo-racing-stage-report .race-checkers i:nth-child(6),
+.h1-demo-racing-stage-report .race-checkers i:nth-child(8),
+.h1-demo-racing-stage-report .race-checkers i:nth-child(10) {
+  opacity: .12;
+}
+
+.h1-demo-racing-stage-report .race-summary p {
+  max-width: 780px;
+  margin: 0;
+  color: rgba(255, 255, 255, .69);
+  font-size: clamp(13px, 1.05vw, 20px);
+  font-weight: 350;
+  line-height: 1.58;
+  white-space: pre-line;
+  text-wrap: pretty;
+}
+
+.h1-demo-racing-stage-report .race-mini-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--race-white);
+  table-layout: fixed;
+  font-family: "IBM Plex Mono", "Noto Sans SC", monospace !important;
+}
+
+.h1-demo-racing-stage-report .race-mini-table th,
+.h1-demo-racing-stage-report .race-mini-table td {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.h1-demo-racing-stage-report .race-mini-table th {
+  padding: 0 8px 10px;
+  color: rgba(255, 255, 255, .9);
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(15px, 1.3vw, 24px);
+  font-weight: 600;
+  letter-spacing: .015em;
+  text-transform: uppercase;
+}
+
+.h1-demo-racing-stage-report .race-mini-table th span {
+  display: inline-block;
+  min-width: 70%;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, .58);
+}
+
+.h1-demo-racing-stage-report .race-mini-table td {
+  padding: 5px 8px;
+  color: rgba(255, 255, 255, .75);
+  font-size: clamp(11px, .88vw, 16px);
+  font-weight: 400;
+}
+
+.h1-demo-racing-stage-report .race-lower {
+  position: relative;
+  z-index: 4;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.46fr) minmax(250px, .56fr);
+  gap: 17%;
+  align-items: end;
+  padding-top: clamp(16px, 2.2vh, 30px);
+}
+
+.h1-demo-racing-stage-report .race-chart-card,
+.h1-demo-racing-stage-report .race-kpi-card {
+  border: 1px solid rgba(255, 255, 255, .08);
+  background:
+    linear-gradient(155deg, rgba(4, 4, 4, .93), rgba(17, 15, 16, .8) 74%, rgba(45, 35, 36, .56));
+  box-shadow:
+    0 26px 80px rgba(0, 0, 0, .48),
+    inset 0 1px rgba(255, 255, 255, .035);
+  backdrop-filter: blur(18px) saturate(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+}
+
+.h1-demo-racing-stage-report .race-chart-card {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: clamp(18px, 2.2vh, 28px) clamp(22px, 2.2vw, 40px) clamp(14px, 1.5vh, 20px);
+}
+
+.h1-demo-racing-stage-report .race-chart-title {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 14px;
+  color: var(--race-white);
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(20px, 1.55vw, 30px);
+  font-weight: 700;
+  letter-spacing: .005em;
+  text-transform: uppercase;
+}
+
+.h1-demo-racing-stage-report .race-chart-title::before {
+  content: "";
+  width: 8px;
+  height: 27px;
+  flex: 0 0 auto;
+  background: var(--race-red);
+  box-shadow: 0 0 20px rgba(196, 18, 47, .42);
+}
+
+.h1-demo-racing-stage-report .race-chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 0 0 5px;
+  color: rgba(255, 255, 255, .76);
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(12px, .92vw, 17px);
+  font-weight: 600;
+  letter-spacing: .025em;
+  text-transform: uppercase;
+}
+
+.h1-demo-racing-stage-report .race-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.h1-demo-racing-stage-report .race-legend-bar {
+  width: 13px;
+  height: 13px;
+  background: linear-gradient(#ff6a13, #b32109);
+}
+
+.h1-demo-racing-stage-report .race-legend-line {
+  width: 22px;
+  height: 0;
+  border-top: 2px solid #fff;
+  position: relative;
+}
+
+.h1-demo-racing-stage-report .race-legend-line::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: -5px;
+  width: 6px;
+  height: 6px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--race-red);
+}
+
+.h1-demo-racing-stage-report .race-chart-svg {
+  display: block;
+  width: 100%;
+  height: calc(100% - 76px);
+  min-height: 170px;
+  overflow: visible;
+}
+
+.h1-demo-racing-stage-report .race-chart-svg text {
+  font-family: "IBM Plex Mono", "Noto Sans SC", monospace !important;
+}
+
+.h1-demo-racing-stage-report .race-bar {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: raceBarRise .9s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.h1-demo-racing-stage-report .race-bar:nth-of-type(2) { animation-delay: .12s; }
+
+.h1-demo-racing-stage-report .race-line {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+  animation: raceLineDraw 1.1s .35s cubic-bezier(.16, 1, .3, 1) forwards;
+}
+
+.h1-demo-racing-stage-report .race-point {
+  opacity: 0;
+  animation: racePointIn .3s .92s ease forwards;
+}
+
+@keyframes raceBarRise {
+  from { transform: scaleY(0); opacity: .18; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+
+@keyframes raceLineDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes racePointIn {
+  to { opacity: 1; }
+}
+
+.h1-demo-racing-stage-report .race-kpi-stack {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(16px, 2vh, 26px);
+  align-self: stretch;
+  min-height: 0;
+}
+
+.h1-demo-racing-stage-report .race-kpi-card {
+  min-height: 0;
+  border-radius: 19px;
+  padding: clamp(18px, 2.4vh, 30px) clamp(20px, 2vw, 34px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.h1-demo-racing-stage-report .race-kpi-tag {
+  position: relative;
+  min-width: 76%;
+  margin-bottom: clamp(14px, 1.8vh, 24px);
+  padding: 6px 18px;
+  color: #fff;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(16px, 1.25vw, 24px);
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.h1-demo-racing-stage-report .race-kpi-tag::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  transform: skewX(-18deg);
+  background: linear-gradient(90deg, #9e1425, #c5192d);
+}
+
+.h1-demo-racing-stage-report .race-kpi-value {
+  color: var(--race-white);
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(44px, 4vw, 78px);
+  font-weight: 600;
+  line-height: .88;
+  letter-spacing: -.03em;
+  text-shadow: 0 12px 32px rgba(0, 0, 0, .58);
+  white-space: nowrap;
+}
+
+.h1-demo-racing-stage-report .race-kpi-sub {
+  margin-top: clamp(13px, 1.8vh, 22px);
+  color: rgba(255, 255, 255, .85);
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(15px, 1.2vw, 23px);
+  font-weight: 500;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.h1-demo-racing-stage-report .race-page-count {
+  position: absolute;
+  right: clamp(34px, 3.5vw, 68px);
+  bottom: clamp(12px, 1.4vh, 20px);
+  z-index: 8;
+  color: rgba(255, 255, 255, .38);
+  font-family: "IBM Plex Mono", monospace !important;
+  font-size: 11px;
+  letter-spacing: .12em;
+}
+
+/* Regional table page */
+.h1-demo-racing-stage-report .race-stage-page.is-region .race-info-band {
+  grid-template-columns: minmax(0, 1.55fr) minmax(380px, .72fr);
+}
+
+.h1-demo-racing-stage-report .race-stage-page.is-region .race-lower {
+  grid-template-columns: minmax(0, 1.62fr) minmax(250px, .5fr);
+  gap: 8%;
+}
+
+.h1-demo-racing-stage-report .race-region-table-wrap {
+  height: calc(100% - 45px);
+  overflow: hidden;
+}
+
+.h1-demo-racing-stage-report .race-region-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: rgba(255, 255, 255, .8);
+  font-family: "IBM Plex Mono", "Noto Sans SC", monospace !important;
+  font-size: clamp(9px, .68vw, 13px);
+}
+
+.h1-demo-racing-stage-report .race-region-table th,
+.h1-demo-racing-stage-report .race-region-table td {
+  padding: clamp(4px, .55vh, 7px) 7px;
+  text-align: right;
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  white-space: nowrap;
+}
+
+.h1-demo-racing-stage-report .race-region-table th {
+  color: rgba(255, 255, 255, .52);
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: clamp(10px, .78vw, 15px);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.h1-demo-racing-stage-report .race-region-table th:nth-child(-n+2),
+.h1-demo-racing-stage-report .race-region-table td:nth-child(-n+2) {
+  text-align: left;
+}
+
+.h1-demo-racing-stage-report .race-region-table tr.current {
+  color: #fff;
+  background: rgba(196, 18, 47, .09);
+}
+
+.h1-demo-racing-stage-report .race-region-table td:last-child {
+  color: var(--race-orange-hot);
+  font-weight: 600;
+}
+
+/* Profit has six columns; compact chart labels slightly. */
+.h1-demo-racing-stage-report .race-stage-page.is-profit .race-chart-svg text {
+  font-size: 10px;
+}
+
+@media (max-width: 1350px) {
+  .h1-demo-racing-stage-report .race-stage-page {
+    grid-template-rows: 25% minmax(0, 75%);
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+
+  .h1-demo-racing-stage-report .race-info-band {
+    width: calc(100% + 68px);
+    margin-left: -34px;
+    padding-left: 52px;
+    padding-right: 52px;
+    grid-template-columns: minmax(0, 1.3fr) minmax(410px, 1fr);
+    gap: 34px;
+  }
+
+  .h1-demo-racing-stage-report .race-lower {
+    grid-template-columns: minmax(0, 1.4fr) minmax(230px, .5fr);
+    gap: 11%;
+  }
+
+  .h1-demo-racing-stage-report .race-summary-heading {
+    font-size: 24px;
+  }
+
+  .h1-demo-racing-stage-report .race-summary p {
+    font-size: 13px;
+  }
+
+  .h1-demo-racing-stage-report .race-checkers {
+    width: 70px;
+    grid-template-columns: repeat(5, 11px);
+    grid-template-rows: repeat(2, 11px);
+  }
+
+  .h1-demo-racing-stage-report .race-chart-title {
+    font-size: 20px;
+  }
+
+  .h1-demo-racing-stage-report .race-chart-legend {
+    gap: 18px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 980px) {
+  .h1-demo-racing-stage-report .race-stage-page {
+    min-height: 760px;
+    grid-template-rows: 28% minmax(0, 72%);
+  }
+
+  .h1-demo-racing-stage-report .performance-ghost {
+    font-size: 86px;
+  }
+
+  .h1-demo-racing-stage-report .race-title {
+    font-size: 42px;
+  }
+
+  .h1-demo-racing-stage-report .race-info-band {
+    grid-template-columns: 1fr 1fr;
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+
+  .h1-demo-racing-stage-report .race-summary-heading {
+    gap: 10px;
+    font-size: 20px;
+  }
+
+  .h1-demo-racing-stage-report .race-checkers {
+    display: none;
+  }
+
+  .h1-demo-racing-stage-report .race-lower,
+  .h1-demo-racing-stage-report .race-stage-page.is-region .race-lower {
+    grid-template-columns: 1fr 240px;
+    gap: 22px;
+  }
+
+  .h1-demo-racing-stage-report .race-kpi-card {
+    padding: 14px;
+  }
+
+  .h1-demo-racing-stage-report .race-kpi-tag {
+    font-size: 15px;
+  }
+
+  .h1-demo-racing-stage-report .race-kpi-value {
+    font-size: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h1-demo-racing-stage-report .race-stage-page *,
+  .h1-demo-racing-stage-report .race-stage-page *::before,
+  .h1-demo-racing-stage-report .race-stage-page *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}

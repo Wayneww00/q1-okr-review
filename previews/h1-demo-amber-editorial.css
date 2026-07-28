@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+/* Shell theme · Amber Editorial */
+.h1-demo-amber-editorial-shell {
+  --ink: #050200;
+  --ink-2: #0b0401;
+  --ink-3: #160905;
+  --paper: #fff9f1;
+  --muted: rgba(255, 244, 231, .58);
+  --line: rgba(255, 184, 105, .16);
+  --line-strong: rgba(255, 192, 117, .34);
+  --orange: #ff861e;
+  --orange-soft: #ffc36c;
+  background: #050200;
+}
+
+.h1-demo-amber-editorial-shell body,
+.h1-demo-amber-editorial-shell button {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+}
+
+.h1-demo-amber-editorial-shell .display,
+.h1-demo-amber-editorial-shell .title,
+.h1-demo-amber-editorial-shell .hero-title,
+.h1-demo-amber-editorial-shell .metric-value,
+.h1-demo-amber-editorial-shell .profit-hero .big,
+.h1-demo-amber-editorial-shell .objective-index,
+.h1-demo-amber-editorial-shell .kr-summary .score strong,
+.h1-demo-amber-editorial-shell .pillar h3 {
+  font-family: "Bricolage Grotesque", "Noto Sans SC", sans-serif !important;
+  font-variation-settings: "wdth" 88;
+}
+
+.h1-demo-amber-editorial-shell .scene:not(.opening-film):not(.closing) {
+  background:
+    radial-gradient(ellipse at 72% 12%, rgba(255, 134, 30, .075), transparent 36%),
+    linear-gradient(180deg, #080301 0%, #030201 100%);
+}
+
+.h1-demo-amber-editorial-shell .scene:not(.opening-film):not(.closing)::before {
+  opacity: .52;
+  background-image:
+    linear-gradient(rgba(255, 195, 108, .027) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 195, 108, .027) 1px, transparent 1px);
+  background-size: 96px 96px;
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 72%, transparent);
+}
+
+.h1-demo-amber-editorial-shell .top-hud {
+  background: linear-gradient(to bottom, rgba(5,2,0,.96), rgba(5,2,0,.62), transparent);
+}
+
+.h1-demo-amber-editorial-shell .top-hud img { width: 138px; }
+.h1-demo-amber-editorial-shell .hud-chapter,
+.h1-demo-amber-editorial-shell .eyebrow,
+.h1-demo-amber-editorial-shell .chapter-no,
+.h1-demo-amber-editorial-shell .report-next {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.h1-demo-amber-editorial-shell .hud-button {
+  border-color: rgba(255,195,108,.22);
+  background: rgba(12,5,1,.48);
+}
+
+.h1-demo-amber-editorial-shell .hud-button:hover {
+  border-color: #ff9a3c;
+  background: rgba(255,134,30,.12);
+  box-shadow: 0 0 28px rgba(255,120,8,.16);
+}
+
+.h1-demo-amber-editorial-shell .progress > span,
+.h1-demo-amber-editorial-shell .rail button.active::after {
+  background: linear-gradient(90deg, #ff6b0a, #ffc36c);
+  box-shadow: 0 0 20px rgba(255,134,30,.62);
+}
+
+.h1-demo-amber-editorial-shell .hero-visual .image-bg {
+  filter: brightness(.68) contrast(1.13) saturate(1.08) sepia(.06);
+}
+
+.h1-demo-amber-editorial-shell .hero-visual.active .image-bg {
+  animation: amberEditorialReveal 2.8s cubic-bezier(.18,.72,.16,1) forwards;
+}
+
+@keyframes amberEditorialReveal {
+  0% { opacity:.06; transform:scale(1.055); filter:brightness(.18) contrast(1.24) saturate(.5) blur(8px); }
+  42% { opacity:.58; filter:brightness(.52) contrast(1.16) saturate(.88) blur(2px); }
+  100% { opacity:.96; transform:scale(1); filter:brightness(.76) contrast(1.1) saturate(1.04) blur(0); }
+}
+
+.h1-demo-amber-editorial-shell .hero-visual::after {
+  background:
+    radial-gradient(ellipse at 50% 78%, rgba(255,116,10,.10), transparent 42%),
+    linear-gradient(180deg, rgba(5,2,0,.12), rgba(5,2,0,.04) 46%, rgba(5,2,0,.76));
+}
+
+.h1-demo-amber-editorial-shell .hero-light-bloom {
+  background:
+    radial-gradient(ellipse at 50% 74%, rgba(255,134,30,.52), transparent 34%),
+    radial-gradient(ellipse at 50% 96%, rgba(255,195,108,.25), transparent 48%);
+  filter: blur(22px);
+}
+
+.h1-demo-amber-editorial-shell .hero-light-sweep {
+  background: linear-gradient(108deg, transparent 24%, rgba(255,173,76,.04) 38%, rgba(255,226,174,.5) 48%, rgba(255,134,30,.16) 55%, transparent 70%);
+}
+
+.h1-demo-amber-editorial-shell .hero-grid-reveal {
+  background-image:
+    linear-gradient(rgba(255,203,136,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,203,136,.035) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+.h1-demo-amber-editorial-shell .hero-visual .hero-title {
+  letter-spacing: -.055em;
+  text-shadow: 0 8px 44px rgba(0,0,0,.72), 0 0 56px rgba(255,134,30,.08);
+}
+
+.h1-demo-amber-editorial-shell .hero-visual .hero-title span {
+  color: rgba(255,248,238,.72);
+  letter-spacing: .38em;
+}
+
+.h1-demo-amber-editorial-shell .report-scene,
+.h1-demo-amber-editorial-shell .report-frame-wrap,
+.h1-demo-amber-editorial-shell .report-frame { background: #050200; }
+
+.h1-demo-amber-editorial-shell .report-next {
+  border-top-color: rgba(255,190,107,.22);
+  background: rgba(7,3,1,.94);
+  color: rgba(255,244,231,.66);
+}
+
+.h1-demo-amber-editorial-shell .report-next:hover {
+  color: #fff8ef;
+  border-color: #ff9a3c;
+  background: linear-gradient(90deg, rgba(255,134,30,.03), rgba(255,134,30,.14));
+}
+
+.h1-demo-amber-editorial-shell .outlook {
+  background: radial-gradient(ellipse at 80% 18%, rgba(255,134,30,.09), transparent 34%), #070301;
+}
+
+.h1-demo-amber-editorial-shell .outlook::after { color: rgba(255,134,30,.055); }
+
+/* Embedded report theme · Amber Editorial */
+.h1-demo-amber-editorial-report {
+  --h1-ink: #050200;
+  --h1-panel: #0c0502;
+  --h1-panel-2: #150904;
+  --h1-paper: #fff9f1;
+  --h1-muted: rgba(255,244,231,.58);
+  --h1-line: rgba(255,190,107,.16);
+  --h1-line-strong: rgba(255,195,108,.32);
+  --h1-orange: #ff861e;
+  --h1-orange-soft: #ffc36c;
+  background: #050200 !important;
+}
+
+.h1-demo-amber-editorial-report body.h1-embedded-report {
+  color: var(--h1-paper) !important;
+  background:
+    radial-gradient(ellipse at 76% 0%, rgba(255,134,30,.07), transparent 28%),
+    #050200 !important;
+}
+
+.h1-demo-amber-editorial-report body.h1-embedded-report,
+.h1-demo-amber-editorial-report body.h1-embedded-report * {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+}
+
+.h1-demo-amber-editorial-report body.h1-embedded-report h1,
+.h1-demo-amber-editorial-report body.h1-embedded-report h2,
+.h1-demo-amber-editorial-report body.h1-embedded-report h3,
+.h1-demo-amber-editorial-report body.h1-embedded-report h4,
+.h1-demo-amber-editorial-report .h1-report-title,
+.h1-demo-amber-editorial-report .num-glow {
+  font-family: "Bricolage Grotesque", "Noto Sans SC", sans-serif !important;
+  font-variation-settings: "wdth" 88;
+}
+
+.h1-demo-amber-editorial-report body.h1-embedded-report table,
+.h1-demo-amber-editorial-report body.h1-embedded-report svg text,
+.h1-demo-amber-editorial-report body.h1-embedded-report [style*="monospace"] {
+  font-family: "IBM Plex Mono", "Noto Sans SC", monospace !important;
+}
+
+.h1-demo-amber-editorial-report body.h1-embedded-report::after {
+  background-image:
+    linear-gradient(rgba(255,195,108,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,195,108,.025) 1px, transparent 1px) !important;
+  background-size: 96px 96px !important;
+}
+
+.h1-demo-amber-editorial-report .top-nav {
+  background: rgba(5,2,0,.91) !important;
+  border-bottom-color: rgba(255,195,108,.18) !important;
+  box-shadow: 0 18px 50px rgba(0,0,0,.24) !important;
+}
+
+.h1-demo-amber-editorial-report .nav-pill.active {
+  color: #fff9f1 !important;
+  background: radial-gradient(circle at 50% 100%, rgba(255,134,30,.18), transparent 68%) !important;
+}
+
+.h1-demo-amber-editorial-report .nav-pill.active::before {
+  background: linear-gradient(90deg, #ff6b0a, #ffc36c) !important;
+  box-shadow: 0 0 15px rgba(255,134,30,.5);
+}
+
+.h1-demo-amber-editorial-report .h1-report-chapter {
+  background: radial-gradient(ellipse at 18% 100%, rgba(255,134,30,.08), transparent 46%);
+}
+
+.h1-demo-amber-editorial-report .h1-report-chapter::after {
+  background: linear-gradient(90deg, #ff861e, rgba(255,195,108,.32) 28%, rgba(255,255,255,.08) 64%, transparent) !important;
+}
+
+.h1-demo-amber-editorial-report .dash-page [style*="border-radius: 16px"],
+.h1-demo-amber-editorial-report .dash-page [style*="borderRadius: 16px"],
+.h1-demo-amber-editorial-report .glass-card,
+.h1-demo-amber-editorial-report .metric-card,
+.h1-demo-amber-editorial-report .kr-card,
+.h1-demo-amber-editorial-report .inner-content,
+.h1-demo-amber-editorial-report main section > .sec-anim.d1 > div {
+  background:
+    linear-gradient(145deg, rgba(26,11,4,.82), rgba(8,4,2,.86)) !important;
+  border-color: rgba(255,190,107,.17) !important;
+  box-shadow: inset 0 1px rgba(255,228,190,.035), 0 30px 80px rgba(0,0,0,.18) !important;
+  backdrop-filter: blur(20px) saturate(1.12) !important;
+}
+
+.h1-demo-amber-editorial-report .glow-card:hover,
+.h1-demo-amber-editorial-report .glass-card:hover,
+.h1-demo-amber-editorial-report .metric-card:hover,
+.h1-demo-amber-editorial-report main section > .sec-anim.d1 > div:hover {
+  border-color: rgba(255,160,56,.48) !important;
+  box-shadow: 0 22px 64px rgba(0,0,0,.28), 0 0 36px rgba(255,120,8,.06) !important;
+}
+
+.h1-demo-amber-editorial-report .num-glow,
+.h1-demo-amber-editorial-report [style*="#f36b16"],
+.h1-demo-amber-editorial-report [style*="#ff9a55"] {
+  color: #ffc36c !important;
+}
+
+.h1-demo-amber-editorial-report .recharts-cartesian-grid line { stroke: rgba(255,195,108,.09) !important; }
+.h1-demo-amber-editorial-report .recharts-cartesian-axis line { stroke: rgba(255,195,108,.18) !important; }
+.h1-demo-amber-editorial-report [id^="barGlow"] stop:nth-child(1) { stop-color: #ffc36c !important; }
+.h1-demo-amber-editorial-report [id^="barGlow"] stop:nth-child(2) { stop-color: #ff861e !important; }
+.h1-demo-amber-editorial-report [id^="barGlow"] stop:nth-child(3) { stop-color: #6f2d05 !important; }
+.h1-demo-amber-editorial-report main img { filter: saturate(.88) contrast(1.04) sepia(.035); }
+
+@media (prefers-reduced-motion: reduce) {
+  .h1-demo-amber-editorial-shell *,
+  .h1-demo-amber-editorial-report * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

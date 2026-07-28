@@ -1,0 +1,12 @@
+{
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "framework": null,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/previews/vantage-h1-immersive.html",
+      "permanent": false
+    }
+  ]
+}

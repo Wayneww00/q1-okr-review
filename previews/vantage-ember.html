@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vantage Ember · Vantage Q1 配色评审</title>
+  <link rel="stylesheet" href="theme-preview.css">
+  <style>
+    :root {
+      --scheme-primary: #E35728;
+      --scheme-secondary: #D31328;
+    }
+  </style>
+</head>
+<body>
+  <main class="review-shell">
+    <header class="review-bar">
+      <div class="review-identity">
+        <span class="scheme-mark" aria-hidden="true"></span>
+        <span class="scheme-name" id="scheme-name">Vantage Ember</span>
+        <span class="scheme-description" id="scheme-description"></span>
+      </div>
+      <nav class="scheme-tabs" aria-label="配色方案切换">
+        <a class="scheme-tab" href="rosso-executive.html">A · Rosso Executive</a>
+        <a class="scheme-tab" href="vantage-ember.html" aria-current="page">B · Vantage Ember</a>
+      </nav>
+      <div class="review-state"><span class="state-dot"></span>评审稿 · 正式页未修改</div>
+    </header>
+    <section class="preview-stage">
+      <iframe id="preview-frame" title="Vantage Ember 页面预览"></iframe>
+      <div class="preview-loader" id="preview-loader">
+        <div class="loader-copy"><span>Loading Vantage Ember</span><span class="loader-line"></span></div>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.PREVIEW_THEME = {
+      name: "B · Vantage Ember",
+      description: "Vantage 橙主导，法拉利红压住暗部与关键数据",
+      primary: "#E35728",
+      secondary: "#D31328",
+      replacements: [
+        ["#0a0606", "#080301"], ["#0A0606", "#080301"],
+        ["#0a0a0a", "#090301"], ["#0A0A0A", "#090301"],
+        ["#0a0000", "#0A0301"], ["#0A0000", "#0A0301"],
+        ["#060404", "#050201"], ["#0e1320", "#160703"], ["#0E1320", "#160703"],
+        ["#D44040", "#E35728"], ["#d44040", "#E35728"],
+        ["#E8585A", "#FF7540"], ["#e8585a", "#FF7540"],
+        ["#dc2626", "#D31328"], ["#DC2626", "#D31328"],
+        ["#ef4444", "#FF6A33"], ["#EF4444", "#FF6A33"],
+        ["#f87171", "#FF8A58"], ["#F87171", "#FF8A58"],
+        ["#e11d48", "#D31328"], ["#E11D48", "#D31328"],
+        ["#c81e2b", "#C90F22"], ["#C81E2B", "#C90F22"],
+        ["#991b1b", "#8E0817"], ["#991B1B", "#8E0817"],
+        ["#881337", "#72101B"], ["#7f1d1d", "#6C0A14"], ["#7F1D1D", "#6C0A14"],
+        ["#450a0a", "#3D0808"], ["#450A0A", "#3D0808"],
+        ["#4a0e0e", "#38100A"], ["#4A0E0E", "#38100A"],
+        ["#8a2020", "#7D1019"], ["#8A2020", "#7D1019"],
+        ["#fbbf24", "#F0A05A"], ["#FBBF24", "#F0A05A"],
+        ["#8baddb", "#F0A05A"], ["#8BADDB", "#F0A05A"],
+        ["#e8dcd4", "#F5EEE9"], ["#E8DCD4", "#F5EEE9"],
+        ["#dce3f0", "#F7F0EA"], ["#DCE3F0", "#F7F0EA"],
+        ["#c8b0a8", "#D3BDB0"], ["#C8B0A8", "#D3BDB0"],
+        ["#7a6262", "#967769"], ["#7A6262", "#967769"],
+        ["#4a3636", "#65463B"], ["#4A3636", "#65463B"],
+        ["rgba(212,64,64", "rgba(227,87,40"],
+        ["rgba(232,88,90", "rgba(255,117,64"],
+        ["rgba(220,40,40", "rgba(227,87,40"],
+        ["rgba(220,38,38", "rgba(211,19,40"],
+        ["rgba(239,68,68", "rgba(227,87,40"],
+        ["rgba(248,113,113", "rgba(255,117,64"],
+        ["rgba(127,29,29", "rgba(108,10,20"],
+        ["rgba(153,27,27", "rgba(142,8,23"],
+        ["rgba(200,60,60", "rgba(210,52,34"],
+        ["rgba(228,160,160", "rgba(239,174,146"],
+        ["rgba(251,191,36", "rgba(240,160,90"],
+        ["rgba(20,10,10", "rgba(23,7,3"],
+        ["rgba(30,10,10", "rgba(31,9,4"],
+        ["rgba(100,20,20", "rgba(103,24,13"]
+      ],
+      css: String.raw`
+        :root { color-scheme:dark; --preview-orange:#E35728; --preview-red:#D31328; }
+        body {
+          background:
+            radial-gradient(circle at 76% 10%,rgba(227,87,40,.22),transparent 34%),
+            radial-gradient(circle at 14% 78%,rgba(211,19,40,.095),transparent 38%),
+            #080301 !important;
+        }
+        body::after {
+          background-image:
+            linear-gradient(122deg,transparent 0 63%,rgba(227,87,40,.045) 63.1% 63.25%,transparent 63.4%),
+            linear-gradient(122deg,transparent 0 78%,rgba(211,19,40,.025) 78.1% 78.2%,transparent 78.35%),
+            radial-gradient(circle,rgba(255,255,255,.017) 1px,transparent 1px) !important;
+          background-size:100% 100%,100% 100%,40px 40px !important;
+        }
+        .glass-card,.metric-card {
+          border-color:rgba(227,87,40,.23) !important;
+          backdrop-filter:blur(20px) saturate(118%) !important;
+          box-shadow:inset 0 1px 0 rgba(255,235,220,.04),0 20px 56px rgba(0,0,0,.32) !important;
+        }
+        .kr-card { border-color:rgba(227,87,40,.18) !important; }
+        .section-sep {
+          opacity:.9;
+          background:linear-gradient(90deg,transparent,rgba(227,87,40,.32) 35%,rgba(211,19,40,.26) 65%,transparent) !important;
+        }
+        .nav-pill.active { text-shadow:0 0 18px rgba(227,87,40,.34); }
+        h1,h2,h3 { text-wrap:balance; }
+        p { text-wrap:pretty; }
+      `
+    };
+  </script>
+  <script src="theme-preview.js"></script>
+</body>
+</html>

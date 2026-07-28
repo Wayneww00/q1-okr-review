@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#050200" />
+  <title>Vantage H1 Review · Amber Editorial Demo</title>
+  <!--
+    评审假设：
+    - 保留现有 H1 页面结构、内容层级、视频、导航与交互，不重构布局。
+    - 完整复用当前 Q1 数据与 OKR 内容，不删减、不改写事实。
+    - 不新增赛车图像；参考稿只转译为暖黑、琥珀光域与编辑式数据秩序。
+    - 本文件是隔离 Demo，不修改正式 H1 页面或 index.html。
+  -->
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #050200; }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255,134,30,.14), transparent 46%);
+      opacity: .5;
+      transition: opacity .5s ease;
+    }
+    body.demo-ready::before { opacity: 0; }
+    iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #050200; }
+  </style>
+</head>
+<body data-demo-theme="amber-editorial">
+  <iframe data-demo-frame src="vantage-h1-immersive.html" title="Vantage H1 Amber Editorial Demo" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  <script src="h1-demo-wrapper.js"></script>
+</body>
+</html>

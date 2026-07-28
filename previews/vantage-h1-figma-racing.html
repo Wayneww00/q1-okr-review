@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vantage H1 · Figma Racing Demo</title>
+  <style>
+    /*
+      Assumptions:
+      - 三屏只验证 Figma A 的视觉语法，不替换正式 H1 页面。
+      - 使用当前 H1 正式数据：2025 H2 vs 2026 H1。
+      - 赛车是联名视觉主角，不把 Vantage 表达成赛车品牌。
+    */
+    :root {
+      --black: #030303;
+      --panel: rgba(7, 5, 6, .86);
+      --panel-soft: rgba(15, 8, 9, .72);
+      --white: #f8f6f3;
+      --muted: #b9b0ad;
+      --grid: rgba(255, 255, 255, .13);
+      --red: #d4152f;
+      --red-hot: #ff304a;
+      --orange: #f06423;
+      --amber: #ff9a3d;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #000; }
+    body {
+      color: var(--white);
+      font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
+      letter-spacing: -.01em;
+    }
+    button { font: inherit; }
+    .viewport { position: fixed; inset: 0; display: grid; place-items: center; background: #000; }
+    .stage {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 1600px;
+      height: 900px;
+      overflow: hidden;
+      background: var(--black);
+      transform-origin: center center;
+    }
+    .scene {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      overflow: hidden;
+      background: #030303;
+      transition: opacity .42s cubic-bezier(.2,.8,.2,1);
+    }
+    .scene.active { opacity: 1; visibility: visible; pointer-events: auto; }
+    .scene::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.96) 0%, rgba(0,0,0,.62) 41%, rgba(0,0,0,.06) 72%),
+        linear-gradient(0deg, rgba(0,0,0,.32), transparent 46%),
+        url("assets/vantage-racing-stage-bg.png") center / cover no-repeat;
+      filter: saturate(1.04) contrast(1.02);
+    }
+    .scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.026) 1px, transparent 1px);
+      background-size: 128px 128px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), transparent 78%);
+      pointer-events: none;
+    }
+    .topbar {
+      position: absolute;
+      z-index: 8;
+      left: 56px;
+      right: 56px;
+      top: 32px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 2px solid var(--orange);
+      padding-top: 15px;
+    }
+    .logo { width: 122px; height: auto; display: block; }
+    .top-meta {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      font-family: "DIN Alternate", "Avenir Next Condensed", sans-serif;
+      font-size: 13px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.62);
+    }
+    .top-meta b { color: var(--orange); font-weight: 700; }
+    .slide-shell { position: absolute; inset: 0; z-index: 3; padding: 96px 74px 66px; }
+    .ghost-title {
+      position: absolute;
+      top: 96px;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      font-family: "Avenir Next Condensed", "DIN Condensed", sans-serif;
+      font-size: 132px;
+      line-height: .85;
+      font-style: italic;
+      font-weight: 800;
+      letter-spacing: -.055em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.38);
+      white-space: nowrap;
+      opacity: .72;
+    }
+    .section-title {
+      position: absolute;
+      top: 139px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      margin: 0;
+      font-family: "Avenir Next Condensed", "DIN Condensed", sans-serif;
+      font-size: 46px;
+      font-weight: 800;
+      letter-spacing: -.035em;
+      text-transform: uppercase;
+    }
+    .section-title span {
+      display: block;
+      margin-top: 13px;
+      color: rgba(255,255,255,.72);
+      font-size: 14px;
+      letter-spacing: .16em;
+      font-weight: 500;
+    }
+    .race-mark {
+      display: inline-grid;
+      grid-template-columns: repeat(5, 10px);
+      grid-template-rows: repeat(2, 10px);
+      gap: 2px;
+      margin-right: 19px;
+      transform: skewX(-18deg) translateY(2px);
+    }
+    .race-mark i { background: currentColor; }
+    .race-mark i:nth-child(even) { opacity: .18; }
+    .summary-strip {
+      position: absolute;
+      left: 74px;
+      right: 74px;
+      top: 286px;
+      height: 148px;
+      display: grid;
+      grid-template-columns: 1.32fr .9fr;
+      background: rgba(12,5,7,.76);
+      border-top: 1px solid rgba(255,255,255,.12);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(12px);
+    }
+    .summary-copy { padding: 28px 36px; }
+    .summary-copy h2 {
+      margin: 0 0 13px;
+      font-family: "Avenir Next Condensed", "DIN Condensed", sans-serif;
+      font-style: italic;
+      font-size: 29px;
+      letter-spacing: .01em;
+      text-transform: uppercase;
+    }
+    .summary-copy p {
+      margin: 0;
+      max-width: 690px;
+      color: #cfc7c5;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    .summary-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-content: center;
+      gap: 12px 34px;
+      padding: 24px 38px 20px;
+      border-left: 1px solid rgba(255,255,255,.12);
+      text-align: right;
+      font-size: 17px;
+    }
+    .summary-table .th {
+      padding-bottom: 8px;
+      border-bottom: 2px solid rgba(255,255,255,.35);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .summary-table .hot { color: #fff; font-weight: 750; }
+    .chart-panel {
+      position: absolute;
+      left: 74px;
+      bottom: 70px;
+      width: 710px;
+      height: 336px;
+      padding: 26px 34px 30px;
+      background: linear-gradient(145deg, rgba(9,7,8,.96), rgba(31,12,16,.86));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 22px 70px rgba(0,0,0,.38);
+      backdrop-filter: blur(12px);
+    }
+    .chart-panel h3 {
+      margin: 0;
+      padding-left: 13px;
+      border-left: 5px solid var(--red);
+      font-size: 19px;
+      letter-spacing: .02em;
+    }
+    .legend { display: flex; gap: 27px; margin: 18px 0 12px; color: #c9c0be; font-size: 12px; }
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 8px;
+      vertical-align: -1px;
+      background: linear-gradient(var(--orange), #a9250f);
+    }
+    .legend span:last-child::before { background: var(--red); }
+    .chart {
+      position: relative;
+      height: 218px;
+      border-left: 1px solid rgba(255,255,255,.3);
+      border-bottom: 1px solid rgba(255,255,255,.35);
+      background: repeating-linear-gradient(to top, transparent 0 54px, rgba(255,255,255,.1) 55px 56px);
+    }
+    .axis-label {
+      position: absolute;
+      left: -4px;
+      color: rgba(255,255,255,.46);
+      font-size: 10px;
+      transform: translate(-100%, 50%);
+    }
+    .bar {
+      position: absolute;
+      bottom: 0;
+      width: 76px;
+      background: linear-gradient(to top, #7b1d0a, var(--orange));
+      box-shadow: inset 0 1px rgba(255,255,255,.38);
+    }
+    .bar.one { left: 180px; height: 153px; }
+    .bar.two { left: 430px; height: 196px; }
+    .bar b {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .bar small {
+      position: absolute;
+      left: 50%;
+      bottom: -25px;
+      transform: translateX(-50%);
+      color: #d5cdca;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .share-point {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--red);
+      z-index: 3;
+    }
+    .share-point.one { left: 211px; top: 54px; }
+    .share-point.two { left: 461px; top: 84px; }
+    .share-line {
+      position: absolute;
+      left: 221px;
+      top: 61px;
+      width: 247px;
+      height: 2px;
+      background: repeating-linear-gradient(90deg,#fff 0 6px, transparent 6px 12px);
+      transform: rotate(6.9deg);
+      transform-origin: left center;
+    }
+    .share-label {
+      position: absolute;
+      padding: 5px 8px;
+      background: rgba(90,24,17,.92);
+      font-size: 11px;
+    }
+    .share-label.one { left: 188px; top: 72px; }
+    .share-label.two { left: 438px; top: 102px; }
+    .kpi-stack {
+      position: absolute;
+      right: 82px;
+      bottom: 86px;
+      width: 300px;
+      display: grid;
+      gap: 20px;
+    }
+    .kpi {
+      min-height: 124px;
+      padding: 22px 26px;
+      background: rgba(10,7,8,.88);
+      border: 1px solid rgba(255,255,255,.11);
+      box-shadow: 0 18px 45px rgba(0,0,0,.34);
+      backdrop-filter: blur(10px);
+    }
+    .kpi-tag {
+      display: inline-block;
+      min-width: 180px;
+      margin: -8px 0 13px -36px;
+      padding: 7px 27px 7px 39px;
+      background: var(--red);
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      text-transform: uppercase;
+      clip-path: polygon(7% 0,100% 0,91% 100%,0 100%);
+    }
+    .kpi strong { display: block; font-size: 42px; line-height: 1; letter-spacing: -.04em; }
+    .kpi small { display: block; margin-top: 9px; color: #c7bfbd; font-size: 13px; }
+    .detail-layout {
+      position: absolute;
+      inset: 112px 74px 62px;
+      display: grid;
+      grid-template-columns: 1.16fr .62fr;
+      gap: 36px;
+    }
+    .detail-main {
+      align-self: end;
+      height: 610px;
+      padding: 40px 44px;
+      background: rgba(6,5,5,.84);
+      border: 1px solid rgba(255,255,255,.13);
+      backdrop-filter: blur(16px);
+    }
+    .kicker {
+      color: var(--orange);
+      font-family: "DIN Alternate", "Avenir Next Condensed", sans-serif;
+      font-size: 13px;
+      letter-spacing: .22em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .detail-main h1 {
+      margin: 12px 0 8px;
+      font-family: "Avenir Next Condensed", "DIN Condensed", sans-serif;
+      font-size: 52px;
+      line-height: 1.02;
+      letter-spacing: -.04em;
+    }
+    .detail-main > p { margin: 0; color: #bfb7b4; font-size: 17px; }
+    .detail-chart { margin-top: 42px; height: 360px; position: relative; }
+    .detail-chart .chart { height: 290px; margin-left: 52px; }
+    .detail-chart .bar.one { left: 220px; height: 204px; width: 104px; }
+    .detail-chart .bar.two { left: 590px; height: 262px; width: 104px; }
+    .detail-chart .share-point.one { left: 261px; top: 69px; }
+    .detail-chart .share-point.two { left: 631px; top: 118px; }
+    .detail-chart .share-line { left: 272px; top: 77px; width: 365px; transform: rotate(7.6deg); }
+    .detail-chart .share-label.one { left: 232px; top: 88px; }
+    .detail-chart .share-label.two { left: 602px; top: 137px; }
+    .insight-stack { align-self: end; display: grid; gap: 16px; padding-bottom: 8px; }
+    .insight {
+      padding: 24px 26px;
+      background: rgba(8,6,7,.9);
+      border-top: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(12px);
+    }
+    .insight em {
+      display: block;
+      color: var(--red-hot);
+      font-family: "DIN Alternate", sans-serif;
+      font-size: 12px;
+      font-style: normal;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+    .insight strong { display: block; margin: 11px 0 7px; font-size: 29px; }
+    .insight p { margin: 0; color: #bfb7b4; font-size: 15px; line-height: 1.58; }
+    .okr-shell {
+      position: absolute;
+      inset: 114px 74px 68px;
+    }
+    .okr-shell .ghost-title { top: 0; left: 0; transform: none; font-size: 142px; opacity: .52; }
+    .okr-head {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 520px;
+      align-items: end;
+      gap: 42px;
+      padding: 48px 0 30px;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+    .okr-head h1 {
+      margin: 0;
+      font-family: "Avenir Next Condensed", "DIN Condensed", sans-serif;
+      font-size: 58px;
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+    .okr-head p { margin: 0; color: #c5bdba; font-size: 17px; line-height: 1.6; }
+    .okr-list {
+      position: relative;
+      z-index: 2;
+      margin-top: 36px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .objective {
+      min-height: 385px;
+      padding: 30px;
+      background: rgba(7,5,6,.86);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+    }
+    .objective.featured { background: linear-gradient(150deg, rgba(79,8,20,.9), rgba(9,5,7,.9)); }
+    .objective-code {
+      color: var(--orange);
+      font-family: "DIN Alternate", sans-serif;
+      font-size: 13px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .objective h2 { margin: 25px 0 12px; font-size: 26px; line-height: 1.28; }
+    .objective > p { margin: 0; color: #b9b1ae; font-size: 15px; line-height: 1.58; }
+    .objective ul { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 13px; }
+    .objective li {
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      color: #ddd6d3;
+      font-size: 14px;
+    }
+    .status {
+      margin-top: auto;
+      align-self: flex-start;
+      padding: 7px 16px;
+      background: var(--red);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      clip-path: polygon(8% 0,100% 0,92% 100%,0 100%);
+    }
+    .footnote {
+      position: absolute;
+      z-index: 9;
+      left: 74px;
+      bottom: 29px;
+      color: rgba(255,255,255,.52);
+      font-family: "DIN Alternate", sans-serif;
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .controls {
+      position: absolute;
+      z-index: 20;
+      right: 44px;
+      bottom: 26px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .controls button {
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.45);
+      color: #fff;
+      cursor: pointer;
+    }
+    .controls button:hover { border-color: var(--orange); color: var(--orange); }
+    .counter {
+      min-width: 54px;
+      color: rgba(255,255,255,.62);
+      font-family: "DIN Alternate", sans-serif;
+      font-size: 12px;
+      letter-spacing: .13em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body data-style="racing">
+  <div class="viewport">
+    <main class="stage" aria-label="Vantage H1 Figma 赛车风格 Demo">
+      <div class="topbar">
+        <img class="logo" src="../vantage-logo.svg" alt="Vantage">
+        <div class="top-meta"><span>H1 BUSINESS REVIEW</span><b>FIGMA STYLE A</b></div>
+      </div>
+
+      <section class="scene active" data-label="数据首页">
+        <div class="slide-shell">
+          <p class="ghost-title">PERFORMANCE</p>
+          <h1 class="section-title">RETAIL 整体表现<span>OVERALL RETAIL PERFORMANCE</span></h1>
+
+          <div class="summary-strip">
+            <div class="summary-copy">
+              <h2><span class="race-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>2026 H1 RETAIL FTD</h2>
+              <p>Retail 整体 FTD 绝对值同比增长 27.8%，然而增速仍落后于大盘整体水平，大盘占比因此收窄 5.2%。</p>
+            </div>
+            <div class="summary-table" aria-label="Retail FTD 汇总表">
+              <div class="th">Period</div><div class="th">Retail FTD</div><div class="th">集团占比</div>
+              <div>2025 H2</div><div class="hot">105,743</div><div>37.8%</div>
+              <div>2026 H1</div><div class="hot">135,103</div><div>32.6%</div>
+            </div>
+          </div>
+
+          <article class="chart-panel">
+            <h3>2026 H1 RETAIL FTD 表现及整体占比变化</h3>
+            <div class="legend"><span>Retail FTD（绝对值）</span><span>FTD 占 VANTAGE%（占比）</span></div>
+            <div class="chart" aria-label="Retail FTD 柱状图与占比趋势">
+              <span class="axis-label" style="bottom:0">0</span>
+              <span class="axis-label" style="bottom:54px">30K</span>
+              <span class="axis-label" style="bottom:108px">60K</span>
+              <span class="axis-label" style="bottom:162px">90K</span>
+              <div class="bar one"><b>105,743</b><small>2025 H2</small></div>
+              <div class="bar two"><b>135,103</b><small>2026 H1</small></div>
+              <div class="share-line"></div>
+              <i class="share-point one"></i><i class="share-point two"></i>
+              <span class="share-label one">37.8%</span><span class="share-label two">32.6%</span>
+            </div>
+          </article>
+
+          <aside class="kpi-stack">
+            <div class="kpi"><span class="kpi-tag">Retail FTD 绝对值</span><strong>+27.8%</strong><small>2026 H1 vs 2025 H2</small></div>
+            <div class="kpi"><span class="kpi-tag">集团占比变化</span><strong>-5.2%</strong><small>37.8% → 32.6%</small></div>
+          </aside>
+        </div>
+        <div class="footnote">01 · DATA OVERVIEW</div>
+      </section>
+
+      <section class="scene" data-label="图表详情">
+        <div class="detail-layout">
+          <article class="detail-main">
+            <div class="kicker">DATA DETAIL · RETAIL</div>
+            <h1>绝对规模增长，份额仍需关注。</h1>
+            <p>2026 H1 Retail FTD 由 105,743 增至 135,103；集团占比由 37.8% 收窄至 32.6%。</p>
+            <div class="detail-chart">
+              <div class="legend"><span>Retail FTD（绝对值）</span><span>集团占比</span></div>
+              <div class="chart">
+                <span class="axis-label" style="bottom:0">0</span>
+                <span class="axis-label" style="bottom:58px">30K</span>
+                <span class="axis-label" style="bottom:116px">60K</span>
+                <span class="axis-label" style="bottom:174px">90K</span>
+                <span class="axis-label" style="bottom:232px">120K</span>
+                <div class="bar one"><b>105,743</b><small>2025 H2</small></div>
+                <div class="bar two"><b>135,103</b><small>2026 H1</small></div>
+                <div class="share-line"></div>
+                <i class="share-point one"></i><i class="share-point two"></i>
+                <span class="share-label one">37.8%</span><span class="share-label two">32.6%</span>
+              </div>
+            </div>
+          </article>
+          <aside class="insight-stack">
+            <div class="insight"><em>Conclusion</em><strong>+27.8%</strong><p>Retail FTD 保持明显增长，规模扩张方向成立。</p></div>
+            <div class="insight"><em>Risk</em><strong>-5.2%</strong><p>增长仍慢于大盘，导致集团占比继续收窄。</p></div>
+            <div class="insight"><em>Next</em><strong>质量优先</strong><p>进一步拆解区域与渠道贡献，优先修复份额缺口。</p></div>
+          </aside>
+        </div>
+        <div class="footnote">02 · CHART DETAIL</div>
+      </section>
+
+      <section class="scene" data-label="OKR">
+        <div class="okr-shell">
+          <p class="ghost-title">OKR REVIEW</p>
+          <header class="okr-head">
+            <div><div class="kicker">OBJECTIVES &amp; KEY RESULTS</div><h1>从结果回看组织选择。</h1></div>
+            <p>数据回答“发生了什么”，OKR 复盘解释“为什么发生，以及下一步如何持续”。</p>
+          </header>
+          <div class="okr-list">
+            <article class="objective">
+              <div class="objective-code">Objective 01 · Brand</div>
+              <h2>将 Vantage 建设成全球一线品牌</h2>
+              <p>组织架构 · 慈善领军 · 品牌生态</p>
+              <ul><li>重塑组织架构</li><li>建立慈善领军能力</li><li>完善品牌生态</li></ul>
+              <span class="status">On Track</span>
+            </article>
+            <article class="objective featured">
+              <div class="objective-code">Objective 02 · Growth Quality</div>
+              <h2>注重增长质量，提升全渠道获客效率</h2>
+              <p>Ads 精细化 · 曝光基建 · 用户运营</p>
+              <ul><li>加强 Ads 数据化与精细化管理</li><li>加强 SEO、ASO、GEO 曝光基建</li><li>提升用户转化率与 LTV</li></ul>
+              <span class="status">On Track</span>
+            </article>
+            <article class="objective">
+              <div class="objective-code">Objective 03 · Regional Growth</div>
+              <h2>在关键区域实现破局与增长</h2>
+              <p>强化信任 · 增加触点 · 提高转化</p>
+              <ul><li>强化区域信任</li><li>增加高质量触点</li><li>提高区域转化</li></ul>
+              <span class="status">On Track</span>
+            </article>
+          </div>
+        </div>
+        <div class="footnote">03 · OKR REVIEW</div>
+      </section>
+
+      <nav class="controls" aria-label="页面切换">
+        <button type="button" data-prev aria-label="上一页">←</button>
+        <span class="counter">01 / 03</span>
+        <button type="button" data-next aria-label="下一页">→</button>
+      </nav>
+    </main>
+  </div>
+  <script>
+    (() => {
+      const stage = document.querySelector(".stage");
+      const scenes = [...document.querySelectorAll(".scene")];
+      const counter = document.querySelector(".counter");
+      const key = "vantage-h1-figma-racing-slide";
+      let index = Math.min(scenes.length - 1, Math.max(0, Number(localStorage.getItem(key)) || 0));
+
+      function scaleStage() {
+        const scale = Math.min(innerWidth / 1600, innerHeight / 900);
+        stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      }
+      function go(next) {
+        index = (next + scenes.length) % scenes.length;
+        scenes.forEach((scene, i) => scene.classList.toggle("active", i === index));
+        counter.textContent = `${String(index + 1).padStart(2, "0")} / 03`;
+        localStorage.setItem(key, String(index));
+        history.replaceState(null, "", `#slide-${index + 1}`);
+      }
+      const hash = location.hash.match(/slide-(\d+)/);
+      if (hash) index = Math.min(2, Math.max(0, Number(hash[1]) - 1));
+      document.querySelector("[data-prev]").addEventListener("click", () => go(index - 1));
+      document.querySelector("[data-next]").addEventListener("click", () => go(index + 1));
+      addEventListener("keydown", (event) => {
+        if (["ArrowRight", "PageDown", " "].includes(event.key)) { event.preventDefault(); go(index + 1); }
+        if (["ArrowLeft", "PageUp"].includes(event.key)) { event.preventDefault(); go(index - 1); }
+        if (event.key === "Home") go(0);
+        if (event.key === "End") go(2);
+      });
+      addEventListener("resize", scaleStage);
+      scaleStage();
+      go(index);
+    })();
+  </script>
+</body>
+</html>

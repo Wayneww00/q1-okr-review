@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#020202" />
+  <title>Vantage H1 Review · Precision Black Demo</title>
+  <!--
+    评审假设：
+    - 保留现有 H1 页面结构、内容层级、视频、导航与交互，不重构布局。
+    - 完整复用当前 Q1 数据与 OKR 内容，不删减、不改写事实。
+    - 不新增赛车图像；参考稿只转译为纯黑、锐利橙线与精密数据秩序。
+    - 本文件是隔离 Demo，不修改正式 H1 页面或 index.html。
+  -->
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #020202; }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity: .45;
+      transition: opacity .5s ease;
+    }
+    body.demo-ready::before { opacity: 0; }
+    iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #020202; }
+  </style>
+</head>
+<body data-demo-theme="precision-black">
+  <iframe data-demo-frame src="vantage-h1-immersive.html" title="Vantage H1 Precision Black Demo" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  <script src="h1-demo-wrapper.js"></script>
+</body>
+</html>

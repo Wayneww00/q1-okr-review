@@ -1,0 +1,3088 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700;1,800;1,900&family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap");
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("assets/fonts/Gilroy-HeavyItalic.otf") format("opentype");
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("assets/fonts/Gilroy-Black.otf") format("opentype");
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("assets/fonts/Gilroy-Regular.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+.h1-figma-racing-shell,
+.h1-figma-racing-report {
+  --h1-racing-stage: url("assets/figma-racing/source-04.png");
+  --h1-figma-data-stage: url("assets/figma-racing/figma-vantage-wordmark-car-stage-140-36.png");
+  --h1-figma-red: #b91820;
+  --h1-figma-red-bright: #e22529;
+  --h1-figma-orange: #ff5b11;
+  --h1-figma-paper: #fff;
+  --h1-figma-muted: rgba(255,255,255,.68);
+  --h1-figma-line: rgba(255,255,255,.22);
+  --h1-figma-glass: rgba(3,0,0,.42);
+  --h1-figma-ease: cubic-bezier(.2,.72,.2,1);
+  --h1-figma-design-width: 1442.25354;
+  --h1-figma-first-height: 970.208;
+  --h1-figma-detail-height: 736.366;
+  --h1-figma-scale: 1;
+}
+
+/* Formal deck shell */
+.h1-figma-racing-shell {
+  --ink: #020000;
+  --ink-2: #090000;
+  --paper: #fff;
+  --muted: rgba(255,255,255,.62);
+  --line: rgba(255,255,255,.18);
+  --line-strong: rgba(255,255,255,.3);
+  --orange: #d31f24;
+  --orange-soft: #ff6b48;
+  background: #020000;
+}
+
+.h1-figma-racing-shell body,
+.h1-figma-racing-shell button {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+}
+
+.h1-figma-racing-shell .display,
+.h1-figma-racing-shell .title,
+.h1-figma-racing-shell .hero-title,
+.h1-figma-racing-shell .metric-value,
+.h1-figma-racing-shell .profit-hero .big,
+.h1-figma-racing-shell .objective-index,
+.h1-figma-racing-shell .kr-summary .score strong,
+.h1-figma-racing-shell .pillar h3 {
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+}
+
+.h1-figma-racing-shell .scene:not(.opening-film):not(.closing) {
+  background:
+    radial-gradient(ellipse at 68% 12%, rgba(198,21,30,.17), transparent 36%),
+    linear-gradient(180deg, #050000, #000);
+}
+
+.h1-figma-racing-shell .scene:not(.opening-film):not(.closing)::before {
+  opacity: .34;
+  background-image:
+    linear-gradient(rgba(255,255,255,.021) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.021) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+.h1-figma-racing-shell .top-hud {
+  background: linear-gradient(to bottom, rgba(0,0,0,.96), rgba(0,0,0,.54), transparent);
+}
+
+.h1-figma-racing-shell .progress > span,
+.h1-figma-racing-shell .rail button.active::after {
+  background: linear-gradient(90deg, #8c1017, #ef2a2e);
+  box-shadow: 0 0 22px rgba(220,26,32,.72);
+}
+
+.h1-figma-racing-shell .hud-button {
+  border-color: rgba(255,255,255,.2);
+  background: rgba(0,0,0,.54);
+}
+
+.h1-figma-racing-shell .hud-button:hover {
+  border-color: #df2027;
+  background: rgba(185,24,32,.16);
+}
+
+.h1-figma-racing-shell .hero-visual {
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.06) 45%, rgba(0,0,0,.76)),
+    var(--h1-racing-stage) !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+
+.h1-figma-racing-shell .hero-visual .image-bg,
+.h1-figma-racing-shell .hero-light-bloom,
+.h1-figma-racing-shell .hero-light-sweep,
+.h1-figma-racing-shell .hero-grid-reveal {
+  display: none !important;
+}
+
+.h1-figma-racing-shell .hero-visual .hero-title {
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-weight: 600;
+  letter-spacing: -.035em;
+  text-shadow: 0 8px 48px #000;
+}
+
+.h1-figma-racing-shell .hero-visual .hero-title span {
+  letter-spacing: .34em;
+  color: rgba(255,255,255,.82);
+}
+
+.h1-figma-racing-shell .report-scene,
+.h1-figma-racing-shell .report-frame-wrap,
+.h1-figma-racing-shell .report-frame {
+  background: #000;
+}
+
+.h1-figma-racing-shell .report-next {
+  border-top-color: rgba(255,255,255,.16);
+  background: rgba(0,0,0,.94);
+  color: rgba(255,255,255,.68);
+}
+
+.h1-figma-racing-shell .report-next:hover {
+  border-color: #c91e24;
+  background: linear-gradient(90deg, rgba(150,11,18,.04), rgba(185,24,32,.18));
+  color: #fff;
+}
+
+.h1-figma-racing-shell .outlook {
+  background:
+    radial-gradient(ellipse at 62% 18%, rgba(185,24,32,.25), transparent 34%),
+    linear-gradient(145deg, #030000, #090000 55%, #000) !important;
+}
+
+.h1-figma-racing-shell .outlook::after {
+  color: rgba(202,25,31,.055);
+}
+
+.h1-figma-racing-shell .pillar-index,
+.h1-figma-racing-shell .closing .display span {
+  color: #e3262c;
+}
+
+/* Embedded report */
+.h1-figma-racing-report {
+  background: #000 !important;
+  scroll-behavior: smooth;
+  scroll-padding-top: 0 !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report {
+  background: #000 !important;
+  color: #fff !important;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report *,
+.h1-figma-racing-report body.h1-embedded-report h1,
+.h1-figma-racing-report body.h1-embedded-report h2,
+.h1-figma-racing-report body.h1-embedded-report h3,
+.h1-figma-racing-report body.h1-embedded-report h4 {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  letter-spacing: normal !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report::before,
+.h1-figma-racing-report body.h1-embedded-report::after {
+  display: none !important;
+}
+
+.h1-figma-racing-report .top-nav {
+  display: none !important;
+}
+
+.h1-figma-racing-report .h1-report-chapter:has(+ .h1-figma-dashboard) {
+  display: none !important;
+}
+
+.h1-figma-racing-report .h1-figma-dashboard {
+  position: relative !important;
+  overflow: clip !important;
+  isolation: isolate;
+  background: #000 !important;
+}
+
+.h1-figma-racing-report .h1-figma-fixed-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background-image: var(--h1-figma-data-stage);
+  background-position: center;
+  background-size: cover;
+}
+
+.h1-figma-racing-report .h1-figma-dashboard::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: rgba(0,0,0,.04);
+}
+
+.h1-figma-racing-report .h1-figma-dashboard > div:last-child {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.h1-figma-racing-report .dash-page {
+  min-height: 100vh !important;
+  height: 100vh;
+  border: 0 !important;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+.h1-figma-racing-report .dash-page.vis {
+  transform: none !important;
+}
+
+.h1-figma-racing-report .dash-page > div {
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+.h1-figma-data-page {
+  min-height: 100vh;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.h1-figma-data-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: transparent;
+}
+
+.h1-figma-page-content {
+  width: 1442.25354px;
+  height: 736.366px;
+  aspect-ratio: 1442.25354 / 736.366;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(var(--h1-figma-scale));
+  transform-origin: center;
+  display: grid;
+  grid-template-rows: 182.78873px 40px 513.57745px;
+  container-type: inline-size;
+}
+
+.h1-figma-data-page.is-overview .h1-figma-page-content {
+  width: 1442.25354px;
+  height: 970.208px;
+  aspect-ratio: 1442.25354 / 970.208;
+  grid-template-rows: 103.98438px 48px 33.85742px 48px 182.78873px 40px 513.57745px;
+}
+
+.h1-figma-data-page.has-module-title:not(.is-overview) .h1-figma-page-content {
+  width: 1442.25354px;
+  height: 818.22363px;
+  aspect-ratio: 1442.25354 / 818.22363;
+  grid-template-rows: 33.85742px 48px 182.78873px 40px 513.57745px;
+}
+
+.h1-figma-operational-title {
+  grid-row: 1;
+  justify-self: center;
+  position: relative;
+  width: 769px;
+  height: 103.98438px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.h1-figma-racing-report .h1-figma-operational-title span {
+  display: block;
+  width: 569.62963px;
+  height: 102px;
+  margin: 0 auto;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,.38);
+  font: italic 800 80px/1.275 "Barlow Condensed", "Arial Narrow", sans-serif !important;
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif !important;
+  letter-spacing: .02em !important;
+  white-space: nowrap;
+  transform: scaleX(1.35);
+}
+
+.h1-figma-racing-report .h1-figma-operational-title strong {
+  position: absolute;
+  top: 65.98438px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 210px;
+  color: #fff;
+  font: 800 52.28169px/1 "Noto Sans SC", sans-serif !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+}
+
+.h1-figma-module-title {
+  grid-row: 1;
+  justify-self: center;
+  width: 448.2915px;
+  height: 33.85742px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.h1-figma-data-page.is-overview .h1-figma-module-title {
+  grid-row: 3;
+}
+
+.h1-figma-data-page.is-paid-ads-chapter .h1-figma-module-title {
+  width: 485.06543px;
+}
+
+.h1-figma-title-chevrons {
+  flex: 0 0 auto;
+  width: 65.14551px !important;
+  height: 33.85742px !important;
+  object-fit: contain;
+}
+
+.h1-figma-title-chevrons.is-right {
+  transform: scaleX(-1);
+}
+
+.h1-figma-racing-report .h1-figma-module-title h1 {
+  margin: 0 !important;
+  color: #fff !important;
+  font: 700 38px/1 "Noto Sans SC", sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.h1-figma-summary-panel {
+  grid-row: 1;
+}
+
+.h1-figma-data-page.is-overview .h1-figma-summary-panel {
+  grid-row: 5;
+}
+
+.h1-figma-data-page.has-module-title:not(.is-overview) .h1-figma-summary-panel {
+  grid-row: 3;
+}
+
+.h1-figma-summary-panel {
+  width: 1442.25354px;
+  height: 182.78873px;
+  padding: 28.84507px;
+  display: grid;
+  grid-template-columns: 724.73242px 566.08398px;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,.25);
+  border: 0;
+  border-radius: 18.02817px;
+  backdrop-filter: blur(9.01408px);
+  -webkit-backdrop-filter: blur(9.01408px);
+  overflow: hidden;
+}
+
+.h1-figma-summary-copy {
+  width: 724.73242px;
+  height: 125.09859px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 28.84507px;
+}
+
+.h1-figma-racing-report .h1-figma-summary-kicker {
+  display: flex;
+  align-items: center;
+  gap: 21.6338px;
+  color: #fff;
+  font: italic 800 32px/34.254px "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.h1-figma-summary-kicker img {
+  width: 102.76056px !important;
+  height: 34.25352px !important;
+  object-fit: contain;
+}
+
+.h1-figma-summary-copy p {
+  margin: 0;
+  width: 724.73242px;
+  white-space: pre-line;
+  color: #c5c5c5;
+  font-size: 21.6338px;
+  line-height: 1.45;
+  letter-spacing: .02em !important;
+}
+
+.h1-figma-summary-table {
+  width: 566.08398px;
+  height: 113.71831px;
+  display: grid;
+  grid-template-columns: repeat(3,126.19718px);
+  justify-content: space-between;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.h1-figma-summary-table.is-simple {
+  grid-template-columns: repeat(2,126.19718px);
+  justify-content: end;
+  gap: 93.746px;
+}
+
+.h1-figma-summary-table.is-comparison {
+  grid-template-columns: repeat(3, 160px);
+  justify-content: space-between;
+}
+
+.h1-figma-summary-table > div {
+  display: grid;
+  grid-template-rows: 41.66px 29.42px 29.42px;
+  align-items: center;
+  gap: 6.61px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.h1-figma-summary-table b {
+  display: block;
+  border-bottom: .901px solid #fff;
+  color: #fff;
+  font: 500 21.6338px/41.66px "Noto Sans SC", sans-serif !important;
+  white-space: nowrap;
+}
+
+.h1-figma-summary-table span {
+  color: rgba(255,255,255,.86);
+  font: 400 14.42254px/29.42px "Noto Sans SC", sans-serif !important;
+  white-space: nowrap;
+}
+
+.h1-figma-data-stage {
+  grid-row: 3;
+  width: 1442.25354px;
+  height: 513.57745px;
+  display: grid;
+  grid-template-columns: 762.59155px 332.61972px;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.h1-figma-data-page.is-overview .h1-figma-data-stage {
+  grid-row: 7;
+}
+
+.h1-figma-data-page.has-module-title:not(.is-overview) .h1-figma-data-stage {
+  grid-row: 5;
+}
+
+.h1-figma-chart-panel {
+  width: 762.59155px;
+  height: 513.57745px;
+  padding: 28.84507px;
+  border: 0;
+  border-radius: 18.02817px;
+  background: rgba(0,0,0,.3);
+  backdrop-filter: blur(14.42253px);
+  -webkit-backdrop-filter: blur(14.42253px);
+  display: grid;
+  grid-template-rows: 27.04225px 16px 297.46478px;
+  row-gap: 57.69014px;
+  overflow: hidden;
+}
+
+.h1-figma-chart-heading {
+  display: flex;
+  align-items: center;
+  gap: 11.71831px;
+}
+
+.h1-figma-chart-heading > span {
+  flex: 0 0 auto;
+  width: 7.21127px;
+  height: 27.04225px;
+  background: #9b1a1f;
+}
+
+.h1-figma-racing-report .h1-figma-chart-heading h2 {
+  margin: 0 !important;
+  color: #fff !important;
+  font: 700 28.84507px/27.04225px "Noto Sans SC", sans-serif !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+}
+
+.h1-figma-chart-legend {
+  width: 100%;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: rgba(255,255,255,.9);
+  font-size: 16px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.h1-figma-chart-legend b {
+  font-weight: 500;
+}
+
+.h1-figma-chart-legend .bar {
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
+  background: linear-gradient(#ea4c11,#681c00);
+}
+
+.h1-figma-chart-legend .line {
+  margin-left: 20px;
+  color: #ca1b22;
+  font-size: 15px;
+  letter-spacing: -.08em;
+  font-weight: 800;
+}
+
+.h1-figma-chart-area {
+  position: relative;
+  width: 704.90141px;
+  height: 297.46478px;
+}
+
+.h1-figma-axis-note {
+  position: absolute;
+  top: 1px;
+  z-index: 2;
+  color: rgba(255,255,255,.9);
+  font: 700 14px/1.2 "Noto Sans SC", sans-serif;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.h1-figma-axis-note.is-left {
+  left: 0;
+}
+
+.h1-figma-axis-note.is-right {
+  right: 0;
+  text-align: right;
+}
+
+.h1-figma-chart-area .recharts-text {
+  font-family: "Noto Sans SC", sans-serif !important;
+}
+
+.h1-figma-chart-panel.is-custom-chart {
+  grid-template-rows: 27.04225px 1fr;
+  row-gap: 20px;
+}
+
+.h1-figma-data-page.is-extended-data .h1-figma-chart-heading h2 {
+  max-width: 672px;
+  overflow: hidden;
+  color: #fff !important;
+  font-size: 20px !important;
+  line-height: 27.04225px !important;
+  text-overflow: ellipsis;
+}
+
+.h1-figma-data-page.is-brand-chapter .h1-figma-module-title {
+  width: 475px;
+}
+
+.h1-figma-data-page.is-extended-data .h1-figma-kpi strong {
+  font-size: 42px !important;
+}
+
+.h1-brand-overview-grid {
+  width: 704.90141px;
+  height: 408px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.h1-brand-mini-card {
+  min-width: 0;
+  height: 408px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 12px;
+  background:
+    linear-gradient(155deg, rgba(82,7,12,.34), rgba(0,0,0,.58)),
+    rgba(0,0,0,.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.h1-brand-mini-card header {
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: 9px 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 4px 8px;
+}
+
+.h1-brand-mini-card header > span {
+  grid-row: 1;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.h1-brand-mini-card header > span.is-red { background: #e22529; }
+.h1-brand-mini-card header > span.is-orange { background: #ff5b11; }
+.h1-brand-mini-card header > span.is-copper { background: #c94a25; }
+
+.h1-brand-mini-card header b {
+  grid-row: 1;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.h1-brand-mini-card header strong {
+  grid-column: 2;
+  grid-row: 2;
+  color: #ff6c4d;
+  font: 800 28px/1 "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+}
+
+.h1-brand-mini-chart {
+  width: 100%;
+  height: 194px;
+  margin-top: 4px;
+}
+
+.h1-brand-mini-card small {
+  display: block;
+  margin-top: 8px;
+  color: rgba(255,255,255,.68);
+  font-size: 10.5px;
+  line-height: 1.4;
+}
+
+.h1-brand-search-averages {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  color: rgba(255,255,255,.72);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.h1-brand-search-averages b {
+  color: #fff;
+  font-size: 14px;
+}
+
+.h1-brand-search-averages i {
+  color: #ff5b11;
+  font-style: normal;
+}
+
+.h1-brand-search-trend {
+  width: 100%;
+  height: 190px;
+  margin-top: 4px;
+  overflow: visible;
+}
+
+.h1-brand-search-divider {
+  stroke: rgba(255,255,255,.22);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.h1-brand-search-line {
+  fill: none;
+  stroke: #ff5b11;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(255,91,17,.46));
+}
+
+.h1-brand-search-trend text {
+  fill: rgba(255,255,255,.56);
+  font-size: 9px;
+}
+
+.h1-brand-mini-card.is-keywords {
+  background:
+    linear-gradient(155deg, rgba(93,15,19,.48), rgba(5,0,0,.7)),
+    rgba(0,0,0,.36);
+}
+
+.h1-brand-keywords {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.h1-brand-keywords span {
+  min-height: 48px;
+  padding: 0 12px;
+  border: 1px solid rgba(255,100,78,.18);
+  border-radius: 8px;
+  background: rgba(255,255,255,.07);
+  color: #fff;
+  font-size: 12px;
+  line-height: 48px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.h1-extended-chart {
+  width: 704.90141px;
+  height: 408px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.h1-extended-legend {
+  flex: 0 0 auto;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: rgba(255,255,255,.82);
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+
+.h1-extended-legend b {
+  margin-right: 9px;
+  font-weight: 600;
+}
+
+.h1-extended-legend .swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.h1-extended-legend .swatch.vantage { background: #b91820; }
+.h1-extended-legend .swatch.industry { background: #ff5b11; }
+.h1-extended-legend .swatch.industry-neutral { background: rgba(255,255,255,.38); }
+
+.h1-extended-legend .line-swatch {
+  width: 24px;
+  height: 2px;
+  border-top: 2px dashed #fff;
+}
+
+.h1-extended-legend .line-swatch.is-orange {
+  border-color: #ff5b11;
+}
+
+.h1-social-sov-plot {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 244px;
+}
+
+.h1-extended-line-label,
+.h1-extended-share-label {
+  fill: #fff;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.9);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.h1-social-values {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 4px;
+  margin: 3px 30px 0 0;
+}
+
+.h1-social-values > div {
+  display: grid;
+  grid-template-columns: 20px repeat(12, minmax(0, 1fr));
+  align-items: center;
+  color: rgba(255,255,255,.62);
+  font-size: 8px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.h1-social-values b {
+  color: #fff;
+  font-size: 9px;
+}
+
+.h1-extended-source {
+  margin: 7px 0 0;
+  color: rgba(255,255,255,.44);
+  font-size: 9px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.h1-followers-share-plot,
+.h1-followers-trend-plot {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+}
+
+.h1-extended-bar-label {
+  fill: #fff;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.9);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.h1-extended-bar-label.is-orange {
+  fill: #ff9b65;
+}
+
+.h1-extended-bar-label.is-small {
+  font-size: 8.5px;
+}
+
+.h1-extended-growth-pill {
+  fill: rgba(44,3,7,.86);
+  stroke: rgba(255,255,255,.26);
+  stroke-width: 1px;
+}
+
+.h1-extended-growth-text {
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.72);
+  stroke-width: 2px;
+}
+
+.h1-figma-chart-value-text {
+  fill: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.88);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .01em;
+}
+
+.h1-figma-percent-pill {
+  fill: rgba(93,10,16,.96);
+  stroke: rgba(255,92,92,.92);
+  stroke-width: 1px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.46));
+}
+
+.h1-figma-percent-pill-text {
+  fill: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .01em;
+  pointer-events: none;
+}
+
+.h1-figma-data-stage.is-region .h1-figma-chart-panel {
+  grid-template-rows: 27.04225px 1fr;
+  row-gap: 28.84507px;
+}
+
+.h1-figma-kpi-stack {
+  width: 332.61972px;
+  height: 513.57745px;
+  display: grid;
+  grid-template-rows: 237.28168px 237.28168px;
+  gap: 39.01409px;
+}
+
+.h1-figma-kpi {
+  position: relative;
+  width: 331.71832px;
+  height: 237.28168px;
+  padding: 28.84507px 57.69014px 43.2676px;
+  border: 0;
+  border-radius: 18.02817px;
+  background: rgba(0,0,0,.3);
+  backdrop-filter: blur(14.42253px);
+  -webkit-backdrop-filter: blur(14.42253px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+}
+
+.h1-figma-kpi > img {
+  position: static;
+  flex: 0 0 auto;
+  width: 216.33803px;
+  height: 36.05634px;
+  object-fit: fill;
+}
+
+.h1-figma-kpi > span {
+  position: absolute;
+  top: 38.76056px;
+  left: 57.69014px;
+  width: 216.33803px;
+  z-index: 1;
+  color: #fff;
+  font-size: 21.6338px;
+  line-height: 21.6338px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.h1-figma-kpi strong {
+  display: block;
+  margin-top: 43.2676px;
+  color: #fff;
+  font: 700 55.88732px/.9 "Noto Sans SC", sans-serif !important;
+  letter-spacing: 0 !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.h1-figma-kpi small {
+  margin-top: 28.84507px;
+  color: rgba(255,255,255,.86);
+  font-size: 21.6338px;
+  line-height: 1;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.h1-figma-region-table-wrap {
+  width: 704.90141px;
+  height: 400px;
+  min-height: 0;
+  overflow: hidden;
+  padding: 4px 0 0;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  background:
+    linear-gradient(90deg, rgba(2,2,2,.84), rgba(39,6,9,.48)),
+    rgba(0,0,0,.34);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.h1-figma-region-table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.h1-figma-region-table col.is-half { width: 11%; }
+.h1-figma-region-table col.is-region { width: 11%; }
+.h1-figma-region-table col.is-register { width: 14%; }
+.h1-figma-region-table col.is-ftd { width: 11%; }
+.h1-figma-region-table col.is-nd { width: 16%; }
+.h1-figma-region-table col.is-tv { width: 24%; }
+.h1-figma-region-table col.is-roi { width: 13%; }
+
+.h1-figma-region-table th,
+.h1-figma-region-table td {
+  vertical-align: middle;
+}
+
+.h1-figma-region-table th {
+  padding: 11px 8px;
+  border-bottom: 1px solid rgba(255,255,255,.3);
+  color: rgba(255,255,255,.76) !important;
+  font-size: 12.5px !important;
+  line-height: 1.2;
+  font-weight: 750 !important;
+  letter-spacing: .08em;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.h1-figma-region-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid rgba(255,255,255,.09) !important;
+  color: rgba(255,255,255,.9);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.h1-figma-region-table th:nth-child(-n+2),
+.h1-figma-region-table td:nth-child(-n+2) {
+  text-align: left;
+}
+
+.h1-figma-region-table td:first-child {
+  color: rgba(255,255,255,.72);
+  font-weight: 650;
+}
+
+.h1-figma-region-table td:nth-child(2) {
+  color: #fff;
+  font-weight: 750;
+}
+
+.h1-figma-region-table tbody tr:nth-child(even):not(.is-current) {
+  background: rgba(255,255,255,.018);
+}
+
+.h1-figma-region-table tr.is-current {
+  background: linear-gradient(90deg, rgba(140,17,24,.3), rgba(110,14,20,.13));
+}
+
+.h1-figma-region-table tr.is-period-start td {
+  border-top: 2px solid rgba(233,54,59,.72) !important;
+}
+
+.h1-figma-region-table strong {
+  display: inline-flex;
+  min-width: 48px;
+  min-height: 24px;
+  padding: 2px 7px;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 14.5px;
+  line-height: 1;
+  font-weight: 800;
+  background: rgba(151,20,27,.82);
+  border: 1px solid rgba(255,92,92,.56);
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.24);
+}
+
+.h1-figma-page-number {
+  position: absolute;
+  right: 0;
+  bottom: -32px;
+  color: #fff;
+  font: 700 14px/1 "Barlow Condensed", sans-serif !important;
+  letter-spacing: .08em !important;
+}
+
+.h1-figma-page-number span {
+  color: rgba(255,255,255,.42);
+}
+
+/* Expanded PPT3 pages 11–15: accuracy-first editorial layouts. */
+.h1-extended-editorial-page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  color: #fff;
+}
+
+.h1-extended-editorial-canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1600px;
+  height: 900px;
+  padding: 42px 44px 34px;
+  display: grid;
+  grid-template-rows: 118px minmax(0, 1fr) 144px;
+  gap: 18px;
+  transform: translate(-50%, -50%) scale(var(--h1-figma-scale));
+  transform-origin: center;
+}
+
+.h1-extended-editorial-header {
+  position: relative;
+  padding-left: 22px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: 28px 52px 26px;
+  align-items: center;
+  column-gap: 36px;
+}
+
+.h1-extended-editorial-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #ff5b11, #b91820 72%, transparent);
+  box-shadow: 0 0 18px rgba(255,91,17,.42);
+}
+
+.h1-extended-editorial-section {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255,255,255,.78);
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.h1-extended-editorial-section span {
+  width: 34px;
+  height: 2px;
+  background: #ff5b11;
+}
+
+.h1-figma-racing-report .h1-extended-editorial-header h1 {
+  grid-column: 1;
+  grid-row: 2;
+  margin: 0;
+  color: #fff;
+  font: 800 44px/1 "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  letter-spacing: -.01em !important;
+}
+
+.h1-extended-editorial-header > p {
+  grid-column: 1;
+  grid-row: 3;
+  margin: 0;
+  color: rgba(255,255,255,.72);
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+.h1-extended-editorial-header > small {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  justify-self: end;
+  width: max-content;
+  max-width: none;
+  padding: 12px 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 9px;
+  background: rgba(0,0,0,.62);
+  color: rgba(255,255,255,.68);
+  font-size: 12px;
+  line-height: 1.55;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.h1-extended-editorial-main {
+  min-height: 0;
+}
+
+/* Isolate the new data layouts from legacy OKR rules in h1-middle-theme.css. */
+.h1-figma-racing-report .h1-extended-editorial-main {
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+.h1-figma-racing-report .h1-extended-editorial-main .h1-editorial-chart-surface {
+  margin-bottom: 0 !important;
+  padding: 24px 28px 18px !important;
+}
+
+.h1-editorial-chart-surface,
+.h1-editorial-insight-rail article,
+.h1-reputation-panel {
+  border: 1px solid rgba(255,255,255,.13);
+  background: rgba(0,0,0,.82);
+  box-shadow: 0 20px 54px rgba(0,0,0,.34);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.h1-editorial-chart-surface {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  padding: 24px 28px 18px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.h1-editorial-chart-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, #ff5b11, #b91820 38%, transparent 78%);
+}
+
+.h1-editorial-chart-title {
+  position: relative;
+  z-index: 2;
+  min-height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.h1-editorial-chart-title span {
+  display: block;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.h1-figma-racing-report .h1-editorial-chart-title h2 {
+  margin: 6px 0 0;
+  color: rgba(255,255,255,.58);
+  font: 600 13px/1.35 "Noto Sans SC", sans-serif !important;
+  letter-spacing: .03em !important;
+}
+
+.h1-editorial-chart-title > strong {
+  flex: 0 0 auto;
+  min-width: 134px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255,91,17,.5);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(185,24,32,.88), rgba(83,5,10,.9));
+  color: #fff;
+  font: 800 25px/1 "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  text-align: center;
+}
+
+.h1-editorial-axis-label {
+  position: absolute;
+  z-index: 2;
+  top: 88px;
+  color: rgba(255,255,255,.68);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em !important;
+}
+
+.h1-editorial-axis-label.is-left { left: 30px; }
+.h1-editorial-axis-label.is-right { right: 30px; text-align: right; }
+
+.h1-editorial-comparison-line,
+.h1-search-direction {
+  color: rgba(255,255,255,.82);
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 650;
+  text-align: center;
+}
+
+.h1-editorial-source-note {
+  display: block;
+  color: rgba(255,255,255,.52);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.h1-extended-editorial-conclusion {
+  position: relative;
+  min-height: 0;
+  padding: 20px 26px;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  align-items: center;
+  gap: 22px;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 14px;
+  background: linear-gradient(110deg, rgba(112,8,15,.92), rgba(12,1,2,.93) 58%, rgba(0,0,0,.92));
+  box-shadow: 0 16px 42px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.h1-extended-editorial-conclusion > div {
+  display: contents;
+}
+
+.h1-extended-editorial-conclusion b {
+  display: inline-flex;
+  min-height: 42px;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid rgba(255,118,80,.38);
+  border-radius: 8px;
+  background: linear-gradient(100deg, rgba(193,20,29,.98), rgba(145,10,17,.92));
+  color: #fff;
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  box-shadow: 0 8px 22px rgba(102,3,8,.26), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.h1-extended-editorial-conclusion b::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 4px;
+  height: 20px;
+  border-radius: 999px;
+  background: #ff5b11;
+  box-shadow: 0 0 12px rgba(255,91,17,.7);
+}
+
+.h1-extended-editorial-conclusion p {
+  margin: 0;
+  color: rgba(255,255,255,.94);
+  font-size: 18px;
+  line-height: 1.62;
+  font-weight: 520;
+  text-wrap: pretty;
+}
+
+.h1-extended-editorial-conclusion.has-takeaway {
+  grid-template-columns: 150px minmax(0, 1fr) 380px;
+}
+
+.h1-extended-editorial-conclusion > strong {
+  padding-left: 20px;
+  border-left: 1px solid rgba(255,255,255,.14);
+  color: #ff9d78;
+  font-size: 15px;
+  line-height: 1.58;
+}
+
+.h1-extended-editorial-page-number {
+  position: absolute;
+  right: 48px;
+  bottom: 13px;
+  color: #fff;
+  font: 800 13px/1 "Barlow Condensed", sans-serif !important;
+  letter-spacing: .12em !important;
+}
+
+.h1-extended-editorial-page-number span {
+  color: rgba(255,255,255,.42);
+}
+
+.h1-brand-voice-layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+}
+
+.h1-brand-voice-layout > .h1-editorial-chart-surface {
+  display: flex;
+  flex-direction: column;
+}
+
+.h1-brand-voice-plot {
+  flex: 1 1 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  margin-top: 2px;
+}
+
+.h1-editorial-x-tick {
+  fill: #fff;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.h1-editorial-x-subtick {
+  fill: rgba(255,255,255,.48);
+  font-size: 10px;
+}
+
+.h1-editorial-bar-label,
+.h1-extended-bar-label {
+  fill: #fff;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: 13px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.94);
+  stroke-width: 3px;
+}
+
+.h1-editorial-insight-rail {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.h1-editorial-insight-rail article {
+  position: relative;
+  padding: 20px 22px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.h1-editorial-insight-rail article::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: #b91820;
+}
+
+.h1-editorial-insight-rail article.is-accent::before {
+  background: #ff5b11;
+}
+
+.h1-editorial-insight-rail small {
+  display: block;
+  color: #f0e4de;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-shadow: 0 1px 2px rgba(0,0,0,.92);
+}
+
+.h1-editorial-insight-rail strong {
+  display: block;
+  margin-top: 6px;
+  color: #fff7f2;
+  font: 800 38px/1 "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 4px rgba(0,0,0,.94);
+}
+
+.h1-editorial-insight-rail p {
+  margin: 8px 0 0;
+  color: #d8cbc5;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-shadow: 0 1px 2px rgba(0,0,0,.92);
+}
+
+.h1-editorial-insight-rail em {
+  position: absolute;
+  right: 16px;
+  top: 18px;
+  color: #ffb184;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px rgba(0,0,0,.94);
+}
+
+.h1-brand-search-layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 18px;
+}
+
+.h1-brand-search-trend {
+  display: block;
+  width: 100%;
+  height: 330px;
+  margin-top: 4px;
+}
+
+.h1-brand-search-trend .h1-brand-search-phase {
+  fill: rgba(255,255,255,.72);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.h1-brand-search-trend .h1-brand-search-phase.is-current {
+  fill: #ff9472;
+}
+
+.h1-brand-search-trend text:not(.h1-brand-search-phase) {
+  font-size: 11px;
+}
+
+.h1-search-direction {
+  margin-top: -4px;
+  text-align: left;
+}
+
+.h1-brand-search-layout .h1-editorial-source-note {
+  margin-top: 12px;
+}
+
+.h1-reputation-panel {
+  padding: 26px 24px;
+  border-radius: 16px;
+}
+
+.h1-reputation-panel header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.h1-reputation-panel header span {
+  width: 4px;
+  height: 24px;
+  background: #b91820;
+}
+
+.h1-figma-racing-report .h1-reputation-panel h2 {
+  margin: 0;
+  color: #fff7f2;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.92);
+}
+
+.h1-reputation-keywords {
+  display: grid;
+  gap: 13px;
+  margin-top: 28px;
+}
+
+.h1-reputation-keywords strong {
+  min-height: 52px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255,118,46,.55);
+  border-radius: 9px;
+  background: rgba(54,5,9,.9);
+  color: #fff7f2;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-shadow: 0 1px 2px rgba(0,0,0,.92);
+}
+
+.h1-reputation-panel > p {
+  margin: 24px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.2);
+  color: #d8cbc5;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.65;
+  text-shadow: 0 1px 2px rgba(0,0,0,.92);
+}
+
+.h1-editorial-legend {
+  min-height: 30px;
+  margin: 4px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 11px 24px;
+  color: rgba(255,255,255,.72);
+  font-size: 11px;
+}
+
+.h1-editorial-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.h1-editorial-legend b {
+  font-weight: 600;
+}
+
+.h1-editorial-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: #8f1620;
+}
+
+.h1-editorial-legend i.industry { background: #ff5b11; }
+.h1-editorial-legend i.industry-neutral { background: rgba(255,255,255,.34); }
+.h1-editorial-legend i.sov-line,
+.h1-editorial-legend i.orange-line {
+  width: 28px;
+  height: 2px;
+  border-radius: 0;
+  border-top: 2px dashed #fff;
+  background: transparent;
+}
+.h1-editorial-legend i.orange-line { border-color: #ff5b11; }
+
+.h1-social-sov-surface,
+.h1-followers-share-surface,
+.h1-followers-trend-surface {
+  display: flex;
+  flex-direction: column;
+}
+
+.h1-social-sov-plot {
+  flex: 0 0 270px;
+  width: 100%;
+  height: 270px;
+  margin-top: 2px;
+}
+
+.h1-social-period-bands {
+  margin: -2px 52px 0 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  color: rgba(255,255,255,.72);
+  font-size: 10px;
+  font-weight: 750;
+  text-align: center;
+}
+
+.h1-social-period-bands span {
+  padding-top: 5px;
+  border-top: 1px solid rgba(255,255,255,.2);
+}
+
+.h1-social-values {
+  margin: 8px 42px 0 50px;
+  display: grid;
+  gap: 3px;
+}
+
+.h1-social-values > div {
+  display: grid;
+  grid-template-columns: 58px repeat(12, minmax(0, 1fr));
+  align-items: center;
+  color: rgba(255,255,255,.58);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.h1-social-values b {
+  color: rgba(255,255,255,.84);
+  font-size: 9.5px;
+  text-align: left;
+}
+
+.h1-social-sov-surface .h1-editorial-source-note {
+  margin: auto 0 0;
+  text-align: center;
+}
+
+.h1-extended-line-label,
+.h1-extended-share-label {
+  fill: #fff;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: 9px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.95);
+  stroke-width: 3px;
+}
+
+.h1-followers-share-plot,
+.h1-followers-trend-plot {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  margin-top: 6px;
+}
+
+.h1-extended-share-label {
+  font-size: 12px;
+}
+
+.h1-extended-bar-label.is-small {
+  font-size: 9px;
+}
+
+.h1-extended-growth-pill {
+  fill: rgba(23,7,9,.96);
+  stroke: rgba(255,241,227,.42);
+}
+
+.h1-extended-growth-text {
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: 10px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: #170709;
+  stroke-width: 2.4px;
+}
+
+.h1-followers-trend-surface .h1-editorial-legend {
+  color: #f0e4de;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.h1-followers-trend-surface .h1-editorial-legend i.sov-line {
+  border-top: 3px solid #fff1e3;
+}
+
+.h1-followers-trend-surface .h1-editorial-legend i.orange-line {
+  border-top: 3px solid #ff762e;
+}
+
+.h1-followers-trend-surface .recharts-line-curve {
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.95)) drop-shadow(0 0 2px rgba(255,118,46,.22));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:root {
+  --h1-okr-design-width: 1920;
+  --h1-okr-design-height: 1080;
+  --h1-okr-black: #080808;
+  --h1-okr-gold-a: #d4a053;
+  --h1-okr-gold-b: #c38634;
+  --h1-okr-ivory: #fff3e5;
+  --h1-okr-charcoal: #1b1b1b;
+  --h1-okr-trophy: url("/previews/assets/h1-review-bg-320-194-2280x1346.png");
+}
+
+.h1-figma-racing-report body.h1-embedded-report > #root > div > main.h1-okr-report {
+  position: relative;
+  z-index: 3;
+  isolation: isolate;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--h1-okr-black) !important;
+}
+
+.h1-okr-page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background: transparent;
+  color: #fff;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-page {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.h1-okr-canvas {
+  --h1-okr-scale: .5;
+  position: absolute;
+  z-index: 2;
+  isolation: isolate;
+  top: 50%;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: transparent;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(var(--h1-okr-scale));
+  transform-origin: 50% 50%;
+}
+
+.h1-okr-canvas.is-scaled {
+  opacity: 1;
+}
+
+.h1-okr-shared-backdrop {
+  position: sticky;
+  z-index: 0;
+  isolation: isolate;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  margin-bottom: -100vh;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--h1-okr-black);
+  opacity: 1;
+}
+
+.h1-okr-shared-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0) 0 66%, rgba(0,0,0,.08) 100%),
+    radial-gradient(circle at 70% 45%, rgba(84,24,11,.08), transparent 46%);
+  pointer-events: none;
+}
+
+.h1-okr-visual {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.h1-okr-visual img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.h1-okr-title-group {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+}
+
+.h1-okr-outline-title {
+  position: absolute;
+  top: 79px;
+  left: 242px;
+  width: 954px;
+  height: 154px;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 80px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 154px;
+  letter-spacing: 1.6px;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-text-stroke: .923207px rgba(255,255,255,.7);
+  white-space: nowrap;
+}
+
+.h1-okr-outline-title > span {
+  position: absolute;
+  top: 73px;
+  left: 1px;
+  display: block;
+  width: 956px;
+  height: 61px;
+  overflow: hidden;
+  color: transparent;
+  background: url("/previews/assets/h1-one-brand-one-system-outline-956x61.png") center / 956px 61px no-repeat;
+  font-size: 0;
+  line-height: 0;
+  text-indent: -9999px;
+  -webkit-text-stroke: 0;
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-title-group h1 {
+  position: absolute;
+  z-index: 1;
+  top: 173px;
+  left: 344.5px;
+  width: 750px;
+  height: 80px;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 52.28px !important;
+  font-weight: 900 !important;
+  line-height: 80.5px !important;
+  letter-spacing: 0 !important;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.h1-okr-title-latin {
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-weight: 900 !important;
+}
+
+.h1-okr-insight-rail {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+}
+
+.h1-okr-insight-card {
+  --h1-okr-card-text: #fff;
+  position: absolute;
+  isolation: isolate;
+  width: 377.61px;
+  height: 233.58px;
+  padding: 0;
+  color: var(--h1-okr-card-text);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.h1-okr-card-art {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.h1-okr-insight-card.is-gold {
+  top: 128px;
+  left: 1285px;
+}
+
+.h1-okr-insight-card.is-ivory {
+  top: 423px;
+  left: 1285px;
+  --h1-okr-card-text: #14110a;
+}
+
+.h1-okr-insight-card.is-charcoal {
+  top: 718px;
+  left: 1285px;
+  height: 233.57px;
+}
+
+.h1-okr-icon-medallion {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 320.52px;
+  width: 57.1px;
+  height: 57.1px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.h1-okr-insight-card.is-gold .h1-okr-icon-medallion {
+  background: transparent;
+}
+
+.h1-okr-insight-card.is-ivory .h1-okr-icon-medallion {
+  background:
+    linear-gradient(0deg, rgba(255,244,224,.9), rgba(255,244,224,.9)),
+    rgba(0,0,0,.45);
+  backdrop-filter: blur(17.5px);
+  -webkit-backdrop-filter: blur(17.5px);
+}
+
+.h1-okr-insight-card.is-charcoal .h1-okr-icon-medallion {
+  background: transparent;
+}
+
+.h1-okr-insight-icon {
+  display: block;
+  object-fit: contain;
+}
+
+.h1-okr-insight-icon.is-system {
+  width: 57.1px;
+  height: 57.1px;
+}
+
+.h1-okr-insight-icon.is-touchpoints {
+  width: 28.3411px;
+  height: 31.5476px;
+}
+
+.h1-okr-insight-icon.is-global {
+  width: 35.4409px;
+  height: 35.4409px;
+}
+
+svg.h1-okr-insight-icon circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4.624;
+}
+
+.h1-okr-insight-card h2 {
+  position: absolute;
+  z-index: 2;
+  top: 30.49px;
+  left: 31.79px;
+  width: 250.44px;
+  height: 52.55px;
+  margin: 0;
+  color: inherit;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  line-height: 39px !important;
+  letter-spacing: 0 !important;
+}
+
+.h1-okr-insight-card.is-gold h2 {
+  left: 35.69px;
+}
+
+.h1-okr-insight-card.is-ivory h2 {
+  left: 32.44px;
+}
+
+.h1-okr-insight-card p {
+  position: absolute;
+  z-index: 2;
+  top: 169.34px;
+  left: 31.79px;
+  width: 321.17px;
+  margin: 0;
+  color: inherit;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0;
+  opacity: 1;
+}
+
+.h1-okr-insight-card.is-gold p {
+  top: 173.88px;
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-outline-title {
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  letter-spacing: 1.6px !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-title-latin,
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-insight-card p {
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.h1-okr-results-canvas {
+  width: 1920px;
+  height: 1080px;
+}
+
+.h1-okr-results-title-group {
+  position: absolute;
+  z-index: 3;
+  top: 118px;
+  left: 228px;
+  width: 995px;
+  height: 120px;
+  text-align: center;
+}
+
+.h1-okr-results-outline {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 76px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(255,255,255,.62);
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-results-title-group h1 {
+  position: absolute;
+  z-index: 1;
+  top: 38px;
+  left: 162px;
+  width: 660px;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 50px !important;
+  font-weight: 900 !important;
+  line-height: 1.18 !important;
+  letter-spacing: 0 !important;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 2px 12px rgba(0,0,0,.35);
+}
+
+.h1-okr-results-rail {
+  position: absolute;
+  z-index: 3;
+  top: 232px;
+  left: 1043px;
+  width: 718px;
+  height: 765px;
+}
+
+.h1-okr-results-definition,
+.h1-okr-results-summary {
+  position: absolute;
+  left: 0;
+  width: 718px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color: #fff;
+  background:
+    linear-gradient(90deg, rgba(38,13,12,.95), rgba(31,26,20,.9)),
+    rgba(20,16,13,.9);
+  border: 1px solid rgba(255,255,255,.025);
+  border-radius: 26px;
+  box-shadow: 0 14px 44px rgba(0,0,0,.2);
+  text-align: center;
+}
+
+.h1-okr-results-definition {
+  top: 0;
+  height: 94px;
+  padding: 15px 48px;
+  gap: 6px;
+}
+
+.h1-okr-results-definition strong {
+  color: rgba(255,255,255,.86);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.42;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.h1-okr-results-panel {
+  position: absolute;
+  top: 116px;
+  left: 0;
+  width: 718px;
+  height: 526px;
+  box-sizing: border-box;
+  padding: 24px 31px 31px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 22% 30%, rgba(91,26,20,.26), transparent 46%),
+    linear-gradient(100deg, rgba(35,12,12,.95), rgba(25,22,18,.94));
+  border: 1px solid rgba(255,255,255,.025);
+  border-radius: 28px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.24);
+}
+
+.h1-okr-results-panel > header {
+  height: 100px;
+  text-align: center;
+}
+
+.h1-okr-results-panel > header h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 31px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.h1-okr-results-panel > header h2 span {
+  display: inline-block;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 56px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: .58;
+  letter-spacing: -10px;
+  opacity: .72;
+  -webkit-text-stroke: 1px rgba(255,255,255,.72);
+  transform: translateY(1px) scaleX(1.22);
+}
+
+.h1-okr-results-panel > header p {
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.7);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: .4px;
+}
+
+.h1-okr-results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  width: 656px;
+  height: 370px;
+}
+
+.h1-okr-result-card {
+  --h1-okr-result-bg: #e8deca;
+  --h1-okr-result-fg: #4a310e;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  padding: 22px 25px 18px;
+  overflow: visible;
+  color: var(--h1-okr-result-fg);
+  background: var(--h1-okr-result-bg);
+  border-radius: 25px 50px 28px 28px;
+  box-shadow: 0 12px 26px rgba(0,0,0,.18);
+}
+
+.h1-okr-result-card.is-gold {
+  --h1-okr-result-bg: linear-gradient(135deg, #a87631, #8d611f);
+  --h1-okr-result-fg: #fff;
+}
+
+.h1-okr-result-card.is-charcoal {
+  --h1-okr-result-bg: linear-gradient(135deg, #202020, #191919);
+  --h1-okr-result-fg: #fff;
+}
+
+.h1-okr-result-card.is-ivory {
+  --h1-okr-result-bg: #e8deca;
+  --h1-okr-result-fg: #4a310e;
+}
+
+.h1-okr-result-number {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  width: 57px;
+  height: 57px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border-radius: 50%;
+  color: var(--h1-okr-result-fg);
+  background: var(--h1-okr-result-bg);
+  border: 10px solid rgba(16,14,12,.96);
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  transform: translate(17px, -2px);
+}
+
+.h1-okr-result-card h3 {
+  width: calc(100% - 34px);
+  margin: 0;
+  color: inherit;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.h1-okr-result-card p {
+  position: absolute;
+  left: 25px;
+  right: 24px;
+  bottom: 19px;
+  margin: 0;
+  color: inherit;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.48;
+  letter-spacing: 0;
+  opacity: .92;
+}
+
+.h1-okr-results-summary {
+  top: 666px;
+  height: 95px;
+  padding: 13px 42px;
+  gap: 7px;
+}
+
+.h1-okr-results-summary strong {
+  color: rgba(255,255,255,.93);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.38;
+  white-space: nowrap;
+}
+
+.h1-okr-results-summary span {
+  color: rgba(255,255,255,.7);
+  font-family: "Gilroy", "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.h1-okr-appendix-canvas {
+  width: 1920px;
+  height: 1080px;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+}
+
+.h1-okr-appendix-title {
+  position: absolute;
+  z-index: 3;
+  top: 78px;
+  left: 390px;
+  width: 1090px;
+  height: 114px;
+  text-align: center;
+}
+
+.h1-okr-appendix-title > span {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif;
+  font-size: 72px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(255,255,255,.38);
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-appendix-title h1 {
+  position: absolute;
+  z-index: 1;
+  top: 38px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 46px !important;
+  font-weight: 900 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 0 3px 18px rgba(0,0,0,.45);
+}
+
+.h1-okr-section-intro {
+  position: absolute;
+  z-index: 3;
+  top: 196px;
+  left: 250px;
+  width: 1420px;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 34px;
+  color: #fff;
+  background: linear-gradient(90deg, rgba(179,103,26,.58), rgba(37,23,17,.86));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 26px;
+  box-shadow: 0 18px 42px rgba(0,0,0,.22);
+}
+
+.h1-okr-section-intro i {
+  margin-right: 24px;
+  color: #fff;
+  font-size: 24px;
+  font-style: italic;
+  letter-spacing: -5px;
+}
+
+.h1-okr-section-intro strong {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.h1-okr-section-intro p {
+  margin: 0 0 0 auto;
+  color: rgba(255,255,255,.66);
+  font-size: 14px;
+}
+
+.h1-okr-awards-columns {
+  position: absolute;
+  z-index: 3;
+  top: 302px;
+  left: 330px;
+  width: 1260px;
+  height: 570px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+.h1-okr-awards-panel {
+  box-sizing: border-box;
+  padding: 0 22px 22px;
+  background: linear-gradient(145deg, rgba(151,84,21,.76), rgba(44,25,17,.9));
+  border: 1px solid rgba(255,236,195,.17);
+  border-radius: 28px;
+  box-shadow: 0 24px 54px rgba(0,0,0,.25);
+}
+
+.h1-okr-awards-panel.is-h2 {
+  background: linear-gradient(145deg, rgba(111,67,26,.74), rgba(27,24,20,.92));
+}
+
+.h1-okr-awards-panel > header {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  border-bottom: 1px solid rgba(255,255,255,.14);
+}
+
+.h1-okr-awards-panel > header b {
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 44px;
+  color: #63390f;
+  background: #eed6a7;
+  border-radius: 22px;
+  font-family: "Gilroy", sans-serif;
+  font-size: 27px;
+}
+
+.h1-okr-awards-panel > header h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.h1-okr-award-list {
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+}
+
+.h1-okr-award-list > button,
+.h1-okr-award-list > div {
+  width: 100%;
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: 52px 1fr 78px;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  color: #fff;
+  background: rgba(20,16,13,.42);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  text-align: left;
+}
+
+.h1-okr-award-list > button {
+  appearance: none;
+  cursor: zoom-in;
+}
+
+.h1-okr-award-list em {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  color: #3e250f;
+  background: #e5bd78;
+  border-radius: 50%;
+  font-family: "Gilroy", sans-serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.h1-okr-award-list span {
+  display: grid;
+  gap: 9px;
+}
+
+.h1-okr-award-list strong {
+  color: #fff;
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.h1-okr-award-list small {
+  color: rgba(255,255,255,.62);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.h1-okr-award-list i {
+  justify-self: end;
+  color: #6a3a13;
+  background: #f3ead9;
+  border-radius: 10px;
+  font-size: 34px;
+  font-style: normal;
+  text-align: center;
+}
+
+.h1-okr-awards-summary {
+  position: absolute;
+  z-index: 3;
+  top: 899px;
+  left: 330px;
+  width: 1260px;
+  height: 82px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 34px;
+  color: #fff;
+  background: linear-gradient(90deg, rgba(128,72,19,.72), rgba(31,24,19,.9));
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 24px;
+}
+
+.h1-okr-awards-summary span {
+  margin-right: 24px;
+  color: #edc47d;
+  font-size: 34px;
+}
+
+.h1-okr-awards-summary p {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.h1-okr-event-panel {
+  position: absolute;
+  z-index: 3;
+  top: 302px;
+  left: 720px;
+  width: 1030px;
+  height: 650px;
+  box-sizing: border-box;
+  padding: 28px 34px;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(111,54,19,.82), rgba(27,21,16,.94));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 32px;
+  box-shadow: 0 28px 62px rgba(0,0,0,.28);
+}
+
+.h1-okr-event-panel > header {
+  height: 100px;
+  display: grid;
+  grid-template-columns: 42px 130px 1fr;
+  align-items: start;
+  column-gap: 16px;
+}
+
+.h1-okr-event-panel > header > span {
+  padding-top: 5px;
+  color: #dfaf60;
+  font-size: 28px;
+}
+
+.h1-okr-event-panel > header small {
+  color: rgba(255,255,255,.58);
+  font-family: "Gilroy", sans-serif;
+  font-size: 16px;
+}
+
+.h1-okr-event-panel > header h2 {
+  margin: 1px 0 0;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.h1-okr-event-panel > header p {
+  margin: 9px 0 0;
+  color: rgba(255,255,255,.7);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.h1-okr-salon-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  height: 238px;
+}
+
+.h1-okr-salon-metrics article {
+  box-sizing: border-box;
+  padding: 24px 26px;
+  background: linear-gradient(135deg, rgba(171,99,30,.82), rgba(115,66,25,.62));
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 24px;
+}
+
+.h1-okr-salon-metrics b,
+.h1-okr-salon-metrics strong,
+.h1-okr-salon-metrics p {
+  display: block;
+}
+
+.h1-okr-salon-metrics b {
+  color: #f6e2bd;
+  font-size: 16px;
+}
+
+.h1-okr-salon-metrics strong {
+  margin-top: 18px;
+  color: #fff;
+  font-size: 25px;
+}
+
+.h1-okr-salon-metrics p {
+  margin: 23px 0 0;
+  color: rgba(255,255,255,.72);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.h1-okr-expo-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  height: 190px;
+}
+
+.h1-okr-expo-metrics article {
+  position: relative;
+  box-sizing: border-box;
+  padding: 22px 15px;
+  color: #fff;
+  background: linear-gradient(145deg, rgba(174,105,39,.82), rgba(107,61,20,.66));
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.h1-okr-expo-metrics b,
+.h1-okr-expo-metrics small {
+  display: block;
+}
+
+.h1-okr-expo-metrics b {
+  font-size: 17px;
+}
+
+.h1-okr-expo-metrics small {
+  margin-top: 16px;
+  color: rgba(255,255,255,.68);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.h1-okr-expo-metrics span {
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #9e1418;
+  transform: translateX(-50%);
+}
+
+.h1-okr-media-grid {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  bottom: 29px;
+  display: grid;
+  gap: 16px;
+}
+
+.h1-okr-media-grid.is-salon {
+  grid-template-columns: repeat(3, 1fr);
+  height: 225px;
+}
+
+.h1-okr-media-grid.is-expo {
+  grid-template-columns: repeat(4, 1fr);
+  height: 210px;
+}
+
+.h1-okr-media-trigger {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  color: #fff;
+  background: #171411;
+  border: 3px solid #e8ddc7;
+  border-radius: 18px;
+  box-shadow: 0 14px 32px rgba(0,0,0,.24);
+  cursor: zoom-in;
+  text-align: left;
+}
+
+.h1-okr-media-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background-color: #211810;
+  background-image: url("/previews/assets/h1-okr-awards-events-figma-overview.png");
+  background-repeat: no-repeat;
+  filter: saturate(1.08) contrast(1.04);
+  transition: transform .28s ease;
+}
+
+.h1-okr-media-trigger:hover .h1-okr-media-image {
+  transform: scale(1.025);
+}
+
+.h1-okr-media-trigger[data-media-kind="salon-group"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -1899px -774px;
+}
+
+.h1-okr-media-trigger[data-media-kind="salon-lab"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2194px -774px;
+}
+
+.h1-okr-media-trigger[data-media-kind="salon-stage"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2492px -774px;
+}
+
+.h1-okr-media-trigger[data-media-kind="expo-race"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -1836px -1718px;
+}
+
+.h1-okr-media-trigger[data-media-kind="expo-festival"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2070px -1718px;
+}
+
+.h1-okr-media-trigger[data-media-kind="expo-lab"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2310px -1718px;
+}
+
+.h1-okr-media-trigger[data-media-kind="expo-booth"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2550px -1718px;
+}
+
+.h1-okr-media-caption {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  gap: 2px;
+  padding: 30px 13px 11px;
+  background: linear-gradient(transparent, rgba(0,0,0,.88));
+}
+
+.h1-okr-media-caption strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.h1-okr-media-caption small {
+  color: rgba(255,255,255,.68);
+  font-size: 10px;
+}
+
+.h1-okr-lightbox {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 6vh 8vw;
+  background: rgba(5,4,3,.68);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.h1-okr-lightbox-frame {
+  position: relative;
+  width: min(72vw, 1260px);
+  aspect-ratio: 16 / 9;
+  padding: 6px;
+  background: #f3ead9;
+  border-radius: 24px;
+  box-shadow: 0 34px 100px rgba(0,0,0,.7);
+}
+
+.h1-okr-lightbox-media {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0c0907;
+  background-image: url("/previews/assets/h1-okr-events-lightbox-reference.png");
+  background-repeat: no-repeat;
+  border-radius: 19px;
+}
+
+.h1-okr-lightbox-media.is-salon-group,
+.h1-okr-lightbox-media.is-salon-lab,
+.h1-okr-lightbox-media.is-salon-stage {
+  background-size: 176% auto;
+  background-position: 37% 18.5%;
+}
+
+.h1-okr-lightbox-media.is-expo-race,
+.h1-okr-lightbox-media.is-expo-festival,
+.h1-okr-lightbox-media.is-expo-lab,
+.h1-okr-lightbox-media.is-expo-booth {
+  background-size: 176% auto;
+  background-position: 42% 77%;
+}
+
+.h1-okr-lightbox-media.is-awards {
+  background-image: url("/previews/assets/h1-okr-awards-events-figma-overview.png");
+  background-size: 217% auto;
+  background-position: 4.4% 15.8%;
+}
+
+.h1-okr-lightbox-close {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  background: rgba(16,14,12,.82);
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 50%;
+  font-family: "Gilroy", sans-serif;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.h1-okr-results-page.is-active .h1-okr-results-definition,
+.h1-okr-results-page.is-active .h1-okr-results-panel,
+.h1-okr-results-page.is-active .h1-okr-results-summary {
+  animation: h1OkrResultSurfaceEnter .45s cubic-bezier(.16,1,.3,1) both;
+}
+
+.h1-okr-results-page.is-active .h1-okr-results-panel {
+  animation-delay: .04s;
+}
+
+.h1-okr-results-page.is-active .h1-okr-results-summary {
+  animation-delay: .08s;
+}
+
+@keyframes h1OkrResultSurfaceEnter {
+  from { opacity: .72; transform: translate3d(10px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.h1-okr-page.is-active .h1-okr-insight-card {
+  animation: h1OkrCardEnter .5s cubic-bezier(.16,1,.3,1) both;
+  animation-delay: calc(.05s + var(--h1-okr-card-index) * .06s);
+}
+
+@keyframes h1OkrCardEnter {
+  from { opacity: .72; transform: translate3d(12px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h1-figma-racing-shell *,
+  .h1-figma-racing-report * {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Exact Figma OKR deck — exported from the authenticated prototype at 1920 × 1080. */
+.h1-figma-racing-report body.h1-embedded-report .save-bar {
+  display: none !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-exact-page {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #050505;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-exact-page::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.1)),
+    var(--h1-okr-page-image);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(14px) saturate(.94);
+  transform: scale(1.045);
+}
+
+.h1-okr-exact-artboard,
+.h1-okr-exact-modal-artboard {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: min(100vw, calc(100vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+}
+
+.h1-okr-exact-frame {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  display: block;
+  object-fit: contain;
+  object-position: 50% 50%;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-exact-hotspot {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 14px;
+  cursor: zoom-in;
+}
+
+.h1-okr-exact-hotspot.is-salon {
+  left: 17.5%;
+  top: 69.5%;
+  width: 64.8%;
+  height: 23.5%;
+}
+
+.h1-okr-exact-hotspot.is-expo {
+  left: 13.2%;
+  top: 64.5%;
+  width: 73%;
+  height: 22.5%;
+}
+
+.h1-okr-exact-hotspot:focus-visible {
+  outline: 3px solid rgba(255,255,255,.92);
+  outline-offset: 4px;
+}
+
+.h1-okr-exact-modal {
+  position: fixed;
+  z-index: 9999;
+  isolation: isolate;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #050505;
+  cursor: zoom-out;
+}
+
+.h1-okr-exact-modal::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,.12), rgba(0,0,0,.12)),
+    var(--h1-okr-modal-image);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(14px) saturate(.94);
+  transform: scale(1.045);
+}
+
+.h1-okr-exact-modal-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  display: block;
+  object-fit: contain;
+  object-position: 50% 50%;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-exact-modal-close {
+  position: absolute;
+  z-index: 2;
+  top: 15.2%;
+  right: 14.3%;
+  width: clamp(34px, 3.2vw, 62px);
+  aspect-ratio: 1;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.h1-okr-exact-modal-close:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
+}
