@@ -70,7 +70,7 @@ assert.ok(
   app.includes(
     'style={{\'--h1-okr-page-image\':`url("/${page.src}")`}}',
   ),
-  "every OKR page must bind its own exact Figma frame as its independent background",
+  "every OKR page must retain its own exact Figma foreground frame",
 );
 assert.doesNotMatch(
   app,
@@ -79,8 +79,8 @@ assert.doesNotMatch(
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-page-image\);[\s\S]*?background-size:\s*cover;/,
-  "each OKR page must fill its own viewport edges without black gutters",
+  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-trophy\);[\s\S]*?background-size:\s*cover;/,
+  "each OKR page must use the approved shared trophy visual behind its complete Figma frame",
 );
 assert.match(
   theme,

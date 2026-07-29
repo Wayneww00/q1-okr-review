@@ -97,8 +97,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-page-image\);[\s\S]*?background-size:\s*cover;/,
-  "awards and offline-event pages must independently fill the viewport without black gutters",
+  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-trophy\);[\s\S]*?background-size:\s*cover;/,
+  "awards and offline-event pages must use the shared trophy background without black gutters",
 );
 assert.match(
   theme,

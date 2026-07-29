@@ -96,18 +96,18 @@ try {
       `${String(offset + 1).padStart(2, "0")} / 11`,
       `${pageId} must show the correct OKR-only page number`,
     );
-    const independentBackground = await okrPage.evaluate((root) => ({
+    const pageBackground = await okrPage.evaluate((root) => ({
       cssVariable: getComputedStyle(root)
         .getPropertyValue("--h1-okr-page-image")
         .trim(),
       edgeFill: getComputedStyle(root, "::before").backgroundImage,
       frameSrc: root.querySelector(".h1-okr-exact-frame")?.getAttribute("src"),
     }));
-    const independentFileName = independentBackground.frameSrc.split("/").pop();
+    const frameFileName = pageBackground.frameSrc.split("/").pop();
     assert.ok(
-      independentBackground.cssVariable.includes(independentFileName) &&
-        independentBackground.edgeFill.includes(independentFileName),
-      `${pageId} must use its own Figma frame for responsive edge fill`,
+      pageBackground.cssVariable.includes(frameFileName) &&
+        pageBackground.edgeFill.includes("h1-review-bg-320-194-2280x1346.png"),
+      `${pageId} must retain its exact Figma frame over the shared trophy edge fill`,
     );
 
     if (pageId === "okr-offline-event-01") {

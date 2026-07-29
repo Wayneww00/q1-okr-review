@@ -51,8 +51,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-page-image\);[\s\S]*?background-size:\s*cover;/,
-  "each independent OKR page must use its own image to fill side bars",
+  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-trophy\);[\s\S]*?background-size:\s*cover;/,
+  "each OKR page must use the approved trophy image to fill side bars",
 );
 assert.match(
   theme,

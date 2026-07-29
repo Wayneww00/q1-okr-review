@@ -2966,7 +2966,7 @@ svg.h1-okr-insight-icon circle {
   pointer-events: none;
   background-image:
     linear-gradient(rgba(0,0,0,.06), rgba(0,0,0,.06)),
-    var(--h1-okr-page-image);
+    var(--h1-okr-trophy);
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;

@@ -70,17 +70,17 @@ assert.ok(
   app.includes(
     'style={{\'--h1-okr-page-image\':`url("/${page.src}")`}}',
   ),
-  "each OKR page must provide its own Figma image to the responsive edge-fill layer",
+  "each OKR page must retain its own Figma foreground image",
 );
 assert.match(
   theme,
   /\.h1-okr-exact-frame\s*\{[\s\S]*?width:\s*100%;[\s\S]*?height:\s*100%;[\s\S]*?object-fit:\s*contain;[\s\S]*?object-position:\s*50%\s+50%;/,
-  "the exact Figma frame must remain complete and undistorted over its independent edge fill",
+  "the exact Figma frame must remain complete and undistorted over the shared trophy edge fill",
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?background-image:[\s\S]*?var\(--h1-okr-page-image\);[\s\S]*?background-size:\s*cover;/,
-  "each page must independently fill non-16:9 edges from its own Figma background",
+  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?background-image:[\s\S]*?var\(--h1-okr-trophy\);[\s\S]*?background-size:\s*cover;/,
+  "each page must fill non-16:9 edges from the shared approved trophy background",
 );
 assert.doesNotMatch(
   app,

@@ -104,7 +104,7 @@ try {
     assert.equal(geometry.imageNaturalWidth, 1920);
     assert.equal(geometry.imageNaturalHeight, 1080);
     assert.equal(geometry.artboardPosition, "absolute");
-    assert.match(geometry.backgroundAsset, /p25-source\.png/);
+    assert.match(geometry.backgroundAsset, /h1-review-bg-320-194-2280x1346\.png/);
     assert.match(geometry.backgroundSize, /^cover(?:,\s*cover)?$/);
     assert.match(geometry.pageImageVariable, /p25-source\.png/);
 
@@ -119,12 +119,12 @@ try {
           root.querySelector(".h1-okr-exact-artboard"),
         ).position,
       }));
-    assert.match(nextPageBackground.ownBackground, /okr-p29-source\.png/);
+    assert.match(nextPageBackground.ownBackground, /h1-review-bg-320-194-2280x1346\.png/);
     assert.match(nextPageBackground.ownVariable, /okr-p29-source\.png/);
     assert.notEqual(
       nextPageBackground.ownBackground,
       geometry.backgroundAsset,
-      "each OKR page must own its independent Figma background",
+      "each OKR page must share the approved trophy background",
     );
     assert.equal(nextPageBackground.artboardPosition, "absolute");
 
