@@ -18,9 +18,7 @@ const expectedPages = [
   ["okr-brand-results", "p27-source.png"],
   ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
   ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
-  ["okr-application-roadmap", "okr-p33-source.png"],
   ["okr-high-value-actions", "okr-p34-source.png"],
-  ["okr-awards", "awards-source.png"],
   ["okr-offline-event-01", "salon.jpg"],
   ["okr-offline-event-02", "expo.jpg"],
 ];
@@ -71,6 +69,16 @@ assert.ok(
   registry.includes("previews/assets/figma-untitled/brand-operating-system-foreground.svg"),
   "Brand operating system must use the requested transparent Figma foreground",
 );
+assert.match(
+  registry,
+  /id:'okr-application-roadmap'[\s\S]*?src:'previews\/assets\/figma-untitled\/application-roadmap-foreground\.svg'/,
+  "application roadmap must use the requested transparent Figma foreground",
+);
+assert.match(
+  registry,
+  /id:'okr-awards'[\s\S]*?src:'previews\/assets\/figma-untitled\/awards-foreground\.svg'/,
+  "awards must use the requested transparent Figma foreground",
+);
 
 assert.match(
   app,
@@ -109,7 +117,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-figma-brand-operating-system-transparent-v9"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-foreground-v13"',
   ),
   "the formal shell must invalidate the embedded report after the exact Figma update",
 );

@@ -81,7 +81,7 @@ assert.ok(
   "the approved H1 comparison periods must remain unchanged",
 );
 assert.ok(
-  formal.includes('src="../index.html?report=h1&embedded=1&v=20260730-figma-brand-operating-system-transparent-v9"'),
+  formal.includes('src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-foreground-v13"'),
   "the local formal deck must keep the same embedded H1 report",
 );
 assert.ok(

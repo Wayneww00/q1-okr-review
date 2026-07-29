@@ -2124,7 +2124,7 @@ function OkrBrandSystemPage(){
           aria-hidden="true"
         />
         <div className="h1-okr-page-number" aria-hidden="true">
-          01 <span>/ 18</span>
+          01 <span>/ 19</span>
         </div>
       </div>
     </section>
@@ -2199,7 +2199,7 @@ function OkrBrandResultsPage(){
           </div>
         </div>
         <div className="h1-okr-page-number" aria-hidden="true">
-          02 <span>/ 18</span>
+          02 <span>/ 19</span>
         </div>
       </div>
     </section>
@@ -2319,6 +2319,11 @@ const OKR_FIGMA_PAGES=[
     ],
   },
   {
+    id:'okr-tvc-framework',
+    label:'Vantage TVC 矩阵',
+    src:'previews/assets/figma-untitled/tvc-framework-foreground.svg',
+  },
+  {
     id:'okr-tvc-library',
     label:'常态化与场景化 TVC',
     src:'previews/assets/figma-exact/okr-p32-tvc-source.jpg',
@@ -2336,7 +2341,7 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-application-roadmap',
     label:'H2 V1 Application Rollout Roadmap',
-    src:'previews/assets/figma-exact/okr-p33-source.png',
+    src:'previews/assets/figma-untitled/application-roadmap-foreground.svg',
   },
   {
     id:'okr-high-value-actions',
@@ -2346,7 +2351,7 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-awards',
     label:'奖项',
-    src:'previews/assets/figma-exact/awards-source.png',
+    src:'previews/assets/figma-untitled/awards-foreground.svg',
   },
   {
     id:'okr-offline-event-01',
@@ -2444,6 +2449,23 @@ function OkrBrandRefreshForegroundPage({page,index,count}){
           draggable="false"
           aria-hidden="true"
         />
+        <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
+      </div>
+    </section>
+  );
+}
+
+function OkrBrandContentMatrixForegroundPage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  const foregrounds=[
+    {src:'previews/assets/figma-untitled/brand-content-matrix/summary.svg',left:'160px',top:'184px',width:'1600px',height:'96px'},
+    {src:'previews/assets/figma-untitled/brand-content-matrix/content-grid.svg',left:'190px',top:'364px',width:'1600px',height:'716px'},
+    {src:'previews/assets/figma-untitled/brand-content-matrix/microcopy.svg',left:'435px',top:'215.096px',width:'1209px',height:'36px'},
+  ];
+  return (
+    <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page h1-okr-brand-content-matrix-page" data-report-page data-page-id={page.id} aria-label={page.label}>
+      <div ref={canvasRef} className="h1-okr-canvas">
+        {foregrounds.map((foreground)=> <img key={foreground.src} className="h1-okr-figma-foreground-layer is-positioned h1-okr-brand-content-matrix-foreground" src={foreground.src} alt="" width={foreground.width.replace('px','')} height={foreground.height.replace('px','')} style={foreground} loading="eager" decoding="sync" draggable="false" aria-hidden="true" />)}
         <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
       </div>
     </section>
@@ -2626,11 +2648,12 @@ function OkrReportDeck(){
         page.id==='okr-brand-results' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p26-foreground.png"/> :
         page.id==='okr-brand-refresh' ? <OkrBrandRefreshForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
-        page.id==='okr-tvc-matrix' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-foreground.png"/> :
+        page.id==='okr-tvc-matrix' ? <OkrBrandContentMatrixForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-tvc-framework' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-2-foreground.png"/> :
-        page.id==='okr-application-roadmap' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-foreground.png"/> :
+        page.id==='okr-application-roadmap' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p31-foreground.png"/> :
-        page.id==='okr-awards' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-exact/awards-source.png"/> :
+        page.id==='okr-awards' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:40,width:1600,height:1012}}/> :
         page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground.png"/> :
         page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p36-1-foreground.png"/> :
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground.png"/> :

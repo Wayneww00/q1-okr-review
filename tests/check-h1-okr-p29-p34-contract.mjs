@@ -14,9 +14,7 @@ const expectedPages = [
   ["okr-brand-results", "p27-source.png"],
   ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
   ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
-  ["okr-application-roadmap", "okr-p33-source.png"],
   ["okr-high-value-actions", "okr-p34-source.png"],
-  ["okr-awards", "awards-source.png"],
   ["okr-offline-event-01", "salon.jpg"],
   ["okr-offline-event-02", "expo.jpg"],
 ];
@@ -59,12 +57,30 @@ for (const [pageId, fileName] of expectedPages) {
 
 assert.equal(
   [...registry.matchAll(/\bid:'okr-/g)].length,
-  18,
-  "the OKR section must contain the approved eighteen pages",
+  19,
+  "the OKR section must contain the approved nineteen pages",
 );
 assert.ok(
   registry.includes("previews/assets/figma-untitled/brand-operating-system-foreground.svg"),
   "Brand operating system must use the requested transparent Figma foreground",
+);
+assert.match(
+  registry,
+  /id:'okr-application-roadmap'[\s\S]*?src:'previews\/assets\/figma-untitled\/application-roadmap-foreground\.svg'/,
+  "application roadmap must use the requested transparent Figma foreground",
+);
+assert.ok(
+  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "application-roadmap-foreground.svg")),
+  "the application-roadmap foreground must exist locally",
+);
+assert.match(
+  registry,
+  /id:'okr-awards'[\s\S]*?src:'previews\/assets\/figma-untitled\/awards-foreground\.svg'/,
+  "awards must use the requested transparent Figma foreground",
+);
+assert.ok(
+  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "awards-foreground.svg")),
+  "the awards foreground must exist locally",
 );
 assert.match(
   app,
@@ -121,7 +137,12 @@ assert.match(
 assert.match(
   app,
   /className="h1-okr-page-number"[\s\S]*?String\(index\+1\)\.padStart\(2,"0"\)[\s\S]*?String\(count\)\.padStart\(2,"0"\)/,
-  "OKR page numbers must run from 01/18 and match the data-page style",
+  "OKR page numbers must run from 01/19 and match the data-page style",
+);
+assert.match(
+  registry,
+  /id:'okr-tvc-matrix'[\s\S]*?id:'okr-tvc-framework'[\s\S]*?src:'previews\/assets\/figma-untitled\/tvc-framework-foreground\.svg'[\s\S]*?id:'okr-tvc-library'/,
+  "the requested TVC framework page must be inserted immediately after the content matrix",
 );
 assert.ok(
   app.includes(

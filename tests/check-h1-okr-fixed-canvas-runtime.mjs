@@ -71,7 +71,7 @@ try {
     assert.match(firstPageState.foregroundImage, /figma-untitled\/p25-foreground\.png/);
     assert.equal(firstPageState.foregroundWidth, "1920");
     assert.equal(firstPageState.foregroundHeight, "1080");
-    assert.equal(firstPageState.pageNumber, "01/18");
+    assert.equal(firstPageState.pageNumber, "01/19");
     assert.equal(firstPageState.hasExactScreenshot, false);
     assert.equal(firstPageState.stagePosition, "sticky");
     assert.match(firstPageState.stageImage, /figma-untitled\/p25-background\.png/);

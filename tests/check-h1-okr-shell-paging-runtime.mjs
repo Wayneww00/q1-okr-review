@@ -42,6 +42,7 @@ try {
     "okr-brand-refresh",
     "okr-brand-operating-system",
     "okr-tvc-matrix",
+    "okr-tvc-framework",
     "okr-tvc-library",
     "okr-application-roadmap",
     "okr-high-value-actions",
@@ -93,72 +94,85 @@ try {
     const directForegrounds = {
       "okr-review": {
         source: /previews\/assets\/figma-untitled\/p25-foreground\.png$/,
-        pageNumber: "01/18",
+        pageNumber: "01/19",
       },
       "okr-brand-experience-audit": {
         source: /previews\/assets\/figma-untitled\/p63-foreground\.png$/,
-        pageNumber: "02/18",
+        pageNumber: "02/19",
       },
       "okr-brand-results": {
         source: /previews\/assets\/figma-untitled\/p26-foreground\.png$/,
-        pageNumber: "03/18",
+        pageNumber: "03/19",
       },
       "okr-brand-refresh": {
         source: /previews\/assets\/figma-untitled\/brand-refresh-foreground\.png$/,
-        pageNumber: "04/18",
+        pageNumber: "04/19",
       },
       "okr-brand-operating-system": {
         source: /previews\/assets\/figma-untitled\/brand-operating-system-foreground\.svg$/,
-        pageNumber: "05/18",
+        pageNumber: "05/19",
       },
       "okr-tvc-matrix": {
-        source: /previews\/assets\/figma-untitled\/p28-foreground\.png$/,
-        pageNumber: "06/18",
+        source: /previews\/assets\/figma-untitled\/brand-content-matrix\/summary\.svg$/,
+        pageNumber: "06/19",
+        foregroundCount: 3,
+      },
+      "okr-tvc-framework": {
+        source: /previews\/assets\/figma-untitled\/tvc-framework-foreground\.svg$/,
+        pageNumber: "07/19",
       },
       "okr-tvc-library": {
         source: /previews\/assets\/figma-untitled\/p28-2-foreground\.png$/,
-        pageNumber: "07/18",
+        pageNumber: "08/19",
+      },
+      "okr-application-roadmap": {
+        source: /previews\/assets\/figma-untitled\/application-roadmap-foreground\.svg$/,
+        pageNumber: "09/19",
       },
       "okr-high-value-actions": {
         source: /previews\/assets\/figma-untitled\/p31-foreground\.png$/,
-        pageNumber: "09/18",
+        pageNumber: "10/19",
+      },
+      "okr-awards": {
+        source: /previews\/assets\/figma-untitled\/awards-foreground\.svg$/,
+        pageNumber: "11/19",
       },
       "okr-offline-event-01": {
         source: /previews\/assets\/figma-untitled\/p33-34-foreground\.png$/,
-        pageNumber: "11/18",
+        pageNumber: "12/19",
       },
       "okr-offline-event-02": {
         source: /previews\/assets\/figma-untitled\/p36-1-foreground\.png$/,
-        pageNumber: "12/18",
+        pageNumber: "13/19",
       },
       "okr-merchandise": {
         source: /previews\/assets\/figma-untitled\/p52-foreground\.png$/,
-        pageNumber: "13/18",
+        pageNumber: "14/19",
       },
       "okr-ai-recommendation": {
         source: /previews\/assets\/figma-untitled\/p58-foreground\.png$/,
-        pageNumber: "14/18",
+        pageNumber: "15/19",
       },
       "okr-omnichannel-amplification": {
         source: /previews\/assets\/figma-untitled\/p59-foreground\.png$/,
-        pageNumber: "15/18",
+        pageNumber: "16/19",
       },
       "okr-tvc-localization": {
         source: /previews\/assets\/figma-untitled\/p60-foreground\.png$/,
-        pageNumber: "16/18",
+        pageNumber: "17/19",
       },
       "okr-superapp-activation": {
         source: /previews\/assets\/figma-untitled\/p61-foreground\.png$/,
-        pageNumber: "17/18",
+        pageNumber: "18/19",
       },
       "okr-premium-unlimited": {
         source: /previews\/assets\/figma-untitled\/p62-foreground\.png$/,
-        pageNumber: "18/18",
+        pageNumber: "19/19",
       },
     };
     const directForeground = directForegrounds[pageId];
     if (directForeground) {
-      assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), 1);
+      assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), directForeground.foregroundCount || 1);
       assert.equal(await okrPage.locator(".h1-okr-exact-frame").count(), 0);
       assert.match(
         await okrPage.locator(".h1-okr-figma-foreground-layer").getAttribute("src"),
