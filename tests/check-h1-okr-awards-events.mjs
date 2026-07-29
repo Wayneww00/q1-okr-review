@@ -16,7 +16,6 @@ const shell = fs.readFileSync(
 const expectedPages = [
   ["okr-review", "p25-source.png"],
   ["okr-brand-results", "p27-source.png"],
-  ["okr-brand-refresh", "okr-p29-source.png"],
   ["okr-brand-operating-system", "okr-p30-source.png"],
   ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
   ["okr-tvc-library", "okr-p32-tvc-source.jpg"],

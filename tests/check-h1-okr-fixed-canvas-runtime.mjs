@@ -71,7 +71,7 @@ try {
     assert.match(firstPageState.foregroundImage, /figma-untitled\/p25-foreground\.png/);
     assert.equal(firstPageState.foregroundWidth, "1920");
     assert.equal(firstPageState.foregroundHeight, "1080");
-    assert.equal(firstPageState.pageNumber, "01/11");
+    assert.equal(firstPageState.pageNumber, "01/18");
     assert.equal(firstPageState.hasExactScreenshot, false);
     assert.equal(firstPageState.stagePosition, "sticky");
     assert.match(firstPageState.stageImage, /figma-untitled\/p25-background\.png/);
@@ -88,19 +88,17 @@ try {
     await laterPage.scrollIntoViewIfNeeded();
     const laterPageState = await laterPage.evaluate((root) => {
       const stage = document.querySelector(".h1-okr-fixed-trophy-stage");
-      const artboard = root.querySelector(".h1-okr-exact-artboard");
       return {
         stageTop: stage.getBoundingClientRect().top,
-        artboardOpacity: getComputedStyle(artboard).opacity,
-        artboardPointerEvents: getComputedStyle(artboard).pointerEvents,
+        foregroundImages: [...root.querySelectorAll(".h1-okr-figma-foreground-layer")].map((layer) => layer.getAttribute("src")),
+        brandRefreshModuleCount: root.querySelectorAll(".h1-brand-refresh-title, .h1-brand-refresh-summary, .h1-brand-refresh-map").length,
+        exactFrameCount: root.querySelectorAll(".h1-okr-exact-frame").length,
       };
     });
     assert.ok(Math.abs(laterPageState.stageTop) < 1, "the same trophy stage must remain pinned after a page turn");
-    assert.deepEqual(
-      laterPageState,
-      { stageTop: laterPageState.stageTop, artboardOpacity: "0", artboardPointerEvents: "none" },
-      "unrebuilt pages must not stack their full Figma screenshots over the shared trophy",
-    );
+    assert.deepEqual(laterPageState.foregroundImages, []);
+    assert.equal(laterPageState.brandRefreshModuleCount, 3);
+    assert.equal(laterPageState.exactFrameCount, 0, "the Brand Refresh foreground must not stack a full Figma screenshot over the shared trophy");
     await page.close();
   }
 } finally {

@@ -1885,6 +1885,39 @@
   -webkit-user-drag: none;
 }
 
+.h1-okr-figma-foreground-layer.is-positioned {
+  inset: auto;
+}
+
+/* Figma 24+25-1 foreground only: the fixed trophy image remains the background. */
+.h1-okr-brand-refresh-page .h1-okr-page-number { z-index: 7; }
+.h1-brand-refresh-title { position:absolute; z-index:3; top:64px; left:643px; width:634px; height:104px; text-align:center; pointer-events:none; }
+.h1-brand-refresh-title span { display:block; color:transparent; font-family:Arial,sans-serif; font-size:65px; font-style:italic; font-weight:900; letter-spacing:-4px; line-height:1; -webkit-text-stroke:1px rgba(255,255,255,.58); }
+.h1-brand-refresh-title strong { position:absolute; top:61px; left:0; width:100%; color:#fff; font-size:38px; font-weight:800; line-height:1; }
+.h1-brand-refresh-summary { position:absolute; z-index:3; top:190px; left:160px; box-sizing:border-box; width:1600px; height:120px; border:1px solid rgba(231,208,172,.18); border-radius:18px; background:linear-gradient(90deg,rgba(44,29,15,.73),rgba(18,13,10,.84)); color:#fff; text-align:center; }
+.h1-brand-refresh-summary i,.h1-brand-refresh-map h3::before { display:inline-block; width:7px; height:27px; margin-right:13px; background:#9b1a20; content:""; vertical-align:-4px; }
+.h1-brand-refresh-summary i { position:absolute; top:22px; left:58px; height:34px; }
+.h1-brand-refresh-summary b { display:block; padding-top:25px; font-size:24px; line-height:1.1; font-weight:800; }
+.h1-brand-refresh-summary small { display:block; margin-top:11px; color:rgba(255,255,255,.65); font-size:13px; }
+.h1-brand-refresh-map { position:absolute; z-index:3; top:330px; left:141px; box-sizing:border-box; width:1600px; height:687px; border:1px solid rgba(238,221,193,.15); border-radius:22px; background:linear-gradient(100deg,rgba(44,29,15,.52),rgba(18,13,10,.72)); }
+.h1-brand-refresh-map h3 { position:absolute; top:38px; margin:0; color:#fff; font-size:22px; line-height:30px; font-weight:800; }
+.h1-brand-refresh-column,.h1-brand-refresh-core { position:absolute; top:0; height:100%; }
+.h1-brand-refresh-inputs { left:20px; width:565px; }.h1-brand-refresh-inputs h3 { left:0; }
+.h1-brand-refresh-card { position:absolute; left:0; box-sizing:border-box; width:402px; height:174px; border-radius:22px; padding:38px 28px 22px; display:flex; flex-direction:column; justify-content:space-between; }
+.h1-brand-refresh-card:nth-of-type(1){top:110px}.h1-brand-refresh-card:nth-of-type(2){top:305px}.h1-brand-refresh-card:nth-of-type(3){top:500px}
+.h1-brand-refresh-card b { font-size:28px; line-height:1; }.h1-brand-refresh-card span { font-size:16px; }
+.is-charcoal { background:rgba(54,52,51,.94); color:#fff; }.is-ivory { background:rgba(239,231,210,.96); color:#815926; }.is-gold { background:rgba(142,100,41,.96); color:#fff; }.is-black { background:rgba(15,14,14,.98); color:#fff; }.is-gold-text { color:#8a642d; }
+.h1-brand-refresh-core { left:662px; width:707px; }.h1-brand-refresh-core h3 { left:0; }
+.h1-brand-refresh-house { position:absolute; top:110px; left:0; box-sizing:border-box; width:183px; height:564px; border-radius:22px; background:rgba(54,52,51,.94); color:#fff; text-align:center; }
+.h1-brand-refresh-house b { display:block; margin-top:94px; font-size:27px; line-height:1.65; }.h1-brand-refresh-house span { position:absolute; right:12px; bottom:22px; left:12px; color:rgba(255,255,255,.75); font-size:14px; }
+.h1-brand-refresh-core-card { position:absolute; left:274px; box-sizing:border-box; width:203px; height:174px; border-radius:22px; padding:39px 17px 20px; display:flex; flex-direction:column; justify-content:space-between; }
+.h1-brand-refresh-core-card:nth-of-type(2){top:110px}.h1-brand-refresh-core-card:nth-of-type(3){top:305px}.h1-brand-refresh-core-card:nth-of-type(4){top:500px}
+.h1-brand-refresh-core-card b { font-size:18px; line-height:1.15; }.h1-brand-refresh-core-card span { font-size:13px; }
+.h1-brand-refresh-links { position:absolute; top:110px; left:474px; width:197px; height:366px; opacity:.58; background:radial-gradient(ellipse at 0 0,transparent 56%,rgba(226,217,199,.72) 57%,transparent 59%),radial-gradient(ellipse at 0 100%,transparent 56%,rgba(226,217,199,.72) 57%,transparent 59%); }
+.h1-brand-refresh-channels { left:1180px; width:411px; }.h1-brand-refresh-channels h3 { left:0; }
+.h1-brand-refresh-channel-grid { position:absolute; top:110px; left:0; display:grid; grid-template-columns:178px 203px; grid-auto-rows:174px; gap:21px; }
+.h1-brand-refresh-channel { display:flex; align-items:center; justify-content:center; box-sizing:border-box; border-radius:22px; padding:16px; text-align:center; font-size:19px; line-height:1.22; font-weight:800; }
+
 .h1-okr-visual {
   position: absolute;
   z-index: 0;

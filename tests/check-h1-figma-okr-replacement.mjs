@@ -32,7 +32,6 @@ assert.match(
 const exactPages = [
   ["okr-review", "p25-source.png"],
   ["okr-brand-results", "p27-source.png"],
-  ["okr-brand-refresh", "okr-p29-source.png"],
   ["okr-brand-operating-system", "okr-p30-source.png"],
   ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
   ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
@@ -94,8 +93,23 @@ assert.match(
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground\.png[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?figma-untitled\/p30-foreground\.png[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?figma-untitled\/p28-foreground\.png[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?figma-untitled\/p33-foreground\.png[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?figma-exact\/awards-source\.png[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground\.png/,
+  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground\.png[\s\S]*?page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?figma-untitled\/p30-foreground\.png[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?figma-untitled\/p28-foreground\.png[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?figma-untitled\/p33-foreground\.png[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?figma-exact\/awards-source\.png[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground\.png[\s\S]*?page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground\.png[\s\S]*?page\.id==='okr-ai-recommendation'[\s\S]*?figma-untitled\/p58-foreground\.png[\s\S]*?page\.id==='okr-omnichannel-amplification'[\s\S]*?figma-untitled\/p59-foreground\.png[\s\S]*?page\.id==='okr-tvc-localization'[\s\S]*?figma-untitled\/p60-foreground\.png[\s\S]*?page\.id==='okr-superapp-activation'[\s\S]*?figma-untitled\/p61-foreground\.png[\s\S]*?page\.id==='okr-premium-unlimited'[\s\S]*?figma-untitled\/p62-foreground\.png[\s\S]*?page\.id==='okr-brand-experience-audit'[\s\S]*?figma-untitled\/p63-foreground\.png/,
   "the remaining Figma foreground exports must be assigned to their matching report pages",
+);
+assert.ok(
+  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p52-foreground.png")),
+  "the merchandise Figma foreground export must exist locally",
+);
+for (const fileName of ["p58-foreground.png", "p59-foreground.png", "p60-foreground.png", "p61-foreground.png", "p62-foreground.png", "p63-foreground.png"]) {
+  assert.ok(
+    fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", fileName)),
+    `${fileName} must exist locally`,
+  );
+}
+assert.match(
+  app,
+  /function OkrBrandRefreshForegroundPage[\s\S]*?h1-brand-refresh-title[\s\S]*?h1-brand-refresh-summary[\s\S]*?h1-brand-refresh-map/,
+  "Brand Refresh must render the Figma content modules without its opaque export backdrop",
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),

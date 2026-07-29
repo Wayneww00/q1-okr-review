@@ -37,6 +37,7 @@ try {
   const pageCount = await reportPages.count();
   const okrPageIds = [
     "okr-review",
+    "okr-brand-experience-audit",
     "okr-brand-results",
     "okr-brand-refresh",
     "okr-brand-operating-system",
@@ -47,6 +48,12 @@ try {
     "okr-awards",
     "okr-offline-event-01",
     "okr-offline-event-02",
+    "okr-merchandise",
+    "okr-ai-recommendation",
+    "okr-omnichannel-amplification",
+    "okr-tvc-localization",
+    "okr-superapp-activation",
+    "okr-premium-unlimited",
   ];
   assert.ok(
     pageCount >= okrPageIds.length + 1,
@@ -86,35 +93,73 @@ try {
     const directForegrounds = {
       "okr-review": {
         source: /previews\/assets\/figma-untitled\/p25-foreground\.png$/,
-        pageNumber: "01/11",
+        pageNumber: "01/18",
+      },
+      "okr-brand-experience-audit": {
+        source: /previews\/assets\/figma-untitled\/p63-foreground\.png$/,
+        pageNumber: "02/18",
       },
       "okr-brand-results": {
         source: /previews\/assets\/figma-untitled\/p26-foreground\.png$/,
-        pageNumber: "02/11",
+        pageNumber: "03/18",
       },
       "okr-tvc-matrix": {
         source: /previews\/assets\/figma-untitled\/p28-foreground\.png$/,
-        pageNumber: "05/11",
+        pageNumber: "06/18",
       },
       "okr-tvc-library": {
         source: /previews\/assets\/figma-untitled\/p28-2-foreground\.png$/,
-        pageNumber: "06/11",
+        pageNumber: "07/18",
       },
       "okr-high-value-actions": {
         source: /previews\/assets\/figma-untitled\/p31-foreground\.png$/,
-        pageNumber: "08/11",
+        pageNumber: "09/18",
       },
       "okr-offline-event-01": {
         source: /previews\/assets\/figma-untitled\/p33-34-foreground\.png$/,
-        pageNumber: "10/11",
+        pageNumber: "11/18",
       },
       "okr-offline-event-02": {
         source: /previews\/assets\/figma-untitled\/p36-1-foreground\.png$/,
-        pageNumber: "11/11",
+        pageNumber: "12/18",
+      },
+      "okr-merchandise": {
+        source: /previews\/assets\/figma-untitled\/p52-foreground\.png$/,
+        pageNumber: "13/18",
+      },
+      "okr-ai-recommendation": {
+        source: /previews\/assets\/figma-untitled\/p58-foreground\.png$/,
+        pageNumber: "14/18",
+      },
+      "okr-omnichannel-amplification": {
+        source: /previews\/assets\/figma-untitled\/p59-foreground\.png$/,
+        pageNumber: "15/18",
+      },
+      "okr-tvc-localization": {
+        source: /previews\/assets\/figma-untitled\/p60-foreground\.png$/,
+        pageNumber: "16/18",
+      },
+      "okr-superapp-activation": {
+        source: /previews\/assets\/figma-untitled\/p61-foreground\.png$/,
+        pageNumber: "17/18",
+      },
+      "okr-premium-unlimited": {
+        source: /previews\/assets\/figma-untitled\/p62-foreground\.png$/,
+        pageNumber: "18/18",
       },
     };
     const directForeground = directForegrounds[pageId];
-    if (directForeground) {
+    if (pageId === "okr-brand-refresh") {
+      assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), 0);
+      assert.equal(await okrPage.locator(".h1-okr-exact-frame").count(), 0);
+      assert.equal(await okrPage.locator(".h1-brand-refresh-title").count(), 1);
+      assert.equal(await okrPage.locator(".h1-brand-refresh-summary").count(), 1);
+      assert.equal(await okrPage.locator(".h1-brand-refresh-map").count(), 1);
+      assert.equal(
+        (await okrPage.locator(".h1-okr-page-number").textContent()).replace(/\s+/g, ""),
+        "04/18",
+      );
+    } else if (directForeground) {
       assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), 1);
       assert.equal(await okrPage.locator(".h1-okr-exact-frame").count(), 0);
       assert.match(
@@ -167,7 +212,7 @@ try {
 
   }
 
-  const finalOkrPage = reportFrame.locator('[data-page-id="okr-offline-event-02"]');
+  const finalOkrPage = reportFrame.locator('[data-page-id="okr-premium-unlimited"]');
   await page.locator("body").press("PageUp");
   await waitForReportPageIndex(pageCount - 2);
   assert.equal(

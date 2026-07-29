@@ -12,7 +12,6 @@ const theme = fs.readFileSync(
 const expectedPages = [
   ["okr-review", "p25-source.png"],
   ["okr-brand-results", "p27-source.png"],
-  ["okr-brand-refresh", "okr-p29-source.png"],
   ["okr-brand-operating-system", "okr-p30-source.png"],
   ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
   ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
@@ -27,6 +26,14 @@ const registryStart = app.indexOf("const OKR_FIGMA_PAGES=");
 const registryEnd = app.indexOf("function OkrExactFigmaPage", registryStart);
 assert.ok(registryStart >= 0 && registryEnd > registryStart);
 const registry = app.slice(registryStart, registryEnd);
+
+const reviewPosition = registry.indexOf("id:'okr-review'");
+const auditPosition = registry.indexOf("id:'okr-brand-experience-audit'");
+const brandResultsPosition = registry.indexOf("id:'okr-brand-results'");
+assert.ok(
+  reviewPosition >= 0 && auditPosition > reviewPosition && brandResultsPosition > auditPosition,
+  "the brand-experience audit must immediately follow the first global-brand page",
+);
 
 let cursor = -1;
 for (const [pageId, fileName] of expectedPages) {
@@ -53,8 +60,40 @@ for (const [pageId, fileName] of expectedPages) {
 
 assert.equal(
   [...registry.matchAll(/\bid:'okr-/g)].length,
-  11,
-  "the OKR section must contain exactly 11 pages",
+  18,
+  "the OKR section must contain the approved eighteen pages",
+);
+assert.match(
+  app,
+  /page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground\.png/,
+  "the appended merchandise page must use its transparent Untitled foreground",
+);
+assert.ok(
+  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p52-foreground.png")),
+  "the appended merchandise foreground must exist locally",
+);
+for (const [pageId, fileName] of [
+  ["okr-ai-recommendation", "p58-foreground.png"],
+  ["okr-omnichannel-amplification", "p59-foreground.png"],
+  ["okr-tvc-localization", "p60-foreground.png"],
+  ["okr-superapp-activation", "p61-foreground.png"],
+  ["okr-premium-unlimited", "p62-foreground.png"],
+  ["okr-brand-experience-audit", "p63-foreground.png"],
+]) {
+  assert.match(
+    app,
+    new RegExp(`page\\.id==='${pageId}'[\\s\\S]*?figma-untitled\\/${fileName.replace('.', '\\.')}`),
+    `${pageId} must use its Figma foreground`,
+  );
+  assert.ok(
+    fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", fileName)),
+    `${fileName} must exist locally`,
+  );
+}
+assert.match(
+  app,
+  /page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage/,
+  "the Brand Refresh page must render its content-only Figma layers over the shared trophy",
 );
 assert.match(
   app,
@@ -64,7 +103,7 @@ assert.match(
 assert.match(
   app,
   /className="h1-okr-page-number"[\s\S]*?String\(index\+1\)\.padStart\(2,"0"\)[\s\S]*?String\(count\)\.padStart\(2,"0"\)/,
-  "OKR page numbers must run from 01/11 and match the data-page style",
+  "OKR page numbers must run from 01/18 and match the data-page style",
 );
 assert.ok(
   app.includes(

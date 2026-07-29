@@ -17,15 +17,17 @@ const p26ForegroundPath = path.join(
 );
 
 const p25Index = app.indexOf("id:'okr-review'");
+const auditIndex = app.indexOf("id:'okr-brand-experience-audit'");
 const p27Index = app.indexOf("id:'okr-brand-results'");
 assert.ok(p25Index >= 0, "p25 must remain registered");
-assert.ok(p27Index > p25Index, "p27 must follow p25");
+assert.ok(auditIndex > p25Index, "the brand-experience audit must follow p25");
+assert.ok(p27Index > auditIndex, "p27 must follow the brand-experience audit");
 assert.ok(fs.existsSync(p26ForegroundPath), "the direct Untitled p26 foreground export must exist");
 assert.ok(fs.statSync(p26ForegroundPath).size > 200_000, "p26 must retain full presentation detail");
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
   /page\.id==='okr-brand-results'[\s\S]*?OkrDirectFigmaForegroundPage[\s\S]*?figma-untitled\/p26-foreground\.png/,
-  "the second OKR page must use the direct Untitled transparent foreground rather than a reconstructed matrix",
+  "the third OKR page must use the direct Untitled transparent foreground rather than a reconstructed matrix",
 );
 assert.match(
   shell,
