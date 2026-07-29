@@ -25,7 +25,7 @@ assert.ok(fs.statSync(p27Path).size > 200_000, "p27 must retain full presentatio
 assert.match(
   app,
   /id:'okr-brand-results'[\s\S]*?src:'previews\/assets\/figma-exact\/p27-source\.png'/,
-  "p27 must use the exact Figma export rather than a reconstructed matrix",
+  "p27 must use the exact full-resolution Figma frame rather than a reconstructed matrix",
 );
 assert.match(
   shell,
@@ -34,7 +34,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-figma-source-okr-v2"',
+    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
   ),
   "the formal shell must invalidate the embedded report after the p27 update",
 );

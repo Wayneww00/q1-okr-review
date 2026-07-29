@@ -1,0 +1,10 @@
+# Historical H1 video exports. The active opening, second-screen, and closing
+# assets are kept; these unused revisions would otherwise add hundreds of MB
+# to every Vercel deployment.
+previews/assets/vantage-h1-opening-4k.mp4
+previews/assets/vantage-h1-opening-july24-4k.mp4
+previews/assets/vantage-h1-opening.mp4
+previews/assets/vantage-h1-second-screen-25s.mp4
+previews/assets/vantage-h1-second-screen-july27-4k.mp4
+previews/assets/vantage-h1-second-screen-july28-4k.mp4
+previews/assets/vantage-h1-closing-july27-4k.mp4

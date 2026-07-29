@@ -31,11 +31,24 @@ try {
       document.body.classList.add("h1-embedded-report");
     });
 
+    assert.equal(
+      await page.locator(".h1-okr-fixed-stage").count(),
+      0,
+      "the rejected shared OKR stage must not alter data content or backgrounds",
+    );
+
     const okrPage = page.locator('[data-page-id="okr-review"]');
     await okrPage.scrollIntoViewIfNeeded();
     const artboard = okrPage.locator(".h1-okr-exact-artboard");
-    const image = okrPage.locator(".h1-okr-exact-frame");
     await artboard.waitFor({ state: "visible" });
+    await okrPage.locator(".h1-okr-exact-frame").evaluate((image) => {
+      if (!image.complete) {
+        return new Promise((resolve, reject) => {
+          image.addEventListener("load", resolve, { once: true });
+          image.addEventListener("error", reject, { once: true });
+        });
+      }
+    });
 
     const geometry = await okrPage.evaluate((root) => {
       const rect = (element) => {
@@ -51,17 +64,20 @@ try {
       };
       const artboard = root.querySelector(".h1-okr-exact-artboard");
       const image = root.querySelector(".h1-okr-exact-frame");
-      const pageStyle = getComputedStyle(root);
-      const beforeStyle = getComputedStyle(root, "::before");
+      const pageBackground = getComputedStyle(root, "::before");
       return {
         page: rect(root),
         artboard: rect(artboard),
         image: rect(image),
+        artboardPosition: getComputedStyle(artboard).position,
         imageObjectFit: getComputedStyle(image).objectFit,
         imageNaturalWidth: image.naturalWidth,
         imageNaturalHeight: image.naturalHeight,
-        backgroundAsset: pageStyle.getPropertyValue("--h1-okr-page-image"),
-        backgroundSize: beforeStyle.backgroundSize,
+        backgroundAsset: pageBackground.backgroundImage,
+        backgroundSize: pageBackground.backgroundSize,
+        pageImageVariable: getComputedStyle(root)
+          .getPropertyValue("--h1-okr-page-image")
+          .trim(),
       };
     });
 
@@ -70,35 +86,47 @@ try {
       geometry.page.height * (16 / 9),
     );
     const expectedHeight = expectedWidth * (9 / 16);
-    closeTo(
-      geometry.artboard.width,
-      expectedWidth,
-      1,
-      `${viewport.width}×${viewport.height} artboard width`,
-    );
-    closeTo(
-      geometry.artboard.height,
-      expectedHeight,
-      1,
-      `${viewport.width}×${viewport.height} artboard height`,
-    );
+    closeTo(geometry.artboard.width, expectedWidth, 1, `${viewport.width}×${viewport.height} artboard width`);
+    closeTo(geometry.artboard.height, expectedHeight, 1, `${viewport.width}×${viewport.height} artboard height`);
     closeTo(
       geometry.artboard.left,
       geometry.page.left + (geometry.page.width - expectedWidth) / 2,
       1,
-      `${viewport.width}×${viewport.height} centered artboard`,
+      `${viewport.width}×${viewport.height} page-owned artboard left`,
     );
     closeTo(
       geometry.artboard.top,
       geometry.page.top + (geometry.page.height - expectedHeight) / 2,
       1,
-      `${viewport.width}×${viewport.height} vertically centered artboard`,
+      `${viewport.width}×${viewport.height} page-owned artboard top`,
     );
     assert.equal(geometry.imageObjectFit, "contain");
     assert.equal(geometry.imageNaturalWidth, 1920);
     assert.equal(geometry.imageNaturalHeight, 1080);
-    assert.match(geometry.backgroundAsset, /figma-exact\/p25-source\.png/);
+    assert.equal(geometry.artboardPosition, "absolute");
+    assert.match(geometry.backgroundAsset, /p25-source\.png/);
     assert.match(geometry.backgroundSize, /^cover(?:,\s*cover)?$/);
+    assert.match(geometry.pageImageVariable, /p25-source\.png/);
+
+    const nextPageBackground = await page
+      .locator('[data-page-id="okr-brand-refresh"]')
+      .evaluate((root) => ({
+        ownBackground: getComputedStyle(root, "::before").backgroundImage,
+        ownVariable: getComputedStyle(root)
+          .getPropertyValue("--h1-okr-page-image")
+          .trim(),
+        artboardPosition: getComputedStyle(
+          root.querySelector(".h1-okr-exact-artboard"),
+        ).position,
+      }));
+    assert.match(nextPageBackground.ownBackground, /okr-p29-source\.png/);
+    assert.match(nextPageBackground.ownVariable, /okr-p29-source\.png/);
+    assert.notEqual(
+      nextPageBackground.ownBackground,
+      geometry.backgroundAsset,
+      "each OKR page must own its independent Figma background",
+    );
+    assert.equal(nextPageBackground.artboardPosition, "absolute");
 
     await page.close();
   }
@@ -106,4 +134,4 @@ try {
   await browser.close();
 }
 
-console.log("H1 exact Figma OKR responsive artboard contract passed.");
+console.log("H1 exact Figma OKR independent responsive-page contract passed.");

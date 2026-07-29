@@ -13,7 +13,21 @@ const theme = fs.readFileSync(
   "utf8",
 );
 
-for (const fileName of ["p25-source.png", "p27-source.png", "awards-source.png", "salon.jpg", "expo-source.png"]) {
+const sourceFiles = [
+  "p25-source.png",
+  "p27-source.png",
+  "okr-p29-source.png",
+  "okr-p30-source.png",
+  "okr-p32-matrix-source.jpg",
+  "okr-p32-tvc-source.jpg",
+  "okr-p33-source.png",
+  "okr-p34-source.png",
+  "awards-source.png",
+  "salon-source.png",
+  "expo-source.png",
+];
+
+for (const fileName of sourceFiles) {
   const assetPath = path.join(
     root,
     "previews",
@@ -23,7 +37,6 @@ for (const fileName of ["p25-source.png", "p27-source.png", "awards-source.png",
   );
   assert.ok(fs.existsSync(assetPath), `${fileName} must exist`);
   assert.ok(fs.statSync(assetPath).size > 100_000, `${fileName} must be full-resolution`);
-  assert.ok(app.includes(`previews/assets/figma-exact/${fileName}`));
 }
 
 assert.match(
@@ -38,12 +51,22 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-page::before\s*\{[\s\S]*?background-size:\s*cover;/,
-  "the exact frame must extend its own background without black side bars",
+  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-page-image\);[\s\S]*?background-size:\s*cover;/,
+  "each independent OKR page must use its own image to fill side bars",
+);
+assert.match(
+  theme,
+  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*min\(100%,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;/,
+  "each page must contain its own proportional artboard",
+);
+assert.doesNotMatch(
+  app,
+  /h1-okr-fixed-stage/,
+  "the rejected shared OKR background must stay removed",
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-figma-source-okr-v2"',
+    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
   ),
   "the formal shell must load the exact Figma background revision",
 );

@@ -16,8 +16,14 @@ const shell = fs.readFileSync(
 const expectedPages = [
   ["okr-review", "p25-source.png"],
   ["okr-brand-results", "p27-source.png"],
+  ["okr-brand-refresh", "okr-p29-source.png"],
+  ["okr-brand-operating-system", "okr-p30-source.png"],
+  ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
+  ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
+  ["okr-application-roadmap", "okr-p33-source.png"],
+  ["okr-high-value-actions", "okr-p34-source.png"],
   ["okr-awards", "awards-source.png"],
-  ["okr-offline-event-01", "salon.jpg"],
+  ["okr-offline-event-01", "salon-source.png"],
   ["okr-offline-event-02", "expo-source.png"],
 ];
 
@@ -91,8 +97,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-page::before\s*\{[\s\S]*?background-size:\s*cover;/,
-  "the page background must fill the viewport without black gutters",
+  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-page-image\);[\s\S]*?background-size:\s*cover;/,
+  "awards and offline-event pages must independently fill the viewport without black gutters",
 );
 assert.match(
   theme,
@@ -101,7 +107,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-figma-source-okr-v2"',
+    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
   ),
   "the formal shell must invalidate the embedded report after the exact Figma update",
 );

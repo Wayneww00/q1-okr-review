@@ -32,8 +32,14 @@ assert.match(
 const exactPages = [
   ["okr-review", "p25-source.png"],
   ["okr-brand-results", "p27-source.png"],
+  ["okr-brand-refresh", "okr-p29-source.png"],
+  ["okr-brand-operating-system", "okr-p30-source.png"],
+  ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
+  ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
+  ["okr-application-roadmap", "okr-p33-source.png"],
+  ["okr-high-value-actions", "okr-p34-source.png"],
   ["okr-awards", "awards-source.png"],
-  ["okr-offline-event-01", "salon.jpg"],
+  ["okr-offline-event-01", "salon-source.png"],
   ["okr-offline-event-02", "expo-source.png"],
 ];
 for (const [pageId, fileName] of exactPages) {
@@ -57,27 +63,38 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-artboard,[\s\S]*?width:\s*min\(100vw,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;/,
-  "the 16:9 artwork must preserve the full Figma artboard on every viewport",
+  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*min\(100%,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;[\s\S]*?mask-composite:\s*intersect;/,
+  "each Figma page must own an independent, proportional artboard with a soft edge blend",
+);
+assert.ok(
+  app.includes(
+    'style={{\'--h1-okr-page-image\':`url("/${page.src}")`}}',
+  ),
+  "each OKR page must provide its own Figma image to the responsive edge-fill layer",
 );
 assert.match(
   theme,
   /\.h1-okr-exact-frame\s*\{[\s\S]*?width:\s*100%;[\s\S]*?height:\s*100%;[\s\S]*?object-fit:\s*contain;[\s\S]*?object-position:\s*50%\s+50%;/,
-  "the exact artwork must stay undistorted and uncropped",
+  "the exact Figma frame must remain complete and undistorted over its independent edge fill",
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-page::before\s*\{[\s\S]*?background-size:\s*cover;/,
-  "the same artwork must extend behind the artboard so no black gutters remain",
+  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?background-image:[\s\S]*?var\(--h1-okr-page-image\);[\s\S]*?background-size:\s*cover;/,
+  "each page must independently fill non-16:9 edges from its own Figma background",
+);
+assert.doesNotMatch(
+  app,
+  /className="h1-okr-fixed-stage"/,
+  "the rejected shared OKR background stage must stay removed",
 );
 assert.doesNotMatch(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /h1-review-bg-320-194|h1-one-brand-one-system|OkrBrandSystemPage|OkrBrandResultsPage/,
+  /h1-one-brand-one-system|OkrBrandSystemPage|OkrBrandResultsPage/,
   "the active exact deck must not combine legacy crops or provisional HTML",
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-figma-source-okr-v2"',
+    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

@@ -45,7 +45,14 @@ assert.equal(video?.width, 3840, "the opening video must preserve the supplied 4
 assert.equal(video?.height, 2160, "the opening video must preserve the supplied 4K height");
 assert.equal(video?.pix_fmt, "yuv420p", "the opening video must use a browser-compatible pixel format");
 assert.equal(video?.r_frame_rate, "30/1", "the supplied 30 fps motion must be preserved");
-assert.ok(Number(video?.bit_rate) >= 20_000_000, "the opening video must retain a high 4K video bitrate");
+assert.ok(
+  Number(video?.bit_rate) >= 5_500_000,
+  "the opening video must retain the approved deployment-compatible 4K bitrate",
+);
+assert.ok(
+  Number(probe.format.size) < 100_000_000,
+  "the opening video must remain below Vercel's 100 MB single-file limit",
+);
 assert.equal(audio?.codec_name, "aac", "the supplied opening soundtrack must remain AAC");
 assert.ok(Number(probe.format.duration) >= 87, "the complete supplied opening film must be retained");
 
