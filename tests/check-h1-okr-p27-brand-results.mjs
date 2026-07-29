@@ -8,24 +8,24 @@ const shell = fs.readFileSync(
   path.join(root, "previews", "vantage-h1-immersive.html"),
   "utf8",
 );
-const p27Path = path.join(
+const p26ForegroundPath = path.join(
   root,
   "previews",
   "assets",
-  "figma-exact",
-  "p27-source.png",
+  "figma-untitled",
+  "p26-foreground.png",
 );
 
 const p25Index = app.indexOf("id:'okr-review'");
 const p27Index = app.indexOf("id:'okr-brand-results'");
 assert.ok(p25Index >= 0, "p25 must remain registered");
 assert.ok(p27Index > p25Index, "p27 must follow p25");
-assert.ok(fs.existsSync(p27Path), "the exact authenticated Figma p27 export must exist");
-assert.ok(fs.statSync(p27Path).size > 200_000, "p27 must retain full presentation detail");
+assert.ok(fs.existsSync(p26ForegroundPath), "the direct Untitled p26 foreground export must exist");
+assert.ok(fs.statSync(p26ForegroundPath).size > 200_000, "p26 must retain full presentation detail");
 assert.match(
-  app,
-  /id:'okr-brand-results'[\s\S]*?src:'previews\/assets\/figma-exact\/p27-source\.png'/,
-  "p27 must use the exact full-resolution Figma frame rather than a reconstructed matrix",
+  app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
+  /page\.id==='okr-brand-results'[\s\S]*?OkrDirectFigmaForegroundPage[\s\S]*?figma-untitled\/p26-foreground\.png/,
+  "the second OKR page must use the direct Untitled transparent foreground rather than a reconstructed matrix",
 );
 assert.match(
   shell,

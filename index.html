@@ -2534,15 +2534,15 @@ function OkrReportDeck(){
       <OkrFixedBackdrop/>
       <OkrBrandSystemPage/>
       {OKR_FIGMA_PAGES.slice(1).map((page,index)=>(
-        page.id==='okr-brand-results' ? <OkrBrandResultsPage key={page.id}/> :
+        page.id==='okr-brand-results' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p26-foreground.png"/> :
         page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p30-foreground.png"/> :
-        page.id==='okr-tvc-matrix' ? <OkrTvcMatrixPage key={page.id} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
-        page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p32-foreground.png"/> :
+        page.id==='okr-tvc-matrix' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-foreground.png"/> :
+        page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-2-foreground.png"/> :
         page.id==='okr-application-roadmap' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-foreground.png"/> :
-        page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p34-foreground.png"/> :
+        page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p31-foreground.png"/> :
         page.id==='okr-awards' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-exact/awards-source.png"/> :
-        page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p37-38-foreground.png"/> :
-        page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p37-40-foreground.png"/> :
+        page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground.png"/> :
+        page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p36-1-foreground.png"/> :
           <OkrExactFigmaPage
             key={page.id}
             page={page}

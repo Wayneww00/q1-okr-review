@@ -94,7 +94,7 @@ assert.match(
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /page\.id==='okr-brand-operating-system'[\s\S]*?figma-untitled\/p30-foreground\.png[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p32-foreground\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?figma-untitled\/p33-foreground\.png[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p34-foreground\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?figma-exact\/awards-source\.png[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p37-38-foreground\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p37-40-foreground\.png/,
+  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground\.png[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?figma-untitled\/p30-foreground\.png[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?figma-untitled\/p28-foreground\.png[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?figma-untitled\/p33-foreground\.png[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?figma-exact\/awards-source\.png[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground\.png/,
   "the remaining Figma foreground exports must be assigned to their matching report pages",
 );
 assert.match(

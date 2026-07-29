@@ -83,18 +83,49 @@ try {
       true,
       `${pageId} must become active in sequence`,
     );
-    if (pageId === "okr-review") {
+    const directForegrounds = {
+      "okr-review": {
+        source: /previews\/assets\/figma-untitled\/p25-foreground\.png$/,
+        pageNumber: "01/11",
+      },
+      "okr-brand-results": {
+        source: /previews\/assets\/figma-untitled\/p26-foreground\.png$/,
+        pageNumber: "02/11",
+      },
+      "okr-tvc-matrix": {
+        source: /previews\/assets\/figma-untitled\/p28-foreground\.png$/,
+        pageNumber: "05/11",
+      },
+      "okr-tvc-library": {
+        source: /previews\/assets\/figma-untitled\/p28-2-foreground\.png$/,
+        pageNumber: "06/11",
+      },
+      "okr-high-value-actions": {
+        source: /previews\/assets\/figma-untitled\/p31-foreground\.png$/,
+        pageNumber: "08/11",
+      },
+      "okr-offline-event-01": {
+        source: /previews\/assets\/figma-untitled\/p33-34-foreground\.png$/,
+        pageNumber: "10/11",
+      },
+      "okr-offline-event-02": {
+        source: /previews\/assets\/figma-untitled\/p36-1-foreground\.png$/,
+        pageNumber: "11/11",
+      },
+    };
+    const directForeground = directForegrounds[pageId];
+    if (directForeground) {
       assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), 1);
       assert.equal(await okrPage.locator(".h1-okr-exact-frame").count(), 0);
       assert.match(
         await okrPage.locator(".h1-okr-figma-foreground-layer").getAttribute("src"),
-        /previews\/assets\/figma-untitled\/p25-foreground\.png$/,
-        "the rebuilt p25 foreground must use the direct Figma export",
+        directForeground.source,
+        `${pageId} must use its direct Untitled Figma foreground export`,
       );
       assert.equal(
         (await okrPage.locator(".h1-okr-page-number").textContent()).replace(/\s+/g, ""),
-        "01/11",
-        "the rebuilt p25 foreground must keep its page number",
+        directForeground.pageNumber,
+        `${pageId} must keep its page number`,
       );
     } else {
       assert.match(
