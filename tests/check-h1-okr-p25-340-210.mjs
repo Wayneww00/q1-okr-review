@@ -21,16 +21,16 @@ assert.ok(fs.statSync(p25Path).size > 200_000, "p25 must retain full presentatio
 assert.match(
   app,
   /id:'okr-review'[\s\S]*?src:'previews\/assets\/figma-exact\/p25-source\.png'/,
-  "the p25 report page must use the exact Figma export",
+  "the p25 report page must use the exact full-resolution Figma frame",
 );
 assert.match(
   app,
-  /<OkrExactFigmaPage key=\{page\.id\} page=\{page\} onPreview=\{setPreview\}\/>/,
+  /<OkrExactFigmaPage[\s\S]*?key=\{page\.id\}[\s\S]*?page=\{page\}[\s\S]*?onPreview=\{setPreview\}/,
   "p25 must use the shared exact-frame renderer",
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-figma-source-okr-v2"',
+    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
   ),
   "the shell must load the exact p25 revision",
 );

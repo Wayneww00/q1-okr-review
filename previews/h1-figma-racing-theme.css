@@ -2941,32 +2941,58 @@ svg.h1-okr-insight-icon circle {
   display: none !important;
 }
 
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+
 .h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-exact-page {
   position: relative;
   isolation: isolate;
+  z-index: 1;
   width: 100%;
   height: 100vh;
   min-height: 100vh;
   overflow: hidden;
-  background: #050505;
+  background: #080706;
 }
 
 .h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-exact-page::before {
   content: "";
   position: absolute;
   z-index: 0;
-  inset: 0;
+  inset: -3%;
+  pointer-events: none;
   background-image:
-    linear-gradient(rgba(0,0,0,.1), rgba(0,0,0,.1)),
+    linear-gradient(rgba(0,0,0,.06), rgba(0,0,0,.06)),
     var(--h1-okr-page-image);
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: blur(14px) saturate(.94);
-  transform: scale(1.045);
+  filter: blur(12px) saturate(.98);
+  transform: scale(1.03);
 }
 
-.h1-okr-exact-artboard,
+.h1-okr-exact-artboard {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: min(100%, calc(100vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
+  mask-composite: intersect;
+}
+
 .h1-okr-exact-modal-artboard {
   position: absolute;
   z-index: 1;
@@ -3023,6 +3049,118 @@ svg.h1-okr-insight-icon circle {
 .h1-okr-exact-hotspot:focus-visible {
   outline: 3px solid rgba(255,255,255,.92);
   outline-offset: 4px;
+}
+
+.h1-okr-video-hotspot {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.h1-okr-video-hotspot:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
+}
+
+.h1-okr-page-number {
+  position: absolute;
+  z-index: 5;
+  right: 1.7%;
+  bottom: 1.7%;
+  color: #fff;
+  font: 700 clamp(11px, .73vw, 14px)/1 "Barlow Condensed", sans-serif !important;
+  letter-spacing: .08em !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,.8);
+  pointer-events: none;
+}
+
+.h1-okr-page-number span {
+  color: rgba(255,255,255,.5);
+}
+
+.h1-okr-video-modal {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 4vh 4vw;
+  background: rgba(0,0,0,.86);
+  backdrop-filter: blur(12px);
+  cursor: zoom-out;
+}
+
+.h1-okr-video-modal-panel {
+  position: relative;
+  width: min(86vw, calc(86vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #080808;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 18px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.7);
+  cursor: default;
+}
+
+.h1-okr-video-player {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+.h1-okr-video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(195,34,40,.26), transparent 36%),
+    #080808;
+}
+
+.h1-okr-video-placeholder strong {
+  font: 700 clamp(22px, 2.1vw, 40px)/1.15 "Noto Sans SC", sans-serif;
+}
+
+.h1-okr-video-placeholder span {
+  color: rgba(255,255,255,.56);
+  font: 500 clamp(13px, 1vw, 18px)/1.4 "Noto Sans SC", sans-serif;
+}
+
+.h1-okr-video-modal-close {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  font: 300 30px/1 Arial, sans-serif;
+  appearance: none;
+  background: rgba(0,0,0,.62);
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.h1-okr-video-modal-close:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
 }
 
 .h1-okr-exact-modal {

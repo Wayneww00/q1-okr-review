@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260729-figma-source-okr-v2">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260729-okr-independent-bg-v1">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2221,6 +2221,50 @@ const OKR_FIGMA_PAGES=[
     src:'previews/assets/figma-exact/p27-source.png',
   },
   {
+    id:'okr-brand-refresh',
+    label:'品牌升级',
+    src:'previews/assets/figma-exact/okr-p29-source.png',
+  },
+  {
+    id:'okr-brand-operating-system',
+    label:'品牌经营系统',
+    src:'previews/assets/figma-exact/okr-p30-source.png',
+  },
+  {
+    id:'okr-tvc-matrix',
+    label:'Vantage TVC 矩阵',
+    src:'previews/assets/figma-exact/okr-p32-matrix-source.jpg',
+    videoSlots:[
+      {id:'hero-1',label:'HERO 1 年度品牌母片',left:12.2,top:56.7,width:29.8,height:22.4},
+      {id:'hero-2',label:'HERO 2 年度旗舰 Campaign 片',left:59.1,top:56.7,width:29.4,height:22.4},
+    ],
+  },
+  {
+    id:'okr-tvc-library',
+    label:'常态化与场景化 TVC',
+    src:'previews/assets/figma-exact/okr-p32-tvc-source.jpg',
+    videoSlots:[
+      {id:'co-brand',label:'合作背书片',left:11.3,top:16.1,width:24.8,height:16.1},
+      {id:'chapter-01',label:'品牌章节片 01',left:38.1,top:16.1,width:24.8,height:16.1},
+      {id:'chapter-02',label:'品牌章节片 02',left:65,top:16.1,width:24.8,height:16.1},
+      {id:'public-good',label:'公益',left:11.3,top:56.7,width:24.8,height:16.1},
+      {id:'usp',label:'USP',left:38.1,top:56.7,width:24.8,height:16.1},
+      {id:'special-festival',label:'特殊节庆',left:65,top:56.7,width:24.8,height:16.1},
+      {id:'product-24-7',label:'产品 24/7',left:11.3,top:80.1,width:24.8,height:16.1},
+      {id:'product-copy-trade',label:'产品 Copy Trade',left:38.1,top:80.1,width:24.8,height:16.1},
+    ],
+  },
+  {
+    id:'okr-application-roadmap',
+    label:'H2 V1 Application Rollout Roadmap',
+    src:'previews/assets/figma-exact/okr-p33-source.png',
+  },
+  {
+    id:'okr-high-value-actions',
+    label:'六个高价值抓手',
+    src:'previews/assets/figma-exact/okr-p34-source.png',
+  },
+  {
     id:'okr-awards',
     label:'奖项',
     src:'previews/assets/figma-exact/awards-source.png',
@@ -2235,13 +2279,13 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-offline-event-02',
     label:'线下活动：02 展会',
-    src:'previews/assets/figma-exact/expo-source.png',
+    src:'previews/assets/figma-exact/expo.jpg',
     modalSrc:'previews/assets/figma-exact/expo-modal-source.png',
     hotspotClass:'is-expo',
   },
 ];
 
-function OkrExactFigmaPage({page,onPreview}){
+function OkrExactFigmaPage({page,index,count,onPreview,onVideoPreview}){
   return (
     <section
       id={page.id}
@@ -2249,7 +2293,7 @@ function OkrExactFigmaPage({page,onPreview}){
       data-report-page
       data-page-id={page.id}
       aria-label={page.label}
-      style={{'--h1-okr-page-image':`url("${page.src}")`}}
+      style={{'--h1-okr-page-image':`url("/${page.src}")`}}
     >
       <div className="h1-okr-exact-artboard">
         <img
@@ -2270,6 +2314,24 @@ function OkrExactFigmaPage({page,onPreview}){
             onClick={()=>onPreview(page)}
           />
         )}
+        {page.videoSlots?.map(slot=>(
+          <button
+            key={slot.id}
+            type="button"
+            className="h1-okr-video-hotspot"
+            style={{
+              left:`${slot.left}%`,
+              top:`${slot.top}%`,
+              width:`${slot.width}%`,
+              height:`${slot.height}%`,
+            }}
+            aria-label={`播放：${slot.label}`}
+            onClick={()=>onVideoPreview({page,slot})}
+          />
+        ))}
+        <div className="h1-okr-page-number">
+          {String(index+1).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span>
+        </div>
       </div>
     </section>
   );
@@ -2313,15 +2375,67 @@ function OkrExactModal({preview,onClose}){
   );
 }
 
+function OkrVideoModal({preview,onClose}){
+  useEffect(()=>{
+    if(!preview)return;
+    const onKeyDown=(event)=>{if(event.key==='Escape')onClose();};
+    document.addEventListener('keydown',onKeyDown);
+    return()=>document.removeEventListener('keydown',onKeyDown);
+  },[preview,onClose]);
+  if(!preview)return null;
+  return (
+    <div
+      className="h1-okr-video-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`视频预览：${preview.slot.label}`}
+      onClick={onClose}
+    >
+      <div className="h1-okr-video-modal-panel" onClick={event=>event.stopPropagation()}>
+        {preview.slot.src ? (
+          <video
+            className="h1-okr-video-player"
+            src={preview.slot.src}
+            controls
+            autoPlay
+            playsInline
+          />
+        ) : (
+          <div className="h1-okr-video-placeholder">
+            <strong>{preview.slot.label}</strong>
+            <span>视频资源待接入</span>
+          </div>
+        )}
+        <button
+          type="button"
+          className="h1-okr-video-modal-close"
+          aria-label="关闭视频预览"
+          onClick={onClose}
+        >×</button>
+      </div>
+    </div>
+  );
+}
+
 function OkrReportDeck(){
   const [preview,setPreview]=useState(null);
+  const [videoPreview,setVideoPreview]=useState(null);
   const closePreview=useCallback(()=>setPreview(null),[]);
+  const closeVideoPreview=useCallback(()=>setVideoPreview(null),[]);
   return (
     <main data-report-section="okr" className="h1-okr-report" style={{margin:0,padding:0}}>
-      {OKR_FIGMA_PAGES.map(page=>(
-        <OkrExactFigmaPage key={page.id} page={page} onPreview={setPreview}/>
+      {OKR_FIGMA_PAGES.map((page,index)=>(
+        <OkrExactFigmaPage
+          key={page.id}
+          page={page}
+          index={index}
+          count={OKR_FIGMA_PAGES.length}
+          onPreview={setPreview}
+          onVideoPreview={setVideoPreview}
+        />
       ))}
       <OkrExactModal preview={preview} onClose={closePreview}/>
+      <OkrVideoModal preview={videoPreview} onClose={closeVideoPreview}/>
     </main>
   );
 }

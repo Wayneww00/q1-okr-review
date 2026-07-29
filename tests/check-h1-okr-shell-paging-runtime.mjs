@@ -34,6 +34,12 @@ try {
   const okrPageIds = [
     "okr-review",
     "okr-brand-results",
+    "okr-brand-refresh",
+    "okr-brand-operating-system",
+    "okr-tvc-matrix",
+    "okr-tvc-library",
+    "okr-application-roadmap",
+    "okr-high-value-actions",
     "okr-awards",
     "okr-offline-event-01",
     "okr-offline-event-02",
@@ -75,8 +81,33 @@ try {
     );
     assert.match(
       await okrPage.locator(".h1-okr-exact-frame").getAttribute("src"),
-      /previews\/assets\/figma-exact\/.+\.(?:jpg|png)$/,
-      `${pageId} must use an exact Figma image`,
+      /previews\/assets\/figma-exact\/(?:.+-source\.(?:png|jpg)|salon\.jpg|expo\.jpg)$/,
+      `${pageId} must use an exact full-resolution Figma frame`,
+    );
+    assert.equal(
+      await okrPage.locator(".h1-okr-exact-artboard").evaluate(
+        (artboard) => getComputedStyle(artboard).position,
+      ),
+      "absolute",
+      `${pageId} must own an independent presentation surface`,
+    );
+    assert.equal(
+      (await okrPage.locator(".h1-okr-page-number").innerText()).replace(/\s+/g, " ").trim(),
+      `${String(offset + 1).padStart(2, "0")} / 11`,
+      `${pageId} must show the correct OKR-only page number`,
+    );
+    const independentBackground = await okrPage.evaluate((root) => ({
+      cssVariable: getComputedStyle(root)
+        .getPropertyValue("--h1-okr-page-image")
+        .trim(),
+      edgeFill: getComputedStyle(root, "::before").backgroundImage,
+      frameSrc: root.querySelector(".h1-okr-exact-frame")?.getAttribute("src"),
+    }));
+    const independentFileName = independentBackground.frameSrc.split("/").pop();
+    assert.ok(
+      independentBackground.cssVariable.includes(independentFileName) &&
+        independentBackground.edgeFill.includes(independentFileName),
+      `${pageId} must use its own Figma frame for responsive edge fill`,
     );
 
     if (pageId === "okr-offline-event-01") {
@@ -89,6 +120,18 @@ try {
       );
       await modal.locator(".h1-okr-exact-modal-close").click();
       await modal.waitFor({ state: "detached" });
+    }
+
+    if (pageId === "okr-tvc-library") {
+      await okrPage.locator(".h1-okr-video-hotspot").first().click();
+      const videoModal = reportFrame.locator(".h1-okr-video-modal");
+      await videoModal.waitFor();
+      assert.equal(
+        await videoModal.locator(".h1-okr-video-placeholder span").innerText(),
+        "视频资源待接入",
+      );
+      await videoModal.locator(".h1-okr-video-modal-close").click();
+      await videoModal.waitFor({ state: "detached" });
     }
 
     if (pageId === "okr-offline-event-02") {

@@ -28,6 +28,6 @@ for (const preserved of ["Opening Film", "H1 Review", "Full Report", "Q3 Outlook
   assert.ok(formal.includes(preserved), `the formal structure must preserve ${preserved}`);
 }
 
-assert.ok(formal.includes('src="../index.html?report=h1&embedded=1&v=20260729-figma-source-okr-v2"'), "the formal report must keep login-free embedded mode");
+assert.ok(formal.includes('src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"'), "the formal report must keep login-free embedded mode");
 
 console.log("H1 Figma formal redesign contract passed.");
