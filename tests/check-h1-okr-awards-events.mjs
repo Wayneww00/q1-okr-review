@@ -16,7 +16,6 @@ const shell = fs.readFileSync(
 const expectedPages = [
   ["okr-review", "p25-source.png"],
   ["okr-brand-results", "p27-source.png"],
-  ["okr-brand-operating-system", "okr-p30-source.png"],
   ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
   ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
   ["okr-application-roadmap", "okr-p33-source.png"],
@@ -68,6 +67,10 @@ for (const fileName of ["salon-modal-source.png", "expo-modal-source.png"]) {
     `${fileName} must be a full-resolution modal export`,
   );
 }
+assert.ok(
+  registry.includes("previews/assets/figma-untitled/brand-operating-system-foreground.svg"),
+  "Brand operating system must use the requested transparent Figma foreground",
+);
 
 assert.match(
   app,
@@ -106,7 +109,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-figma-direct-p25-p40-v6"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-brand-operating-system-transparent-v9"',
   ),
   "the formal shell must invalidate the embedded report after the exact Figma update",
 );

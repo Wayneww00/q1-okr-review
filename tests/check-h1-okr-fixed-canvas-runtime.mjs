@@ -88,16 +88,24 @@ try {
     await laterPage.scrollIntoViewIfNeeded();
     const laterPageState = await laterPage.evaluate((root) => {
       const stage = document.querySelector(".h1-okr-fixed-trophy-stage");
+      const foreground = root.querySelector(".h1-okr-brand-refresh-foreground");
       return {
         stageTop: stage.getBoundingClientRect().top,
         foregroundImages: [...root.querySelectorAll(".h1-okr-figma-foreground-layer")].map((layer) => layer.getAttribute("src")),
+        foregroundPosition: foreground ? {
+          left: foreground.style.left,
+          top: foreground.style.top,
+          width: foreground.getAttribute("width"),
+          height: foreground.getAttribute("height"),
+        } : null,
         brandRefreshModuleCount: root.querySelectorAll(".h1-brand-refresh-title, .h1-brand-refresh-summary, .h1-brand-refresh-map").length,
         exactFrameCount: root.querySelectorAll(".h1-okr-exact-frame").length,
       };
     });
     assert.ok(Math.abs(laterPageState.stageTop) < 1, "the same trophy stage must remain pinned after a page turn");
-    assert.deepEqual(laterPageState.foregroundImages, []);
-    assert.equal(laterPageState.brandRefreshModuleCount, 3);
+    assert.deepEqual(laterPageState.foregroundImages, ["previews/assets/figma-untitled/brand-refresh-foreground.png"]);
+    assert.deepEqual(laterPageState.foregroundPosition, { left: "160px", top: "67px", width: "1619", height: "950" });
+    assert.equal(laterPageState.brandRefreshModuleCount, 0);
     assert.equal(laterPageState.exactFrameCount, 0, "the Brand Refresh foreground must not stack a full Figma screenshot over the shared trophy");
     await page.close();
   }

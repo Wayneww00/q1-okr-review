@@ -51,7 +51,7 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-fixed-stage-background\s*\{[\s\S]*?width:\s*1638px;[\s\S]*?height:\s*1080px;/,
+  /\.h1-okr-fixed-stage-background\s*\{[\s\S]*?width:\s*1920px;[\s\S]*?height:\s*1080px;/,
   "the OKR chapter must preserve the Figma trophy background at its original artboard size",
 );
 assert.match(
@@ -66,7 +66,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-figma-direct-p25-p40-v6"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-brand-operating-system-transparent-v9"',
   ),
   "the formal shell must load the exact Figma background revision",
 );

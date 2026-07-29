@@ -103,6 +103,14 @@ try {
         source: /previews\/assets\/figma-untitled\/p26-foreground\.png$/,
         pageNumber: "03/18",
       },
+      "okr-brand-refresh": {
+        source: /previews\/assets\/figma-untitled\/brand-refresh-foreground\.png$/,
+        pageNumber: "04/18",
+      },
+      "okr-brand-operating-system": {
+        source: /previews\/assets\/figma-untitled\/brand-operating-system-foreground\.svg$/,
+        pageNumber: "05/18",
+      },
       "okr-tvc-matrix": {
         source: /previews\/assets\/figma-untitled\/p28-foreground\.png$/,
         pageNumber: "06/18",
@@ -149,17 +157,7 @@ try {
       },
     };
     const directForeground = directForegrounds[pageId];
-    if (pageId === "okr-brand-refresh") {
-      assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), 0);
-      assert.equal(await okrPage.locator(".h1-okr-exact-frame").count(), 0);
-      assert.equal(await okrPage.locator(".h1-brand-refresh-title").count(), 1);
-      assert.equal(await okrPage.locator(".h1-brand-refresh-summary").count(), 1);
-      assert.equal(await okrPage.locator(".h1-brand-refresh-map").count(), 1);
-      assert.equal(
-        (await okrPage.locator(".h1-okr-page-number").textContent()).replace(/\s+/g, ""),
-        "04/18",
-      );
-    } else if (directForeground) {
+    if (directForeground) {
       assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), 1);
       assert.equal(await okrPage.locator(".h1-okr-exact-frame").count(), 0);
       assert.match(
@@ -172,6 +170,11 @@ try {
         directForeground.pageNumber,
         `${pageId} must keep its page number`,
       );
+      if (pageId === "okr-brand-refresh") {
+        assert.equal(await okrPage.locator(".h1-brand-refresh-title").count(), 0);
+        assert.equal(await okrPage.locator(".h1-brand-refresh-summary").count(), 0);
+        assert.equal(await okrPage.locator(".h1-brand-refresh-map").count(), 0);
+      }
     } else {
       assert.match(
         await okrPage.locator(".h1-okr-exact-frame").getAttribute("src"),

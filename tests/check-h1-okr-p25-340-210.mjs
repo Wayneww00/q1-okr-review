@@ -30,7 +30,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-figma-direct-p25-p40-v6"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-brand-operating-system-transparent-v9"',
   ),
   "the shell must load the exact p25 revision",
 );

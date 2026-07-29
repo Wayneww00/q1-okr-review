@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260729-figma-direct-p25-p40-v6">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-figma-brand-refresh-v7">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2302,12 +2302,12 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-brand-refresh',
     label:'品牌升级',
-    src:'figma:X01xSUl7vdAJmI5fQso6TM:31:7530',
+    src:'previews/assets/figma-untitled/brand-refresh-foreground.png',
   },
   {
     id:'okr-brand-operating-system',
     label:'品牌经营系统',
-    src:'previews/assets/figma-exact/okr-p30-source.png',
+    src:'previews/assets/figma-untitled/brand-operating-system-foreground.svg',
   },
   {
     id:'okr-tvc-matrix',
@@ -2432,13 +2432,18 @@ function OkrBrandRefreshForegroundPage({page,index,count}){
   return (
     <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page h1-okr-brand-refresh-page" data-report-page data-page-id={page.id} aria-label={page.label}>
       <div ref={canvasRef} className="h1-okr-canvas">
-        <div className="h1-brand-refresh-title" aria-hidden="true"><span>BRAND REFRESH</span><strong>品牌升级</strong></div>
-        <div className="h1-brand-refresh-summary" aria-hidden="true"><i></i><b>品牌战略只有转化为统一资产，并持续落到每一个触点，才能形成全球品牌力。</b><small>从洞察到表达，再到全渠道执行</small></div>
-        <div className="h1-brand-refresh-map" aria-hidden="true">
-          <div className="h1-brand-refresh-column h1-brand-refresh-inputs"><h3>策略属入</h3><div className="h1-brand-refresh-card is-charcoal"><b>人群</b><span>PEOPLE</span></div><div className="h1-brand-refresh-card is-ivory"><b>行业</b><span>INDUSTRY</span></div><div className="h1-brand-refresh-card is-gold"><b>产品</b><span>PRODUCT</span></div></div>
-          <div className="h1-brand-refresh-core"><h3>品牌核心</h3><div className="h1-brand-refresh-house"><b>品<br/>牌<br/>屋</b><span>统一品牌主张</span></div><div className="h1-brand-refresh-core-card is-charcoal"><b>SLOGAN</b><span>核心口号</span></div><div className="h1-brand-refresh-core-card is-ivory"><b>VI+LOGO</b><span>视觉框架</span></div><div className="h1-brand-refresh-core-card is-gold"><b>VANTAGE<br/>NO.1</b><span>内容框架</span></div><div className="h1-brand-refresh-links"></div></div>
-          <div className="h1-brand-refresh-column h1-brand-refresh-channels"><h3>传播落地</h3><div className="h1-brand-refresh-channel-grid"><div className="h1-brand-refresh-channel is-charcoal">官网</div><div className="h1-brand-refresh-channel is-ivory is-gold-text">现在</div><div className="h1-brand-refresh-channel is-gold">SOCIAL<br/>+PR+线下</div><div className="h1-brand-refresh-channel is-black">OPCS/IB<br/>SALES话术</div><div className="h1-brand-refresh-channel is-ivory is-gold-text">TVC</div><div className="h1-brand-refresh-channel is-gold">。 。 。</div></div></div>
-        </div>
+        <img
+          className="h1-okr-figma-foreground-layer is-positioned h1-okr-brand-refresh-foreground"
+          src={page.src}
+          alt=""
+          width="1619"
+          height="950"
+          style={{left:'160px',top:'67px',width:'1619px',height:'950px'}}
+          loading="eager"
+          decoding="sync"
+          draggable="false"
+          aria-hidden="true"
+        />
         <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
       </div>
     </section>
@@ -2620,7 +2625,7 @@ function OkrReportDeck(){
       {OKR_FIGMA_PAGES.slice(1).map((page,index)=>(
         page.id==='okr-brand-results' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p26-foreground.png"/> :
         page.id==='okr-brand-refresh' ? <OkrBrandRefreshForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
-        page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p30-foreground.png"/> :
+        page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-tvc-matrix' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-foreground.png"/> :
         page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-2-foreground.png"/> :
         page.id==='okr-application-roadmap' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-foreground.png"/> :

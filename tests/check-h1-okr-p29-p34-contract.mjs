@@ -12,7 +12,6 @@ const theme = fs.readFileSync(
 const expectedPages = [
   ["okr-review", "p25-source.png"],
   ["okr-brand-results", "p27-source.png"],
-  ["okr-brand-operating-system", "okr-p30-source.png"],
   ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
   ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
   ["okr-application-roadmap", "okr-p33-source.png"],
@@ -63,6 +62,10 @@ assert.equal(
   18,
   "the OKR section must contain the approved eighteen pages",
 );
+assert.ok(
+  registry.includes("previews/assets/figma-untitled/brand-operating-system-foreground.svg"),
+  "Brand operating system must use the requested transparent Figma foreground",
+);
 assert.match(
   app,
   /page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground\.png/,
@@ -93,7 +96,22 @@ for (const [pageId, fileName] of [
 assert.match(
   app,
   /page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage/,
-  "the Brand Refresh page must render its content-only Figma layers over the shared trophy",
+  "the Brand Refresh page must retain its dedicated Figma foreground renderer",
+);
+assert.match(
+  registry,
+  /id:'okr-brand-refresh'[\s\S]*?src:'previews\/assets\/figma-untitled\/brand-refresh-foreground\.png'/,
+  "the Brand Refresh page must use the exported Figma foreground rather than a full background screenshot",
+);
+assert.match(
+  app,
+  /function OkrBrandRefreshForegroundPage\([\s\S]*?className="h1-okr-figma-foreground-layer is-positioned h1-okr-brand-refresh-foreground"[\s\S]*?src=\{page\.src\}[\s\S]*?left:'160px',top:'67px',width:'1619px',height:'950px'/,
+  "the Brand Refresh foreground must preserve its Figma position over the shared trophy stage",
+);
+assert.doesNotMatch(
+  app,
+  /function OkrBrandRefreshForegroundPage\([\s\S]*?h1-brand-refresh-title/,
+  "the Brand Refresh page must not fall back to a hand-redrawn content layer",
 );
 assert.match(
   app,
