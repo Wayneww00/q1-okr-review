@@ -51,22 +51,22 @@ assert.match(
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-trophy\);[\s\S]*?background-size:\s*cover;/,
-  "each OKR page must use the approved trophy image to fill side bars",
+  /\.h1-okr-fixed-stage-background\s*\{[\s\S]*?width:\s*1638px;[\s\S]*?height:\s*1080px;/,
+  "the OKR chapter must preserve the Figma trophy background at its original artboard size",
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*min\(100%,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;/,
-  "each page must contain its own proportional artboard",
+  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?left:\s*30%;[\s\S]*?width:\s*min\(54vw,\s*calc\(72vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;[\s\S]*?border-radius:\s*18\.02817px;/,
+  "each page must present its proportional Figma artboard as a data-deck surface",
 );
-assert.doesNotMatch(
+assert.match(
   app,
-  /h1-okr-fixed-stage/,
-  "the rejected shared OKR background must stay removed",
+  /<OkrFixedBackdrop\/>[\s\S]*?<OkrBrandSystemPage\/>/,
+  "the first reconstructed foreground page must sit over one shared trophy layer",
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
+    'src="../index.html?report=h1&embedded=1&v=20260729-figma-direct-p25-p40-v6"',
   ),
   "the formal shell must load the exact Figma background revision",
 );

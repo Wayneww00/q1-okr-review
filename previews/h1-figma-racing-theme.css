@@ -28,6 +28,7 @@
 .h1-figma-racing-report {
   --h1-racing-stage: url("assets/figma-racing/source-04.png");
   --h1-figma-data-stage: url("assets/figma-racing/figma-vantage-wordmark-car-stage-140-36.png");
+  --h1-okr-background-stage: url("assets/figma-untitled/p25-background.png");
   --h1-figma-red: #b91820;
   --h1-figma-red-bright: #e22529;
   --h1-figma-orange: #ff5b11;
@@ -1766,11 +1767,6 @@
   --h1-okr-design-width: 1920;
   --h1-okr-design-height: 1080;
   --h1-okr-black: #080808;
-  --h1-okr-gold-a: #d4a053;
-  --h1-okr-gold-b: #c38634;
-  --h1-okr-ivory: #fff3e5;
-  --h1-okr-charcoal: #1b1b1b;
-  --h1-okr-trophy: url("/previews/assets/h1-review-bg-320-194-2280x1346.png");
 }
 
 .h1-figma-racing-report body.h1-embedded-report > #root > div > main.h1-okr-report {
@@ -1836,14 +1832,57 @@
   opacity: 1;
 }
 
-.h1-okr-shared-backdrop::after {
-  content: "";
+/* One 1920 × 1080 Figma stage is pinned behind the entire 01–11 chapter.
+   The exported p25 background and foreground share the exact same artboard
+   dimensions, so their composition cannot drift when the chapter is scaled. */
+.h1-okr-fixed-trophy-stage {
+  display: block;
+  background: #000;
+}
+
+.h1-okr-fixed-stage-canvas {
+  --h1-okr-scale: .5;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(var(--h1-okr-scale));
+  transform-origin: 50% 50%;
+}
+
+.h1-okr-fixed-stage-canvas.is-scaled {
+  opacity: 1;
+}
+
+.h1-okr-fixed-stage-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 1920px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-figma-foreground-layer {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(90deg, rgba(0,0,0,0) 0 66%, rgba(0,0,0,.08) 100%),
-    radial-gradient(circle at 70% 45%, rgba(84,24,11,.08), transparent 46%);
-  pointer-events: none;
+  z-index: 1;
+  display: block;
+  width: 1920px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .h1-okr-visual {
@@ -2197,6 +2236,14 @@ svg.h1-okr-insight-icon circle {
   box-shadow: 0 18px 50px rgba(0,0,0,.24);
 }
 
+/* The outer report shell loads a general editorial theme that gives every
+   nested section 110px of top padding. These Figma panels are coordinate
+   layers, so that generic rule must never participate in their layout. */
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report .h1-okr-results-panel {
+  margin-bottom: 0 !important;
+  padding: 24px 31px 31px !important;
+}
+
 .h1-okr-results-panel > header {
   height: 100px;
   text-align: center;
@@ -2350,6 +2397,313 @@ svg.h1-okr-insight-icon circle {
   font-size: 15px;
   font-weight: 400;
   line-height: 1.2;
+}
+
+/* p32 foreground — intentionally rebuilt as a transparent layer.  The only
+   reused pixels are the two video stills, cropped from their source image;
+   none of the screenshot's trophy background is rendered on this page. */
+.h1-okr-tvc-canvas {
+  width: 1920px;
+  height: 1080px;
+}
+
+.h1-okr-tvc-title-group {
+  position: absolute;
+  z-index: 3;
+  top: 87px;
+  left: 440px;
+  width: 1040px;
+  height: 125px;
+  text-align: center;
+}
+
+.h1-okr-tvc-outline {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 78px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 1.6px;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(255,255,255,.62);
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-tvc-title-group h1 {
+  position: absolute;
+  z-index: 1;
+  top: 46px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 50px !important;
+  font-weight: 900 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 0 3px 16px rgba(0,0,0,.45);
+}
+
+.h1-okr-tvc-intro {
+  position: absolute;
+  z-index: 3;
+  left: 160px;
+  width: 1600px;
+  box-sizing: border-box;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(105deg, rgba(143,83,30,.62), rgba(30,20,16,.93) 54%, rgba(9,9,9,.94));
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 27px;
+  box-shadow: 0 20px 54px rgba(0,0,0,.24);
+}
+
+.h1-okr-tvc-intro > img {
+  position: absolute;
+  top: 30px;
+  left: 55px;
+  width: 95px;
+  height: 49px;
+  object-fit: contain;
+}
+
+.h1-okr-tvc-intro.is-platform {
+  top: 256px;
+  height: 186px;
+  padding: 34px 70px 28px 210px;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report .h1-okr-tvc-intro {
+  margin-bottom: 0 !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report .h1-okr-tvc-intro.is-platform {
+  padding: 34px 70px 28px 210px !important;
+}
+
+.h1-okr-tvc-intro.is-platform h2,
+.h1-okr-tvc-intro.is-annual h2 {
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 31px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.h1-okr-tvc-intro h2 b {
+  display: inline-block;
+  margin-right: 17px;
+  font-family: "Gilroy", "Avenir Next", sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.h1-okr-tvc-intro.is-platform h3 {
+  margin: 23px 0 12px;
+  padding-left: 16px;
+  border-left: 7px solid #b51a22;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 29px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.h1-okr-tvc-intro.is-platform p,
+.h1-okr-tvc-intro.is-annual > div > p {
+  margin: 0;
+  color: rgba(255,255,255,.92);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.h1-okr-tvc-intro.is-annual {
+  top: 464px;
+  height: 575px;
+  padding: 27px 70px 0 210px;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report .h1-okr-tvc-intro.is-annual {
+  padding: 27px 70px 0 210px !important;
+}
+
+.h1-okr-tvc-intro.is-annual > img {
+  top: 26px;
+}
+
+.h1-okr-tvc-intro.is-annual > div > p {
+  margin: 20px 0 0 14px;
+  font-size: 21px;
+}
+
+.h1-okr-tvc-video-row {
+  position: absolute;
+  top: 132px;
+  left: 60px;
+  width: 1480px;
+  height: 410px;
+  display: grid;
+  grid-template-columns: 582px 270px 582px;
+  gap: 23px;
+  align-items: start;
+}
+
+.h1-okr-tvc-video-card {
+  position: relative;
+  box-sizing: border-box;
+  height: 410px;
+  padding: 16px 18px 20px;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(145deg, rgba(146,91,25,.94), rgba(100,59,15,.95));
+  border: 1px solid rgba(255,228,174,.22);
+  border-radius: 28px 28px 36px 36px;
+  box-shadow: 0 18px 36px rgba(0,0,0,.22);
+}
+
+.h1-okr-tvc-media {
+  position: relative;
+  display: block;
+  width: 546px;
+  height: 230px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  background: #111;
+  border: 0;
+  border-radius: 21px;
+}
+
+.h1-okr-tvc-media:focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 4px;
+}
+
+.h1-okr-tvc-media-sprite {
+  position: absolute;
+  display: block;
+  width: 1920px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-tvc-media-sprite.is-hero-1 {
+  top: -614px;
+  left: -236px;
+}
+
+.h1-okr-tvc-media-sprite.is-hero-2 {
+  top: -614px;
+  left: -1135px;
+}
+
+.h1-okr-tvc-video-card h3 {
+  margin: 15px 0 0;
+  padding-left: 14px;
+  border-left: 6px solid #b5151e;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+
+.h1-okr-tvc-video-card h3 span {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.h1-okr-tvc-video-card > strong {
+  display: block;
+  margin: 11px 0 0;
+  padding-left: 16px;
+  color: #f2c66e;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.h1-okr-tvc-video-card > strong::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 9px;
+  background: #b5151e;
+}
+
+.h1-okr-tvc-video-card > p {
+  margin: 9px 0 0 17px;
+  color: rgba(255,221,157,.84);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.h1-okr-tvc-link-card {
+  position: relative;
+  align-self: center;
+  height: 286px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-sizing: border-box;
+  color: #f6c96f;
+  background: linear-gradient(150deg, rgba(151,104,42,.98), rgba(103,67,20,.96));
+  border-radius: 31px 31px 48px 48px;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  text-align: center;
+}
+
+.h1-okr-tvc-link-card strong {
+  color: #fff;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.h1-okr-tvc-link-card span,
+.h1-okr-tvc-link-card i {
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.h1-okr-tvc-link-card b {
+  position: absolute;
+  bottom: -38px;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border: 9px solid rgba(111,70,24,.88);
+  border-radius: 50%;
+  color: #fff;
+  background: #b91820;
+  font-family: Arial, sans-serif;
+  font-size: 54px;
+  font-weight: 400;
+  line-height: .7;
 }
 
 .h1-okr-appendix-canvas {
@@ -2944,7 +3298,7 @@ svg.h1-okr-insight-icon circle {
 .h1-figma-racing-report body.h1-embedded-report main.h1-okr-report {
   position: relative;
   isolation: isolate;
-  background: transparent;
+  background: #000;
 }
 
 .h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-exact-page {
@@ -2955,42 +3309,40 @@ svg.h1-okr-insight-icon circle {
   height: 100vh;
   min-height: 100vh;
   overflow: hidden;
-  background: #080706;
+  background: transparent;
 }
 
 .h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-exact-page::before {
   content: "";
   position: absolute;
   z-index: 0;
-  inset: -3%;
+  inset: 0;
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(0,0,0,.06), rgba(0,0,0,.06)),
-    var(--h1-okr-trophy);
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(12px) saturate(.98);
-  transform: scale(1.03);
+  background: transparent;
 }
 
 .h1-okr-exact-artboard {
   position: absolute;
   z-index: 1;
   top: 50%;
-  left: 50%;
-  width: min(100%, calc(100vh * 16 / 9));
+  left: 30%;
+  width: min(54vw, calc(72vh * 16 / 9));
   aspect-ratio: 16 / 9;
   overflow: hidden;
   transform: translate(-50%, -50%);
-  -webkit-mask-image:
-    linear-gradient(90deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(90deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%),
-    linear-gradient(180deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
-  mask-composite: intersect;
+  transform-origin: center;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 18.02817px;
+  background: rgba(0,0,0,.3);
+  box-shadow: 0 24px 64px rgba(0,0,0,.56), inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* Page 01 is rebuilt from the independent Figma foreground layers. The
+   remaining exact-image pages stay suppressed until their matching foreground
+   layers are rebuilt; their full screenshots are never stacked on the trophy. */
+.h1-okr-report.is-p25-content-only .h1-okr-exact-artboard {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .h1-okr-exact-modal-artboard {
@@ -3018,6 +3370,14 @@ svg.h1-okr-insight-icon circle {
   image-rendering: auto;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+@media (max-width: 1100px) {
+  .h1-okr-exact-artboard {
+    left: 50%;
+    width: min(84vw, calc(80vh * 16 / 9));
+    transform: translate(-50%, -50%);
+  }
 }
 
 .h1-okr-exact-hotspot {

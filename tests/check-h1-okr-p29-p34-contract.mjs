@@ -58,7 +58,7 @@ assert.equal(
 );
 assert.match(
   app,
-  /<OkrExactFigmaPage[\s\S]*?index=\{index\}[\s\S]*?count=\{OKR_FIGMA_PAGES\.length\}/,
+  /<OkrExactFigmaPage[\s\S]*?index=\{index\+1\}[\s\S]*?count=\{OKR_FIGMA_PAGES\.length\}/,
   "each OKR page must receive its one-based page-number context",
 );
 assert.match(
@@ -72,15 +72,15 @@ assert.ok(
   ),
   "every OKR page must retain its own exact Figma foreground frame",
 );
-assert.doesNotMatch(
+assert.match(
   app,
-  /className="h1-okr-fixed-stage"/,
-  "the former shared background stage must not survive",
+  /<OkrFixedBackdrop\/>/,
+  "the OKR deck must use one stable visual background",
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-trophy\);[\s\S]*?background-size:\s*cover;/,
-  "each OKR page must use the approved shared trophy visual behind its complete Figma frame",
+  /\.h1-okr-fixed-stage-canvas\s*\{[\s\S]*?width:\s*1920px;[\s\S]*?height:\s*1080px;/,
+  "the fixed trophy stage must remain on one original Figma canvas across the OKR deck",
 );
 assert.match(
   theme,
@@ -89,8 +89,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*min\(100%,\s*calc\(100vh \* 16 \/ 9\)\);/,
-  "the OKR artboard must belong to its own page rather than a fixed shared layer",
+  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?left:\s*30%;[\s\S]*?width:\s*min\(54vw,\s*calc\(72vh \* 16 \/ 9\)\);[\s\S]*?transform:\s*translate\(-50%,\s*-50%\);/,
+  "the OKR artboard must be a page-owned, data-deck-style content surface",
 );
 assert.match(
   registry,

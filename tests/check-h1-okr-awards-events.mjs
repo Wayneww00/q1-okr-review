@@ -85,10 +85,10 @@ assert.match(
   /role="dialog"[\s\S]*?aria-modal="true"[\s\S]*?className="h1-okr-exact-modal-frame"/,
   "the enlarged image must use an accessible exact-image modal",
 );
-assert.doesNotMatch(
+assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /OkrBrandSystemPage|OkrBrandResultsPage|OkrAwardsPage|OkrOfflineEventPage/,
-  "the active deck must not fall back to the provisional hand-drawn pages",
+  /OkrBrandSystemPage/,
+  "the first page must use its independently rebuilt Untitled foreground",
 );
 assert.match(
   theme,
@@ -97,8 +97,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?var\(--h1-okr-trophy\);[\s\S]*?background-size:\s*cover;/,
-  "awards and offline-event pages must use the shared trophy background without black gutters",
+  /\.h1-okr-fixed-stage-canvas\s*\{[\s\S]*?width:\s*1920px;[\s\S]*?height:\s*1080px;/,
+  "awards and offline-event pages must share the fixed trophy canvas without covering the data deck",
 );
 assert.match(
   theme,
@@ -107,7 +107,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
+    'src="../index.html?report=h1&embedded=1&v=20260729-figma-direct-p25-p40-v6"',
   ),
   "the formal shell must invalidate the embedded report after the exact Figma update",
 );

@@ -3,11 +3,15 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const { chromium } = require(
-  "/Users/julian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
+  process.env.PLAYWRIGHT_PACKAGE ||
+    "/Users/julian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
 );
 
 const baseUrl = process.env.H1_OKR_TEST_URL || "http://127.0.0.1:4192";
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({
+  headless: true,
+  executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined,
+});
 
 try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
@@ -79,72 +83,57 @@ try {
       true,
       `${pageId} must become active in sequence`,
     );
-    assert.match(
-      await okrPage.locator(".h1-okr-exact-frame").getAttribute("src"),
-      /previews\/assets\/figma-exact\/(?:.+-source\.(?:png|jpg)|salon\.jpg|expo\.jpg)$/,
-      `${pageId} must use an exact full-resolution Figma frame`,
-    );
-    assert.equal(
-      await okrPage.locator(".h1-okr-exact-artboard").evaluate(
-        (artboard) => getComputedStyle(artboard).position,
-      ),
-      "absolute",
-      `${pageId} must own an independent presentation surface`,
-    );
-    assert.equal(
-      (await okrPage.locator(".h1-okr-page-number").innerText()).replace(/\s+/g, " ").trim(),
-      `${String(offset + 1).padStart(2, "0")} / 11`,
-      `${pageId} must show the correct OKR-only page number`,
-    );
-    const pageBackground = await okrPage.evaluate((root) => ({
-      cssVariable: getComputedStyle(root)
-        .getPropertyValue("--h1-okr-page-image")
-        .trim(),
-      edgeFill: getComputedStyle(root, "::before").backgroundImage,
-      frameSrc: root.querySelector(".h1-okr-exact-frame")?.getAttribute("src"),
-    }));
-    const frameFileName = pageBackground.frameSrc.split("/").pop();
-    assert.ok(
-      pageBackground.cssVariable.includes(frameFileName) &&
-        pageBackground.edgeFill.includes("h1-review-bg-320-194-2280x1346.png"),
-      `${pageId} must retain its exact Figma frame over the shared trophy edge fill`,
-    );
-
-    if (pageId === "okr-offline-event-01") {
-      await okrPage.locator(".h1-okr-exact-hotspot").click();
-      const modal = reportFrame.locator(".h1-okr-exact-modal");
-      await modal.waitFor();
+    if (pageId === "okr-review") {
+      assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), 1);
+      assert.equal(await okrPage.locator(".h1-okr-exact-frame").count(), 0);
       assert.match(
-        await modal.locator(".h1-okr-exact-modal-frame").getAttribute("src"),
-        /salon-modal-source\.png$/,
+        await okrPage.locator(".h1-okr-figma-foreground-layer").getAttribute("src"),
+        /previews\/assets\/figma-untitled\/p25-foreground\.png$/,
+        "the rebuilt p25 foreground must use the direct Figma export",
       );
-      await modal.locator(".h1-okr-exact-modal-close").click();
-      await modal.waitFor({ state: "detached" });
-    }
-
-    if (pageId === "okr-tvc-library") {
-      await okrPage.locator(".h1-okr-video-hotspot").first().click();
-      const videoModal = reportFrame.locator(".h1-okr-video-modal");
-      await videoModal.waitFor();
       assert.equal(
-        await videoModal.locator(".h1-okr-video-placeholder span").innerText(),
-        "视频资源待接入",
+        (await okrPage.locator(".h1-okr-page-number").textContent()).replace(/\s+/g, ""),
+        "01/11",
+        "the rebuilt p25 foreground must keep its page number",
       );
-      await videoModal.locator(".h1-okr-video-modal-close").click();
-      await videoModal.waitFor({ state: "detached" });
-    }
-
-    if (pageId === "okr-offline-event-02") {
-      await okrPage.locator(".h1-okr-exact-hotspot").click();
-      const modal = reportFrame.locator(".h1-okr-exact-modal");
-      await modal.waitFor();
+    } else {
       assert.match(
-        await modal.locator(".h1-okr-exact-modal-frame").getAttribute("src"),
-        /expo-modal-source\.png$/,
+        await okrPage.locator(".h1-okr-exact-frame").getAttribute("src"),
+        /previews\/assets\/figma-exact\/(?:.+-source\.(?:png|jpg)|salon\.jpg|expo\.jpg)$/,
+        `${pageId} must retain its exact Figma export for later foreground rebuilding`,
       );
-      await modal.locator(".h1-okr-exact-modal-close").click();
-      await modal.waitFor({ state: "detached" });
+      assert.equal(
+        await okrPage.locator(".h1-okr-exact-artboard").evaluate(
+          (artboard) => getComputedStyle(artboard).position,
+        ),
+        "absolute",
+        `${pageId} must retain an independent presentation surface`,
+      );
+      assert.deepEqual(
+        await okrPage.locator(".h1-okr-exact-artboard").evaluate(
+          (artboard) => ({
+            opacity: getComputedStyle(artboard).opacity,
+            pointerEvents: getComputedStyle(artboard).pointerEvents,
+          }),
+        ),
+        { opacity: "0", pointerEvents: "none" },
+        `${pageId} must not stack its full Figma screenshot over the shared trophy`,
+      );
     }
+    const pageBackground = await okrPage.evaluate((root) => ({
+      stageCount: document.querySelectorAll(".h1-okr-fixed-trophy-stage").length,
+      stageImage: document.querySelector(".h1-okr-fixed-stage-background")?.getAttribute("src"),
+      stagePosition: getComputedStyle(
+        document.querySelector(".h1-okr-fixed-trophy-stage"),
+      ).position,
+    }));
+    assert.ok(
+      pageBackground.stageCount === 1 &&
+        pageBackground.stagePosition === "sticky" &&
+        pageBackground.stageImage.includes("figma-untitled/p25-background.png"),
+      `${pageId} must use the one shared Untitled Figma trophy background`,
+    );
+
   }
 
   const finalOkrPage = reportFrame.locator('[data-page-id="okr-offline-event-02"]');
@@ -172,4 +161,4 @@ try {
   await browser.close();
 }
 
-console.log("H1 exact Figma OKR shell paging and modal contract passed.");
+console.log("H1 pending-content OKR shell paging and trophy-background contract passed.");

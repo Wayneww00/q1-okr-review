@@ -63,8 +63,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*min\(100%,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;[\s\S]*?mask-composite:\s*intersect;/,
-  "each Figma page must own an independent, proportional artboard with a soft edge blend",
+  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?left:\s*30%;[\s\S]*?width:\s*min\(54vw,\s*calc\(72vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;[\s\S]*?border-radius:\s*18\.02817px;/,
+  "each Figma page must own a proportional artboard styled as a racing data-deck surface",
 );
 assert.ok(
   app.includes(
@@ -79,22 +79,32 @@ assert.match(
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?background-image:[\s\S]*?var\(--h1-okr-trophy\);[\s\S]*?background-size:\s*cover;/,
-  "each page must fill non-16:9 edges from the shared approved trophy background",
+  /\.h1-okr-fixed-stage-canvas\s*\{[\s\S]*?width:\s*1920px;[\s\S]*?height:\s*1080px;[\s\S]*?transform:\s*translate\(-50%,\s*-50%\)\s*scale\(var\(--h1-okr-scale\)\);/,
+  "the shared trophy must use the original 1920 × 1080 Figma canvas geometry",
 );
-assert.doesNotMatch(
+assert.match(
   app,
-  /className="h1-okr-fixed-stage"/,
-  "the rejected shared OKR background stage must stay removed",
+  /function OkrFixedBackdrop\(\)[\s\S]*?className="h1-okr-fixed-stage-background"[\s\S]*?figma-untitled\/p25-background\.png/,
+  "the deck must render the directly exported Untitled trophy background inside the shared stage",
 );
-assert.doesNotMatch(
+assert.match(
+  app,
+  /function OkrBrandSystemPage\(\)[\s\S]*?className="h1-okr-figma-foreground-layer"[\s\S]*?figma-untitled\/p25-foreground\.png/,
+  "the first page must use the directly exported Untitled foreground layer rather than reconstructed cards",
+);
+assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /h1-one-brand-one-system|OkrBrandSystemPage|OkrBrandResultsPage/,
-  "the active exact deck must not combine legacy crops or provisional HTML",
+  /page\.id==='okr-brand-operating-system'[\s\S]*?figma-untitled\/p30-foreground\.png[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p32-foreground\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?figma-untitled\/p33-foreground\.png[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p34-foreground\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?figma-exact\/awards-source\.png[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p37-38-foreground\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p37-40-foreground\.png/,
+  "the remaining Figma foreground exports must be assigned to their matching report pages",
+);
+assert.match(
+  app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
+  /OkrBrandSystemPage/,
+  "the first page must use independent Untitled foreground components",
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
+    'src="../index.html?report=h1&embedded=1&v=20260729-figma-direct-p25-p40-v6"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

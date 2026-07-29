@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260729-okr-independent-bg-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260729-figma-direct-p25-p40-v6">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2086,51 +2086,45 @@ function useOkrCanvasScale(){
   return {pageRef,canvasRef};
 }
 
+/* The background and every p25 foreground layer originate from the same
+   1920 × 1080 Figma canvas.  Keep a real canvas in the sticky backdrop as
+   well, rather than letting a CSS background image follow viewport sizing. */
+function OkrFixedBackdrop(){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  return (
+    <div ref={pageRef} className="h1-okr-shared-backdrop h1-okr-fixed-trophy-stage" aria-hidden="true">
+      <div ref={canvasRef} className="h1-okr-fixed-stage-canvas">
+        <img
+          className="h1-okr-fixed-stage-background"
+          src="previews/assets/figma-untitled/p25-background.png"
+          alt=""
+          width="1920"
+          height="1080"
+          decoding="sync"
+          draggable="false"
+        />
+      </div>
+    </div>
+  );
+}
+
 function OkrBrandSystemPage(){
   const {pageRef,canvasRef}=useOkrCanvasScale();
-  const insights=[
-    {
-      tone:'gold',
-      icon:'system',
-      art:'previews/assets/h1-okr-p25-card-gold-340-222.svg',
-      title:'从分散表达,走向统一品牌资产',
-      description:'Build a premium and consistent visual-verbal system across every market.',
-    },
-    {
-      tone:'ivory',
-      icon:'touchpoints',
-      art:'previews/assets/h1-okr-p25-card-ivory-340-236.svg',
-      title:'从单点传播,走向线上线下一体化体验',
-      description:'Connect campaigns, products and touchpoints into one coherent experience.',
-    },
-    {
-      tone:'charcoal',
-      icon:'global',
-      art:'previews/assets/h1-okr-p25-card-charcoal-340-250.svg',
-      title:'从一次性项目,走向全球可复制的品牌经营系统',
-      description:'Turn isolated execution into a scalable brand operating model for global growth.',
-    },
-  ];
   return (
-    <section ref={pageRef} className="h1-okr-page" data-report-page data-page-id="okr-review" aria-labelledby="h1-okr-title">
+    <section ref={pageRef} className="h1-okr-page" data-report-page data-page-id="okr-review" aria-label="将 Vantage 建设成全球一线品牌">
       <div ref={canvasRef} className="h1-okr-canvas">
-        <div className="h1-okr-title-group">
-          <div className="h1-okr-outline-title" aria-hidden="true">
-            <span>ONE BRAND ONE SYSTEM</span>
-          </div>
-          <h1 id="h1-okr-title" aria-label="将Vantage建设成全球一线品牌">
-            <span>将</span><span className="h1-okr-title-latin">Vantage</span><span>建设成全球一线品牌</span>
-          </h1>
-        </div>
-        <div className="h1-okr-insight-rail" aria-label="品牌经营系统的三项转变">
-          {insights.map((insight,index)=>(
-            <article className={`h1-okr-insight-card is-${insight.tone}`} key={insight.title} style={{'--h1-okr-card-index':index}}>
-              <img className="h1-okr-card-art" src={insight.art} alt="" aria-hidden="true"/>
-              <div className="h1-okr-icon-medallion"><OkrInsightIcon type={insight.icon}/></div>
-              <h2>{insight.title}</h2>
-              <p>{insight.description}</p>
-            </article>
-          ))}
+        <img
+          className="h1-okr-figma-foreground-layer"
+          src="previews/assets/figma-untitled/p25-foreground.png"
+          alt=""
+          width="1920"
+          height="1080"
+          decoding="sync"
+          draggable="false"
+          aria-hidden="true"
+        />
+        <div className="h1-okr-page-number" aria-hidden="true">
+          01 <span>/ 11</span>
         </div>
       </div>
     </section>
@@ -2169,7 +2163,7 @@ function OkrBrandResultsPage(){
     <section ref={pageRef} className="h1-okr-page h1-okr-results-page" data-report-page data-page-id="okr-brand-results" aria-labelledby="h1-okr-results-title">
       <div ref={canvasRef} className="h1-okr-canvas h1-okr-results-canvas">
         <div className="h1-okr-results-title-group">
-          <div className="h1-okr-results-outline" aria-hidden="true">GLOBAL TOP-TIER BRAND</div>
+          <div className="h1-okr-results-outline" aria-hidden="true">BRAND STANDARD</div>
           <h1 id="h1-okr-results-title">什么是全球一线品牌</h1>
         </div>
 
@@ -2203,6 +2197,86 @@ function OkrBrandResultsPage(){
             <strong>“全球一线品牌”不再是一个抽象愿景，而是一组可以被明确建设的品牌结果</strong>
             <span>Brand Result：可建设 · 可管理 · 可复利</span>
           </div>
+        </div>
+        <div className="h1-okr-page-number" aria-hidden="true">
+          02 <span>/ 11</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OkrTvcMatrixPage({index,count,onVideoPreview}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  const matrixSource='previews/assets/figma-exact/okr-p32-matrix-source.jpg';
+  const videos=[
+    {
+      id:'hero-1',
+      crop:'is-hero-1',
+      title:'HERO 1 年度品牌母片',
+      subtitle:'《AI Stay Ahead 直述片》',
+      note:'定义品牌信念与核心主张',
+      description:'核心价值：直接回答我们是谁、相信什么，以及如何帮助客户 Stay Ahead',
+    },
+    {
+      id:'hero-2',
+      crop:'is-hero-2',
+      title:'HERO 2 年度旗舰 Campaign 片',
+      subtitle:'《法拉利联合激活片》',
+      note:'放大品牌精神与情绪共鸣',
+      description:'核心价值：将法拉利代表的高性能精神，与 Vantage 的品牌精神深度连接。',
+    },
+  ];
+  return (
+    <section ref={pageRef} className="h1-okr-page h1-okr-tvc-page" data-report-page data-page-id="okr-tvc-matrix" aria-labelledby="h1-okr-tvc-title">
+      <div ref={canvasRef} className="h1-okr-canvas h1-okr-tvc-canvas">
+        <div className="h1-okr-tvc-title-group">
+          <div className="h1-okr-tvc-outline" aria-hidden="true">TVC CONTENT MATRIX</div>
+          <h1 id="h1-okr-tvc-title">Vantage TVC 矩阵</h1>
+        </div>
+
+        <section className="h1-okr-tvc-intro is-platform" aria-label="内容平台层">
+          <img src="previews/assets/figma-racing/checkered-flag.svg" alt="" aria-hidden="true"/>
+          <div>
+            <h2><b>01</b> 内容平台层</h2>
+            <h3>STAY AHEAD - 我们的品牌母命题</h3>
+            <p>所有内容都最终回到同一个落点: STAY AHEAD–Vantage如何通过洞察、判断、速度、精度与产品能力,帮助用户始终领先一步</p>
+          </div>
+        </section>
+
+        <section className="h1-okr-tvc-intro is-annual" aria-label="年度核心 TVC">
+          <img src="previews/assets/figma-racing/checkered-flag.svg" alt="" aria-hidden="true"/>
+          <div>
+            <h2><b>02</b> 年度核心TVC</h2>
+            <p>打造品牌高光影片,沉淀可长期复用(1-3年)的传播资产,成为经典,全球应用。别人看到片子就知道是VTG</p>
+          </div>
+          <div className="h1-okr-tvc-video-row">
+            <article className="h1-okr-tvc-video-card is-hero-1">
+              <button type="button" className="h1-okr-tvc-media" aria-label="播放：HERO 1 年度品牌母片" onClick={()=>onVideoPreview({slot:{id:'hero-1',label:'HERO 1 年度品牌母片'}})}>
+                <img className="h1-okr-tvc-media-sprite is-hero-1" src={matrixSource} alt="HERO 1 年度品牌母片" width="1920" height="1080" draggable="false"/>
+              </button>
+              <h3>{videos[0].title} <span>{videos[0].subtitle}</span></h3>
+              <strong>{videos[0].note}</strong>
+              <p>{videos[0].description}</p>
+            </article>
+
+            <div className="h1-okr-tvc-link-card" aria-label="高光联动：品牌高度乘以情绪放大">
+              <strong>高光联动</strong><span>品牌高度</span><i>×</i><span>情绪放大</span><b aria-hidden="true">→</b>
+            </div>
+
+            <article className="h1-okr-tvc-video-card is-hero-2">
+              <button type="button" className="h1-okr-tvc-media" aria-label="播放：HERO 2 年度旗舰 Campaign 片" onClick={()=>onVideoPreview({slot:{id:'hero-2',label:'HERO 2 年度旗舰 Campaign 片'}})}>
+                <img className="h1-okr-tvc-media-sprite is-hero-2" src={matrixSource} alt="HERO 2 年度旗舰 Campaign 片" width="1920" height="1080" draggable="false"/>
+              </button>
+              <h3>{videos[1].title}<br/><span>{videos[1].subtitle}</span></h3>
+              <strong>{videos[1].note}</strong>
+              <p>{videos[1].description}</p>
+            </article>
+          </div>
+        </section>
+
+        <div className="h1-okr-page-number" aria-hidden="true">
+          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
         </div>
       </div>
     </section>
@@ -2284,6 +2358,39 @@ const OKR_FIGMA_PAGES=[
     hotspotClass:'is-expo',
   },
 ];
+
+/* The later report pages are exported from the same Figma source as p25 as
+   transparent 1920 × 1080 foreground canvases. They intentionally sit over
+   the one sticky p25 trophy background rather than bringing their own backdrop. */
+function OkrDirectFigmaForegroundPage({page,index,count,src}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  return (
+    <section
+      ref={pageRef}
+      className="h1-okr-page h1-okr-direct-figma-page"
+      data-report-page
+      data-page-id={page.id}
+      aria-label={page.label}
+    >
+      <div ref={canvasRef} className="h1-okr-canvas">
+        <img
+          className="h1-okr-figma-foreground-layer"
+          src={src}
+          alt=""
+          width="1920"
+          height="1080"
+          loading="eager"
+          decoding="sync"
+          draggable="false"
+          aria-hidden="true"
+        />
+        <div className="h1-okr-page-number" aria-hidden="true">
+          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function OkrExactFigmaPage({page,index,count,onPreview,onVideoPreview}){
   return (
@@ -2423,16 +2530,27 @@ function OkrReportDeck(){
   const closePreview=useCallback(()=>setPreview(null),[]);
   const closeVideoPreview=useCallback(()=>setVideoPreview(null),[]);
   return (
-    <main data-report-section="okr" className="h1-okr-report" style={{margin:0,padding:0}}>
-      {OKR_FIGMA_PAGES.map((page,index)=>(
-        <OkrExactFigmaPage
-          key={page.id}
-          page={page}
-          index={index}
-          count={OKR_FIGMA_PAGES.length}
-          onPreview={setPreview}
-          onVideoPreview={setVideoPreview}
-        />
+    <main data-report-section="okr" className="h1-okr-report is-p25-content-only" style={{margin:0,padding:0}}>
+      <OkrFixedBackdrop/>
+      <OkrBrandSystemPage/>
+      {OKR_FIGMA_PAGES.slice(1).map((page,index)=>(
+        page.id==='okr-brand-results' ? <OkrBrandResultsPage key={page.id}/> :
+        page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p30-foreground.png"/> :
+        page.id==='okr-tvc-matrix' ? <OkrTvcMatrixPage key={page.id} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p32-foreground.png"/> :
+        page.id==='okr-application-roadmap' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-foreground.png"/> :
+        page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p34-foreground.png"/> :
+        page.id==='okr-awards' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-exact/awards-source.png"/> :
+        page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p37-38-foreground.png"/> :
+        page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p37-40-foreground.png"/> :
+          <OkrExactFigmaPage
+            key={page.id}
+            page={page}
+            index={index+1}
+            count={OKR_FIGMA_PAGES.length}
+            onPreview={setPreview}
+            onVideoPreview={setVideoPreview}
+          />
       ))}
       <OkrExactModal preview={preview} onClose={closePreview}/>
       <OkrVideoModal preview={videoPreview} onClose={closeVideoPreview}/>

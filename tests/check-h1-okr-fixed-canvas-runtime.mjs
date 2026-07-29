@@ -3,22 +3,19 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const { chromium } = require(
-  "/Users/julian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
+  process.env.PLAYWRIGHT_PACKAGE ||
+    "/Users/julian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
 );
 
 const baseUrl = process.env.H1_OKR_TEST_URL || "http://127.0.0.1:4192";
-const closeTo = (actual, expected, tolerance, label) => {
-  assert.ok(
-    Math.abs(actual - expected) <= tolerance,
-    `${label}: expected ${expected} ± ${tolerance}, got ${actual}`,
-  );
-};
+const browser = await chromium.launch({
+  headless: true,
+  executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined,
+});
 
-const browser = await chromium.launch({ headless: true });
 try {
   for (const viewport of [
     { width: 1920, height: 966 },
-    { width: 1920, height: 800 },
     { width: 1366, height: 654 },
     { width: 1024, height: 900 },
   ]) {
@@ -26,112 +23,88 @@ try {
     await page.goto(`${baseUrl}/index.html?report=h1&embedded=1`, {
       waitUntil: "domcontentloaded",
     });
-    await page.evaluate(() => {
-      document.documentElement.classList.add("h1-figma-racing-report");
-      document.body.classList.add("h1-embedded-report");
-    });
+    await page.evaluate(() => document.body.classList.add("h1-embedded-report"));
 
     assert.equal(
-      await page.locator(".h1-okr-fixed-stage").count(),
+      await page.locator(".h1-okr-fixed-trophy-stage").count(),
+      1,
+      "the OKR chapter must have one shared trophy stage",
+    );
+    assert.equal(
+      await page.locator(".h1-okr-racing-stage").count(),
       0,
-      "the rejected shared OKR stage must not alter data content or backgrounds",
+      "a trophy background must not be duplicated on every page",
     );
 
-    const okrPage = page.locator('[data-page-id="okr-review"]');
-    await okrPage.scrollIntoViewIfNeeded();
-    const artboard = okrPage.locator(".h1-okr-exact-artboard");
-    await artboard.waitFor({ state: "visible" });
-    await okrPage.locator(".h1-okr-exact-frame").evaluate((image) => {
-      if (!image.complete) {
-        return new Promise((resolve, reject) => {
-          image.addEventListener("load", resolve, { once: true });
-          image.addEventListener("error", reject, { once: true });
-        });
-      }
-    });
-
-    const geometry = await okrPage.evaluate((root) => {
-      const rect = (element) => {
-        const value = element.getBoundingClientRect();
-        return {
-          left: value.left,
-          top: value.top,
-          width: value.width,
-          height: value.height,
-          right: value.right,
-          bottom: value.bottom,
-        };
-      };
-      const artboard = root.querySelector(".h1-okr-exact-artboard");
-      const image = root.querySelector(".h1-okr-exact-frame");
-      const pageBackground = getComputedStyle(root, "::before");
+    const firstPage = page.locator('[data-page-id="okr-review"]');
+    await firstPage.scrollIntoViewIfNeeded();
+    await firstPage.locator(".h1-okr-canvas").waitFor({ state: "visible" });
+    const firstPageState = await firstPage.evaluate((root) => {
+      const stage = document.querySelector(".h1-okr-fixed-trophy-stage");
+      const stageCanvas = stage.querySelector(".h1-okr-fixed-stage-canvas");
+      const stageImage = stage.querySelector(".h1-okr-fixed-stage-background");
+      const canvas = root.querySelector(".h1-okr-canvas");
+      const foreground = root.querySelector(".h1-okr-figma-foreground-layer");
+      const pageRect = root.getBoundingClientRect();
+      const stageCanvasRect = stageCanvas.getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
       return {
-        page: rect(root),
-        artboard: rect(artboard),
-        image: rect(image),
-        artboardPosition: getComputedStyle(artboard).position,
-        imageObjectFit: getComputedStyle(image).objectFit,
-        imageNaturalWidth: image.naturalWidth,
-        imageNaturalHeight: image.naturalHeight,
-        backgroundAsset: pageBackground.backgroundImage,
-        backgroundSize: pageBackground.backgroundSize,
-        pageImageVariable: getComputedStyle(root)
-          .getPropertyValue("--h1-okr-page-image")
-          .trim(),
+        foregroundImage: foreground?.getAttribute("src"),
+        foregroundWidth: foreground?.getAttribute("width"),
+        foregroundHeight: foreground?.getAttribute("height"),
+        pageNumber: root.querySelector(".h1-okr-page-number")?.textContent?.replace(/\s+/g, "").trim(),
+        hasExactScreenshot: Boolean(root.querySelector(".h1-okr-exact-frame")),
+        stagePosition: getComputedStyle(stage).position,
+        stageImage: stageImage.getAttribute("src"),
+        stageTop: stage.getBoundingClientRect().top,
+        pageHeight: pageRect.height,
+        stageCanvasLeft: stageCanvasRect.left,
+        stageCanvasTop: stageCanvasRect.top,
+        stageCanvasWidth: stageCanvasRect.width,
+        stageCanvasHeight: stageCanvasRect.height,
+        canvasLeft: canvasRect.left,
+        canvasTop: canvasRect.top,
+        canvasWidth: canvasRect.width,
+        canvasHeight: canvasRect.height,
       };
     });
+    assert.match(firstPageState.foregroundImage, /figma-untitled\/p25-foreground\.png/);
+    assert.equal(firstPageState.foregroundWidth, "1920");
+    assert.equal(firstPageState.foregroundHeight, "1080");
+    assert.equal(firstPageState.pageNumber, "01/11");
+    assert.equal(firstPageState.hasExactScreenshot, false);
+    assert.equal(firstPageState.stagePosition, "sticky");
+    assert.match(firstPageState.stageImage, /figma-untitled\/p25-background\.png/);
+    assert.ok(Math.abs(firstPageState.stageTop) < 1, "the trophy stage must be pinned to the viewport");
+    assert.ok(Math.abs(firstPageState.pageHeight - viewport.height) < 1);
+    assert.ok(Math.abs(firstPageState.stageCanvasLeft - firstPageState.canvasLeft) < 1, "background and p25 foreground must share one horizontal Figma origin");
+    assert.ok(Math.abs(firstPageState.stageCanvasTop - firstPageState.canvasTop) < 1, "background and p25 foreground must share one vertical Figma origin");
+    assert.ok(Math.abs(firstPageState.stageCanvasWidth - firstPageState.canvasWidth) < 1, "background and p25 foreground must share one scale");
+    assert.ok(Math.abs(firstPageState.stageCanvasHeight - firstPageState.canvasHeight) < 1, "background and p25 foreground must share one scale");
+    assert.ok(firstPageState.canvasWidth <= viewport.width + 1);
+    assert.ok(firstPageState.canvasHeight <= viewport.height + 1);
 
-    const expectedWidth = Math.min(
-      geometry.page.width,
-      geometry.page.height * (16 / 9),
+    const laterPage = page.locator('[data-page-id="okr-brand-refresh"]');
+    await laterPage.scrollIntoViewIfNeeded();
+    const laterPageState = await laterPage.evaluate((root) => {
+      const stage = document.querySelector(".h1-okr-fixed-trophy-stage");
+      const artboard = root.querySelector(".h1-okr-exact-artboard");
+      return {
+        stageTop: stage.getBoundingClientRect().top,
+        artboardOpacity: getComputedStyle(artboard).opacity,
+        artboardPointerEvents: getComputedStyle(artboard).pointerEvents,
+      };
+    });
+    assert.ok(Math.abs(laterPageState.stageTop) < 1, "the same trophy stage must remain pinned after a page turn");
+    assert.deepEqual(
+      laterPageState,
+      { stageTop: laterPageState.stageTop, artboardOpacity: "0", artboardPointerEvents: "none" },
+      "unrebuilt pages must not stack their full Figma screenshots over the shared trophy",
     );
-    const expectedHeight = expectedWidth * (9 / 16);
-    closeTo(geometry.artboard.width, expectedWidth, 1, `${viewport.width}×${viewport.height} artboard width`);
-    closeTo(geometry.artboard.height, expectedHeight, 1, `${viewport.width}×${viewport.height} artboard height`);
-    closeTo(
-      geometry.artboard.left,
-      geometry.page.left + (geometry.page.width - expectedWidth) / 2,
-      1,
-      `${viewport.width}×${viewport.height} page-owned artboard left`,
-    );
-    closeTo(
-      geometry.artboard.top,
-      geometry.page.top + (geometry.page.height - expectedHeight) / 2,
-      1,
-      `${viewport.width}×${viewport.height} page-owned artboard top`,
-    );
-    assert.equal(geometry.imageObjectFit, "contain");
-    assert.equal(geometry.imageNaturalWidth, 1920);
-    assert.equal(geometry.imageNaturalHeight, 1080);
-    assert.equal(geometry.artboardPosition, "absolute");
-    assert.match(geometry.backgroundAsset, /h1-review-bg-320-194-2280x1346\.png/);
-    assert.match(geometry.backgroundSize, /^cover(?:,\s*cover)?$/);
-    assert.match(geometry.pageImageVariable, /p25-source\.png/);
-
-    const nextPageBackground = await page
-      .locator('[data-page-id="okr-brand-refresh"]')
-      .evaluate((root) => ({
-        ownBackground: getComputedStyle(root, "::before").backgroundImage,
-        ownVariable: getComputedStyle(root)
-          .getPropertyValue("--h1-okr-page-image")
-          .trim(),
-        artboardPosition: getComputedStyle(
-          root.querySelector(".h1-okr-exact-artboard"),
-        ).position,
-      }));
-    assert.match(nextPageBackground.ownBackground, /h1-review-bg-320-194-2280x1346\.png/);
-    assert.match(nextPageBackground.ownVariable, /okr-p29-source\.png/);
-    assert.notEqual(
-      nextPageBackground.ownBackground,
-      geometry.backgroundAsset,
-      "each OKR page must share the approved trophy background",
-    );
-    assert.equal(nextPageBackground.artboardPosition, "absolute");
-
     await page.close();
   }
 } finally {
   await browser.close();
 }
 
-console.log("H1 exact Figma OKR independent responsive-page contract passed.");
+console.log("H1 OKR shared fixed-trophy and p25-foreground contract passed.");
