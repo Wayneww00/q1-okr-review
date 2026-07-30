@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-figma-table-values-v9">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-figma-feathered-edge-v16">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2084,23 +2084,51 @@ function useOkrCanvasScale(){
   return {pageRef,canvasRef};
 }
 
-/* The background and every p25 foreground layer originate from the same
-   1920 × 1080 Figma canvas.  Keep a real canvas in the sticky backdrop as
-   well, rather than letting a CSS background image follow viewport sizing. */
+/* Frame 68 from the Untitled Figma file is the one shared 1920 × 1080
+   trophy background for the full OKR chapter. Keep it on a real fixed canvas
+   rather than letting a CSS background image follow viewport sizing. */
 function OkrFixedBackdrop(){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   return (
     <div ref={pageRef} className="h1-okr-shared-backdrop h1-okr-fixed-trophy-stage" aria-hidden="true">
       <div ref={canvasRef} className="h1-okr-fixed-stage-canvas">
         <img
+          className="h1-okr-fixed-stage-ambient"
+          src="previews/assets/figma-untitled/p68-trophy-background.png"
+          alt=""
+          width="2280"
+          height="1346"
+          decoding="sync"
+          draggable="false"
+        />
+        <img
+          className="h1-okr-fixed-stage-edge h1-okr-fixed-stage-edge--left"
+          src="previews/assets/figma-untitled/p68-trophy-edge-left.png"
+          alt=""
+          width="244"
+          height="1080"
+          decoding="sync"
+          draggable="false"
+        />
+        <img
+          className="h1-okr-fixed-stage-edge h1-okr-fixed-stage-edge--right"
+          src="previews/assets/figma-untitled/p68-trophy-edge-right.png"
+          alt=""
+          width="244"
+          height="1080"
+          decoding="sync"
+          draggable="false"
+        />
+        <img
           className="h1-okr-fixed-stage-background"
-          src="previews/assets/figma-untitled/p25-background.png"
+          src="previews/assets/figma-untitled/p68-trophy-background.png"
           alt=""
           width="1920"
           height="1080"
           decoding="sync"
           draggable="false"
         />
+        <div className="h1-okr-fixed-stage-matte" />
       </div>
     </div>
   );
@@ -2113,7 +2141,7 @@ function OkrBrandSystemPage(){
       <div ref={canvasRef} className="h1-okr-canvas">
         <img
           className="h1-okr-figma-foreground-layer"
-          src="previews/assets/figma-untitled/p25-foreground.png"
+          src="previews/assets/figma-untitled/p25-foreground-clean.png"
           alt=""
           width="1920"
           height="1080"
@@ -2371,7 +2399,7 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-merchandise',
     label:'周边',
-    src:'previews/assets/figma-untitled/p52-foreground.png',
+    src:'previews/assets/figma-untitled/p52-foreground-clean.png',
   },
   {
     id:'okr-cfd-public-good',
@@ -2693,21 +2721,21 @@ function OkrReportDeck(){
       <OkrFixedBackdrop/>
       <OkrBrandSystemPage/>
       {OKR_FIGMA_PAGES.slice(1).map((page,index)=>(
-        page.id==='okr-brand-results' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p26-foreground.png"/> :
+        page.id==='okr-brand-results' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p26-foreground-clean.png"/> :
         page.id==='okr-brand-refresh' ? <OkrBrandRefreshForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-tvc-matrix' ? <OkrBrandContentMatrixForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-tvc-framework' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
-        page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-2-foreground.png"/> :
+        page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-2-foreground-clean.png"/> :
         page.id==='okr-application-roadmap' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:40,top:0,width:1920,height:1080}}/> :
-        page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p31-foreground.png"/> :
+        page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p31-foreground-clean.png"/> :
         page.id==='okr-awards' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:40,width:1600,height:1012}}/> :
-        page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground.png"/> :
-        page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p36-1-foreground.png"/> :
+        page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground-clean.png"/> :
+        page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p36-1-foreground-clean.png"/> :
         page.id==='okr-elite-client-identity' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-client-experience-model' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-client-experience-cases' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
-        page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground.png"/> :
+        page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground-clean.png"/> :
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :

@@ -84,12 +84,12 @@ assert.ok(
 );
 assert.match(
   app,
-  /page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground\.png/,
-  "the appended merchandise page must use its transparent Untitled foreground",
+  /page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground-clean\.png/,
+  "the appended merchandise page must use its matte-free Untitled foreground",
 );
 assert.ok(
-  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p52-foreground.png")),
-  "the appended merchandise foreground must exist locally",
+  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p52-foreground-clean.png")),
+  "the appended matte-free merchandise foreground must exist locally",
 );
 for (const [pageId, fileName] of [
   ["okr-cfd-public-good", "p64-cfp-foreground.svg"],

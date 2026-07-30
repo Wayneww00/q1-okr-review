@@ -239,7 +239,7 @@ try {
     assert.ok(
       pageBackground.stageCount === 1 &&
         pageBackground.stagePosition === "sticky" &&
-        pageBackground.stageImage.includes("figma-untitled/p25-background.png"),
+        pageBackground.stageImage.includes("figma-untitled/p68-trophy-background.png"),
       `${pageId} must use the one shared Untitled Figma trophy background`,
     );
 

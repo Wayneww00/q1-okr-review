@@ -74,7 +74,7 @@ try {
     assert.equal(firstPageState.pageNumber, "01/22");
     assert.equal(firstPageState.hasExactScreenshot, false);
     assert.equal(firstPageState.stagePosition, "sticky");
-    assert.match(firstPageState.stageImage, /figma-untitled\/p25-background\.png/);
+    assert.match(firstPageState.stageImage, /figma-untitled\/p68-trophy-background\.png/);
     assert.ok(Math.abs(firstPageState.stageTop) < 1, "the trophy stage must be pinned to the viewport");
     assert.ok(Math.abs(firstPageState.pageHeight - viewport.height) < 1);
     assert.ok(Math.abs(firstPageState.stageCanvasLeft - firstPageState.canvasLeft) < 1, "background and p25 foreground must share one horizontal Figma origin");

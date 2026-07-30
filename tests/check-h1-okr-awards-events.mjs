@@ -117,7 +117,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-s-align-v15"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-feathered-edge-v23"',
   ),
   "the formal shell must invalidate the embedded report after the exact Figma update",
 );

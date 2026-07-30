@@ -13,7 +13,7 @@ const p26ForegroundPath = path.join(
   "previews",
   "assets",
   "figma-untitled",
-  "p26-foreground.png",
+  "p26-foreground-clean.png",
 );
 
 const p25Index = app.indexOf("id:'okr-review'");
@@ -26,8 +26,8 @@ assert.ok(fs.existsSync(p26ForegroundPath), "the direct Untitled p26 foreground 
 assert.ok(fs.statSync(p26ForegroundPath).size > 200_000, "p26 must retain full presentation detail");
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /page\.id==='okr-brand-results'[\s\S]*?OkrDirectFigmaForegroundPage[\s\S]*?figma-untitled\/p26-foreground\.png/,
-  "the third OKR page must use the direct Untitled transparent foreground rather than a reconstructed matrix",
+  /page\.id==='okr-brand-results'[\s\S]*?OkrDirectFigmaForegroundPage[\s\S]*?figma-untitled\/p26-foreground-clean\.png/,
+  "the third OKR page must use the matte-free Untitled foreground rather than a reconstructed matrix",
 );
 assert.match(
   shell,
@@ -36,7 +36,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-s-align-v15"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-feathered-edge-v23"',
   ),
   "the formal shell must invalidate the embedded report after the p27 update",
 );

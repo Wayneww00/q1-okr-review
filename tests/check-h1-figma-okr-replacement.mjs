@@ -80,22 +80,57 @@ assert.match(
 );
 assert.match(
   app,
-  /function OkrFixedBackdrop\(\)[\s\S]*?className="h1-okr-fixed-stage-background"[\s\S]*?figma-untitled\/p25-background\.png/,
-  "the deck must render the directly exported Untitled trophy background inside the shared stage",
+  /function OkrFixedBackdrop\(\)[\s\S]*?className="h1-okr-fixed-stage-background"[\s\S]*?figma-untitled\/p68-trophy-background\.png/,
+  "the deck must render the directly exported Figma Frame 68 trophy background inside the shared stage",
 );
 assert.match(
   app,
-  /function OkrBrandSystemPage\(\)[\s\S]*?className="h1-okr-figma-foreground-layer"[\s\S]*?figma-untitled\/p25-foreground\.png/,
-  "the first page must use the directly exported Untitled foreground layer rather than reconstructed cards",
+  /className="h1-okr-fixed-stage-ambient"[\s\S]*?figma-untitled\/p68-trophy-background\.png[\s\S]*?width="2280"[\s\S]*?height="1346"/,
+  "the shared trophy stage must include a 2280 × 1346 ambient overscan layer",
+);
+assert.match(
+  theme,
+  /\.h1-okr-fixed-stage-ambient\s*\{[\s\S]*?top:\s*-133px;[\s\S]*?left:\s*-180px;[\s\S]*?width:\s*2280px;[\s\S]*?height:\s*1346px;[\s\S]*?filter:\s*blur\(22px\)\s+saturate\(\.92\)\s+brightness\(\.84\);/,
+  "the ambient overscan must extend the background without moving the 1920 × 1080 trophy composition",
+);
+assert.match(
+  app,
+  /h1-okr-fixed-stage-edge h1-okr-fixed-stage-edge--left[\s\S]*?p68-trophy-edge-left\.png[\s\S]*?width="244"[\s\S]*?height="1080"[\s\S]*?h1-okr-fixed-stage-edge h1-okr-fixed-stage-edge--right[\s\S]*?p68-trophy-edge-right\.png/,
+  "the shared trophy stage must extend its exact boundary pixels into the side gutters",
+);
+assert.match(
+  theme,
+  /\.h1-okr-fixed-stage-edge\s*\{[\s\S]*?z-index:\s*1;[\s\S]*?width:\s*244px;[\s\S]*?object-fit:\s*fill;[\s\S]*?\.h1-okr-fixed-stage-edge--left\s*\{[\s\S]*?left:\s*-180px;[\s\S]*?\.h1-okr-fixed-stage-edge--right\s*\{[\s\S]*?right:\s*-180px;/,
+  "the edge-pixel fills must extend beneath the original Figma canvas for a feathered transition",
+);
+assert.match(
+  theme,
+  /\.h1-okr-fixed-stage-background\s*\{[\s\S]*?-webkit-mask-image:\s*linear-gradient\([\s\S]*?transparent 0,[\s\S]*?#000 48px,[\s\S]*?#000 calc\(100% - 48px\),[\s\S]*?transparent 100%[\s\S]*?mask-image:\s*linear-gradient\(/,
+  "the original Figma canvas must feather into the edge fills instead of exposing a vertical boundary",
+);
+assert.match(
+  app,
+  /className="h1-okr-fixed-stage-matte"/,
+  "the shared stage must own the only global foreground-contrast matte",
+);
+assert.match(
+  theme,
+  /\.h1-okr-fixed-stage-matte\s*\{[\s\S]*?top:\s*-133px;[\s\S]*?left:\s*-180px;[\s\S]*?width:\s*2280px;[\s\S]*?height:\s*1346px;[\s\S]*?background:\s*rgba\(0,\s*0,\s*0,\s*\.12\);/,
+  "the global 12% matte must cover the complete overscan canvas",
+);
+assert.match(
+  app,
+  /function OkrBrandSystemPage\(\)[\s\S]*?className="h1-okr-figma-foreground-layer"[\s\S]*?figma-untitled\/p25-foreground-clean\.png/,
+  "the first page must use the matte-free Untitled foreground layer rather than reconstructed cards",
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground\.png[\s\S]*?page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?OkrBrandContentMatrixForegroundPage[\s\S]*?page\.id==='okr-tvc-framework'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground\.png[\s\S]*?page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground\.png[\s\S]*?page\.id==='okr-cfd-public-good'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-public-good-video'[\s\S]*?OkrPublicGoodVideoPage[\s\S]*?page\.id==='okr-un-ngo-engagement'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-ai-recommendation'[\s\S]*?figma-untitled\/p58-foreground\.png[\s\S]*?page\.id==='okr-omnichannel-amplification'[\s\S]*?figma-untitled\/p59-foreground\.png[\s\S]*?page\.id==='okr-tvc-localization'[\s\S]*?figma-untitled\/p60-foreground\.png[\s\S]*?page\.id==='okr-superapp-activation'[\s\S]*?figma-untitled\/p61-foreground\.png[\s\S]*?page\.id==='okr-premium-unlimited'[\s\S]*?figma-untitled\/p62-foreground\.png[\s\S]*?page\.id==='okr-brand-experience-audit'[\s\S]*?figma-untitled\/p63-foreground\.png/,
+  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground-clean\.png[\s\S]*?page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?OkrBrandContentMatrixForegroundPage[\s\S]*?page\.id==='okr-tvc-framework'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground-clean\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground-clean\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground-clean\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground-clean\.png[\s\S]*?page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground-clean\.png[\s\S]*?page\.id==='okr-cfd-public-good'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-public-good-video'[\s\S]*?OkrPublicGoodVideoPage[\s\S]*?page\.id==='okr-un-ngo-engagement'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-ai-recommendation'[\s\S]*?figma-untitled\/p58-foreground\.png[\s\S]*?page\.id==='okr-omnichannel-amplification'[\s\S]*?figma-untitled\/p59-foreground\.png[\s\S]*?page\.id==='okr-tvc-localization'[\s\S]*?figma-untitled\/p60-foreground\.png[\s\S]*?page\.id==='okr-superapp-activation'[\s\S]*?figma-untitled\/p61-foreground\.png[\s\S]*?page\.id==='okr-premium-unlimited'[\s\S]*?figma-untitled\/p62-foreground\.png[\s\S]*?page\.id==='okr-brand-experience-audit'[\s\S]*?figma-untitled\/p63-foreground\.png/,
   "the remaining Figma foreground exports must be assigned to their matching report pages",
 );
 assert.ok(
-  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p52-foreground.png")),
-  "the merchandise Figma foreground export must exist locally",
+  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p52-foreground-clean.png")),
+  "the matte-free merchandise Figma foreground export must exist locally",
 );
 for (const fileName of ["p64-cfp-foreground.svg", "p54-1-cfp-panel-foreground.svg", "p65-ngo-foreground.svg"]) {
   const asset = path.join(root, "previews", "assets", "figma-untitled", fileName);
@@ -207,7 +242,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-s-align-v15"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-feathered-edge-v23"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

@@ -28,7 +28,7 @@
 .h1-figma-racing-report {
   --h1-racing-stage: url("assets/figma-racing/source-04.png");
   --h1-figma-data-stage: url("assets/figma-racing/figma-vantage-wordmark-car-stage-140-36.png");
-  --h1-okr-background-stage: url("assets/figma-untitled/p25-background.png");
+  --h1-okr-background-stage: url("assets/figma-untitled/p68-trophy-background.png");
   --h1-figma-red: #b91820;
   --h1-figma-red-bright: #e22529;
   --h1-figma-orange: #ff5b11;
@@ -1806,9 +1806,8 @@
   opacity: 1;
 }
 
-/* One 1920 × 1080 Figma stage is pinned behind the entire 01–11 chapter.
-   The exported p25 background and foreground share the exact same artboard
-   dimensions, so their composition cannot drift when the chapter is scaled. */
+/* One 1920 × 1080 Figma Frame 68 stage is pinned behind the entire OKR
+   chapter, so every transparent foreground shares the same trophy canvas. */
 .h1-okr-fixed-trophy-stage {
   display: block;
   background: #000;
@@ -1817,11 +1816,12 @@
 .h1-okr-fixed-stage-canvas {
   --h1-okr-scale: .5;
   position: absolute;
+  z-index: 1;
   top: 50%;
   left: 50%;
   width: 1920px;
   height: 1080px;
-  overflow: hidden;
+  overflow: visible;
   opacity: 0;
   transform: translate(-50%, -50%) scale(var(--h1-okr-scale));
   transform-origin: 50% 50%;
@@ -1831,8 +1831,70 @@
   opacity: 1;
 }
 
+.h1-okr-fixed-stage-canvas::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  top: -133px;
+  left: -180px;
+  width: 2280px;
+  height: 1346px;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, .26) 0%,
+      rgba(0, 0, 0, .04) 6.5%,
+      transparent 11%,
+      transparent 86%,
+      rgba(0, 0, 0, .48) 100%
+    );
+}
+
+.h1-okr-fixed-stage-ambient {
+  position: absolute;
+  z-index: 0;
+  top: -133px;
+  left: -180px;
+  display: block;
+  width: 2280px;
+  max-width: none;
+  height: 1346px;
+  max-height: none;
+  object-fit: fill;
+  opacity: .94;
+  filter: blur(22px) saturate(.92) brightness(.84);
+  transform: scale(1.014);
+  transform-origin: 50% 50%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-fixed-stage-edge {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  display: block;
+  width: 244px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-fixed-stage-edge--left {
+  left: -180px;
+}
+
+.h1-okr-fixed-stage-edge--right {
+  right: -180px;
+}
+
 .h1-okr-fixed-stage-background {
   position: absolute;
+  z-index: 2;
   top: 0;
   left: 0;
   display: block;
@@ -1841,8 +1903,33 @@
   height: 1080px;
   max-height: none;
   object-fit: fill;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 48px,
+    #000 calc(100% - 48px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 48px,
+    #000 calc(100% - 48px),
+    transparent 100%
+  );
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.h1-okr-fixed-stage-matte {
+  position: absolute;
+  z-index: 3;
+  top: -133px;
+  left: -180px;
+  width: 2280px;
+  height: 1346px;
+  pointer-events: none;
+  background: rgba(0, 0, 0, .12);
 }
 
 .h1-okr-figma-foreground-layer {
