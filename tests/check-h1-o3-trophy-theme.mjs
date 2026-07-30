@@ -12,8 +12,9 @@ const backgroundPath = path.join(
   root,
   "previews",
   "assets",
-  "o3",
-  "figma-vantage-trophy-bg.png",
+  "o1-complete",
+  "figma-untitled",
+  "p68-trophy-background.png",
 );
 
 assert.ok(
@@ -29,12 +30,12 @@ assert.equal(
 );
 assert.equal(
   png.readUInt32BE(16),
-  2280,
+  1920,
   "O3 background must preserve the Figma width",
 );
 assert.equal(
   png.readUInt32BE(20),
-  1346,
+  1080,
   "O3 background must preserve the Figma height",
 );
 
@@ -56,8 +57,8 @@ assert.match(
 
 assert.match(
   theme,
-  /--h1-o3-trophy-stage:\s*url\("\.\/assets\/o3\/figma-vantage-trophy-bg\.png"\)/,
-  "O3 must expose one isolated Figma background token",
+  /--h1-o3-trophy-stage:\s*url\("\.\/assets\/o1-complete\/figma-untitled\/p68-trophy-background\.png"\)/,
+  "O3 must expose the isolated date-free Figma background token",
 );
 assert.match(
   theme,

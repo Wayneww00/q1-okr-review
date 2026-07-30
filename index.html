@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-retail-nd-ppt-v6">
-<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-geo-coded-table-v1">
+<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-aso-density-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
 <style>
@@ -5394,17 +5394,142 @@ function O3Geo(){
   );
 }
 
+function O3AsoRatingPanel(){
+  const ratings=[
+    ["2025.05","2.8","12%"],
+    ["2025.07","4.2","64%"],
+    ["2025.09","4.5","76%"],
+    ["2026.01","5.0","96%"],
+    ["当前","4.8","88%"],
+  ];
+  return (
+    <section className="h1-o3-aso-rating-panel">
+      <h3>长期稳定在4.8，最高达到5.0</h3>
+      <div className="h1-o3-aso-rating-summary">
+        <div><small>当前评分</small><strong>4.8</strong><span>/ 5.0</span></div>
+        <p><b>TOP RATED</b><span>Exness 4.4 · Mitrade 4.3 · XM 4.2</span></p>
+      </div>
+      <div className="h1-o3-aso-rating-chart" aria-label="Google Play评分趋势">
+        {ratings.map(([period,score,level])=>(
+          <div className="h1-o3-aso-rating-point" key={period}>
+            <b>{score}</b>
+            <i style={{"--rating-level":level}}/>
+            <small>{period}</small>
+          </div>
+        ))}
+      </div>
+      <div className="h1-o3-aso-app-card">
+        <img src="previews/assets/o2/brands/vantage.png" alt="" width="42" height="42"/>
+        <div><small>GOOGLE PLAY</small><b>Vantage: All-In-One Trading App</b></div>
+        <strong>用户口碑行业第一</strong>
+      </div>
+    </section>
+  );
+}
+
+function O3AsoKeywordMatrix(){
+  const rows=[
+    ["exness","#3","#7","#1","#63"],
+    ["vantage","#1","#31","#10","#42"],
+    ["investing","#15","#117","#64","—"],
+    ["xm","#11","#1","#7","—"],
+    ["mitrade","#4","#19","#10","#1"],
+    ["fxpro","#5","#8","#14","#26"],
+    ["crypto trading","#2","#157","#122","—"],
+    ["forex app","#1","#9","#7","#136"],
+    ["stock broker","#4","#20","#62","—"],
+    ["trade stocks","#5","#20","#65","#15"],
+  ];
+  return (
+    <section className="h1-o3-aso-keyword-panel">
+      <h3>前10关键词占领率行业第一</h3>
+      <div className="h1-o3-aso-keyword-matrix" role="table" aria-label="ASO关键词排名矩阵">
+        <div className="h1-o3-aso-keyword-head" role="row">
+          <span role="columnheader">关键词</span><b role="columnheader">Vantage</b><span role="columnheader">XM</span><span role="columnheader">Exness</span><span role="columnheader">Mitrade</span>
+        </div>
+        {rows.map((row,index)=>(
+          <div className="h1-o3-aso-keyword-row" role="row" key={row[0]}>
+            <span role="cell"><small>{index+1}</small>{row[0]}</span>
+            {row.slice(1).map((rank,cellIndex)=><b className={cellIndex===0?"is-vantage":rank==="#1"?"is-first":""} role="cell" key={`${row[0]}-${cellIndex}`}>{rank}</b>)}
+          </div>
+        ))}
+      </div>
+      <p>Vantage是竞品中唯一突破自身品牌词、在多个关键词上拿到Top 3的品牌</p>
+    </section>
+  );
+}
+
+function O3AsoExposurePanel(){
+  const phases=[
+    ["优化前","2025年9月前","日均约 200","基线","10%"],
+    ["阶段1","2025年9–11月","日均曝光 +250%","起量期","34%"],
+    ["阶段2","2025年12月–2026年4月","日均曝光 +650%","爆发期","68%"],
+    ["阶段3","2026年4月后","日均约 2,200","稳固期 · +800%","92%"],
+  ];
+  return (
+    <section className="h1-o3-aso-exposure-panel">
+      <h3>曝光量提升10倍+</h3>
+      <div className="h1-o3-aso-exposure-kpi"><strong>10×</strong><span>搜索曝光增长</span><small>竞品的 3–5 倍</small></div>
+      <div className="h1-o3-aso-exposure-phases">
+        {phases.map(([stage,period,value,status,level])=>(
+          <div key={stage}>
+            <span><b>{stage}</b><small>{period}</small></span>
+            <i><em style={{"--exposure-level":level}}/></i>
+            <strong>{value}</strong>
+            <small>{status}</small>
+          </div>
+        ))}
+      </div>
+      <p>经三轮优化，Vantage越南市场搜索曝光从日均约200提升至约2200；当前稳定在竞品（XM、Exness、Mitrade）3–5倍水平。</p>
+    </section>
+  );
+}
+
+function O3AsoGrowthPanel(){
+  const metrics=[
+    ["REGISTER","+1,511%","100%"],
+    ["LIVE KYC","+741%","49%"],
+    ["FTD","+1,412%","93%"],
+  ];
+  return (
+    <section className="h1-o3-aso-growth-panel">
+      <div className="h1-o3-aso-growth-heading"><span>ORGANIC CONVERSION LIFT</span><b>曝光增长已传导至深层转化</b></div>
+      <div className="h1-o3-aso-growth-bars">
+        {metrics.map(([label,value,level])=>(
+          <div key={label}>
+            <span><b>{label}</b><strong>{value}</strong></span>
+            <i><em style={{"--growth-level":level}}/></i>
+          </div>
+        ))}
+      </div>
+      <div className="h1-o3-aso-growth-steps"><span>起量</span><span>爆发</span><span>稳固</span><span>收获</span></div>
+    </section>
+  );
+}
+
 function O3Aso(){
+  const storyFlow=[["搜索曝光","10×+"],["Register","+1,511%"],["Live KYC","+741%"],["FTD","+1,412%"]];
   return (
     <div className="h1-o3-figma-page h1-o3-figma-97" data-figma-frame="97">
       <O3FigmaTitle eyebrow="ASO · 应用商店优化" title="越南ASO构建了无可撼动的行业领先地位" subtitle="评分、关键词及品牌可见度全面领先，形成自然增长长期优势"/>
-      <article className="h1-o3-figma-card h1-o3-97-evidence-grid">
-        <section className="is-rating"><h3>长期稳定在4.8，最高达到5.0</h3><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/aso-rating.png`} alt="Google Play评分原始证据"/><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/aso-app.jpeg`} alt="Vantage应用评分原始证据"/><b>用户口碑行业第一</b></section>
-        <section className="is-keyword"><h3>前10关键词占领率行业第一</h3><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/aso-keywords.jpeg`} alt="ASO关键词占领率原始证据"/><p>Vantage是竞品中唯一突破自身品牌词、在多个关键词上拿到Top 3的品牌</p></section>
-        <section className="is-exposure"><h3>曝光量提升10倍+</h3><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/aso-exposure.jpeg`} alt="ASO曝光量原始证据"/><p>经三轮优化，Vantage越南市场搜索曝光从日均~200提升至~2200，累计增长约10倍；当前稳定在竞品（XM、Exness、Mitrade）3–5倍水平，流量曝光领先地位已固化。</p></section>
-        <section className="is-conclusion"><h3>ASO增长不止于曝光，也为后端增长带来实质性利好</h3><p>伴随ASO从起量、爆发进入高位稳固期，Organic增长已从曝光进一步传导至Register、KYC、FTD等深层后端</p></section>
-        <section className="is-growth"><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/aso-growth.png`} alt="ASO后端增长趋势原始证据"/><div><b>REGISTER:<strong>+1,511%</strong></b><b>LIVE KYC:<strong>+741%</strong></b><b>FTD:<strong>+1,412%</strong></b></div></section>
-        <section className="is-note"><p>Register增长趋势基本吻合impression提升四阶段，合理滞后1月左右。</p><p>ASO目前最利好的是Register这一层转化，未来需布局in APP转化手段，进一步促进这些Organic用户转化为入金。</p></section>
+      <article className="h1-o3-figma-card h1-o3-97-evidence-grid" data-editor-ignore>
+        <O3AsoRatingPanel/>
+        <O3AsoKeywordMatrix/>
+        <O3AsoExposurePanel/>
+        <section className="h1-o3-aso-story">
+          <small>FROM VISIBILITY TO VALUE</small>
+          <h3>ASO增长不止于曝光，也为后端增长带来实质性利好</h3>
+          <p>伴随ASO从起量、爆发进入高位稳固期，Organic增长已从曝光进一步传导至Register、KYC、FTD等深层后端。</p>
+          <div className="h1-o3-aso-story-flow">
+            {storyFlow.map(([label,value],index)=><div key={label}><small>{String(index+1).padStart(2,"0")}</small><span>{label}</span><strong>{value}</strong></div>)}
+          </div>
+        </section>
+        <O3AsoGrowthPanel/>
+        <section className="h1-o3-aso-note">
+          <b>增长判断</b>
+          <div className="h1-o3-aso-note-item"><span>01</span><div><strong>时间关系</strong><p>Register增长趋势基本吻合impression提升四阶段，合理滞后1月左右。</p></div></div>
+          <div className="h1-o3-aso-note-item"><span>02</span><div><strong>下一步</strong><p>ASO目前最利好的是Register这一层转化，未来需布局in APP转化手段，进一步促进这些Organic用户转化为入金。</p></div></div>
+        </section>
       </article>
     </div>
   );
@@ -5455,19 +5580,44 @@ function O3SocialOverview(){
   );
 }
 
+function O3SentimentBrandCard({brand,tone,positive,count,delta,metrics}){
+  return (
+    <section className={`h1-o3-100-brand-card is-${tone}`} data-editor-ignore>
+      <header>
+        <div><small>BRAND SENTIMENT</small><h4>{brand}</h4></div>
+        <span>{tone==="vantage"?"POSITIVE LEADER":"BENCHMARK"}</span>
+      </header>
+      <div className="h1-o3-100-brand-hero">
+        <div><small>正面情感占比</small><strong>{positive}</strong><span>{count} mentions</span></div>
+        <b>{delta}</b>
+      </div>
+      <div className="h1-o3-100-brand-metrics">
+        {metrics.map(([label,amount,share,level])=>(
+          <div className="h1-o3-100-brand-row" key={label}>
+            <span>{label}</span>
+            <i><em style={{"--sentiment-level":`${level}%`}}/></i>
+            <b>{amount}</b>
+            <strong>{share}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function O3Sentiment(){
   return (
-    <div className="h1-o3-figma-page h1-o3-figma-100" data-figma-frame="100">
+    <div className="h1-o3-figma-page h1-o3-figma-100" data-figma-frame="100" data-editor-ignore>
       <O3FigmaTitle eyebrow="越南社交媒体" title="2026 H1 品牌关键词情感"/>
       <article className="h1-o3-figma-card h1-o3-100-sentiment-stage">
         <h3><O3RacingMark/> Vantage 与 Exness 品牌关键词情感对比</h3><small>数据来源：Meltwater · 2026 H1</small>
         <div className="h1-o3-100-stage">
-          <section className="h1-o3-100-vantage"><h4>VANTAGE</h4><O3Donut value="62.7" label="正面" tone="orange"/><ul><li>正面 62.7% <b>1.49K</b></li><li>中性 <b>766 · 32.3%</b></li><li>负面 <b>116 · 4.89%</b></li><li>未评级 <b>116 · 4.89%</b></li></ul></section>
+          <O3SentimentBrandCard brand="VANTAGE" tone="vantage" positive="62.7%" count="1.49K" delta="领先 Exness 15.5pp" metrics={[["正面","1.49K","62.7%","62.7"],["中性","766","32.3%","32.3"],["负面","116","4.89%","4.89"],["未评级","116","4.89%","4.89"]]}/>
           <figure className="is-keywords"><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/sentiment-keywords.png`} alt="高频关键词与标题原始证据"/><figcaption>高频关键词与标题</figcaption></figure>
           <figure className="is-trend"><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/sentiment-trend.png`} alt="情感趋势原始证据"/><figcaption>情感趋势</figcaption></figure>
           <figure className="is-sentiment"><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/sentiment-overview.png`} alt="品牌情绪原始证据"/></figure>
           <figure className="is-hashtags"><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/sentiment-hashtags.png`} alt="热门标签原始证据"/><figcaption>热门标签</figcaption></figure>
-          <section className="h1-o3-100-exness"><h4>EXNESS</h4><ul><li>正面 <b>1.1K · 47.2%</b></li><li>中性 <b>934 · 40.2%</b></li><li>负面 <b>292 · 12.6%</b></li></ul></section>
+          <O3SentimentBrandCard brand="EXNESS" tone="exness" positive="47.2%" count="1.1K" delta="负面占比为 Vantage 2.6×" metrics={[["正面","1.1K","47.2%","47.2"],["中性","934","40.2%","40.2"],["负面","292","12.6%","12.6"]]}/>
         </div>
       </article>
       <article className="h1-o3-100-insights"><h3>关键洞察</h3><p>品牌整体情感健康，以正面评价为主：约 63% 的提及为正面，负面占比不足 5%；相比之下，Exness 的负面占比为 12.6%。</p><p>讨论高度聚焦交易与金融。核心关键词包括“交易”“市场”“金融”“外汇”和“账户”，说明用户主要将 Vantage 与交易服务及市场机会联系在一起。</p><p>“Vantage”与“#VantageVietnam”同时进入高频词汇，品牌认知持续提升，相关讨论正从官方渠道自然延伸至更广泛的社群。</p></article>

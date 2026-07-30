@@ -11,6 +11,17 @@ const assetRoot = path.join(
   "o3",
   "ppt-native",
 );
+const asoSource = app.slice(
+  app.indexOf("function O3AsoRatingPanel"),
+  app.indexOf("function O3Summary"),
+);
+const codedAsoEvidence = new Set([
+  "aso-rating.png",
+  "aso-app.jpeg",
+  "aso-keywords.jpeg",
+  "aso-exposure.jpeg",
+  "aso-growth.png",
+]);
 
 const evidence = {
   "aso-rating.png": 300_000,
@@ -38,11 +49,18 @@ for (const [fileName, minimumBytes] of Object.entries(evidence)) {
     fs.statSync(assetPath).size >= minimumBytes,
     `${fileName} must retain the native PPT image resolution`,
   );
-  assert.ok(
-    app.includes(`ppt-native/${fileName}`) ||
-      (app.includes(fileName) && app.includes("ppt-native/${file}")),
-    `${fileName} must replace the low-resolution Figma crop`,
-  );
+  if (codedAsoEvidence.has(fileName)) {
+    assert.ok(
+      !asoSource.includes(`ppt-native/${fileName}`),
+      `${fileName} must remain archived after the ASO evidence is code-rendered`,
+    );
+  } else {
+    assert.ok(
+      app.includes(`ppt-native/${fileName}`) ||
+        (app.includes(fileName) && app.includes("ppt-native/${file}")),
+      `${fileName} must replace the low-resolution Figma crop`,
+    );
+  }
 }
 
 for (const lowResolutionCrop of [
@@ -67,8 +85,8 @@ for (const lowResolutionCrop of [
 }
 
 assert.ok(
-  (app.match(/<H1SourceImage\b/g) || []).length >= 20,
-  "native PPT evidence must keep the click-to-enlarge interaction",
+  (app.match(/<H1SourceImage\b/g) || []).length >= 15,
+  "remaining native PPT evidence must keep the click-to-enlarge interaction",
 );
 
 console.log("O3 native PPT evidence image checks passed.");
