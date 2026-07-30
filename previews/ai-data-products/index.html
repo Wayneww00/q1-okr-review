@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>AI 数据产品</title>
+  <style>
+    :root { --ink:#1d1d1f; --muted:#6e6e73; --paper:#f5f5f7; --line:rgba(0,0,0,.09); --blue:#0071e3; --cardW:min(70vw, 782px); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; background:var(--paper); }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing:antialiased; }
+    button { font:inherit; }
+    .topbar { height:44px; display:flex; align-items:center; justify-content:space-between; max-width:1100px; margin:auto; padding:0 22px; font-size:12px; color:var(--muted); }
+    .brand { color:var(--ink); font-weight:600; letter-spacing:-.01em; }
+    .eyebrow { font-size:14px; font-weight:600; color:var(--muted); margin:0 0 14px; letter-spacing:-.01em; }
+    .hero { max-width:1100px; margin:70px auto 70px; padding:0 22px; }
+    h1 { margin:0; max-width:940px; font-size:clamp(42px, 6vw, 76px); line-height:1.055; letter-spacing:-.055em; font-weight:650; text-wrap:balance; }
+    h1 span { color:#86868b; }
+    .intro { margin:25px 0 0; max-width:590px; font-size:20px; line-height:1.42; letter-spacing:-.022em; color:var(--muted); text-wrap:pretty; }
+    .section { margin:0 auto 112px; }
+    .section-header { max-width:1100px; margin:0 auto 25px; padding:0 22px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; }
+    h2 { margin:0; font-size:28px; line-height:1.15; letter-spacing:-.035em; }
+    .controls { display:flex; gap:10px; }
+    .round-button { width:42px; height:42px; border:0; border-radius:50%; display:grid; place-items:center; background:#e8e8ed; color:#333336; cursor:pointer; transition:background .2s, transform .2s, opacity .2s; }
+    .round-button:hover:not(:disabled) { background:#d8d8dd; transform:scale(1.05); }
+    .round-button:disabled { opacity:.42; cursor:default; }
+    .round-button svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.3; stroke-linecap:round; stroke-linejoin:round; }
+    .rail { display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; padding:0 max(22px, calc((100vw - 1100px)/2)) 18px; scrollbar-width:none; cursor:grab; user-select:none; }
+    .rail::-webkit-scrollbar { display:none; }
+    .rail.is-dragging { cursor:grabbing; scroll-snap-type:none; }
+    .product-card { position:relative; flex:0 0 var(--cardW); height:548px; overflow:hidden; scroll-snap-align:start; border-radius:28px; background:#fff; color:inherit; cursor:pointer; text-decoration:none; box-shadow:0 1px 0 rgba(0,0,0,.02); transition:transform .38s cubic-bezier(.2,.75,.2,1), box-shadow .38s; }
+    .product-card:hover { transform:translateY(-5px); box-shadow:0 20px 42px rgba(0,0,0,.09); }
+    .product-card:focus-visible, .tool-card:focus-visible, .round-button:focus-visible, .close:focus-visible { outline:3px solid var(--blue); outline-offset:3px; }
+    .card-copy { position:relative; z-index:2; padding:35px 38px; max-width:530px; }
+    .kicker { margin:0 0 9px; color:var(--muted); font-size:12px; font-weight:650; letter-spacing:.045em; text-transform:uppercase; }
+    .product-card h3 { margin:0; font-size:clamp(32px,4vw,47px); line-height:1.05; letter-spacing:-.045em; }
+    .product-card p { margin:13px 0 0; font-size:18px; line-height:1.35; letter-spacing:-.02em; color:#424245; }
+    .product-card .action { margin-top:19px; display:inline-flex; align-items:center; gap:6px; color:var(--blue); font-size:14px; font-weight:500; }
+    .action b { font-size:19px; font-weight:400; line-height:1; }
+    .preview { position:absolute; inset:194px 28px 28px; overflow:hidden; border:1px solid rgba(255,255,255,.55); border-radius:20px; box-shadow:0 17px 45px rgba(20,28,43,.19), 0 1px 1px rgba(0,0,0,.13); }
+    .preview::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 58%, rgba(11,17,28,.12)); pointer-events:none; }
+    .ui-top { height:34px; padding:0 13px; display:flex; align-items:center; gap:5px; background:rgba(255,255,255,.94); border-bottom:1px solid rgba(0,0,0,.06); }
+    .dot { width:7px; height:7px; border-radius:50%; background:#ff5f57; } .dot:nth-child(2){background:#febc2e}.dot:nth-child(3){background:#28c840}
+    .ui-title { margin-left:8px; font-size:9px; color:#7e8492; font-weight:600; }
+    .dashboard { background:linear-gradient(136deg,#e8f2ff 0%,#d5e8ff 42%,#a7c9f9 100%); }
+    .dashboard .ui-body { display:grid; grid-template-columns:120px 1fr; height:calc(100% - 34px); background:#f8fbff; }
+    .ui-sidebar { padding:17px 12px; background:#eaf2fd; border-right:1px solid #dbe7f6; } .side-line { height:9px; margin:10px 0; border-radius:10px; background:#cddcf0; }.side-line.active { background:#487ce9; width:72%; }
+    .dash-content { padding:21px; }.dash-label { width:135px; height:13px; background:#243d68; opacity:.85; border-radius:5px; }.dash-sub { width:84px; height:8px; margin-top:9px; background:#b3c7e8; border-radius:5px; }
+    .metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:11px; margin-top:20px; }.metric { height:67px; padding:12px; border-radius:10px; background:#fff; box-shadow:0 1px 1px rgba(0,0,0,.035); }.metric i { display:block; width:42%; height:7px; border-radius:4px; background:#a8b9d4; }.metric b { display:block; width:60%; height:16px; margin-top:9px; border-radius:4px; background:#335eae; }
+    .chart { position:relative; height:132px; margin-top:13px; overflow:hidden; border-radius:12px; background:#fff; }.chart svg { position:absolute; inset:12px; width:calc(100% - 24px); height:calc(100% - 24px); }
+    .eih { background:linear-gradient(135deg,#eef1f8 0%,#dbe3f4 46%,#c1cbe4 100%); }.eih .ui-body { position:relative; height:calc(100% - 34px); background:#eef2f7; }
+    .eih-title { position:absolute; left:26px; top:23px; width:162px; height:12px; background:#2d405e; border-radius:5px; }.eih-node { position:absolute; width:82px; height:82px; display:grid; place-items:center; border-radius:50%; color:white; font-size:12px; font-weight:650; box-shadow:0 10px 25px rgba(31,48,82,.25); }.node-1{left:13%;top:38%;background:#476ece}.node-2{left:42%;top:20%;background:#845dd1}.node-3{right:12%;top:43%;background:#20938c}.connector{position:absolute;height:2px;background:#a4b5d7;transform-origin:left center;}.c1{left:27%;top:49%;width:135px;transform:rotate(-21deg)}.c2{left:54%;top:44%;width:138px;transform:rotate(23deg)}.eih-copy{position:absolute;bottom:25px;left:27px;right:27px;height:53px;border-radius:10px;background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.05)}
+    .toolbox { background:linear-gradient(130deg,#221e2b 0%,#2b2540 49%,#433266 100%); color:#fff; }.toolbox .kicker,.toolbox p { color:rgba(255,255,255,.72); }.toolbox .action { color:#9ec8ff; }.toolbox .preview { border-color:rgba(255,255,255,.18); box-shadow:0 21px 56px rgba(0,0,0,.32); background:#171523; }.tool-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; padding:18px; }.tool-tile { min-height:90px; padding:13px 11px; border:1px solid rgba(255,255,255,.1); border-radius:11px; background:rgba(255,255,255,.06); }.tool-tile b{display:block;width:27px;height:27px;border-radius:8px;background:linear-gradient(135deg,#7aa9ff,#b57cf4)}.tool-tile span{display:block;height:7px;margin-top:13px;border-radius:5px;background:rgba(255,255,255,.65)}.tool-tile small{display:block;width:65%;height:5px;margin-top:7px;border-radius:4px;background:rgba(255,255,255,.2)}
+    .rail-hint { max-width:1100px; margin:5px auto 0; padding:0 22px; font-size:13px; color:#86868b; }
+    .foot { max-width:1100px; margin:0 auto; padding:32px 22px 42px; border-top:1px solid var(--line); font-size:12px; color:#86868b; }
+    .modal[hidden] { display:none; }.modal { position:fixed; z-index:20; inset:0; padding:24px; display:grid; place-items:center; background:rgba(0,0,0,.46); backdrop-filter:blur(18px); animation:fade .24s ease; }.dialog { position:relative; width:min(1160px,100%); max-height:min(760px,calc(100vh - 48px)); overflow:hidden; border-radius:28px; background:#f5f5f7; box-shadow:0 30px 90px rgba(0,0,0,.28); animation:rise .35s cubic-bezier(.2,.85,.2,1); }.dialog-head{display:flex;justify-content:space-between;align-items:flex-start;padding:37px 40px 28px;gap:24px}.dialog-head h2{font-size:40px;line-height:1.1;letter-spacing:-.045em}.dialog-head p{margin:16px 0 0;font-size:22px;line-height:1.5;color:var(--muted)}.dialog-actions{display:flex;align-items:center;gap:10px}.dialog-actions .controls{gap:8px}.dialog-actions .round-button{width:38px;height:38px}.close{flex:0 0 auto;width:38px;height:38px;border:0;border-radius:50%;background:#e1e1e6;cursor:pointer;font-size:24px;line-height:1;color:#424245}.modal .rail{padding-bottom:39px}.tool-card{position:relative;flex:0 0 min(345px,79vw);height:330px;overflow:hidden;scroll-snap-align:start;border:0;border-radius:22px;background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.04);text-align:left;cursor:pointer;transition:transform .25s,box-shadow .25s}.tool-card:hover{transform:translateY(-4px);box-shadow:0 16px 30px rgba(0,0,0,.1)}.tool-image{height:165px;padding:18px;background:var(--tone);position:relative;overflow:hidden}.tool-image:before,.tool-image:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.28)}.tool-image:before{width:130px;height:130px;right:-22px;top:-42px}.tool-image:after{width:74px;height:74px;left:16px;bottom:-30px}.tool-chip{position:relative;z-index:1;display:inline-flex;padding:7px 10px;border-radius:20px;background:rgba(255,255,255,.76);font-size:11px;font-weight:650;color:#30303a}.tool-art{position:absolute;z-index:1;right:20px;bottom:15px;width:137px;height:75px;border:1px solid rgba(255,255,255,.6);border-radius:12px;background:rgba(255,255,255,.42);box-shadow:0 8px 18px rgba(34,35,55,.12)}.tool-art i{display:block;height:6px;margin:14px 13px 7px;border-radius:4px;background:rgba(38,48,77,.55)}.tool-art i+ i{width:62%;margin-top:0;background:rgba(38,48,77,.26)}.tool-card h3{margin:20px 20px 8px;font-size:20px;letter-spacing:-.025em;line-height:1.15}.tool-card p{margin:0 20px;font-size:13px;line-height:1.38;color:var(--muted)}.modal-note{padding:0 40px 30px;color:#86868b;font-size:12px}
+    @keyframes fade{from{opacity:0}to{opacity:1}}@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+    @media(max-width:700px){:root{--cardW:86vw}.topbar{padding:0 19px}.hero{margin:44px auto 58px;padding:0 19px}h1{font-size:44px}.intro{font-size:18px}.section{margin-bottom:78px}.section-header{padding:0 19px;margin-bottom:19px}.rail{gap:14px;padding:0 19px 18px}.product-card{height:482px;border-radius:23px}.card-copy{padding:27px 25px}.product-card p{font-size:16px}.preview{inset:180px 16px 16px;border-radius:15px}.dashboard .ui-body{grid-template-columns:74px 1fr}.ui-sidebar{padding:13px 8px}.dash-content{padding:15px}.metrics{gap:7px}.metric{padding:9px;height:57px}.modal{padding:12px}.dialog{max-height:calc(100vh - 24px);border-radius:24px}.dialog-head{padding:27px 25px 21px}.dialog-head p{font-size:19px;line-height:1.5}.dialog-actions .controls{display:none}.modal .rail{padding-left:25px;padding-right:25px}.modal-note{padding:0 25px 24px}.tool-card{height:318px}.rail-hint{padding:0 19px}.foot{padding-left:19px;padding-right:19px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+    /* Apple Store carousel proportions: 400 × 500 CSS px, 20px gap, 48px desktop gutter. */
+    :root { --cardW:400px; }
+    .topbar, .hero, .foot { display:none; }
+    .section { position:relative; margin:42px 0 0; }
+    .section-header { max-width:none; margin:0 0 109px; padding:0 max(24px, calc((100vw - 1344px)/2)); transform:translateY(34px); }
+    .section-header h2 { display:flex; flex-direction:column; align-items:flex-start; gap:8px; font-size:44px; line-height:1.1; font-weight:650; letter-spacing:-.045em; }
+    .section-header h2 span { display:block; color:#6e6e73; font-size:36px; line-height:1.1; font-weight:600; }
+    .section-header .controls { position:absolute; z-index:4; top:281px; right:max(24px, calc((100vw - 1344px)/2)); }
+    .section-header .round-button { width:52px; height:52px; background:#e2e2e7; }
+    .section-header .round-button:disabled { display:none; }
+    .section-header .round-button svg { width:23px; height:23px; stroke-width:2; }
+    .rail { gap:20px; padding:0 max(24px, calc((100vw - 1344px)/2)) 22px; }
+    /* Keep the three-card product set optically centered once it fits in the viewport. */
+    @media (min-width:1288px) {
+      #products { justify-content:center; }
+      .section-header { padding-left:max(24px, calc((100vw - 1240px)/2)); padding-right:max(24px, calc((100vw - 1240px)/2)); }
+      .section-header .controls { right:max(24px, calc((100vw - 1240px)/2)); }
+    }
+    .eih-card .sentiment-preview { inset:225px 0 0!important; display:grid; grid-template-rows:38px minmax(0,1fr) 48px; overflow:hidden; border:0; border-radius:0!important; background:#f7f9fc; box-shadow:none!important; color:#17223b; }
+    .sentiment-top { display:flex; align-items:center; justify-content:space-between; padding:0 19px; background:#fff; border-bottom:1px solid #e9eef5; }
+    .sentiment-brand { display:flex; align-items:center; gap:7px; min-width:0; }
+    .sentiment-brand__mark { width:18px; height:18px; display:grid; place-items:center; border-radius:6px; background:#121d31; color:#fff; font-size:12px; line-height:1; }
+    .sentiment-brand__title { font-size:11px; font-weight:700; letter-spacing:-.02em; }
+    .sentiment-brand__sub { margin-left:4px; color:#98a4b7; font-size:6px; font-weight:700; letter-spacing:.13em; white-space:nowrap; }
+    .sentiment-status { padding:4px 7px; border-radius:999px; background:#e8fbf2; color:#1b9d6e; font-size:8px; font-weight:700; white-space:nowrap; }
+    .sentiment-workspace { display:grid; grid-template-columns:25px minmax(0,1fr); gap:7px; min-height:0; padding:11px 15px 8px; }
+    .sentiment-axis { display:flex; align-items:center; justify-content:center; color:#7e8ca2; font-size:7px; font-weight:700; letter-spacing:.08em; writing-mode:vertical-rl; }
+    .sentiment-plot { position:relative; min-width:0; min-height:0; overflow:hidden; border-radius:10px; background:linear-gradient(90deg,#fff6f6 0 50%,#f3fcf8 50%); }
+    .sentiment-plot::before, .sentiment-plot::after { content:""; position:absolute; z-index:0; background:rgba(104,129,163,.19); }
+    .sentiment-plot::before { top:0; bottom:0; left:50%; width:1px; border-left:1px dashed rgba(104,129,163,.22); background:none; }
+    .sentiment-plot::after { left:0; right:0; top:56%; height:1px; border-top:1px dashed rgba(104,129,163,.22); background:none; }
+    .sentiment-plot__label { position:absolute; z-index:1; bottom:5px; left:50%; transform:translateX(-50%); color:#9aa6b8; font-size:6px; font-weight:700; letter-spacing:.1em; white-space:nowrap; }
+    .sentiment-bubble { position:absolute; z-index:2; display:grid; place-items:center; padding:5px; border-radius:50%; color:#fff; text-align:center; font-size:7px; font-weight:700; line-height:1.08; box-shadow:0 0 0 5px currentColor, 0 5px 11px rgba(30,47,74,.12); }
+    .sentiment-bubble.negative { background:#d75b62; color:rgba(215,91,98,.22); }.sentiment-bubble.negative b { color:#fff; }
+    .sentiment-bubble.positive { background:#69b887; color:rgba(105,184,135,.22); }.sentiment-bubble.positive b { color:#fff; }
+    .bubble-reply { left:27%; top:16%; width:48px; height:48px; }.bubble-app { left:8%; top:52%; width:36px; height:36px; }.bubble-pack { left:39%; top:69%; width:34px; height:34px; }.bubble-response { left:65%; top:10%; width:41px; height:41px; }.bubble-experience { left:67%; top:42%; width:51px; height:51px; }.bubble-design { right:7%; top:67%; width:36px; height:36px; }
+    .sentiment-summary { display:grid; grid-template-columns:1fr 1fr; gap:7px; padding:8px 14px; background:#fff; border-top:1px solid #e9eef5; }
+    .sentiment-note { display:flex; align-items:center; gap:6px; min-width:0; padding:0 8px; border-radius:8px; font-size:8px; font-weight:700; }
+    .sentiment-note--risk { background:#fff4f4; color:#ca5863; }.sentiment-note--action { background:#ecfbf4; color:#269d71; }
+    .sentiment-note__dot { flex:0 0 auto; width:6px; height:6px; border-radius:50%; background:currentColor; }.sentiment-note small { overflow:hidden; color:inherit; font-size:7px; font-weight:600; text-overflow:ellipsis; white-space:nowrap; }
+    .eih-card .sentiment-preview { inset:224px 0 0!important; display:block; background:#e8edf3; }
+    .sentiment-preview__full { display:block; width:100%; height:100%; object-fit:cover; object-position:50% 35%; }
+    .eih-preview__full { display:block; width:100%; height:100%; object-fit:cover; object-position:50% 50%; transform:translateY(-16px); }
+    .toolbox-preview__full { display:block; width:100%; height:100%; object-fit:cover; object-position:50% 50%; transform:scale(1.16); }
+    .product-card { height:500px; border-radius:20px; box-shadow:0 4px 14px rgba(0,0,0,.06); }
+    .product-card:hover { transform:none; box-shadow:0 6px 18px rgba(0,0,0,.1); }
+    .card-copy { padding:31px 29px; max-width:470px; }
+    .eih-card .card-copy { padding-top:31px; }
+    .eih-card .kicker { display:none; }
+    .kicker { margin:0 0 13px; font-size:13px; letter-spacing:0; color:#a64719; }
+    .product-card h3 { font-size:31px; line-height:1.08; letter-spacing:-.04em; }
+    .product-card p { margin-top:16px; font-size:16px; line-height:1.42; letter-spacing:-.018em; }
+    .product-card .action { display:none; }
+    .toolbox .kicker { color:#ff8b3d; }
+    .preview { inset:171px 0 0; border:0; border-radius:0; box-shadow:none; }
+    .preview::after { background:linear-gradient(180deg,transparent 70%,rgba(0,0,0,.13)); }
+    .ui-top { display:none; }
+    .dashboard .ui-body, .eih .ui-body { height:100%; }
+    .dashboard .ui-body { grid-template-columns:84px 1fr; }
+    .ui-sidebar { padding:16px 10px; }
+    .dash-content { padding:18px; }
+    .tool-grid { padding:19px; gap:9px; }
+    .tool-tile { min-height:70px; padding:10px; }
+    .tool-tile b { width:23px; height:23px; }
+    .tool-tile span { margin-top:10px; }
+    .rail-hint { display:none; }
+    .eih-card { background:#050505; color:#fff; }
+    .eih-card p { color:rgba(255,255,255,.82); }
+    .eih-card .preview { inset:245px 0 0; background:#0d1420; }
+    .eih-card .dashboard .ui-body { background:#101a28; }
+    .eih-card .ui-sidebar { background:#111f31; border-color:rgba(255,255,255,.08); }
+    .eih-card .side-line { background:#28415f; }
+    .eih-card .side-line.active { background:#467eea; }
+    .eih-card .dash-label { background:#e7efff; }
+    .eih-card .dash-sub { background:#6380a8; }
+    .eih-card .metric, .eih-card .chart { background:#182536; }
+    .eih-card .metric i { background:#567090; }
+    .eih-card .metric b { background:#74a7ff; }
+    .toolbox-card { background:#fff; color:var(--ink); }
+    .toolbox-card .card-copy p { color:#424245; }
+    /* 产品说明与驾驶舱 Dashboard 统一：同一系统字体、灰阶与字面密度。 */
+    .eih-card .card-copy p,
+    .toolbox-card .card-copy p { color:#8b8b92; font-size:16px; font-weight:500; line-height:1.3; letter-spacing:-.04em; }
+    .toolbox-card .preview { inset:134px 0 0; }
+    /* Extend each card's own surface behind its preview, without a second backdrop color. */
+    .eih-card .sentiment-preview { background:#050505; }
+    .eih-card .eih, .eih-card .eih .ui-body { background:#fff; }
+    .product-card.toolbox-card .preview { background:#fff; }
+    .toolbox-card .preview::after { background:none; }
+    .toolbox-card .tool-tile { background:#151515; border-color:#303030; }
+    .eih-card .eih { inset:134px 0 0; background:#050505; }
+    .eih-card .eih .ui-body { background:#050505; }
+    .eih-card .eih-title { background:#e7efff; }
+    .eih-card .eih-copy { background:rgba(255,255,255,.1); box-shadow:0 1px 1px rgba(255,255,255,.08); }
+    .cockpit-card .sentiment-preview { inset:134px 0 0; display:block; background:#fff; }
+    .cockpit-card .sentiment-preview__full { transform:scale(.92); transform-origin:center; }
+    /* Match the AI News Bot card treatment: a dark framed canvas with the EIH visual inset inside it. */
+    .eih-card .eih { inset:134px 0 0; padding:22px; background:radial-gradient(circle at 80% 18%,rgba(121,95,225,.32),transparent 30%),linear-gradient(145deg,#0a0a0d,#17131f); }
+    .eih-card .eih::before, .eih-card .eih::after { content:""; position:absolute; z-index:0; border-radius:50%; }
+    .eih-card .eih::before { width:130px; height:130px; right:-22px; top:-42px; background:rgba(255,255,255,.08); }
+    .eih-card .eih::after { width:74px; height:74px; left:16px; bottom:-30px; inset:auto auto -30px 16px; background:rgba(255,255,255,.08); }
+    .eih-card .eih .eih-preview__full { position:relative; z-index:1; transform:none; object-fit:cover; object-position:50% 50%; }
+    .eih-card .eih.eih-monitor-preview { padding:0; background:#050505; }
+    .eih-card .eih.eih-monitor-preview::before,
+    .eih-card .eih.eih-monitor-preview::after { display:none; }
+    @media(max-width:700px){
+      :root { --cardW:calc(100vw - 58px); }
+      .section { margin-top:31px; }
+      .section-header { margin-bottom:22px; padding:0 19px; transform:none; }
+      .section-header h2 { font-size:34px; max-width:300px; }
+      .section-header h2 span { font-size:26px; }
+      .section-header .controls { position:static; }
+      .section-header .round-button { width:43px; height:43px; }
+      .rail { gap:14px; padding:0 19px 18px; }
+      .product-card { height:calc((100vw - 58px) * 1.25); min-height:460px; border-radius:20px; }
+      .card-copy { padding:27px 25px; }
+      .eih-card .card-copy { padding-top:27px; }
+      .product-card h3 { font-size:29px; }
+      .preview { inset:160px 0 0; }
+      .eih-card .sentiment-preview { inset:211px 0 0!important; }
+      .eih-card .eih { inset:160px 0 0; }
+      .cockpit-card .sentiment-preview { inset:160px 0 0; }
+      .dashboard .ui-body { grid-template-columns:72px 1fr; }
+    }
+
+    /* Toolbox: a right-side, Apple Store-inspired horizontal product rail. */
+    .modal { padding:0; place-items:stretch end; background:rgba(15,15,18,.26); }
+    .dialog { width:min(92vw,1420px); height:100dvh; max-height:none; display:flex; flex-direction:column; border-radius:28px 0 0 28px; background:#f5f5f7; }
+    .dialog-head { flex:0 0 auto; padding:42px 42px 29px; }
+    .dialog-head > div:first-child { transform:translateY(16px); }
+    .dialog-head h2 { max-width:none; white-space:nowrap; }
+    .modal .rail { flex:1 1 auto; align-items:flex-start; gap:20px; padding:64px 42px 38px; scroll-padding-left:42px; }
+    .tool-card { flex:0 0 400px; height:500px; display:flex; flex-direction:column; border-radius:20px; color:var(--ink); box-shadow:0 4px 14px rgba(0,0,0,.06); cursor:grab; text-decoration:none; }
+    .tool-card:hover { transform:none; box-shadow:0 6px 18px rgba(0,0,0,.1); }
+    .tool-card h3 { order:1; margin:31px 29px 0; font-size:30px; line-height:1.08; letter-spacing:-.04em; }
+    .tool-card p { order:2; margin:16px 29px 0; font-size:16px; line-height:1.42; letter-spacing:-.018em; }
+    .tool-image { order:3; flex:1 1 auto; min-height:255px; margin-top:18px; padding:22px; }
+    .tool-demo-image { display:block; width:100%; height:100%; object-fit:cover; object-position:50% 50%; }
+    .tool-card:first-child .tool-demo-image { object-fit:cover; object-position:50% 50%; }
+    .tool-chip { padding:7px 11px; font-size:12px; }
+    .tool-art { right:25px; bottom:21px; width:170px; height:94px; }
+    .tool-art i { height:8px; margin:18px 16px 9px; }
+    .modal-note { flex:0 0 auto; padding:0 42px 26px; }
+    .tool-card:nth-child(even) { background:#050505; color:#fff; }
+    .tool-card:nth-child(even) p { color:rgba(255,255,255,.78); }
+    .tool-card:nth-child(even) .tool-image { background:radial-gradient(circle at 80% 18%,rgba(121,95,225,.32),transparent 30%),linear-gradient(145deg,#0a0a0d,#17131f); }
+    .tool-card:nth-child(even) .tool-image::before,
+    .tool-card:nth-child(even) .tool-image::after { background:rgba(255,255,255,.08); }
+    .tool-card:nth-child(even) .tool-chip { background:rgba(255,255,255,.12); color:#fff; }
+    .tool-card:nth-child(even) .tool-art { border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.09); box-shadow:0 10px 24px rgba(0,0,0,.28); }
+    .tool-card:nth-child(even) .tool-art i { background:rgba(255,255,255,.72); }
+    .tool-card:nth-child(even) .tool-art i + i { background:rgba(255,255,255,.26); }
+    #tools .tool-card:first-child .tool-image::before,
+    #tools .tool-card:first-child .tool-image::after { display:none; }
+    /* AI News Bot: use a clean black field behind the extracted device and sticker artwork. */
+    #tools .tool-card:nth-child(2) .tool-image { background:#050505; }
+    #tools .tool-card:nth-child(2) .tool-image::before,
+    #tools .tool-card:nth-child(2) .tool-image::after { display:none; }
+#tools .tool-card:nth-child(2) .tool-demo-image { object-fit:contain; }
+/* 违规广告监测：原图与视觉区均保持统一的纯白底。 */
+#tools .tool-card:nth-child(3),
+#tools .tool-card:nth-child(3) .tool-image { background:#fff; }
+#tools .tool-card:nth-child(3) .tool-image::before,
+#tools .tool-card:nth-child(3) .tool-image::after { display:none; }
+#tools .tool-card:nth-child(3) .tool-demo-image { object-fit:contain; object-position:50% 50%; }
+/* HyGenie: retain the supplied composition on a clean white canvas. */
+#tools .tool-card:nth-child(7) .tool-image { background:#fff; }
+    #tools .tool-card:nth-child(7) .tool-image::before,
+    #tools .tool-card:nth-child(7) .tool-image::after { display:none; }
+    #tools .tool-card:nth-child(7) .tool-demo-image { object-fit:contain; }
+
+    /* 热点趋势监测平台：保留原图的黑色场景，移除卡片中的额外背景装饰。 */
+    #tools .tool-card--trend-monitor,
+    #tools .tool-card--trend-monitor .tool-image { background:#000; }
+    #tools .tool-card--trend-monitor { color:#fff; }
+    #tools .tool-card--trend-monitor p { color:rgba(255,255,255,.78); }
+    #tools .tool-card--trend-monitor .tool-image::before,
+    #tools .tool-card--trend-monitor .tool-image::after { display:none; }
+    #tools .tool-card--trend-monitor .tool-demo-image {
+      object-fit:contain;
+      object-position:50% 50%;
+    }
+
+    /* Trustpilot 监测与分析平台：统一为纯黑底，保留新图的黑色视觉。 */
+    #tools .tool-card--trustpilot-analysis,
+    #tools .tool-card--trustpilot-analysis .tool-image { background:#000; }
+    #tools .tool-card--trustpilot-analysis { color:#fff; }
+    #tools .tool-card--trustpilot-analysis p { color:rgba(255,255,255,.78); }
+    #tools .tool-card--trustpilot-analysis .tool-image::before,
+    #tools .tool-card--trustpilot-analysis .tool-image::after { display:none; }
+    #tools .tool-card--trustpilot-analysis .tool-demo-image {
+      object-fit:contain;
+      object-position:50% 50%;
+    }
+
+    /* Reddit 评论分析系统：保留原图的纯黑场景，清除旧有装饰。 */
+    #tools .tool-card--reddit-analysis,
+    #tools .tool-card--reddit-analysis .tool-image { background:#000; }
+    #tools .tool-card--reddit-analysis { color:#fff; }
+    #tools .tool-card--reddit-analysis p { color:rgba(255,255,255,.78); }
+    #tools .tool-card--reddit-analysis .tool-image::before,
+    #tools .tool-card--reddit-analysis .tool-image::after { display:none; }
+    #tools .tool-card--reddit-analysis .tool-demo-image {
+      object-fit:contain;
+      object-position:50% 50%;
+    }
+    .dialog-actions .controls { position:static; }
+    .dialog-actions [data-prev="tools"] { display:none; }
+    .dialog-actions [data-next="tools"] { position:absolute; z-index:5; top:54%; right:24px; width:58px; height:58px; transform:translateY(-50%); background:rgba(225,225,230,.94); box-shadow:0 3px 12px rgba(0,0,0,.12); }
+    .dialog-actions [data-next="tools"]:hover:not(:disabled) { transform:translateY(-50%); }
+    .dialog-actions [data-next="tools"]:disabled { display:none; }
+    @media(max-width:700px){
+      .dialog { width:100%; border-radius:0; }
+      .dialog-head { padding:29px 25px 22px; }
+      .dialog-head > div:first-child { transform:translateY(10px); }
+      .dialog-head h2 { white-space:normal; }
+      .modal .rail { gap:14px; padding:20px 25px 28px; }
+      .tool-card { flex-basis:calc(100vw - 50px); height:480px; }
+      .modal-note { padding:0 25px 22px; }
+      .dialog-actions [data-next="tools"] { top:56%; right:16px; width:48px; height:48px; }
+    }
+    /* 驾驶舱卡片：标题翻转，产品图打开 Demo。 */
+    .cockpit-card { --cockpit-copy-muted:#8b8b92; cursor: default; perspective: 1100px; container-type:inline-size; }
+    .cockpit-card .cockpit-flipper { position: relative; width: 100%; height: 100%; transform: rotateY(0deg); transform-style: preserve-3d; transform-origin:center; will-change:transform; transition: transform .72s cubic-bezier(.16,.84,.28,1); }
+    .cockpit-card.is-flipped .cockpit-flipper { transform: rotateY(180deg); }
+    .cockpit-card .cockpit-face { position: absolute; inset: 0; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+    .cockpit-card .cockpit-front { background: #fff; }
+    .cockpit-card .cockpit-back { display: flex; transform: rotateY(180deg); background: #fff; color: var(--ink); }
+    .cockpit-card .cockpit-title-toggle { appearance: none; margin: 0; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; }
+    .cockpit-card .cockpit-flip-trigger { min-height:171px; cursor:pointer; }
+    /* 保留原有副标题排印，仅将字号对齐到工具百宝箱说明。 */
+    .cockpit-card .cockpit-front .card-copy p { margin-top:16px; color:var(--cockpit-copy-muted); font-size:16px; font-weight:500; line-height:1.3; letter-spacing:-.04em; }
+    .cockpit-card .cockpit-demo-link { display: block; color: inherit; text-decoration: none; cursor: pointer; }
+    .cockpit-card .cockpit-title-toggle:focus-visible, .cockpit-card .cockpit-flip-trigger:focus-visible, .cockpit-card .cockpit-back-toggle:focus-visible, .cockpit-card .cockpit-demo-link:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+    /* Vantage Insight、HyGenie、违规广告与跨平台内容监控在工具弹窗中复用驾驶舱的双面交互与垂直节奏。 */
+    .vantage-card .cockpit-front, .hygenie-card .cockpit-front, .ad-compliance-card .cockpit-front, .cross-platform-card .cockpit-front { display:flex; flex-direction:column; }
+    .vantage-card .cockpit-flip-trigger, .hygenie-card .cockpit-flip-trigger, .ad-compliance-card .cockpit-flip-trigger, .cross-platform-card .cockpit-flip-trigger { flex:0 0 171px; min-height:171px; }
+    .vantage-card .tool-image, .hygenie-card .tool-image, .ad-compliance-card .tool-image, .cross-platform-card .tool-image { flex:1 1 auto; min-height:0; margin-top:0; padding:22px; background:#fff; }
+    .vantage-card .tool-image::before, .vantage-card .tool-image::after, .hygenie-card .tool-image::before, .hygenie-card .tool-image::after, .ad-compliance-card .tool-image::before, .ad-compliance-card .tool-image::after, .cross-platform-card .tool-image::before, .cross-platform-card .tool-image::after { display:none; }
+    .vantage-card .tool-demo-image, .hygenie-card .tool-demo-image, .ad-compliance-card .tool-demo-image, .cross-platform-card .tool-demo-image { object-fit:contain; object-position:50% 50%; }
+    .cockpit-card.vantage-card .cockpit-progress-title, .cockpit-card.hygenie-card .cockpit-progress-title, .cockpit-card.ad-compliance-card .cockpit-progress-title, .cockpit-card.cross-platform-card .cockpit-progress-title { top:6.2%; left:7.25%; font-size:7.5cqw; font-weight:700; line-height:1.08; letter-spacing:-.04em; }
+    .cockpit-card.vantage-card .cockpit-progress-subtitle, .cockpit-card.hygenie-card .cockpit-progress-subtitle, .cockpit-card.ad-compliance-card .cockpit-progress-subtitle, .cockpit-card.cross-platform-card .cockpit-progress-subtitle { top:14.2%; left:7.25%; }
+    .cockpit-card.vantage-card .progress-goal, .cockpit-card.hygenie-card .progress-goal, .cockpit-card.ad-compliance-card .progress-goal, .cockpit-card.cross-platform-card .progress-goal { gap:1cqw; padding-left:1.6cqw; padding-right:1.6cqw; }
+    .cockpit-card.vantage-card .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; }
+    .cockpit-card.vantage-card .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    .cockpit-card.ad-compliance-card .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; }
+    .cockpit-card.ad-compliance-card .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    /* 跨平台内容监控：底部价值栏与违规广告卡保持同一套信息层级。 */
+    #cross-platform-progress-panel .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; }
+    #cross-platform-progress-panel .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    /* HyGenie：底部价值栏与白底产品进展卡保持同一信息层级。 */
+    #hygenie-progress-panel .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; }
+    #hygenie-progress-panel .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    .cockpit-card.vantage-card .progress-goal strong,
+    .cockpit-card.vantage-card .progress-goal span,
+    .cockpit-card.hygenie-card .progress-goal strong,
+    .cockpit-card.hygenie-card .progress-goal span,
+    .cockpit-card.ad-compliance-card .progress-goal strong,
+    .cockpit-card.ad-compliance-card .progress-goal span,
+    .cockpit-card.cross-platform-card .progress-goal strong,
+    .cockpit-card.cross-platform-card .progress-goal span { font-size:3cqw; }
+    /* 热点趋势监测平台沿用 Vantage 的双面卡结构，背面适配产品本身的黑色视觉。 */
+    .trend-card .cockpit-front { display:flex; flex-direction:column; background:#000; }
+    .trend-card .cockpit-flip-trigger { flex:0 0 171px; min-height:171px; }
+    .trend-card .tool-image { flex:1 1 auto; min-height:0; margin-top:0; padding:22px; background:#000; }
+    .trend-card .tool-image::before, .trend-card .tool-image::after { display:none; }
+    .trend-card .tool-demo-image { object-fit:contain; object-position:50% 50%; transform:scale(1.08); transform-origin:center center; }
+    .trend-card .cockpit-back,
+    .trend-card .cockpit-progress-visual { background:#000; color:#fff; }
+    .cockpit-card.trend-card .cockpit-progress-title { color:#fff; font-size:30px; font-weight:700; line-height:1.08; letter-spacing:-.04em; }
+    .trend-card .cockpit-progress-subtitle { color:rgba(255,255,255,.62); }
+    .trend-card .progress-stage--current { --stage-border:rgba(113,140,255,.38); --stage-fill:rgba(50,65,125,.2); --stage-color:#96a9ff; --stage-orb:rgba(91,112,220,.2); }
+    .trend-card .progress-stage--h1 { --stage-border:rgba(89,204,154,.35); --stage-fill:rgba(39,105,74,.18); --stage-color:#71d69c; --stage-orb:rgba(72,175,119,.2); }
+    .trend-card .progress-stage--h2 { --stage-border:rgba(255,120,73,.38); --stage-fill:rgba(128,47,31,.2); --stage-color:#ff9570; --stage-orb:rgba(233,94,49,.2); }
+    .trend-card .stage-copy ul { color:rgba(255,255,255,.88); }
+    .trend-card .progress-goal { border-color:rgba(255,133,83,.24); background:rgba(255,110,61,.1); }
+    .cockpit-card.trend-card .progress-goal { gap:1cqw; padding-left:1.6cqw; padding-right:1.6cqw; }
+    .cockpit-card.trend-card .progress-goal strong,
+    .cockpit-card.trend-card .progress-goal span { font-size:3cqw; }
+    .trend-card .goal-divider { background:rgba(255,255,255,.18); }
+    .trend-card .progress-goal strong { color:#ff9b76; }
+    .trend-card .progress-goal span { color:rgba(255,255,255,.86); }
+    /* AI News Bot 的最终价值栏沿用眼脑手 Dashboard 的冷蓝层级，区别于通用的暖色阶段目标。 */
+    #ai-news-bot-progress-panel .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; border-color:#3e4967; background:#141823; }
+    #ai-news-bot-progress-panel .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    #ai-news-bot-progress-panel .progress-goal strong,
+    #ai-news-bot-progress-panel .progress-goal span { font-size:3cqw; line-height:1.2; }
+    #ai-news-bot-progress-panel .progress-goal strong { color:#aab7ff; }
+    #ai-news-bot-progress-panel .progress-goal span { color:#d8dce5; }
+    /* Trustpilot 评论监控系统：最终价值使用与 AI News Bot 一致的冷蓝信息层级。 */
+    #trustpilot-progress-panel .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; border-color:#3e4967; background:#141823; }
+    #trustpilot-progress-panel .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    #trustpilot-progress-panel .progress-goal strong,
+    #trustpilot-progress-panel .progress-goal span { font-size:3cqw; line-height:1.2; }
+    #trustpilot-progress-panel .progress-goal strong { color:#aab7ff; }
+    #trustpilot-progress-panel .progress-goal span { color:#d8dce5; }
+    /* 热点趋势监测平台：最终价值使用冷蓝信息条，和其他深色进度卡的价值层级一致。 */
+    #trend-progress-panel .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; border-color:#3e4967; background:#141823; }
+    #trend-progress-panel .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    #trend-progress-panel .progress-goal strong,
+    #trend-progress-panel .progress-goal span { font-size:3cqw; line-height:1.2; }
+    #trend-progress-panel .progress-goal strong { color:#aab7ff; }
+    #trend-progress-panel .progress-goal span { color:#d8dce5; }
+    /* Reddit：最终价值沿用深色进度卡的冷蓝信息层级。 */
+    #reddit-progress-panel .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; border-color:#3e4967; background:#141823; }
+    #reddit-progress-panel .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    #reddit-progress-panel .progress-goal strong,
+    #reddit-progress-panel .progress-goal span { font-size:3cqw; line-height:1.2; }
+    #reddit-progress-panel .progress-goal strong { color:#aab7ff; }
+    #reddit-progress-panel .progress-goal span { color:#d8dce5; }
+    /* Flat status badges: no glow or glass treatment on the dark card surface. */
+    .trend-card .stage-icon { border:1px solid transparent; box-shadow:none; }
+    .trend-card .progress-stage--current .stage-icon { color:#eef1ff; border-color:rgba(136,157,255,.58); background:#1c2140; box-shadow:none; }
+    .trend-card .progress-stage--h1 .stage-icon { color:#e7fff0; border-color:rgba(113,214,156,.52); background:#173426; box-shadow:none; }
+    .trend-card .progress-stage--h2 .stage-icon { color:#fff1ea; border-color:rgba(255,149,112,.55); background:#422219; box-shadow:none; }
+    .trend-card .stage-icon svg { filter:none; }
+    /* 驾驶舱的最终价值栏上调一级字号，并收紧内部节奏以保留完整文案。 */
+    #cockpit-progress-panel .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; }
+    #cockpit-progress-panel .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    #cockpit-progress-panel .progress-goal strong,
+    #cockpit-progress-panel .progress-goal span { font-size:3cqw; line-height:1.2; }
+    /* 眼脑手 Dashboard：复用热点趋势监测平台的黑色双面进度卡，正面保留原有监控大屏视觉。 */
+    .product-card.eih-dashboard-card { background:#000; color:#fff; }
+    .product-card.eih-dashboard-card .cockpit-front { display:flex; flex-direction:column; background:#000; }
+    .product-card.eih-dashboard-card .cockpit-flip-trigger { flex:0 0 224px; min-height:224px; }
+    .product-card.eih-dashboard-card .card-copy { padding:31px 29px; }
+    .product-card.eih-dashboard-card .card-copy p { color:rgba(255,255,255,.78); }
+    .product-card.eih-dashboard-card .preview { position:relative; inset:auto; flex:1 1 auto; min-height:0; margin:0; overflow:hidden; border:0; border-radius:0; background:#000; box-shadow:none; }
+    .product-card.eih-dashboard-card .preview::after { background:linear-gradient(180deg,transparent 70%,rgba(0,0,0,.13)); }
+    /* 预览区会随大屏断点改变高度：保持居中裁切，避免固定上移导致不同屏幕露出不一致的顶部区域。 */
+    .product-card.eih-dashboard-card .eih-preview__full { display:block; width:100%; height:100%; object-fit:cover; object-position:50% 50%; transform:none; }
+    /* 眼脑手 Dashboard：以近黑蓝为基底，使用低饱和状态面板强化系统感与阅读层级。 */
+    .eih-dashboard-card .cockpit-front,
+    .eih-dashboard-card .cockpit-back,
+    .eih-dashboard-card .cockpit-progress-visual { background:#080a0f; }
+    .eih-dashboard-card .cockpit-progress-title { color:#f7f8fa; }
+    .eih-dashboard-card .cockpit-progress-subtitle { color:#a7adba; }
+    .eih-dashboard-card .progress-stage--current { --stage-border:#5269d8; --stage-fill:#11172a; --stage-color:#9eaeff; --stage-orb:#1c2542; }
+    .eih-dashboard-card .progress-stage--h1 { --stage-border:#3f8d68; --stage-fill:#0d2118; --stage-color:#7fdcac; --stage-orb:#173727; }
+    .eih-dashboard-card .progress-stage--h2 { --stage-border:#a65d42; --stage-fill:#26150f; --stage-color:#ff9a75; --stage-orb:#3a2118; }
+    .eih-dashboard-card .progress-stage--current .stage-icon { color:#eef1ff; border-color:#5269d8; background:#1c2542; }
+    .eih-dashboard-card .progress-stage--h1 .stage-icon { color:#e8fff1; border-color:#3f8d68; background:#173727; }
+    .eih-dashboard-card .progress-stage--h2 .stage-icon { color:#fff1ea; border-color:#a65d42; background:#3a2118; }
+    .eih-dashboard-card .stage-copy ul { color:#d8dce5; }
+    .eih-dashboard-card .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; border-color:#3e4967; background:#141823; }
+    .eih-dashboard-card .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    .eih-dashboard-card .progress-goal strong,
+    .eih-dashboard-card .progress-goal span { font-size:3cqw; line-height:1.2; }
+    .eih-dashboard-card .progress-goal strong { color:#aab7ff; }
+    .eih-dashboard-card .progress-goal span { color:#d8dce5; }
+    .eih-dashboard-card .goal-divider { background:#3e4967; }
+    /* Vantage Insight：底部与驾驶舱统一为「最终价值」信息层级。 */
+    .vantage-card .progress-goal { justify-content:center; align-items:center; padding-left:1.2cqw; padding-right:1.2cqw; }
+    .vantage-card .goal-copy { display:flex; align-items:baseline; gap:.7cqw; min-width:0; }
+    .vantage-card .progress-goal strong,
+    .vantage-card .progress-goal span { font-size:3cqw; line-height:1.2; }
+    /* 驾驶舱进展背面：采用用户提供的进度卡层级与目标栏结构。 */
+    .cockpit-progress-visual { position:relative; width:100%; height:100%; overflow:hidden; container-type:inline-size; background:linear-gradient(180deg,#fff 0%,#fcfcfd 100%); }
+    /* 与图 2 参考稿一致的标题、说明与进度卡比例。 */
+    .cockpit-card .cockpit-progress-title { position:absolute; top:5.6%; left:8.4%; margin:0; color:#151515; font-size:31px; font-weight:800; line-height:1.05; letter-spacing:-.09cqw; white-space:nowrap; }
+    .cockpit-card .cockpit-progress-subtitle { position:absolute; top:14.2%; left:8.6%; margin:0; color:var(--cockpit-copy-muted); font-size:16px; font-weight:500; line-height:1.3; letter-spacing:-.04em; }
+    .progress-stage { position:absolute; left:7.2%; width:85.6%; height:20.25%; display:flex; align-items:center; gap:3.4cqw; padding:3.05cqw 3.2cqw; border:1px solid var(--stage-border); border-radius:3cqw; background:var(--stage-fill); }
+    .progress-stage--current { top:21.6%; --stage-border:#d9e2ff; --stage-fill:#f9fbff; --stage-color:#2456e6; --stage-orb:#eef2ff; }
+    .progress-stage--h1 { top:43.5%; --stage-border:#dbead9; --stage-fill:#fbfefb; --stage-color:#46a23c; --stage-orb:#eef7ed; }
+    .progress-stage--h2 { top:65.4%; --stage-border:#e3dbff; --stage-fill:#fcfbff; --stage-color:#4938e8; --stage-orb:#f1ecff; }
+    .stage-icon { flex:0 0 14.6cqw; height:14.6cqw; display:grid; place-items:center; border-radius:50%; background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.9),transparent 47%),var(--stage-orb); color:var(--stage-color); box-shadow:inset 0 1px 1px rgba(255,255,255,.86),0 5px 12px color-mix(in srgb,var(--stage-color) 7%,transparent); }
+    .stage-icon svg { width:7.8cqw; height:7.8cqw; fill:none; stroke:currentColor; stroke-width:2.15; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 1px 1px rgba(255,255,255,.72)); }
+    .stage-copy { min-width:0; flex:1 1 auto; }
+    .stage-copy h4 { margin:0 0 3.3cqw; color:var(--stage-color); font-size:3.75cqw; font-weight:800; line-height:1.2; letter-spacing:-.05cqw; }
+    .stage-copy ul { display:grid; gap:2.15cqw; margin:0; padding:0; list-style:none; color:#222; font-size:3.2cqw; font-weight:500; line-height:1.28; letter-spacing:-.035em; }
+    .stage-copy li { position:relative; padding-left:3.9cqw; white-space:nowrap; }
+    .stage-copy li::before { content:""; position:absolute; top:.63em; left:0; width:1.35cqw; height:1.35cqw; border-radius:50%; background:var(--stage-color); transform:translateY(-50%); }
+    .progress-goal { position:absolute; top:88.8%; left:7.2%; width:85.6%; height:8.05%; display:flex; align-items:center; gap:1.35cqw; padding:1.9cqw 2.5cqw; border:1px solid #e8eeff; border-radius:2.55cqw; background:#f4f7ff; }
+    .goal-divider { width:1px; align-self:stretch; margin:.2cqw 0; background:#d8deef; }
+    .progress-goal strong { color:#2e5df0; font-size:2.75cqw; font-weight:800; letter-spacing:-.04em; white-space:nowrap; }
+    .progress-goal span { color:#2a2a2a; font-size:2.75cqw; font-weight:500; line-height:1.4; letter-spacing:-.04em; white-space:nowrap; }
+    .cockpit-card .cockpit-back-toggle { position:absolute; z-index:1; top:0; left:0; width:100%; height:126px; margin:0; padding:0; border:0; background:transparent; cursor:pointer; }
+    @media (prefers-reduced-motion: reduce) { .cockpit-card .cockpit-flipper { transition: transform .72s cubic-bezier(.16,.84,.28,1) !important; } }
+
+    /* 产品集合页：使用深色品牌场景图作为固定画布，确保首屏与背景的红黑视觉一致。 */
+    html {
+      background: #060606 url("assets/marketing-command-bg.png") center top / cover fixed no-repeat;
+    }
+    body {
+      min-height:100vh;
+      background:transparent;
+    }
+    .section-header h2 { color:#f5f5f7; }
+    .section-header h2 span { color:rgba(235,235,242,.64); }
+    .section-header .round-button { background:rgba(235,235,240,.88); }
+    .section-header .round-button:hover:not(:disabled) { background:#fff; }
+    /* 眼脑手的蓝（眼）—紫（脑）—绿（手）能力映射，采用低亮度描边而不干扰内容。 */
+    .product-card.eih-dashboard-card {
+      border:1px solid transparent;
+      background:
+        linear-gradient(#080a0f, #080a0f) padding-box,
+        linear-gradient(135deg, rgba(74,105,255,.62), rgba(157,92,255,.45) 52%, rgba(55,212,179,.40)) border-box;
+      box-shadow:0 0 0 1px rgba(130,115,255,.08), 0 10px 30px rgba(28,32,96,.18);
+    }
+    /* 工具百宝箱：从首页抽出的独立深色工具舱，保留品牌背景但用边界与层次明确区隔。 */
+    .modal {
+      background:rgba(0,0,0,.62);
+      backdrop-filter:blur(13px) saturate(.82);
+    }
+    .dialog {
+      border-left:1px solid rgba(224,229,255,.16);
+      isolation:isolate;
+      background:transparent;
+      box-shadow:-30px 0 84px rgba(0,0,0,.64), -1px 0 0 rgba(255,255,255,.05);
+    }
+    /* 与首页共用一张品牌场景图，但镜像后让红色从工具舱左侧进入。 */
+    .dialog::before,
+    .dialog::after { content:""; position:absolute; inset:0; pointer-events:none; }
+    .dialog::before {
+      z-index:-2;
+      background:url("assets/marketing-command-bg.png") center / cover no-repeat;
+      transform:scaleX(-1);
+    }
+    .dialog::after {
+      z-index:-1;
+      background:linear-gradient(180deg, rgba(3,4,7,.34), rgba(3,4,7,.06) 48%, rgba(3,4,7,.28)), linear-gradient(90deg, rgba(4,5,8,.16), rgba(4,5,8,.52));
+    }
+    .dialog-head,
+    .modal .rail,
+    .modal-note { position:static; z-index:1; }
+    .dialog-head { z-index:2; }
+    .dialog-head h2 { color:#f7f7fa; }
+    .dialog-head p { color:rgba(232,234,242,.64); }
+    .dialog-actions .round-button,
+    .close {
+      border:1px solid rgba(255,255,255,.13);
+      background:rgba(255,255,255,.10);
+      color:#f5f6fa;
+    }
+    .dialog-actions .round-button:hover:not(:disabled),
+    .close:hover { background:rgba(255,255,255,.17); }
+    .modal-note { color:rgba(232,234,242,.46); }
+    /* 深色工具卡复用眼脑手 Dashboard 的能力色描边，建立同一套核心产品语言。 */
+    #tools .tool-card:nth-child(even) {
+      border:1px solid transparent;
+      background:
+        linear-gradient(#050505, #050505) padding-box,
+        linear-gradient(135deg, rgba(74,105,255,.62), rgba(157,92,255,.45) 52%, rgba(55,212,179,.40)) border-box;
+      box-shadow:0 0 0 1px rgba(130,115,255,.08), 0 10px 30px rgba(28,32,96,.18);
+    }
+    .dialog-actions [data-next="tools"] {
+      border-color:rgba(255,255,255,.22);
+      background:rgba(22,23,29,.94);
+      color:#fff;
+      box-shadow:0 8px 24px rgba(0,0,0,.38);
+    }
+    /* 工具舱从右侧进入，保持页面尺寸与内部布局不变。 */
+    .dialog { animation:toolbox-slide-in .42s cubic-bezier(.16,.84,.28,1); }
+    @keyframes toolbox-slide-in {
+      from { opacity:.72; transform:translateX(56px); }
+      to { opacity:1; transform:translateX(0); }
+    }
+    /* 响应式尺寸：以内容可读性为单位扩展，覆盖平板、标准桌面、大屏与超宽屏。 */
+    @media (min-width:701px) and (max-width:1279px) {
+      :root { --cardW:min(52vw, 430px); }
+      .section-header { padding-left:32px; padding-right:32px; }
+      .section-header h2 { font-size:40px; }
+      .section-header h2 span { font-size:32px; }
+      .product-card { height:520px; }
+      .dialog { width:min(94vw, 1120px); }
+      .dialog-head { padding:38px 34px 26px; }
+      .modal .rail { padding:52px 34px 36px; scroll-padding-left:34px; }
+      .tool-card { flex-basis:min(390px, 66vw); height:488px; }
+    }
+    @media (min-width:1600px) and (max-width:2199px) {
+      :root { --cardW:440px; }
+      .section-header { padding-left:max(48px, calc((100vw - 1360px) / 2)); padding-right:max(48px, calc((100vw - 1360px) / 2)); }
+      #products { padding-left:24px; padding-right:24px; }
+      .section-header h2 { font-size:48px; }
+      .section-header h2 span { font-size:39px; }
+      .product-card { height:550px; }
+      .product-card h3 { font-size:34px; }
+      .product-card p { font-size:17px; }
+      .dialog { width:min(92vw, 1600px); }
+      .dialog-head { padding:48px 52px 33px; }
+      .modal .rail { padding:72px 52px 44px; scroll-padding-left:52px; }
+      .modal-note { padding-left:52px; padding-right:52px; }
+      .tool-card { flex-basis:440px; height:550px; }
+      .tool-card h3 { font-size:32px; }
+      .tool-card p { font-size:17px; }
+    }
+    @media (min-width:2200px) {
+      :root { --cardW:470px; }
+      .section-header { padding-left:max(64px, calc((100vw - 1450px) / 2)); padding-right:max(64px, calc((100vw - 1450px) / 2)); }
+      #products { padding-left:24px; padding-right:24px; }
+      .section-header h2 { font-size:52px; }
+      .section-header h2 span { font-size:42px; }
+      .product-card { height:588px; }
+      .product-card h3 { font-size:36px; }
+      .product-card p { font-size:18px; }
+      .dialog { width:min(90vw, 1800px); }
+      .dialog-head { padding:54px 60px 38px; }
+      .modal .rail { gap:24px; padding:80px 60px 48px; scroll-padding-left:60px; }
+      .modal-note { padding-left:60px; padding-right:60px; }
+      .tool-card { flex-basis:470px; height:588px; }
+      .tool-card h3 { font-size:34px; }
+      .tool-card p { font-size:18px; }
+    }
+    @media(max-width:700px) {
+      html { background-position:58% top; background-size:auto 100vh; }
+      .dialog { border-left:0; background-position:63% center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Assumption: PPT source screenshots were not present in this workspace. Replace the three .preview regions with extracted images once assets are supplied. -->
+  <header class="topbar"><span class="brand">AI 数据产品</span><span>2026 产品概览</span></header>
+  <main>
+    <section class="hero"><p class="eyebrow">AI DATA · PRODUCT COLLECTION</p><h1>把数据变成<span> 看得见的判断。</span></h1><p class="intro">从经营全景到内容洞察，再到可随时调用的智能工具，让每一次决策都有更清晰的依据。</p></section>
+    <section class="section" aria-labelledby="collection-title">
+      <div class="section-header"><h2 id="collection-title">让 Marketing，更聪明地工作<span>从洞察到行动，看看我们打造了什么</span></h2><div class="controls" aria-label="切换产品"><button class="round-button" data-prev="products" aria-label="上一个产品"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><button class="round-button" data-next="products" aria-label="下一个产品"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+      <div class="rail" id="products" tabindex="0" aria-label="AI 产品横向卡片">
+        <article class="product-card cockpit-card" aria-label="驾驶舱 Dashboard">
+          <div class="cockpit-flipper">
+            <section class="cockpit-face cockpit-front">
+              <div class="card-copy cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="cockpit-progress-panel" aria-label="翻转以查看驾驶舱 Dashboard 产品进展与上线计划">
+                <h3>驾驶舱 Dashboard</h3>
+                <p>聚合关键指标与多维市场信号，一屏看清 Marketing 业务全局</p>
+              </div>
+              <a class="preview sentiment-preview cockpit-demo-link" href="https://cmo-insight-dashboard-two.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开驾驶舱 Dashboard 产品演示"><img class="sentiment-preview__full" src="assets/cockpit-laptop-white.png" alt="笔记本电脑展示驾驶舱 Dashboard，画面下方由手托举，背景为纯白色" /></a>
+            </section>
+            <section class="cockpit-face cockpit-back" id="cockpit-progress-panel" aria-label="驾驶舱 Dashboard 产品进展与上线计划">
+              <div class="cockpit-progress-visual">
+                <h3 class="cockpit-progress-title">驾驶舱 Dashboard</h3>
+                <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+                <section class="progress-stage progress-stage--current" aria-label="当前阶段｜从产品定义到数据接入：核心页面与前后端开发同步推进；主要数据接入与可视化校准持续进行">
+                  <div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div>
+                  <div class="stage-copy"><h4>当前阶段｜从产品定义到数据接入</h4><ul><li>核心页面与前后端开发同步推进</li><li>主要数据接入与可视化校准持续进行</li></ul></div>
+                </section>
+                <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜产品从0到1的定义与搭建：明确核心使用场景、经营指标与页面展示；完成核心看板、关键交互及数据展示方案">
+                  <div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div>
+                  <div class="stage-copy"><h4>H1 完成｜产品从0到1的定义与搭建</h4><ul><li>明确核心使用场景、经营指标与页面展示</li><li>完成核心看板、关键交互及数据展示方案</li></ul></div>
+                </section>
+                <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜完成产品验证并正式上线：统一指标口径，完成数据准确性验证；完成用户验收、性能优化及正式上线">
+                  <div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div>
+                  <div class="stage-copy"><h4>H2 计划｜完成产品验证并正式上线</h4><ul><li>统一指标口径，完成数据准确性验证</li><li>完成用户验收、性能优化及正式上线</li></ul></div>
+                </section>
+                <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>让分散的数据真正进入日常经营决策，辅助业务发展</span></div></div>
+                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="cockpit-progress-panel" aria-label="翻转返回驾驶舱 Dashboard 概览"></button>
+              </div>
+            </section>
+          </div>
+        </article>
+        <article class="product-card cockpit-card trend-card eih-dashboard-card" aria-label="眼脑手 Dashboard">
+          <div class="cockpit-flipper">
+            <section class="cockpit-face cockpit-front">
+              <div class="card-copy cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="eih-progress-panel" aria-label="翻转以查看眼脑手 Dashboard 产品进展与上线计划">
+                <h3>眼脑手 Dashboard</h3>
+                <p>连接全域监测、AI 分析与行动闭环，让品牌风险更早发现、更快解决</p>
+              </div>
+              <a class="preview eih-dashboard-preview cockpit-demo-link" href="https://matrix-system-tau.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开眼脑手 Dashboard 产品演示"><img class="eih-preview__full" src="assets/eih-dashboard-monitor.png" alt="眼脑手 Dashboard：全球洞察驾驶舱显示器预览" /></a>
+            </section>
+            <section class="cockpit-face cockpit-back" id="eih-progress-panel" aria-label="眼脑手 Dashboard 产品进展与上线计划">
+              <div class="cockpit-progress-visual">
+                <h3 class="cockpit-progress-title">眼脑手 Dashboard</h3>
+                <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+                <section class="progress-stage progress-stage--current" aria-label="当前阶段｜核心功能开发与数据接入：优化数据采集、AI 分析与消息推送链路；提升数据的准确性和系统的稳定性"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜核心功能开发与数据接入</h4><ul><li>优化数据采集、AI 分析与消息推送链路</li><li>提升数据的准确性和系统的稳定性</li></ul></div></section>
+                <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜完成“眼、脑”的产品规划：围绕业务场景，完成“眼、脑”功能设计；完成社媒、新闻等多渠道内容监测框架"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜完成“眼、脑”的产品规划</h4><ul><li>围绕业务场景，完成“眼、脑”功能设计</li><li>完成社媒、新闻等多渠道内容监测框架</li></ul></div></section>
+                <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜完善“手”与产品完整闭环：闭环行动建议、任务分发、执行反馈链路；扩大重点市场、竞品、机会场景的覆盖"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜完善“手”与产品完整闭环</h4><ul><li>闭环行动建议、任务分发、执行反馈链路</li><li>扩大重点市场、竞品、机会场景的覆盖</li></ul></div></section>
+                <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>更早识别潜在风险，完成判断、行动与效果验证</span></div></div>
+                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="eih-progress-panel" aria-label="翻转返回眼脑手 Dashboard 概览"></button>
+              </div>
+            </section>
+          </div>
+        </article>
+        <article class="product-card toolbox-card" id="toolbox-launcher" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="tool-modal"><div class="card-copy"><h3>工具百宝箱</h3><p>覆盖情报、趋势、舆情、合规与内容生产，为具体 Marketing 场景提供即用型 AI 工具</p><span class="action">浏览 8 个工具 <b>›</b></span></div><div class="preview toolbox" aria-label="工具百宝箱产品预览图"><img class="toolbox-preview__full" src="assets/toolbox-dashboard-shadowed-v4.png" alt="工具百宝箱：带柔和右下投影的趋势洞察、资讯自动化、广告监测、Trustpilot 监测与分析、内容监控、热点监测、视频生成与评论分析工具" /></div></article>
+      </div><p class="rail-hint">横向滚动、拖拽或使用方向键，浏览全部产品。</p>
+    </section>
+  </main>
+  <footer class="foot">AI 数据产品 · 内部展示页面</footer>
+  <div class="modal" id="tool-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <section class="dialog"><div class="dialog-head"><div><h2 id="modal-title">把繁琐交给 AI，让 Marketing 专注洞察与行动</h2><p>8 款覆盖市场情报、趋势洞察、品牌风险与内容生产的 AI Marketing 工具</p></div><div class="dialog-actions"><div class="controls" aria-label="切换工具"><button class="round-button" data-prev="tools" aria-label="上一个工具"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><button class="round-button" data-next="tools" aria-label="下一个工具"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button></div><button class="close" type="button" aria-label="关闭工具百宝箱">×</button></div></div>
+      <div class="rail" id="tools" tabindex="0" aria-label="AI 工具横向卡片">
+        <article class="tool-card cockpit-card vantage-card" aria-label="Vantage Insight">
+          <div class="cockpit-flipper">
+            <section class="cockpit-face cockpit-front">
+              <div class="cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="vantage-progress-panel" aria-label="翻转以查看 Vantage Insight 产品进展与上线计划">
+                <h3>Vantage Insight</h3><p>追踪行业与竞品变化，快速识别市场机会与应对方向</p>
+              </div>
+              <a class="tool-image cockpit-demo-link" href="https://vantage-insight-s4e6pqektq-as.a.run.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开 Vantage Insight 产品演示"><img class="tool-demo-image" src="assets/vantage-insight-demo.png" alt="Vantage Insight 市场情报看板演示截图" /></a>
+            </section>
+            <section class="cockpit-face cockpit-back" id="vantage-progress-panel" aria-label="Vantage Insight 产品进展与上线计划">
+              <div class="cockpit-progress-visual">
+                <h3 class="cockpit-progress-title">Vantage Insight</h3>
+                <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+                <section class="progress-stage progress-stage--current" aria-label="当前阶段｜追踪更多竞品和信息源：提升产品交互、数据准确性和用户体验；追踪更多竞品情报，如财报、品牌活动"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜追踪更多竞品和信息源</h4><ul><li>提升产品交互、数据准确性和用户体验</li><li>追踪更多竞品情报，如财报、品牌活动</li></ul></div></section>
+                <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜搭建竞品资讯追踪框架：明确新闻资讯、品牌创意等核心能力；闭环“资讯—AI 判断—建议动作”交互设计"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜搭建竞品资讯追踪框架</h4><ul><li>明确新闻资讯、品牌创意等核心能力</li><li>闭环“资讯—AI 判断—建议动作”交互设计</li></ul></div></section>
+                <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜产品覆盖更多重点市场：覆盖更多重点市场与核心竞品的资讯；优化内容质量和 AI 分析能力，助力业务"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜产品覆盖更多重点市场</h4><ul><li>覆盖更多重点市场与核心竞品的资讯</li><li>优化内容质量和 AI 分析能力，助力业务</li></ul></div></section>
+                <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>快速发现竞品动作与市场机会，并转化为业务决策</span></div></div>
+                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="vantage-progress-panel" aria-label="翻转返回 Vantage Insight 概览"></button>
+              </div>
+            </section>
+          </div>
+        </article>
+        <article class="tool-card cockpit-card trend-card" aria-label="AI News Bot">
+          <div class="cockpit-flipper">
+            <section class="cockpit-face cockpit-front">
+              <div class="cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="ai-news-bot-progress-panel" aria-label="翻转以查看 AI News Bot 产品进展与上线计划">
+                <h3>AI News Bot</h3><p>每日自动筛选、归纳并推送值得关注的行业和竞品资讯至 Lark，不错过任何重要信息</p>
+              </div>
+              <a class="tool-image cockpit-demo-link" href="https://ai-news-bot-demo.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开 AI News Bot 产品演示"><img class="tool-demo-image" src="assets/ai-news-bot-clean.png" alt="AI News Bot：Lark 桌面端与手机端资讯推送演示截图" /></a>
+            </section>
+            <section class="cockpit-face cockpit-back" id="ai-news-bot-progress-panel" aria-label="AI News Bot 产品进展与上线计划">
+              <div class="cockpit-progress-visual">
+                <h3 class="cockpit-progress-title">AI News Bot</h3>
+                <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+                <section class="progress-stage progress-stage--current" aria-label="当前阶段｜持续提升情报质量：持续覆盖 CFD 与 Crypto 领域重点竞品；持续优化信息源稳定性与内容时效性"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜持续提升情报质量</h4><ul><li>持续覆盖 CFD 与 Crypto 领域重点竞品</li><li>持续优化信息源稳定性与内容时效性</li></ul></div></section>
+                <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜设计并上线每日情报助手：搭建市场与竞品情报的筛选和推送框架；完成 Lark 每日定时推送重要市场信息"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜设计并上线每日情报助手</h4><ul><li>搭建市场与竞品情报的筛选和推送框架</li><li>完成 Lark 每日定时推送重要市场信息</li></ul></div></section>
+                <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜扩大覆盖，提升决策价值：扩展至更多市场、更多金融资产类别；基于业务反馈优化内容筛选与行动建议"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜扩大覆盖，提升决策价值</h4><ul><li>扩展至更多市场、更多金融资产类别</li><li>基于业务反馈优化内容筛选与行动建议</li></ul></div></section>
+                <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>让业务团队每天用 3–5 分钟了解市场的关键变化</span></div></div>
+                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="ai-news-bot-progress-panel" aria-label="翻转返回 AI News Bot 概览"></button>
+              </div>
+            </section>
+          </div>
+        </article>
+  <article class="tool-card cockpit-card ad-compliance-card" aria-label="违规广告监测系统">
+    <div class="cockpit-flipper">
+      <section class="cockpit-face cockpit-front">
+        <div class="cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="ad-compliance-progress-panel" aria-label="翻转以查看违规广告监测系统产品进展与上线计划">
+          <h3>违规广告监测系统</h3><p>识别潜在违规素材与异常投放，提升审查效率、判断准确性与响应速度</p>
+        </div>
+        <a class="tool-image cockpit-demo-link" href="https://ib.wukongmkt.com/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开违规广告监测系统产品演示"><img class="tool-demo-image" src="assets/ad-compliance-monitor-white.png" alt="违规广告监测系统演示界面" /></a>
+      </section>
+      <section class="cockpit-face cockpit-back" id="ad-compliance-progress-panel" aria-label="违规广告监测系统产品进展与上线计划">
+        <div class="cockpit-progress-visual">
+          <h3 class="cockpit-progress-title">违规广告监测系统</h3>
+          <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+          <section class="progress-stage progress-stage--current" aria-label="当前阶段｜提升监测质量与效率：Google、Bing 跨国家监测能力迭代中；优化多地采集稳定性与结果可信度"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜提升监测质量与效率</h4><ul><li>Google、Bing 跨国家监测能力迭代中</li><li>优化多地采集稳定性与结果可信度</li></ul></div></section>
+          <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜搭建违规广告监测框架：完成违规广告“发现—复核—处置”链路；搭建任务调度、节点状态监控与运营看板"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜搭建违规广告监测框架</h4><ul><li>完成违规广告“发现—复核—处置”链路</li><li>搭建任务调度、节点状态监控与运营看板</li></ul></div></section>
+          <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜提升节点韧性与监测覆盖：优化节点健康度监控与自动恢复能力；扩大国家、搜索平台及品牌关键词覆盖"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜提升节点韧性与监测覆盖</h4><ul><li>优化节点健康度监控与自动恢复能力</li><li>扩大国家、搜索平台及品牌关键词覆盖</li></ul></div></section>
+          <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>保障广告监测稳定运行，及时发现并处置潜在风险</span></div></div>
+          <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="ad-compliance-progress-panel" aria-label="翻转返回违规广告监测系统概览"></button>
+        </div>
+      </section>
+    </div>
+  </article>
+<article class="tool-card cockpit-card trend-card tool-card--trustpilot-analysis" aria-label="Trustpilot 评论监控系统">
+  <div class="cockpit-flipper">
+    <section class="cockpit-face cockpit-front">
+      <div class="cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="trustpilot-progress-panel" aria-label="翻转以查看 Trustpilot 评论监控系统产品进展与上线计划">
+        <h3>Trustpilot 评论监控系统</h3><p>分析 Trustpilot 好评与差评，提炼用户反馈与关键问题，指导品牌口碑管理与营销策略优化</p>
+      </div>
+      <a class="tool-image cockpit-demo-link" href="https://scrper-v2.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开 Trustpilot 评论监控系统产品演示"><img class="tool-demo-image" src="assets/trustpilot-review-analysis-black.png" alt="Trustpilot 评论监控系统演示图" /></a>
+    </section>
+    <section class="cockpit-face cockpit-back" id="trustpilot-progress-panel" aria-label="Trustpilot 评论监控系统产品进展与上线计划">
+      <div class="cockpit-progress-visual">
+        <h3 class="cockpit-progress-title">Trustpilot 评论监控系统</h3>
+        <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+        <section class="progress-stage progress-stage--current" aria-label="当前阶段｜提升数据稳定与渠道质量：持续校准评论留存与变化监测看板；验证各来源评论质量，识别渠道质量差异"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜提升数据稳定与渠道质量</h4><ul><li>持续校准评论留存与变化监测看板</li><li>验证各来源评论质量，识别渠道质量差异</li></ul></div></section>
+        <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜建立评论全周期分析能力：完成按来源查看评论变化与留存表现看板；完成留存趋势下钻与单条评论明细追溯"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜建立评论全周期分析能力</h4><ul><li>完成按来源查看评论变化与留存表现看板</li><li>完成留存趋势下钻与单条评论明细追溯</li></ul></div></section>
+        <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜从监控走向渠道优化：建立评论异常流失预警与来源质量评估；优化渠道与策略，提升高质量评论留存"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜从监控走向渠道优化</h4><ul><li>建立评论异常流失预警与来源质量评估</li><li>优化渠道与策略，提升高质量评论留存</li></ul></div></section>
+        <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>将 Trustpilot 评论转化为可追踪和优化的口碑资产</span></div></div>
+        <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="trustpilot-progress-panel" aria-label="翻转返回 Trustpilot 评论监控系统概览"></button>
+      </div>
+    </section>
+  </div>
+</article>
+        <article class="tool-card cockpit-card cross-platform-card" aria-label="跨平台内容监控系统">
+          <div class="cockpit-flipper">
+            <section class="cockpit-face cockpit-front">
+              <div class="cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="cross-platform-progress-panel" aria-label="翻转以查看跨平台内容监控系统产品进展与上线计划">
+                <h3>跨平台内容监控系统</h3><p>跨平台监测品牌相关内容，引入 AI 快速识别并处理相关虚假内容</p>
+              </div>
+              <a class="tool-image cockpit-demo-link" href="https://argus.wukongmkt.com/feed" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开跨平台内容监控系统产品演示"><img class="tool-demo-image" src="assets/cross-platform-content-monitor.png" alt="跨平台内容监控系统演示图：桌面端、手机端与多渠道实时信号监控卡片" /></a>
+            </section>
+            <section class="cockpit-face cockpit-back" id="cross-platform-progress-panel" aria-label="跨平台内容监控系统产品进展与上线计划">
+              <div class="cockpit-progress-visual">
+                <h3 class="cockpit-progress-title">跨平台内容监控系统</h3>
+                <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+                <section class="progress-stage progress-stage--current" aria-label="当前阶段｜提升平台覆盖与 AI 能力：小红书、微博内容监控和告警链路已运行；接入更多平台，优化 AI 准确性与稳定性"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜提升平台覆盖与 AI 能力</h4><ul><li>小红书、微博内容监控和告警链路已运行</li><li>接入更多平台，优化 AI 准确性与稳定性</li></ul></div></section>
+                <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜搭建跨平台内容监控系统：完成按项目、关键词聚合内容；完成高危风险告警与 AI 研判框架搭建"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜搭建跨平台内容监控系统</h4><ul><li>完成按项目、关键词聚合内容</li><li>完成高危风险告警与 AI 研判框架搭建</li></ul></div></section>
+                <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜识别高危内容升级至主体：优化风险账号与高危关键词的关联分析；接入更多社媒平台，提升品牌风险覆盖"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜识别高危内容升级至主体</h4><ul><li>优化风险账号与高危关键词的关联分析</li><li>接入更多社媒平台，提升品牌风险覆盖</li></ul></div></section>
+                <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>快速识别并处置跨平台高危内容，降低品牌风险</span></div></div>
+                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="cross-platform-progress-panel" aria-label="翻转返回跨平台内容监控系统概览"></button>
+              </div>
+            </section>
+          </div>
+        </article>
+      <article class="tool-card cockpit-card trend-card tool-card--trend-monitor" aria-label="热点趋势监测平台">
+        <div class="cockpit-flipper">
+          <section class="cockpit-face cockpit-front">
+            <div class="cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="trend-progress-panel" aria-label="翻转以查看热点趋势监测平台产品进展与上线计划">
+              <h3>热点趋势监测平台</h3><p>持续监测全球与本地热点，判断市场影响，并快速转化为内容与 Marketing 行动</p>
+            </div>
+            <a class="tool-image cockpit-demo-link" href="https://trends.wukongmkt.com/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开热点趋势监测平台产品演示"><img class="tool-demo-image" src="assets/trend-monitor-platform-v2-black.png" alt="热点趋势监测平台演示图" /></a>
+          </section>
+          <section class="cockpit-face cockpit-back" id="trend-progress-panel" aria-label="热点趋势监测平台产品进展与上线计划">
+            <div class="cockpit-progress-visual">
+              <h3 class="cockpit-progress-title">热点趋势监测平台</h3>
+              <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+              <section class="progress-stage progress-stage--current" aria-label="当前阶段｜提升信号质量与行动采纳：优化信源稳定性、来源可追溯性与热点质量；提升数据真实性、来源可追溯与轮询可靠性"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜提升信号质量与行动采纳</h4><ul><li>优化信源稳定性、来源可追溯性与热点质量</li><li>提升数据真实性、来源可追溯与轮询可靠性</li></ul></div></section>
+              <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜搭建热点发现与分析框架：完成多信源热点采集、市场分类与筛选能力；闭环“热点告警—业务影响—行动建议”链路"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜搭建热点发现与分析框架</h4><ul><li>完成多信源热点采集、市场分类与筛选能力</li><li>闭环“热点告警—业务影响—行动建议”链路</li></ul></div></section>
+              <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜覆盖更多重点市场和信源：扩展重点市场与本地化信源覆盖；继续迭代优化告警优先级与热点质量"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜覆盖更多重点市场和信源</h4><ul><li>扩展重点市场与本地化信源覆盖</li><li>继续迭代优化告警优先级与热点质量</li></ul></div></section>
+              <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>帮助业务团队更早识别热点信息并转化为营销行动</span></div></div>
+              <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="trend-progress-panel" aria-label="翻转返回热点趋势监测平台概览"></button>
+            </div>
+          </section>
+        </div>
+      </article>
+        <article class="tool-card cockpit-card hygenie-card" aria-label="HyGenie / AI 视频生成平台">
+          <div class="cockpit-flipper">
+            <section class="cockpit-face cockpit-front">
+              <div class="cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="hygenie-progress-panel" aria-label="翻转以查看 HyGenie / AI 视频生成平台产品进展与上线计划">
+                <h3>HyGenie / AI 视频生成平台</h3><p>用 AI 快速生成多语言的品牌营销视频，提升内容生产与本地化效率</p>
+              </div>
+              <a class="tool-image cockpit-demo-link" href="https://hygenie.hytech-ai.com/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开 HyGenie / AI 视频生成平台产品演示"><img class="tool-demo-image" src="assets/hygenie-demo-white-solid.png" alt="HyGenie AI 视频生成平台演示图：笔记本工作台、数字人素材与视频工作流" /></a>
+            </section>
+            <section class="cockpit-face cockpit-back" id="hygenie-progress-panel" aria-label="HyGenie / AI 视频生成平台产品进展与上线计划">
+              <div class="cockpit-progress-visual">
+                <h3 class="cockpit-progress-title">HyGenie / AI 视频生成平台</h3>
+                <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+                <section class="progress-stage progress-stage--current" aria-label="当前阶段｜提升生产视频的稳定性：优化视频生成质量和品牌元素的一致性；聚焦品牌视频、真人口播的批量内容生产"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜提升生产视频的稳定性</h4><ul><li>优化视频生成质量和品牌元素的一致性</li><li>聚焦品牌视频、真人口播的批量内容生产</li></ul></div></section>
+                <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜搭建 AI 视频生产工作台：根据业务场景与需求，完成核心功能设计；完成素材库积累，支持营销视频快速生产"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜搭建 AI 视频生产工作台</h4><ul><li>根据业务场景与需求，完成核心功能设计</li><li>完成素材库积累，支持营销视频快速生产</li></ul></div></section>
+                <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜规模化生产高质量视频：持续拓展素材库，优化图生视频能力；提升自动混剪能力，实现规模化生产"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜规模化生产高质量视频</h4><ul><li>持续拓展素材库，优化“图生视频”能力</li><li>提升自动混剪能力，实现规模化生产</li></ul></div></section>
+                <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>帮助团队以低成本、短周期的规模化生产营销视频</span></div></div>
+                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="hygenie-progress-panel" aria-label="翻转返回 HyGenie / AI 视频生成平台概览"></button>
+              </div>
+            </section>
+          </div>
+        </article>
+        <article class="tool-card cockpit-card trend-card tool-card--reddit-analysis" aria-label="Reddit 评论分析系统">
+          <div class="cockpit-flipper">
+            <section class="cockpit-face cockpit-front">
+              <div class="cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="reddit-progress-panel" aria-label="翻转以查看 Reddit 评论分析系统产品进展与上线计划">
+                <h3>Reddit 评论分析系统</h3><p>监测 Reddit 真实讨论，提炼用户痛点、情绪与竞品洞察</p>
+              </div>
+              <a class="tool-image cockpit-demo-link" href="https://mindtracer.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开 Reddit 评论分析系统产品演示"><img class="tool-demo-image" src="assets/reddit-review-analysis-black.png" alt="Reddit 评论分析系统演示图" /></a>
+            </section>
+            <section class="cockpit-face cockpit-back" id="reddit-progress-panel" aria-label="Reddit 评论分析系统产品进展与上线计划">
+              <div class="cockpit-progress-visual">
+                <h3 class="cockpit-progress-title">Reddit 评论分析系统</h3>
+                <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
+                <section class="progress-stage progress-stage--current" aria-label="当前阶段｜提升洞察准确性与可用性：持续校准 Reddit 数据质量和讨论主题分类；优化竞品口碑、用户痛点与机会洞察"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜提升洞察准确性与可用性</h4><ul><li>持续校准 Reddit 数据质量和讨论主题分类</li><li>优化竞品口碑、用户痛点与机会洞察</li></ul></div></section>
+                <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜搭建 Reddit 讨论分析面板：完成多维数据采集、AI 分析与可视化看板；覆盖 11 类核心痛点，支持分析报告生成"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜搭建 Reddit 讨论分析面板</h4><ul><li>完成多维数据采集、AI 分析与可视化看板</li><li>覆盖 11 类核心痛点，支持分析报告生成</li></ul></div></section>
+                <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜从 Reddit 走向跨渠道研究：提升数据时效与样本覆盖，追踪重点讨论；接入 Trustpilot 等渠道，对比跨渠道口碑"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜从 Reddit 走向跨渠道研究</h4><ul><li>提升数据时效与样本覆盖，追踪重点讨论</li><li>接入 Trustpilot 等渠道，对比跨渠道口碑</li></ul></div></section>
+                <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>让社媒真实用户讨论成为营销策略与品牌决策的依据</span></div></div>
+                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="reddit-progress-panel" aria-label="翻转返回 Reddit 评论分析系统概览"></button>
+              </div>
+            </section>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+  <script>
+    (() => {
+      const rails = [...document.querySelectorAll('.rail')];
+      const modal = document.getElementById('tool-modal'); const launcher = document.getElementById('toolbox-launcher'); const close = modal.querySelector('.close'); let lastFocus;
+      const flipCards = [...document.querySelectorAll('.cockpit-card')];
+      function setCardFlipped(card, flipped) {
+        card.classList.toggle('is-flipped', flipped);
+        card.querySelectorAll('.cockpit-flip-trigger, .cockpit-back-toggle').forEach(toggle => toggle.setAttribute('aria-pressed', String(flipped)));
+      }
+      flipCards.forEach(card => {
+        card.querySelectorAll('.cockpit-flip-trigger, .cockpit-back-toggle').forEach(toggle => {
+          const toggleCard = () => setCardFlipped(card, !card.classList.contains('is-flipped'));
+          toggle.addEventListener('click', toggleCard);
+          if (toggle.getAttribute('role') === 'button') toggle.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleCard(); } });
+        });
+      });
+      const step = rail => Math.min(rail.clientWidth * .78, 640);
+      function updateButtons(rail) { document.querySelectorAll(`[data-prev="${rail.id}"]`).forEach(b=>b.disabled=rail.scrollLeft<4); document.querySelectorAll(`[data-next="${rail.id}"]`).forEach(b=>b.disabled=rail.scrollLeft+rail.clientWidth>=rail.scrollWidth-4); }
+      rails.forEach(rail => { let startX=0,startScroll=0,dragged=false; updateButtons(rail); rail.addEventListener('scroll',()=>updateButtons(rail),{passive:true}); rail.addEventListener('wheel',e=>{ if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){ e.preventDefault(); rail.scrollBy({left:e.deltaY,behavior:'smooth'}); }},{passive:false}); rail.addEventListener('pointerdown',e=>{ if(e.target.closest('a,button,[role="button"]')) return; startX=e.clientX;startScroll=rail.scrollLeft;dragged=false;rail.setPointerCapture(e.pointerId);rail.classList.add('is-dragging'); });rail.addEventListener('pointermove',e=>{if(!rail.hasPointerCapture(e.pointerId))return;const d=e.clientX-startX;if(Math.abs(d)>4)dragged=true;rail.scrollLeft=startScroll-d;});rail.addEventListener('pointerup',e=>{if(rail.hasPointerCapture(e.pointerId))rail.releasePointerCapture(e.pointerId);rail.classList.remove('is-dragging');});rail.addEventListener('click',e=>{if(dragged){e.preventDefault();e.stopPropagation();dragged=false;}},true); });
+      document.addEventListener('click',e=>{ const b=e.target.closest('[data-prev],[data-next]'); if(b){const rail=document.getElementById(b.dataset.prev||b.dataset.next);rail.scrollBy({left:(b.dataset.prev?-1:1)*step(rail),behavior:'smooth'});} });
+      function openModal(){lastFocus=document.activeElement;modal.hidden=false;updateButtons(document.getElementById('tools'));document.body.style.overflow='hidden';close.focus();} function closeModal(){modal.hidden=true;document.body.style.overflow='';lastFocus?.focus();}
+      launcher.addEventListener('click',openModal); launcher.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openModal();}}); close.addEventListener('click',closeModal); modal.addEventListener('mousedown',e=>{if(e.target===modal)closeModal();});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden){closeModal();return;} const active=document.activeElement;const activeRail=active.closest?.('.rail')||(!modal.hidden?document.getElementById('tools'):document.getElementById('products')); if(e.key==='ArrowLeft'||e.key==='ArrowRight'){if(activeRail){e.preventDefault();activeRail.scrollBy({left:(e.key==='ArrowLeft'?-1:1)*step(activeRail),behavior:'smooth'});}} if(e.key==='Tab'&&!modal.hidden){const focusable=[...modal.querySelectorAll('button,[tabindex]:not([tabindex="-1"])')];const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}} });
+    })();
+  </script>
+</body>
+</html>

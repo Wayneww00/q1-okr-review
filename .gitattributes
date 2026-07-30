@@ -1,3 +1,4 @@
 previews/assets/vantage-h1-opening-final-4k.mp4 filter=lfs diff=lfs merge=lfs -text
 previews/assets/vantage-h1-second-screen-july28-sound-4k.mp4 filter=lfs diff=lfs merge=lfs -text
 previews/assets/vantage-h1-closing-sp-4k.mp4 filter=lfs diff=lfs merge=lfs -text
+previews/assets/okr-videos/*.mp4 filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,2065 @@
+/* Complete 30-page O1 theme transplanted from /Users/julian/Downloads/H1 汇报. */
+.h1-figma-racing-shell,
+.h1-figma-racing-report {
+  --h1-okr-background-stage: url("assets/o1-complete/figma-untitled/p68-trophy-background.png");
+}
+
+:root {
+  --h1-okr-design-width: 1920;
+  --h1-okr-design-height: 1080;
+  --h1-okr-black: #080808;
+}
+
+.h1-figma-racing-report body.h1-embedded-report > #root > div > main.h1-okr-report {
+  position: relative;
+  z-index: 3;
+  isolation: isolate;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--h1-okr-black) !important;
+}
+
+.h1-okr-page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background: transparent;
+  color: #fff;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-page {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.h1-okr-canvas {
+  --h1-okr-scale: .5;
+  position: absolute;
+  z-index: 2;
+  isolation: isolate;
+  top: 50%;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: transparent;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(var(--h1-okr-scale));
+  transform-origin: 50% 50%;
+}
+
+.h1-okr-canvas.is-scaled {
+  opacity: 1;
+}
+
+.h1-okr-shared-backdrop {
+  position: sticky;
+  z-index: 0;
+  isolation: isolate;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  margin-bottom: -100vh;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--h1-okr-black);
+  opacity: 1;
+}
+
+/* One 1920 × 1080 Figma Frame 68 stage is pinned behind the entire OKR
+   chapter, so every transparent foreground shares the same trophy canvas. */
+.h1-okr-fixed-trophy-stage {
+  display: block;
+  background: #000;
+}
+
+.h1-okr-fixed-stage-canvas {
+  --h1-okr-scale: .5;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: visible;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(var(--h1-okr-scale));
+  transform-origin: 50% 50%;
+}
+
+.h1-okr-fixed-stage-canvas.is-scaled {
+  opacity: 1;
+}
+
+.h1-okr-fixed-stage-canvas::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  top: -133px;
+  left: -180px;
+  width: 2280px;
+  height: 1346px;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, .26) 0%,
+      rgba(0, 0, 0, .04) 6.5%,
+      transparent 11%,
+      transparent 86%,
+      rgba(0, 0, 0, .48) 100%
+    );
+}
+
+.h1-okr-fixed-stage-ambient {
+  position: absolute;
+  z-index: 0;
+  top: -133px;
+  left: -180px;
+  display: block;
+  width: 2280px;
+  max-width: none;
+  height: 1346px;
+  max-height: none;
+  object-fit: fill;
+  opacity: .94;
+  filter: blur(22px) saturate(.92) brightness(.84);
+  transform: scale(1.014);
+  transform-origin: 50% 50%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-fixed-stage-edge {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  display: block;
+  width: 244px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-fixed-stage-edge--left {
+  left: -180px;
+}
+
+.h1-okr-fixed-stage-edge--right {
+  right: -180px;
+}
+
+.h1-okr-fixed-stage-background {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 1920px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  object-fit: fill;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 48px,
+    #000 calc(100% - 48px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 48px,
+    #000 calc(100% - 48px),
+    transparent 100%
+  );
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-fixed-stage-matte {
+  position: absolute;
+  z-index: 3;
+  top: -133px;
+  left: -180px;
+  width: 2280px;
+  height: 1346px;
+  pointer-events: none;
+  background: rgba(0, 0, 0, .12);
+}
+
+.h1-okr-figma-foreground-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 1920px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-figma-foreground-layer.is-positioned {
+  inset: auto;
+}
+
+.h1-okr-elite-client-page {
+  background: #020203;
+}
+
+.h1-okr-elite-client-canvas {
+  overflow: visible;
+}
+
+.h1-okr-elite-client-background {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 1920px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-visual {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.h1-okr-visual img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.h1-okr-title-group {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+}
+
+.h1-okr-outline-title {
+  position: absolute;
+  top: 79px;
+  left: 242px;
+  width: 954px;
+  height: 154px;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 80px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 154px;
+  letter-spacing: 1.6px;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-text-stroke: .923207px rgba(255,255,255,.7);
+  white-space: nowrap;
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-title-group h1 {
+  position: absolute;
+  z-index: 1;
+  top: 173px;
+  left: 344.5px;
+  width: 750px;
+  height: 80px;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 52.28px !important;
+  font-weight: 900 !important;
+  line-height: 80.5px !important;
+  letter-spacing: 0 !important;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.h1-okr-title-latin {
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-weight: 900 !important;
+}
+
+.h1-okr-insight-rail {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+}
+
+.h1-okr-insight-card {
+  --h1-okr-card-text: #fff;
+  position: absolute;
+  isolation: isolate;
+  width: 377.61px;
+  height: 233.58px;
+  padding: 0;
+  color: var(--h1-okr-card-text);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.h1-okr-card-art {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.h1-okr-insight-card.is-gold {
+  top: 128px;
+  left: 1285px;
+}
+
+.h1-okr-insight-card.is-ivory {
+  top: 423px;
+  left: 1285px;
+  --h1-okr-card-text: #14110a;
+}
+
+.h1-okr-insight-card.is-charcoal {
+  top: 718px;
+  left: 1285px;
+  height: 233.57px;
+}
+
+.h1-okr-icon-medallion {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 320.52px;
+  width: 57.1px;
+  height: 57.1px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.h1-okr-insight-card.is-gold .h1-okr-icon-medallion {
+  background: transparent;
+}
+
+.h1-okr-insight-card.is-ivory .h1-okr-icon-medallion {
+  background:
+    linear-gradient(0deg, rgba(255,244,224,.9), rgba(255,244,224,.9)),
+    rgba(0,0,0,.45);
+  backdrop-filter: blur(17.5px);
+  -webkit-backdrop-filter: blur(17.5px);
+}
+
+.h1-okr-insight-card.is-charcoal .h1-okr-icon-medallion {
+  background: transparent;
+}
+
+.h1-okr-insight-icon {
+  display: block;
+  object-fit: contain;
+}
+
+.h1-okr-insight-icon.is-system {
+  width: 57.1px;
+  height: 57.1px;
+}
+
+.h1-okr-insight-icon.is-touchpoints {
+  width: 28.3411px;
+  height: 31.5476px;
+}
+
+.h1-okr-insight-icon.is-global {
+  width: 35.4409px;
+  height: 35.4409px;
+}
+
+svg.h1-okr-insight-icon circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4.624;
+}
+
+.h1-okr-insight-card h2 {
+  position: absolute;
+  z-index: 2;
+  top: 30.49px;
+  left: 31.79px;
+  width: 250.44px;
+  height: 52.55px;
+  margin: 0;
+  color: inherit;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  line-height: 39px !important;
+  letter-spacing: 0 !important;
+}
+
+.h1-okr-insight-card.is-gold h2 {
+  left: 35.69px;
+}
+
+.h1-okr-insight-card.is-ivory h2 {
+  left: 32.44px;
+}
+
+.h1-okr-insight-card p {
+  position: absolute;
+  z-index: 2;
+  top: 169.34px;
+  left: 31.79px;
+  width: 321.17px;
+  margin: 0;
+  color: inherit;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0;
+  opacity: 1;
+}
+
+.h1-okr-insight-card.is-gold p {
+  top: 173.88px;
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-outline-title {
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  letter-spacing: 1.6px !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-title-latin,
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-insight-card p {
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.h1-okr-results-canvas {
+  width: 1920px;
+  height: 1080px;
+}
+
+.h1-okr-results-title-group {
+  position: absolute;
+  z-index: 3;
+  top: 118px;
+  left: 228px;
+  width: 995px;
+  height: 120px;
+  text-align: center;
+}
+
+.h1-okr-results-outline {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 76px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(255,255,255,.62);
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-results-title-group h1 {
+  position: absolute;
+  z-index: 1;
+  top: 38px;
+  left: 162px;
+  width: 660px;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 50px !important;
+  font-weight: 900 !important;
+  line-height: 1.18 !important;
+  letter-spacing: 0 !important;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 2px 12px rgba(0,0,0,.35);
+}
+
+.h1-okr-results-rail {
+  position: absolute;
+  z-index: 3;
+  top: 232px;
+  left: 1043px;
+  width: 718px;
+  height: 765px;
+}
+
+.h1-okr-results-definition,
+.h1-okr-results-summary {
+  position: absolute;
+  left: 0;
+  width: 718px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  color: #fff;
+  background:
+    linear-gradient(90deg, rgba(38,13,12,.95), rgba(31,26,20,.9)),
+    rgba(20,16,13,.9);
+  border: 1px solid rgba(255,255,255,.025);
+  border-radius: 26px;
+  box-shadow: 0 14px 44px rgba(0,0,0,.2);
+  text-align: center;
+}
+
+.h1-okr-results-definition {
+  top: 0;
+  height: 94px;
+  padding: 15px 48px;
+  gap: 6px;
+}
+
+.h1-okr-results-definition strong {
+  color: rgba(255,255,255,.86);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.42;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.h1-okr-results-panel {
+  position: absolute;
+  top: 116px;
+  left: 0;
+  width: 718px;
+  height: 526px;
+  box-sizing: border-box;
+  padding: 24px 31px 31px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 22% 30%, rgba(91,26,20,.26), transparent 46%),
+    linear-gradient(100deg, rgba(35,12,12,.95), rgba(25,22,18,.94));
+  border: 1px solid rgba(255,255,255,.025);
+  border-radius: 28px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.24);
+}
+
+/* The outer report shell loads a general editorial theme that gives every
+   nested section 110px of top padding. These Figma panels are coordinate
+   layers, so that generic rule must never participate in their layout. */
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report .h1-okr-results-panel {
+  margin-bottom: 0 !important;
+  padding: 24px 31px 31px !important;
+}
+
+.h1-okr-results-panel > header {
+  height: 100px;
+  text-align: center;
+}
+
+.h1-okr-results-panel > header h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 31px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.h1-okr-results-panel > header h2 span {
+  display: inline-block;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 56px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: .58;
+  letter-spacing: -10px;
+  opacity: .72;
+  -webkit-text-stroke: 1px rgba(255,255,255,.72);
+  transform: translateY(1px) scaleX(1.22);
+}
+
+.h1-okr-results-panel > header p {
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.7);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: .4px;
+}
+
+.h1-okr-results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  width: 656px;
+  height: 370px;
+}
+
+.h1-okr-result-card {
+  --h1-okr-result-bg: #e8deca;
+  --h1-okr-result-fg: #4a310e;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  padding: 22px 25px 18px;
+  overflow: visible;
+  color: var(--h1-okr-result-fg);
+  background: var(--h1-okr-result-bg);
+  border-radius: 25px 50px 28px 28px;
+  box-shadow: 0 12px 26px rgba(0,0,0,.18);
+}
+
+.h1-okr-result-card.is-gold {
+  --h1-okr-result-bg: linear-gradient(135deg, #a87631, #8d611f);
+  --h1-okr-result-fg: #fff;
+}
+
+.h1-okr-result-card.is-charcoal {
+  --h1-okr-result-bg: linear-gradient(135deg, #202020, #191919);
+  --h1-okr-result-fg: #fff;
+}
+
+.h1-okr-result-card.is-ivory {
+  --h1-okr-result-bg: #e8deca;
+  --h1-okr-result-fg: #4a310e;
+}
+
+.h1-okr-result-number {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  width: 57px;
+  height: 57px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border-radius: 50%;
+  color: var(--h1-okr-result-fg);
+  background: var(--h1-okr-result-bg);
+  border: 10px solid rgba(16,14,12,.96);
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  transform: translate(17px, -2px);
+}
+
+.h1-okr-result-card h3 {
+  width: calc(100% - 34px);
+  margin: 0;
+  color: inherit;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.h1-okr-result-card p {
+  position: absolute;
+  left: 25px;
+  right: 24px;
+  bottom: 19px;
+  margin: 0;
+  color: inherit;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.48;
+  letter-spacing: 0;
+  opacity: .92;
+}
+
+.h1-okr-results-summary {
+  top: 666px;
+  height: 95px;
+  padding: 13px 42px;
+  gap: 7px;
+}
+
+.h1-okr-results-summary strong {
+  color: rgba(255,255,255,.93);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.38;
+  white-space: nowrap;
+}
+
+.h1-okr-results-summary span {
+  color: rgba(255,255,255,.7);
+  font-family: "Gilroy", "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+/* p32 foreground — intentionally rebuilt as a transparent layer.  The only
+   reused pixels are the two video stills, cropped from their source image;
+   none of the screenshot's trophy background is rendered on this page. */
+.h1-okr-tvc-canvas {
+  width: 1920px;
+  height: 1080px;
+}
+
+.h1-okr-tvc-title-group {
+  position: absolute;
+  z-index: 3;
+  top: 87px;
+  left: 440px;
+  width: 1040px;
+  height: 125px;
+  text-align: center;
+}
+
+.h1-okr-tvc-outline {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif !important;
+  font-size: 78px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 1.6px;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(255,255,255,.62);
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-tvc-title-group h1 {
+  position: absolute;
+  z-index: 1;
+  top: 46px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 50px !important;
+  font-weight: 900 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 0 3px 16px rgba(0,0,0,.45);
+}
+
+.h1-okr-tvc-intro {
+  position: absolute;
+  z-index: 3;
+  left: 160px;
+  width: 1600px;
+  box-sizing: border-box;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(105deg, rgba(143,83,30,.62), rgba(30,20,16,.93) 54%, rgba(9,9,9,.94));
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 27px;
+  box-shadow: 0 20px 54px rgba(0,0,0,.24);
+}
+
+.h1-okr-tvc-intro > img {
+  position: absolute;
+  top: 30px;
+  left: 55px;
+  width: 95px;
+  height: 49px;
+  object-fit: contain;
+}
+
+.h1-okr-tvc-intro.is-platform {
+  top: 256px;
+  height: 186px;
+  padding: 34px 70px 28px 210px;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report .h1-okr-tvc-intro {
+  margin-bottom: 0 !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report .h1-okr-tvc-intro.is-platform {
+  padding: 34px 70px 28px 210px !important;
+}
+
+.h1-okr-tvc-intro.is-platform h2,
+.h1-okr-tvc-intro.is-annual h2 {
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 31px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.h1-okr-tvc-intro h2 b {
+  display: inline-block;
+  margin-right: 17px;
+  font-family: "Gilroy", "Avenir Next", sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.h1-okr-tvc-intro.is-platform h3 {
+  margin: 23px 0 12px;
+  padding-left: 16px;
+  border-left: 7px solid #b51a22;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 29px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.h1-okr-tvc-intro.is-platform p,
+.h1-okr-tvc-intro.is-annual > div > p {
+  margin: 0;
+  color: rgba(255,255,255,.92);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.h1-okr-tvc-intro.is-annual {
+  top: 464px;
+  height: 575px;
+  padding: 27px 70px 0 210px;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report .h1-okr-tvc-intro.is-annual {
+  padding: 27px 70px 0 210px !important;
+}
+
+.h1-okr-tvc-intro.is-annual > img {
+  top: 26px;
+}
+
+.h1-okr-tvc-intro.is-annual > div > p {
+  margin: 20px 0 0 14px;
+  font-size: 21px;
+}
+
+.h1-okr-tvc-video-row {
+  position: absolute;
+  top: 132px;
+  left: 60px;
+  width: 1480px;
+  height: 410px;
+  display: grid;
+  grid-template-columns: 582px 270px 582px;
+  gap: 23px;
+  align-items: start;
+}
+
+.h1-okr-tvc-video-card {
+  position: relative;
+  box-sizing: border-box;
+  height: 410px;
+  padding: 16px 18px 20px;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(145deg, rgba(146,91,25,.94), rgba(100,59,15,.95));
+  border: 1px solid rgba(255,228,174,.22);
+  border-radius: 28px 28px 36px 36px;
+  box-shadow: 0 18px 36px rgba(0,0,0,.22);
+}
+
+.h1-okr-tvc-media {
+  position: relative;
+  display: block;
+  width: 546px;
+  height: 230px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  background: #111;
+  border: 0;
+  border-radius: 21px;
+}
+
+.h1-okr-tvc-media:focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 4px;
+}
+
+.h1-okr-tvc-media-sprite {
+  position: absolute;
+  display: block;
+  width: 1920px;
+  max-width: none;
+  height: 1080px;
+  max-height: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-tvc-media-sprite.is-hero-1 {
+  top: -614px;
+  left: -236px;
+}
+
+.h1-okr-tvc-media-sprite.is-hero-2 {
+  top: -614px;
+  left: -1135px;
+}
+
+.h1-okr-tvc-video-card h3 {
+  margin: 15px 0 0;
+  padding-left: 14px;
+  border-left: 6px solid #b5151e;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: 0;
+}
+
+.h1-okr-tvc-video-card h3 span {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.h1-okr-tvc-video-card > strong {
+  display: block;
+  margin: 11px 0 0;
+  padding-left: 16px;
+  color: #f2c66e;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.h1-okr-tvc-video-card > strong::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 9px;
+  background: #b5151e;
+}
+
+.h1-okr-tvc-video-card > p {
+  margin: 9px 0 0 17px;
+  color: rgba(255,221,157,.84);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.h1-okr-tvc-link-card {
+  position: relative;
+  align-self: center;
+  height: 286px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-sizing: border-box;
+  color: #f6c96f;
+  background: linear-gradient(150deg, rgba(151,104,42,.98), rgba(103,67,20,.96));
+  border-radius: 31px 31px 48px 48px;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  text-align: center;
+}
+
+.h1-okr-tvc-link-card strong {
+  color: #fff;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.h1-okr-tvc-link-card span,
+.h1-okr-tvc-link-card i {
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.h1-okr-tvc-link-card b {
+  position: absolute;
+  bottom: -38px;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border: 9px solid rgba(111,70,24,.88);
+  border-radius: 50%;
+  color: #fff;
+  background: #b91820;
+  font-family: Arial, sans-serif;
+  font-size: 54px;
+  font-weight: 400;
+  line-height: .7;
+}
+
+.h1-okr-appendix-canvas {
+  width: 1920px;
+  height: 1080px;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+}
+
+.h1-okr-appendix-title {
+  position: absolute;
+  z-index: 3;
+  top: 78px;
+  left: 390px;
+  width: 1090px;
+  height: 114px;
+  text-align: center;
+}
+
+.h1-okr-appendix-title > span {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  font-family: "Gilroy", "Avenir Next", "Helvetica Neue", sans-serif;
+  font-size: 72px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px rgba(255,255,255,.38);
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-appendix-title h1 {
+  position: absolute;
+  z-index: 1;
+  top: 38px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 46px !important;
+  font-weight: 900 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  text-shadow: 0 3px 18px rgba(0,0,0,.45);
+}
+
+.h1-okr-section-intro {
+  position: absolute;
+  z-index: 3;
+  top: 196px;
+  left: 250px;
+  width: 1420px;
+  height: 78px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 34px;
+  color: #fff;
+  background: linear-gradient(90deg, rgba(179,103,26,.58), rgba(37,23,17,.86));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 26px;
+  box-shadow: 0 18px 42px rgba(0,0,0,.22);
+}
+
+.h1-okr-section-intro i {
+  margin-right: 24px;
+  color: #fff;
+  font-size: 24px;
+  font-style: italic;
+  letter-spacing: -5px;
+}
+
+.h1-okr-section-intro strong {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.h1-okr-section-intro p {
+  margin: 0 0 0 auto;
+  color: rgba(255,255,255,.66);
+  font-size: 14px;
+}
+
+.h1-okr-awards-columns {
+  position: absolute;
+  z-index: 3;
+  top: 302px;
+  left: 330px;
+  width: 1260px;
+  height: 570px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+.h1-okr-awards-panel {
+  box-sizing: border-box;
+  padding: 0 22px 22px;
+  background: linear-gradient(145deg, rgba(151,84,21,.76), rgba(44,25,17,.9));
+  border: 1px solid rgba(255,236,195,.17);
+  border-radius: 28px;
+  box-shadow: 0 24px 54px rgba(0,0,0,.25);
+}
+
+.h1-okr-awards-panel.is-h2 {
+  background: linear-gradient(145deg, rgba(111,67,26,.74), rgba(27,24,20,.92));
+}
+
+.h1-okr-awards-panel > header {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  border-bottom: 1px solid rgba(255,255,255,.14);
+}
+
+.h1-okr-awards-panel > header b {
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 44px;
+  color: #63390f;
+  background: #eed6a7;
+  border-radius: 22px;
+  font-family: "Gilroy", sans-serif;
+  font-size: 27px;
+}
+
+.h1-okr-awards-panel > header h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.h1-okr-award-list {
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+}
+
+.h1-okr-award-list > button,
+.h1-okr-award-list > div {
+  width: 100%;
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: 52px 1fr 78px;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  color: #fff;
+  background: rgba(20,16,13,.42);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  text-align: left;
+}
+
+.h1-okr-award-list > button {
+  appearance: none;
+  cursor: zoom-in;
+}
+
+.h1-okr-award-list em {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  color: #3e250f;
+  background: #e5bd78;
+  border-radius: 50%;
+  font-family: "Gilroy", sans-serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.h1-okr-award-list span {
+  display: grid;
+  gap: 9px;
+}
+
+.h1-okr-award-list strong {
+  color: #fff;
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.h1-okr-award-list small {
+  color: rgba(255,255,255,.62);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.h1-okr-award-list i {
+  justify-self: end;
+  color: #6a3a13;
+  background: #f3ead9;
+  border-radius: 10px;
+  font-size: 34px;
+  font-style: normal;
+  text-align: center;
+}
+
+.h1-okr-awards-summary {
+  position: absolute;
+  z-index: 3;
+  top: 899px;
+  left: 330px;
+  width: 1260px;
+  height: 82px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 34px;
+  color: #fff;
+  background: linear-gradient(90deg, rgba(128,72,19,.72), rgba(31,24,19,.9));
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 24px;
+}
+
+.h1-okr-awards-summary span {
+  margin-right: 24px;
+  color: #edc47d;
+  font-size: 34px;
+}
+
+.h1-okr-awards-summary p {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.h1-okr-event-panel {
+  position: absolute;
+  z-index: 3;
+  top: 302px;
+  left: 720px;
+  width: 1030px;
+  height: 650px;
+  box-sizing: border-box;
+  padding: 28px 34px;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(111,54,19,.82), rgba(27,21,16,.94));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 32px;
+  box-shadow: 0 28px 62px rgba(0,0,0,.28);
+}
+
+.h1-okr-event-panel > header {
+  height: 100px;
+  display: grid;
+  grid-template-columns: 42px 130px 1fr;
+  align-items: start;
+  column-gap: 16px;
+}
+
+.h1-okr-event-panel > header > span {
+  padding-top: 5px;
+  color: #dfaf60;
+  font-size: 28px;
+}
+
+.h1-okr-event-panel > header small {
+  color: rgba(255,255,255,.58);
+  font-family: "Gilroy", sans-serif;
+  font-size: 16px;
+}
+
+.h1-okr-event-panel > header h2 {
+  margin: 1px 0 0;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.h1-okr-event-panel > header p {
+  margin: 9px 0 0;
+  color: rgba(255,255,255,.7);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.h1-okr-salon-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  height: 238px;
+}
+
+.h1-okr-salon-metrics article {
+  box-sizing: border-box;
+  padding: 24px 26px;
+  background: linear-gradient(135deg, rgba(171,99,30,.82), rgba(115,66,25,.62));
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 24px;
+}
+
+.h1-okr-salon-metrics b,
+.h1-okr-salon-metrics strong,
+.h1-okr-salon-metrics p {
+  display: block;
+}
+
+.h1-okr-salon-metrics b {
+  color: #f6e2bd;
+  font-size: 16px;
+}
+
+.h1-okr-salon-metrics strong {
+  margin-top: 18px;
+  color: #fff;
+  font-size: 25px;
+}
+
+.h1-okr-salon-metrics p {
+  margin: 23px 0 0;
+  color: rgba(255,255,255,.72);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.h1-okr-expo-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  height: 190px;
+}
+
+.h1-okr-expo-metrics article {
+  position: relative;
+  box-sizing: border-box;
+  padding: 22px 15px;
+  color: #fff;
+  background: linear-gradient(145deg, rgba(174,105,39,.82), rgba(107,61,20,.66));
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.h1-okr-expo-metrics b,
+.h1-okr-expo-metrics small {
+  display: block;
+}
+
+.h1-okr-expo-metrics b {
+  font-size: 17px;
+}
+
+.h1-okr-expo-metrics small {
+  margin-top: 16px;
+  color: rgba(255,255,255,.68);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.h1-okr-expo-metrics span {
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #9e1418;
+  transform: translateX(-50%);
+}
+
+.h1-okr-media-grid {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  bottom: 29px;
+  display: grid;
+  gap: 16px;
+}
+
+.h1-okr-media-grid.is-salon {
+  grid-template-columns: repeat(3, 1fr);
+  height: 225px;
+}
+
+.h1-okr-media-grid.is-expo {
+  grid-template-columns: repeat(4, 1fr);
+  height: 210px;
+}
+
+.h1-okr-media-trigger {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  color: #fff;
+  background: #171411;
+  border: 3px solid #e8ddc7;
+  border-radius: 18px;
+  box-shadow: 0 14px 32px rgba(0,0,0,.24);
+  cursor: zoom-in;
+  text-align: left;
+}
+
+.h1-okr-media-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background-color: #211810;
+  background-image: url("/previews/assets/h1-okr-awards-events-figma-overview.png");
+  background-repeat: no-repeat;
+  filter: saturate(1.08) contrast(1.04);
+  transition: transform .28s ease;
+}
+
+.h1-okr-media-trigger:hover .h1-okr-media-image {
+  transform: scale(1.025);
+}
+
+.h1-okr-media-trigger[data-media-kind="salon-group"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -1899px -774px;
+}
+
+.h1-okr-media-trigger[data-media-kind="salon-lab"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2194px -774px;
+}
+
+.h1-okr-media-trigger[data-media-kind="salon-stage"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2492px -774px;
+}
+
+.h1-okr-media-trigger[data-media-kind="expo-race"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -1836px -1718px;
+}
+
+.h1-okr-media-trigger[data-media-kind="expo-festival"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2070px -1718px;
+}
+
+.h1-okr-media-trigger[data-media-kind="expo-lab"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2310px -1718px;
+}
+
+.h1-okr-media-trigger[data-media-kind="expo-booth"] .h1-okr-media-image {
+  background-size: 3120px 2131px;
+  background-position: -2550px -1718px;
+}
+
+.h1-okr-media-caption {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  gap: 2px;
+  padding: 30px 13px 11px;
+  background: linear-gradient(transparent, rgba(0,0,0,.88));
+}
+
+.h1-okr-media-caption strong {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.h1-okr-media-caption small {
+  color: rgba(255,255,255,.68);
+  font-size: 10px;
+}
+
+.h1-okr-lightbox {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 6vh 8vw;
+  background: rgba(5,4,3,.68);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.h1-okr-lightbox-frame {
+  position: relative;
+  width: min(72vw, 1260px);
+  aspect-ratio: 16 / 9;
+  padding: 6px;
+  background: #f3ead9;
+  border-radius: 24px;
+  box-shadow: 0 34px 100px rgba(0,0,0,.7);
+}
+
+.h1-okr-lightbox-media {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0c0907;
+  background-image: url("/previews/assets/h1-okr-events-lightbox-reference.png");
+  background-repeat: no-repeat;
+  border-radius: 19px;
+}
+
+.h1-okr-lightbox-media.is-salon-group,
+.h1-okr-lightbox-media.is-salon-lab,
+.h1-okr-lightbox-media.is-salon-stage {
+  background-size: 176% auto;
+  background-position: 37% 18.5%;
+}
+
+.h1-okr-lightbox-media.is-expo-race,
+.h1-okr-lightbox-media.is-expo-festival,
+.h1-okr-lightbox-media.is-expo-lab,
+.h1-okr-lightbox-media.is-expo-booth {
+  background-size: 176% auto;
+  background-position: 42% 77%;
+}
+
+.h1-okr-lightbox-media.is-awards {
+  background-image: url("/previews/assets/h1-okr-awards-events-figma-overview.png");
+  background-size: 217% auto;
+  background-position: 4.4% 15.8%;
+}
+
+.h1-okr-lightbox-close {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  background: rgba(16,14,12,.82);
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 50%;
+  font-family: "Gilroy", sans-serif;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.h1-okr-results-page.is-active .h1-okr-results-definition,
+.h1-okr-results-page.is-active .h1-okr-results-panel,
+.h1-okr-results-page.is-active .h1-okr-results-summary {
+  animation: h1OkrResultSurfaceEnter .45s cubic-bezier(.16,1,.3,1) both;
+}
+
+.h1-okr-results-page.is-active .h1-okr-results-panel {
+  animation-delay: .04s;
+}
+
+.h1-okr-results-page.is-active .h1-okr-results-summary {
+  animation-delay: .08s;
+}
+
+@keyframes h1OkrResultSurfaceEnter {
+  from { opacity: .72; transform: translate3d(10px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.h1-okr-page.is-active .h1-okr-insight-card {
+  animation: h1OkrCardEnter .5s cubic-bezier(.16,1,.3,1) both;
+  animation-delay: calc(.05s + var(--h1-okr-card-index) * .06s);
+}
+
+@keyframes h1OkrCardEnter {
+  from { opacity: .72; transform: translate3d(12px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h1-figma-racing-shell *,
+  .h1-figma-racing-report * {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Exact Figma OKR deck — exported from the authenticated prototype at 1920 × 1080. */
+.h1-figma-racing-report body.h1-embedded-report .save-bar {
+  display: flex !important;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report {
+  position: relative;
+  isolation: isolate;
+  background: #000;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-exact-page {
+  position: relative;
+  isolation: isolate;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: transparent;
+}
+
+.h1-figma-racing-report body.h1-embedded-report main.h1-okr-report > .h1-okr-exact-page::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background: transparent;
+}
+
+.h1-okr-exact-artboard {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 30%;
+  width: min(54vw, calc(72vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 18.02817px;
+  background: rgba(0,0,0,.3);
+  box-shadow: 0 24px 64px rgba(0,0,0,.56), inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* Page 01 is rebuilt from the independent Figma foreground layers. The
+   remaining exact-image pages stay suppressed until their matching foreground
+   layers are rebuilt; their full screenshots are never stacked on the trophy. */
+.h1-okr-report.is-p25-content-only .h1-okr-exact-artboard {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.h1-okr-exact-modal-artboard {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: min(100vw, calc(100vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+}
+
+.h1-okr-exact-frame {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  display: block;
+  object-fit: contain;
+  object-position: 50% 50%;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 1100px) {
+  .h1-okr-exact-artboard {
+    left: 50%;
+    width: min(84vw, calc(80vh * 16 / 9));
+    transform: translate(-50%, -50%);
+  }
+}
+
+.h1-okr-exact-hotspot {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 14px;
+  cursor: zoom-in;
+}
+
+.h1-okr-exact-hotspot.is-salon {
+  left: 17.5%;
+  top: 69.5%;
+  width: 64.8%;
+  height: 23.5%;
+}
+
+.h1-okr-exact-hotspot.is-expo {
+  left: 13.2%;
+  top: 64.5%;
+  width: 73%;
+  height: 22.5%;
+}
+
+.h1-okr-exact-hotspot:focus-visible {
+  outline: 3px solid rgba(255,255,255,.92);
+  outline-offset: 4px;
+}
+
+.h1-okr-video-hotspot {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.h1-okr-video-hotspot:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
+}
+
+.h1-okr-image-hotspot {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: zoom-in;
+}
+
+.h1-okr-image-hotspot:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
+}
+
+.h1-okr-external-link {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+
+.h1-okr-external-link:hover,
+.h1-okr-external-link:focus-visible {
+  border-color: rgba(255,255,255,.72);
+  background: rgba(255,255,255,.08);
+  box-shadow: 0 0 0 4px rgba(231,178,98,.16);
+}
+
+.h1-okr-external-link:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
+}
+
+.h1-okr-inline-video {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: #000;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.h1-okr-inline-video.is-contain {
+  object-fit: contain;
+}
+
+.h1-okr-inline-video:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
+}
+
+.h1-okr-page-number {
+  position: absolute;
+  z-index: 5;
+  right: 1.7%;
+  bottom: 1.7%;
+  color: #fff;
+  font: 700 clamp(11px, .73vw, 14px)/1 "Barlow Condensed", sans-serif !important;
+  letter-spacing: .08em !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,.8);
+  pointer-events: none;
+}
+
+.h1-okr-page-number span {
+  color: rgba(255,255,255,.5);
+}
+
+.h1-okr-video-modal {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 4vh 4vw;
+  background: rgba(0,0,0,.86);
+  backdrop-filter: blur(12px);
+  cursor: zoom-out;
+}
+
+.h1-okr-image-modal {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 4vh 4vw;
+  background: rgba(0,0,0,.86);
+  backdrop-filter: blur(12px);
+  cursor: zoom-out;
+}
+
+.h1-okr-image-modal-panel {
+  position: relative;
+  width: min(86vw, calc(86vh * 1.6));
+  aspect-ratio: 1.6;
+  overflow: hidden;
+  background: #080808;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 18px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.7);
+  cursor: default;
+}
+
+.h1-okr-image-modal-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-image-modal-crop {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-color: #000;
+}
+
+.h1-okr-video-modal-panel {
+  position: relative;
+  width: min(86vw, calc(86vh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #080808;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 18px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.7);
+  cursor: default;
+}
+
+.h1-okr-video-player {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+/* The public-good source is an ultra-wide 8.7:1 master. In the shared 16:9
+   player it crops its outer edges instead of letterboxing into a thin strip. */
+.h1-okr-video-player.is-cover {
+  object-fit: cover;
+  object-position: center;
+}
+
+.h1-okr-video-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(195,34,40,.26), transparent 36%),
+    #080808;
+}
+
+.h1-okr-video-placeholder strong {
+  font: 700 clamp(22px, 2.1vw, 40px)/1.15 "Noto Sans SC", sans-serif;
+}
+
+.h1-okr-video-placeholder span {
+  color: rgba(255,255,255,.56);
+  font: 500 clamp(13px, 1vw, 18px)/1.4 "Noto Sans SC", sans-serif;
+}
+
+.h1-okr-video-modal-close {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  font: 300 30px/1 Arial, sans-serif;
+  appearance: none;
+  background: rgba(0,0,0,.62);
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.h1-okr-video-modal-close:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.h1-okr-image-modal-close {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  font: 300 30px/1 Arial, sans-serif;
+  appearance: none;
+  background: rgba(0,0,0,.62);
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.h1-okr-image-modal-close:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.h1-okr-exact-modal {
+  position: fixed;
+  z-index: 9999;
+  isolation: isolate;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #050505;
+  cursor: zoom-out;
+}
+
+.h1-okr-exact-modal::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,.12), rgba(0,0,0,.12)),
+    var(--h1-okr-modal-image);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(14px) saturate(.94);
+  transform: scale(1.045);
+}
+
+.h1-okr-exact-modal-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  display: block;
+  object-fit: contain;
+  object-position: 50% 50%;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.h1-okr-exact-modal-close {
+  position: absolute;
+  z-index: 2;
+  top: 15.2%;
+  right: 14.3%;
+  width: clamp(34px, 3.2vw, 62px);
+  aspect-ratio: 1;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.h1-okr-exact-modal-close:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
+}

@@ -1,0 +1,236 @@
+/* Shared objective chapter language for O1 / O2 / O3.
+   Each chapter keeps its own fixed background stage; this file only unifies
+   information hierarchy, typography, spacing and the objective-number motif. */
+.h1-objective-chapter {
+  --h1-objective-accent: #f05b34;
+  --h1-objective-accent-soft: rgba(240, 91, 52, .58);
+  --h1-objective-rail: rgba(8, 5, 4, .7);
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 150px;
+  width: 1560px;
+  color: #fff;
+  transform: translateY(-50%);
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif !important;
+}
+
+.h1-objective-chapter::before {
+  content: attr(data-watermark);
+  position: absolute;
+  z-index: -1;
+  top: -222px;
+  left: -36px;
+  color: transparent;
+  font: italic 900 330px/1 "Barlow Condensed", "Arial Narrow", sans-serif !important;
+  letter-spacing: -.035em;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, .09);
+}
+
+.h1-objective-chapter::after {
+  content: "";
+  position: absolute;
+  top: 54px;
+  left: 0;
+  width: 460px;
+  height: 4px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--h1-objective-accent), var(--h1-objective-accent-soft), transparent);
+  box-shadow: 0 0 24px var(--h1-objective-accent-soft);
+}
+
+.h1-objective-chapter.is-o1 {
+  --h1-objective-accent: #f05b34;
+  --h1-objective-accent-soft: rgba(217, 162, 74, .62);
+  --h1-objective-rail: rgba(20, 10, 6, .72);
+}
+
+.h1-objective-chapter.is-o2 {
+  --h1-objective-accent: #f0a33d;
+  --h1-objective-accent-soft: rgba(242, 206, 151, .5);
+  --h1-objective-rail: rgba(16, 9, 5, .76);
+}
+
+.h1-objective-chapter.is-o3 {
+  --h1-objective-accent: #ff5a1f;
+  --h1-objective-accent-soft: rgba(210, 34, 39, .56);
+  --h1-objective-rail: rgba(12, 6, 4, .76);
+  left: auto;
+  right: 120px;
+  width: 720px;
+}
+
+.h1-objective-chapter.is-o3::before {
+  top: -172px;
+  left: -20px;
+  font-size: 250px;
+  -webkit-text-stroke-color: rgba(255, 255, 255, .065);
+}
+
+.h1-objective-chapter.is-o3::after {
+  top: 52px;
+  width: 100%;
+}
+
+.h1-objective-chapter.is-o3 .h1-objective-chapter-heading {
+  max-width: 720px;
+  margin-top: 46px;
+}
+
+.h1-objective-chapter.is-o3 .h1-objective-chapter-code {
+  margin-bottom: 14px;
+  font-size: 62px;
+}
+
+.h1-objective-chapter.is-o3 .h1-objective-chapter-title {
+  max-width: 720px;
+  font-size: 68px;
+  line-height: 1.12;
+}
+
+.h1-objective-chapter.is-o3 > p {
+  width: 100%;
+  margin-top: 24px;
+  color: rgba(255, 255, 255, .82);
+  font-size: 21px;
+  line-height: 1.65;
+}
+
+.h1-objective-chapter.is-o3 .h1-objective-chapter-path {
+  box-sizing: border-box;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  height: 74px;
+  margin-top: 34px;
+  padding: 0 22px;
+}
+
+.h1-objective-chapter.is-o3 .h1-objective-chapter-path span {
+  font-size: 17px;
+}
+
+.h1-objective-chapter.is-o3 .h1-objective-chapter-path i {
+  flex: 1 1 24px;
+  width: auto;
+  min-width: 14px;
+  max-width: 32px;
+}
+
+.h1-objective-chapter-kicker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 24px;
+  color: #ff986b;
+  font: 700 17px/1.1 "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  letter-spacing: .15em !important;
+}
+
+.h1-objective-chapter.is-o2 .h1-objective-chapter-kicker {
+  color: #ffc16d;
+}
+
+.h1-objective-chapter-mark {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: repeat(3, 9px);
+  grid-template-rows: repeat(2, 9px);
+  gap: 3px;
+  color: currentColor;
+  transform: skewX(-18deg);
+}
+
+.h1-objective-chapter-mark i {
+  display: block;
+  background: currentColor;
+}
+
+.h1-objective-chapter-mark i:nth-child(even) {
+  opacity: .52;
+}
+
+.h1-objective-chapter-heading {
+  max-width: 1500px;
+  margin: 50px 0 0;
+  color: #fff;
+  font-weight: 850;
+  line-height: 1.08;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+  text-shadow: 0 5px 30px rgba(0, 0, 0, .45);
+}
+
+.h1-objective-chapter-code {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--h1-objective-accent);
+  font: 850 70px/.9 "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  letter-spacing: -.025em !important;
+}
+
+.h1-objective-chapter-title {
+  display: block;
+  max-width: 1500px;
+  font-size: 82px;
+  line-height: 1.08;
+}
+
+.h1-objective-chapter > p {
+  width: 1180px;
+  margin: 28px 0 0;
+  color: rgba(255, 255, 255, .77);
+  font-size: 23px;
+  line-height: 1.6;
+  letter-spacing: .005em;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, .55);
+}
+
+.h1-objective-chapter-path {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+  width: max-content;
+  min-width: 870px;
+  height: 72px;
+  margin-top: 42px;
+  padding: 0 30px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 18px;
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, .055), transparent 38%),
+    var(--h1-objective-rail);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, .28), inset 0 1px rgba(255, 255, 255, .06);
+  -webkit-backdrop-filter: blur(20px) saturate(1.08);
+  backdrop-filter: blur(20px) saturate(1.08);
+}
+
+.h1-objective-chapter-path span {
+  color: rgba(255, 255, 255, .82);
+  font-size: 19px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.h1-objective-chapter-path i {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--h1-objective-accent), var(--h1-objective-accent-soft));
+}
+
+[data-page-id="o1-chapter"] .h1-okr-page-number,
+[data-page-id="o2-chapter"] .h1-o2-page-number,
+[data-page-id="o3-chapter"] .h1-o3-page-number {
+  right: 112px;
+  bottom: 55px;
+  font: 700 15px/1 "Barlow Condensed", sans-serif !important;
+  letter-spacing: .12em !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h1-objective-chapter {
+    scroll-behavior: auto;
+  }
+}

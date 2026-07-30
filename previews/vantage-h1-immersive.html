@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#020202" />
   <title>Vantage H1 Review — Immersive Preview</title>
-  <script>sessionStorage.setItem('vantage-auth','ok');</script>
+  <script src="/runtime-config.js"></script>
+  <script src="/vendor/vantage-runtime.js?v=20260731-editor-hud-v6-media"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link id="h1-figma-racing-shell" rel="stylesheet" href="h1-figma-racing-theme.css?v=20260729-okr-independent-bg-v1" />
+  <link id="h1-figma-racing-shell" rel="stylesheet" href="h1-figma-racing-theme.css?v=20260731-retail-nd-ppt-v6" />
   <style>
     :root {
       --ink: #020202;
@@ -280,12 +281,13 @@
       font-family: "IBM Plex Mono", monospace;
       font-weight: 500;
     }
-    .hud-actions { justify-self: end; display: flex; gap: 8px; pointer-events: auto; }
+    .hud-actions { position: relative; justify-self: end; display: flex; gap: 8px; pointer-events: auto; }
     .hud-button {
+      position: relative;
       width: 38px;
       height: 38px;
       border: 1px solid rgba(255,255,255,.16);
-      color: #fff;
+      color: rgba(245,242,236,.86);
       background: rgba(4,4,4,.38);
       display: grid;
       place-items: center;
@@ -294,6 +296,59 @@
     }
     .hud-button:hover { border-color: var(--orange); background: rgba(243,107,22,.1); }
     .hud-button svg { width: 15px; height: 15px; }
+    .hud-button::before { content: ""; position: absolute; inset: -3px; }
+    .hud-button:focus-visible { outline: 1px solid var(--orange-soft); outline-offset: 3px; }
+    .hud-button:disabled { cursor: wait; opacity: .34; }
+    .hud-button[aria-pressed="true"] {
+      border-color: rgba(243,107,22,.64);
+      color: var(--orange-soft);
+      background: rgba(243,107,22,.1);
+    }
+    .hud-button.has-unsaved::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--orange-soft);
+    }
+    .hud-editor-panel {
+      position: absolute;
+      top: 46px;
+      right: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hud-editor-panel[hidden] { display: none; }
+    .hud-editor-status {
+      height: 38px;
+      min-width: 106px;
+      padding: 0 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(4,4,4,.82);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: rgba(245,242,236,.58);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 9px;
+      letter-spacing: .05em;
+      white-space: nowrap;
+    }
+    .hud-editor-status i {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .hud-editor-status.is-dirty { color: rgba(255,190,164,.78); }
+    .hud-editor-status.is-dirty i,
+    .hud-editor-status.is-error i { background: var(--orange-soft); }
+    .hud-editor-panel .hud-button { flex: 0 0 38px; background: rgba(4,4,4,.82); }
+    .hud-editor-panel .hud-button:disabled { cursor: not-allowed; }
 
     .progress {
       position: fixed;
@@ -335,6 +390,32 @@
       position: relative;
       cursor: pointer;
     }
+    .rail button::before {
+      content: attr(data-label);
+      position: absolute;
+      right: 38px;
+      top: 50%;
+      transform: translate(8px, -50%);
+      min-width: max-content;
+      padding: 7px 10px;
+      border: 1px solid rgba(243,107,22,.28);
+      border-radius: 4px;
+      background: rgba(4,4,4,.88);
+      box-shadow: 0 8px 28px rgba(0,0,0,.34);
+      color: rgba(245,242,236,.86);
+      font: 500 10px/1 "IBM Plex Mono", "Noto Sans SC", sans-serif;
+      letter-spacing: .08em;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s var(--ease), transform .2s var(--ease), border-color .2s;
+    }
+    .rail button:is(:hover, :focus-visible)::before {
+      opacity: 1;
+      transform: translate(0, -50%);
+      border-color: rgba(243,107,22,.58);
+    }
+    .rail button:focus-visible { outline: 0; }
     .rail button::after {
       content: "";
       position: absolute;
@@ -598,7 +679,7 @@
 
     .report-scene { background: #030303; }
     .report-scene::before { opacity: .2; }
-    .report-frame-wrap { position: absolute; inset: 68px 0 46px; overflow: hidden; background: #030303; }
+    .report-frame-wrap { position: absolute; inset: 68px 0 0; overflow: hidden; background: #030303; }
     .report-frame {
       display: block;
       width: 100%;
@@ -642,6 +723,22 @@
       transition: color .25s, border-color .25s, background .25s;
     }
     .report-next:hover { color:#fff; border-color:var(--orange); background:rgba(243,107,22,.12); }
+    .report-next[hidden] { display: none; }
+    .ai-products-scene { background: #060606; }
+    .ai-products-scene::before { display: none; }
+    .ai-products-frame-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #060606;
+    }
+    .ai-products-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #060606;
+    }
     .scene[data-label="Executive Snapshot"],
     .scene[data-label="Retail Performance"],
     .scene[data-label="Paid Ads Efficiency"] { display: none; }
@@ -802,13 +899,12 @@
       </div>
       <div class="login-error" id="loginError" aria-live="polite">Invalid credentials. Please try again.</div>
       <input class="login-input" id="loginUsername" type="text" value="vantage" autocomplete="username" aria-label="Username" />
-      <input class="login-input" id="loginPassword" type="password" value="vantage" autocomplete="current-password" aria-label="Password" />
+      <input class="login-input" id="loginPassword" type="password" value="vantage" autocomplete="current-password" aria-label="Password" placeholder="Password" />
       <button class="login-submit" id="loginSubmit" type="button">Sign In</button>
       <div class="login-preload" id="loginPreloadStatus" aria-live="polite">正在预加载视频资源…</div>
-      <div class="login-preload-progress" id="loginPreloadProgress" role="progressbar" aria-label="视频资源加载进度" aria-valuemin="0" aria-valuemax="2" aria-valuenow="0" aria-valuetext="0 / 2 个视频已就绪">
+      <div class="login-preload-progress" id="loginPreloadProgress" role="progressbar" aria-label="视频资源加载进度" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0" aria-valuetext="0 / 1 个视频已就绪">
         <span id="loginPreloadProgressFill"></span>
       </div>
-      <div class="login-hint"><span>Default:</span> vantage / vantage</div>
     </div>
   </div>
   <div class="progress"><span id="progressBar"></span></div>
@@ -816,12 +912,24 @@
     <img src="../vantage-logo.svg" alt="Vantage" />
     <div class="hud-chapter" id="hudChapter">Opening Film</div>
     <div class="hud-actions">
+      <button class="hud-button" id="editorButton" aria-label="编辑正文" title="编辑正文" aria-pressed="false" disabled>
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M11.8 4.2 15.8 8.2M4 16l3.4-.8L16.6 6a1.4 1.4 0 0 0 0-2l-.6-.6a1.4 1.4 0 0 0-2 0L4.8 12.6 4 16Z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
       <button class="hud-button" id="soundButton" aria-label="切换声音" title="切换声音">
         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8h3l4-3v10l-4-3H3V8Z" stroke="currentColor" stroke-width="1.4"/><path class="sound-wave" d="M13 7c1.4 1.6 1.4 4.4 0 6M15.5 4.8c3 3 3 7.4 0 10.4" stroke="currentColor" stroke-width="1.4"/></svg>
       </button>
       <button class="hud-button" id="fullscreenButton" aria-label="全屏演示" title="全屏演示">
         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8V3h5M12 3h5v5M17 12v5h-5M8 17H3v-5" stroke="currentColor" stroke-width="1.4"/></svg>
       </button>
+      <div class="hud-editor-panel" id="editorPanel" hidden>
+        <span class="hud-editor-status" id="editorStatus" aria-live="polite"><i></i><span>编辑中</span></span>
+        <button class="hud-button" id="editorExitButton" aria-label="退出编辑" title="退出编辑">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+        <button class="hud-button" id="editorSaveButton" aria-label="保存并发布" title="保存并发布" disabled>
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 3.5h9l3 3V16.5H4v-13Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/><path d="M7 3.5v4h6v-4M7 16.5v-5h6v5" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -829,21 +937,21 @@
 
   <main class="deck" id="deck">
     <section class="scene scene-video opening-film" data-label="Opening Film" aria-label="开场视频">
-      <video id="openingVideo" class="video-bg" muted playsinline preload="auto" poster="assets/vantage-h1-opening-final-poster.jpg" src="assets/vantage-h1-opening-final-4k.mp4"></video>
+      <video id="openingVideo" class="video-bg" autoplay muted playsinline preload="auto" poster="assets/vantage-h1-opening-final-poster.jpg" src="assets/vantage-h1-opening-final-4k.mp4"></video>
     </section>
 
     <section class="scene scene-video hero-visual second-film" data-label="H1 Review" aria-label="第二屏视频">
-          <video id="secondScreenVideo" class="video-bg second-screen-video" muted playsinline preload="auto" poster="assets/vantage-h1-second-screen-july28-poster.jpg" src="assets/vantage-h1-second-screen-july28-sound-4k.mp4"></video>
-      <div class="chapter-no">02 <small>/ 05</small></div>
+          <video id="secondScreenVideo" class="video-bg second-screen-video" muted playsinline preload="metadata" poster="assets/vantage-h1-second-screen-final-poster.jpg" data-src="previews/assets/vantage-h1-second-screen-final-4k.mp4"></video>
+      <div class="chapter-no">02 <small>/ 06</small></div>
     </section>
 
     <section class="scene report-scene" data-label="Full Report">
       <div class="report-scene-badge">Complete data &amp; OKR review</div>
       <div class="report-frame-wrap">
-        <iframe id="reportFrame" class="report-frame" src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1" title="完整数据与 OKR 复盘内容"></iframe>
+        <iframe id="reportFrame" class="report-frame" src="../index.html?report=h1&embedded=1&v=20260731-o1-new-merge-v1" title="完整数据与 OKR 复盘内容"></iframe>
       </div>
-      <button class="report-next" type="button" data-next-scene>Continue to Q3 Outlook&nbsp;&nbsp;→</button>
-      <div class="chapter-no">03 <small>/ 05</small></div>
+      <button class="report-next" type="button" hidden aria-hidden="true" data-next-scene>Continue to AI Data Products&nbsp;&nbsp;→</button>
+      <div class="chapter-no">03 <small>/ 06</small></div>
     </section>
 
     <section class="scene" data-label="Executive Snapshot">
@@ -931,6 +1039,18 @@
       <div class="chapter-no">05 <small>/ 10</small></div>
     </section>
 
+    <section class="scene ai-products-scene" data-label="AI Data Products" aria-label="Marketing AI 数据产品展示">
+      <div class="ai-products-frame-wrap">
+        <iframe
+          id="aiProductsFrame"
+          class="ai-products-frame"
+          data-src="ai-data-products/index.html"
+          title="Marketing AI 数据产品展示"
+        ></iframe>
+      </div>
+      <div class="chapter-no">04 <small>/ 06</small></div>
+    </section>
+
     <section class="scene outlook" data-label="Q3 Outlook">
       <div class="scene-inner">
         <div class="outlook-layout">
@@ -942,24 +1062,41 @@
           </div>
         </div>
       </div>
-      <div class="chapter-no">04 <small>/ 05</small></div>
+      <div class="chapter-no">05 <small>/ 06</small></div>
     </section>
 
     <section class="scene scene-video closing" data-label="Closing Film">
-      <video class="video-bg" autoplay muted playsinline preload="auto" src="assets/vantage-h1-closing-sp-4k.mp4"></video>
-      <div class="chapter-no">05 <small>/ 05</small></div>
+      <video class="video-bg" autoplay muted playsinline preload="none" data-src="previews/assets/vantage-h1-closing-ending-4k.mp4"></video>
+      <div class="chapter-no">06 <small>/ 06</small></div>
     </section>
   </main>
 
   <script>
+    // Keep the complete Q3 page in the file; switch to true when its content is ready.
+    const SHOW_Q3_OUTLOOK = false;
     const deck = document.getElementById('deck');
     const legacyLabels = new Set(['Executive Snapshot','Retail Performance','Paid Ads Efficiency']);
-    const scenes = [...document.querySelectorAll('.scene')].filter(scene => !legacyLabels.has(scene.dataset.label));
+    const q3OutlookScene = document.querySelector('.scene[data-label="Q3 Outlook"]');
+    q3OutlookScene.hidden = !SHOW_Q3_OUTLOOK;
+    const scenes = [...document.querySelectorAll('.scene')].filter(scene => !legacyLabels.has(scene.dataset.label) && !scene.hidden);
+    const syncSceneNumbers = () => {
+      scenes.forEach((scene, index) => {
+        const chapterNumber = scene.querySelector('.chapter-no');
+        if (!chapterNumber) return;
+        chapterNumber.innerHTML = `${String(index + 1).padStart(2, '0')} <small>/ ${String(scenes.length).padStart(2, '0')}</small>`;
+      });
+    };
+    syncSceneNumbers();
     const rail = document.getElementById('rail');
     const progressBar = document.getElementById('progressBar');
     const hudChapter = document.getElementById('hudChapter');
     const soundButton = document.getElementById('soundButton');
     const fullscreenButton = document.getElementById('fullscreenButton');
+    const editorButton = document.getElementById('editorButton');
+    const editorPanel = document.getElementById('editorPanel');
+    const editorStatus = document.getElementById('editorStatus');
+    const editorExitButton = document.getElementById('editorExitButton');
+    const editorSaveButton = document.getElementById('editorSaveButton');
     const loginGate = document.getElementById('loginGate');
     const loginUsername = document.getElementById('loginUsername');
     const loginPassword = document.getElementById('loginPassword');
@@ -974,26 +1111,103 @@
     const closingScene = document.querySelector('.closing');
     const closingVideo = closingScene.querySelector('video');
     const videos = [...document.querySelectorAll('video')];
+    const aiProductsScene = scenes.find(scene => scene.dataset.label === 'AI Data Products');
+    const aiProductsFrame = document.getElementById('aiProductsFrame');
     let activeIndex = 0;
     let soundOn = true;
+    let soundBlocked = false;
     let authUnlocked = false;
     let openingPlaybackCompleted = false;
+    let reportEditorState = {
+      ready: false,
+      editing: false,
+      dirty: false,
+      confirming: false,
+      status: 'connecting',
+    };
+
+    const ensureAiProductsFrameSource = () => {
+      if (aiProductsFrame.getAttribute('src') || !aiProductsFrame.dataset.src) return;
+      aiProductsFrame.src = aiProductsFrame.dataset.src;
+    };
+
+    const scrollToScene = scene => {
+      if (!scene) return;
+      if (scene === aiProductsScene) ensureAiProductsFrameSource();
+      scene.scrollIntoView({behavior:'smooth'});
+    };
+
+    const reportScene = scenes.find(scene => scene.dataset.label === 'Full Report');
+    const REPORT_RAIL_ITEMS = [
+      {id:'opening', label:'开场视频', sceneLabel:'Opening Film'},
+      {id:'data', label:'数据', reportSection:'data'},
+      {id:'okr', label:'O1', reportSection:'okr'},
+      {id:'o2', label:'O2', reportSection:'o2'},
+      {id:'o3', label:'O3', reportSection:'o3'},
+      {id:'ai-products', label:'AI Data Products', sceneLabel:'AI Data Products'},
+      {id:'closing', label:'结束页', sceneLabel:'Closing Film'}
+    ];
+    let activeReportSection = 'data';
+
+    const postReportJump = sectionId => {
+      reportFrame.contentWindow?.postMessage(
+        {type:'vantage-report-jump',sectionId},
+        location.origin,
+      );
+    };
+    const jumpToReportSection = sectionId => {
+      activeReportSection = sectionId;
+      updateRailActive(sectionId);
+      scrollToScene(reportScene);
+      postReportJump(sectionId);
+      window.setTimeout(() => postReportJump(sectionId), 180);
+    };
+    const sendReportEditorCommand = action => {
+      reportFrame.contentWindow?.postMessage(
+        {type:'vantage-editor-command',action},
+        location.origin,
+      );
+    };
+    const updateReportEditorHud = () => {
+      const {ready,editing,dirty,status} = reportEditorState;
+      const busy = status === 'saving';
+      const error = ['error','save-conflict','remote-conflict','reconnecting'].includes(status);
+      const labels = {
+        editing: dirty ? '未保存' : '编辑中',
+        saving: '发布中',
+        'remote-conflict': '远端已更新',
+        'save-conflict': '版本冲突',
+        reconnecting: '正在重连',
+        error: '连接异常',
+      };
+      editorButton.disabled = !ready;
+      editorButton.setAttribute('aria-pressed', editing ? 'true' : 'false');
+      editorButton.setAttribute('aria-label', editing ? '退出编辑' : '编辑正文');
+      editorButton.title = editing ? '退出编辑' : ready ? '编辑正文' : '编辑功能正在连接';
+      editorButton.classList.toggle('has-unsaved', Boolean(dirty));
+      editorPanel.hidden = !editing;
+      editorStatus.classList.toggle('is-dirty', Boolean(dirty));
+      editorStatus.classList.toggle('is-error', error);
+      editorStatus.querySelector('span').textContent = labels[status] || (dirty ? '未保存' : '编辑中');
+      editorExitButton.disabled = busy;
+      editorSaveButton.disabled = busy || !dirty;
+    };
 
     const updateLoginPreloadState = () => {
-      const targets = [openingVideo, secondScreenVideo];
+      const targets = [openingVideo];
       const readyCount = targets.filter(video => video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA).length;
       loginPreloadProgress.setAttribute('aria-valuenow', String(readyCount));
       loginPreloadProgress.setAttribute('aria-valuetext', `${readyCount} / ${targets.length} 个视频已就绪`);
       loginPreloadProgressFill.style.width = `${(readyCount / targets.length) * 100}%`;
       loginPreloadStatus.textContent = readyCount === targets.length
-        ? '视频资源已就绪'
+        ? '开场视频已就绪，其余资源按需加载'
         : `正在预加载视频资源… ${readyCount}/${targets.length}`;
     };
 
     const preloadLoginVideos = () => {
+      ensureVideoSource(openingVideo);
       openingVideo.load();
-      secondScreenVideo.load();
-      [openingVideo, secondScreenVideo].forEach(video => {
+      [openingVideo].forEach(video => {
         video.addEventListener('loadeddata', updateLoginPreloadState);
         video.addEventListener('canplay', updateLoginPreloadState);
         video.addEventListener('error', updateLoginPreloadState);
@@ -1002,33 +1216,39 @@
     };
 
     const completeLogin = () => {
+      if (authUnlocked) return;
       authUnlocked = true;
       soundOn = true;
+      soundBlocked = false;
       openingPlaybackCompleted = false;
       openingVideo.currentTime = 0;
-      openingVideo.muted = false;
-      openingVideo.volume = 1;
-      const playback = openingVideo.play();
       loginGate.classList.add('is-hidden');
       document.body.classList.remove('login-active');
       activate(0);
-      playback?.catch(() => {
-        openingVideo.muted = true;
-        openingVideo.play().catch(() => {});
-      });
+      reportFrame.contentWindow?.postMessage(
+        {type:'vantage-authenticated'},
+        location.origin,
+      );
     };
 
-    const submitLogin = () => {
+    const submitLogin = async () => {
       const username = loginUsername.value.trim();
       const password = loginPassword.value;
-      if (username === 'vantage' && password === 'vantage') {
+      loginSubmit.disabled = true;
+      loginSubmit.textContent = 'Signing In…';
+      try {
+        await window.VantageBrowserRuntime.signIn({username,password});
         loginError.classList.remove('is-visible');
         completeLogin();
-        return;
+      } catch (error) {
+        console.error('Vantage login failed', error);
+        loginError.classList.add('is-visible');
+        loginPassword.focus();
+        loginPassword.select();
+      } finally {
+        loginSubmit.disabled = false;
+        loginSubmit.textContent = 'Sign In';
       }
-      loginError.classList.add('is-visible');
-      loginPassword.focus();
-      loginPassword.select();
     };
 
     openingVideo.addEventListener('ended', () => {
@@ -1044,15 +1264,23 @@
       if (event.key === 'Enter') submitLogin();
     });
 
+    const isSoundAudible = () => soundOn && !soundBlocked;
     const applySoundState = () => {
+      const audible = isSoundAudible();
       videos.forEach(video => {
         const isCurrent = video.closest('.scene') === scenes[activeIndex];
-        video.muted = !soundOn || !isCurrent;
+        video.muted = !audible || !isCurrent;
         video.volume = 1;
       });
-      soundButton.querySelector('.sound-wave').style.display = soundOn ? '' : 'none';
-      soundButton.setAttribute('aria-label', soundOn ? '关闭声音' : '打开声音');
-      soundButton.title = soundOn ? '关闭声音' : '打开声音';
+      soundButton.querySelector('.sound-wave').style.display = audible ? '' : 'none';
+      soundButton.setAttribute('aria-label', audible ? '关闭声音' : '打开声音');
+      soundButton.title = audible ? '关闭声音' : '打开声音';
+    };
+
+    const ensureVideoSource = video => {
+      if (video.getAttribute('src') || !video.dataset.src) return;
+      video.src = window.VantageBrowserRuntime.resolveMediaUrl(video.dataset.src);
+      video.load();
     };
 
     const playSceneVideo = (video) => {
@@ -1063,10 +1291,20 @@
       }
       if (video === openingVideo && openingPlaybackCompleted) return;
       if (video === secondScreenVideo && video.ended) return;
-      video.muted = !soundOn;
+      ensureVideoSource(video);
+      video.muted = !isSoundAudible();
       video.volume = 1;
-      video.play().catch(() => {
+      video.play().then(() => {
+        if (video === openingVideo && !video.muted) {
+          soundBlocked = false;
+          applySoundState();
+        }
+      }).catch(() => {
         if (!soundOn) return;
+        if (video === openingVideo && scenes[activeIndex]?.contains(video)) {
+          soundBlocked = true;
+          applySoundState();
+        }
         video.muted = true;
         video.play().catch(() => {});
       });
@@ -1078,32 +1316,50 @@
         document.removeEventListener(type, unlockSoundOnInteraction, true);
       });
     };
-    const unlockSoundOnInteraction = () => {
+    const unlockSoundOnInteraction = event => {
+      if (event?.target?.closest?.('#soundButton')) return;
       if (!authUnlocked || !soundOn) return;
       videos.forEach(video => { video.muted = true; });
       const currentVideo = videos.find(video => video.closest('.scene') === scenes[activeIndex]);
       if (currentVideo === openingVideo && openingPlaybackCompleted) return;
-      if (currentVideo) currentVideo.muted = false;
+      if (currentVideo) {
+        soundBlocked = false;
+        currentVideo.muted = false;
+      }
       const playback = currentVideo?.play();
       if (playback) {
         playback.then(() => {
+          applySoundState();
           removeSoundUnlockListeners();
-        }).catch(() => {});
+        }).catch(() => {
+          soundBlocked = true;
+          applySoundState();
+        });
       }
     };
     soundUnlockEvents.forEach(type => {
       document.addEventListener(type, unlockSoundOnInteraction, {capture:true, passive:true});
     });
 
-    scenes.forEach((scene, index) => {
+    REPORT_RAIL_ITEMS.forEach(item => {
       const dot = document.createElement('button');
       dot.type = 'button';
-      dot.setAttribute('aria-label', `前往第 ${index + 1} 屏：${scene.dataset.label}`);
-      dot.title = `${String(index + 1).padStart(2, '0')} · ${scene.dataset.label}`;
-      dot.addEventListener('click', () => scene.scrollIntoView({behavior:'smooth'}));
+      dot.dataset.railId = item.id;
+      dot.dataset.label = item.label;
+      dot.setAttribute('aria-label', `前往：${item.label}`);
+      dot.addEventListener('click', () => {
+        if (item.reportSection) {
+          jumpToReportSection(item.reportSection);
+          return;
+        }
+        scrollToScene(scenes.find(scene => scene.dataset.label === item.sceneLabel));
+      });
       rail.appendChild(dot);
     });
     const dots = [...rail.querySelectorAll('button')];
+    const updateRailActive = railId => {
+      dots.forEach(dot => dot.classList.toggle('active', dot.dataset.railId === railId));
+    };
 
     function activate(index) {
       const previousIndex = activeIndex;
@@ -1111,9 +1367,14 @@
         && previousIndex !== 0
         && openingPlaybackCompleted;
       activeIndex = index;
+      if (scenes[index] === aiProductsScene) ensureAiProductsFrameSource();
       document.body.classList.toggle('opening-active', index === 0);
       scenes.forEach((scene, i) => scene.classList.toggle('active', i === index));
-      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+      const sceneLabel = scenes[index].dataset.label;
+      if (scenes[index] === reportScene) updateRailActive(activeReportSection);
+      else if (sceneLabel === 'AI Data Products') updateRailActive('ai-products');
+      else if (sceneLabel === 'Closing Film') updateRailActive('closing');
+      else updateRailActive('opening');
       hudChapter.textContent = scenes[index].dataset.label;
       progressBar.style.width = `${((index + 1) / scenes.length) * 100}%`;
       videos.forEach(video => {
@@ -1143,8 +1404,31 @@
     applySoundState();
     activate(0);
     preloadLoginVideos();
+    window.VantageBrowserRuntime.getSession()
+      .then(session => {
+        if (session) completeLogin();
+      })
+      .catch(error => {
+        console.error('Unable to restore Vantage session', error);
+      });
 
     document.addEventListener('keydown', event => {
+      if (
+        reportEditorState.editing &&
+        (event.metaKey || event.ctrlKey) &&
+        event.key.toLowerCase() === 's'
+      ) {
+        event.preventDefault();
+        if (reportEditorState.dirty && reportEditorState.status !== 'saving') {
+          sendReportEditorCommand('save');
+        }
+        return;
+      }
+      if (reportEditorState.editing && event.key === 'Escape') {
+        event.preventDefault();
+        sendReportEditorCommand(reportEditorState.confirming ? 'cancel-confirm' : 'request-exit');
+        return;
+      }
       if (activeIndex === 2 && ['ArrowDown','PageDown',' ','ArrowUp','PageUp'].includes(event.key)) {
         event.preventDefault();
         const direction = ['ArrowDown','PageDown',' '].includes(event.key) ? 1 : -1;
@@ -1152,19 +1436,41 @@
         return;
       }
       if (['ArrowDown','ArrowRight','PageDown',' '].includes(event.key)) {
-        event.preventDefault(); scenes[Math.min(activeIndex + 1, scenes.length - 1)].scrollIntoView({behavior:'smooth'});
+        event.preventDefault(); scrollToScene(scenes[Math.min(activeIndex + 1, scenes.length - 1)]);
       }
       if (['ArrowUp','ArrowLeft','PageUp'].includes(event.key)) {
-        event.preventDefault(); scenes[Math.max(activeIndex - 1, 0)].scrollIntoView({behavior:'smooth'});
+        event.preventDefault(); scrollToScene(scenes[Math.max(activeIndex - 1, 0)]);
       }
-      if (event.key === 'Home') scenes[0].scrollIntoView({behavior:'smooth'});
-      if (event.key === 'End') scenes.at(-1).scrollIntoView({behavior:'smooth'});
+      if (event.key === 'Home') scrollToScene(scenes[0]);
+      if (event.key === 'End') scrollToScene(scenes.at(-1));
+    });
+
+    editorButton.addEventListener('click', () => {
+      if (!reportEditorState.ready) return;
+      if (!reportEditorState.editing && reportScene) scrollToScene(reportScene);
+      sendReportEditorCommand(reportEditorState.editing ? 'request-exit' : 'begin');
+    });
+    editorExitButton.addEventListener('click', () => sendReportEditorCommand('request-exit'));
+    editorSaveButton.addEventListener('click', () => {
+      if (reportEditorState.dirty && reportEditorState.status !== 'saving') {
+        sendReportEditorCommand('save');
+      }
     });
 
     soundButton.addEventListener('click', () => {
-      soundOn = !soundOn;
+      if (isSoundAudible()) {
+        soundOn = false;
+        soundBlocked = false;
+        applySoundState();
+        return;
+      }
+      soundOn = true;
+      soundBlocked = false;
+      if (activeIndex === 0 && !openingPlaybackCompleted) {
+        openingVideo.currentTime = 0;
+      }
       applySoundState();
-      if (soundOn) unlockSoundOnInteraction();
+      unlockSoundOnInteraction();
     });
 
     closingVideo.addEventListener('ended', () => closingScene.classList.add('end-reveal'));
@@ -1177,13 +1483,131 @@
         0,
         Math.min(scenes.length - 1, reportSceneIndex + direction),
       );
-      scenes[nextSceneIndex]?.scrollIntoView({behavior:'smooth'});
+      scrollToScene(scenes[nextSceneIndex]);
     };
 
-    const q3Scene = scenes.find(scene => scene.dataset.label === 'Q3 Outlook');
     document.querySelector('[data-next-scene]').addEventListener('click', () => {
-      q3Scene?.scrollIntoView({behavior:'smooth'});
+      ensureAiProductsFrameSource();
+      aiProductsScene?.scrollIntoView({behavior:'smooth'});
     });
+
+    const moveDeckFromAiProducts = direction => {
+      if (direction !== 1 && direction !== -1) return;
+      const aiProductsIndex = scenes.indexOf(aiProductsScene);
+      const nextSceneIndex = Math.max(0, Math.min(scenes.length - 1, aiProductsIndex + direction));
+      scrollToScene(scenes[nextSceneIndex]);
+    };
+
+    function prepareAiProductsNavigation() {
+      const doc = aiProductsFrame.contentDocument;
+      if (!doc || doc.body?.dataset.deckNavigationPrepared === 'true') return;
+      doc.body.dataset.deckNavigationPrepared = 'true';
+
+      const isProductInteraction = () => !doc.getElementById('tool-modal')?.hidden;
+      const AI_PRODUCTS_WHEEL_THRESHOLD = 12;
+      const AI_PRODUCTS_EXIT_ARM_DELAY = 280;
+      const AI_PRODUCTS_EXIT_GESTURE_THRESHOLD = 96;
+      const productsRail = doc.getElementById('products');
+      let wheelDelta = 0;
+      let exitArmTimer = 0;
+      let exitArmedDirection = 0;
+      let exitWheelDelta = 0;
+
+      const canScrollProducts = direction => {
+        if (!productsRail) return false;
+        const maxScrollLeft = productsRail.scrollWidth - productsRail.clientWidth;
+        if (maxScrollLeft <= 2) return false;
+        return direction > 0
+          ? productsRail.scrollLeft < maxScrollLeft - 4
+          : productsRail.scrollLeft > 4;
+      };
+
+      const resetExitIntent = () => {
+        exitArmedDirection = 0;
+        exitWheelDelta = 0;
+        doc.defaultView.clearTimeout(exitArmTimer);
+      };
+
+      const advanceProducts = (direction, distance) => {
+        if (!canScrollProducts(direction)) return false;
+        resetExitIntent();
+        productsRail.scrollBy({
+          left: direction * Math.max(
+            Math.abs(distance || 0),
+            Math.min(productsRail.clientWidth * .78, 640),
+          ),
+          behavior: 'smooth',
+        });
+        return true;
+      };
+
+      const armOuterDeckExit = direction => {
+        exitArmedDirection = 0;
+        exitWheelDelta = 0;
+        doc.defaultView.clearTimeout(exitArmTimer);
+        exitArmTimer = doc.defaultView.setTimeout(() => {
+          exitArmedDirection = direction;
+          exitWheelDelta = 0;
+        }, AI_PRODUCTS_EXIT_ARM_DELAY);
+      };
+
+      doc.addEventListener('wheel', event => {
+        if (isProductInteraction() || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        wheelDelta += event.deltaY;
+        if (Math.abs(wheelDelta) < AI_PRODUCTS_WHEEL_THRESHOLD) return;
+        const direction = wheelDelta > 0 ? 1 : -1;
+        const distance = wheelDelta;
+        wheelDelta = 0;
+        if (advanceProducts(direction, distance)) return;
+        if (exitArmedDirection === direction) {
+          exitWheelDelta += distance;
+          if (Math.abs(exitWheelDelta) < AI_PRODUCTS_EXIT_GESTURE_THRESHOLD) return;
+          resetExitIntent();
+          moveDeckFromAiProducts(direction);
+          return;
+        }
+        armOuterDeckExit(direction);
+      }, {capture:true, passive:false});
+
+      doc.addEventListener('keydown', event => {
+        if (!['ArrowDown','PageDown',' ','ArrowUp','PageUp'].includes(event.key)) return;
+        if (isProductInteraction() || event.defaultPrevented) return;
+        if (
+          event.key === ' ' &&
+          event.target?.closest?.('a,button,input,select,textarea,[role="button"],[contenteditable="true"]')
+        ) return;
+        event.preventDefault();
+        const direction = ['ArrowDown','PageDown',' '].includes(event.key) ? 1 : -1;
+        if (!advanceProducts(direction)) moveDeckFromAiProducts(direction);
+      });
+
+      let touchStart = null;
+      doc.addEventListener('touchstart', event => {
+        if (isProductInteraction() || !event.touches[0]) {
+          touchStart = null;
+          return;
+        }
+        touchStart = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
+      }, {passive:true});
+      doc.addEventListener('touchend', event => {
+        if (touchStart === null || !event.changedTouches[0]) return;
+        const distanceX = event.changedTouches[0].clientX - touchStart.x;
+        const distanceY = touchStart.y - event.changedTouches[0].clientY;
+        touchStart = null;
+        if (Math.abs(distanceX) >= Math.abs(distanceY)) return;
+        if (Math.abs(distanceY) < 48) return;
+        const direction = distanceY > 0 ? 1 : -1;
+        if (!advanceProducts(direction)) moveDeckFromAiProducts(direction);
+      }, {passive:true});
+    }
+
+    aiProductsFrame.addEventListener('load', prepareAiProductsNavigation);
+    if (aiProductsFrame.contentDocument?.readyState === 'complete') prepareAiProductsNavigation();
 
     function prepareEmbeddedReport() {
       const doc = reportFrame.contentDocument;
@@ -1200,19 +1624,19 @@
 
       const theme = doc.createElement('link');
       theme.rel = 'stylesheet';
-      theme.href = '/previews/h1-middle-theme.css';
+      theme.href = '/previews/h1-middle-theme.css?v=20260730-editor-v2';
       doc.head.appendChild(theme);
 
       const figmaTheme = doc.createElement('link');
       figmaTheme.id = 'h1-figma-racing-report';
       figmaTheme.rel = 'stylesheet';
-      figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=20260729-okr-independent-bg-v1';
+      figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=20260731-retail-nd-ppt-v6';
       doc.head.appendChild(figmaTheme);
 
       const children = [...shell.children];
-      [0,2,5,6,7].forEach(index => { if (children[index]) children[index].style.display = 'none'; });
-      doc.querySelectorAll('.save-bar').forEach(el => el.style.display = 'none');
-
+      // Hero, decorative image, thank-you image, footer video and metadata are
+      // represented by the outer immersive deck. Keep data, OKR, O2 and O3 visible.
+      [0,2,7,8,9].forEach(index => { if (children[index]) children[index].style.display = 'none'; });
       const dashboard = doc.querySelector('[data-report-section="data"]');
       const okrMain = doc.querySelector('[data-report-section="okr"]');
       if (!dashboard || !okrMain) {
@@ -1227,7 +1651,7 @@
         el.innerHTML = `<div class="h1-report-kicker">${kicker}</div><div class="h1-report-title">${title}<small>${count}</small></div>`;
         return el;
       };
-      dashboard.before(makeChapter('Performance Data','经营数据','15 MODULES'));
+      dashboard.before(makeChapter('Performance Data','经营数据','22 MODULES'));
 
       const note = doc.createElement('div');
       note.className = 'h1-view-only-note';
@@ -1253,6 +1677,7 @@
         reportWindow.parent.postMessage({
           type:'vantage-report-state',
           pageId:page?.dataset.pageId || '',
+          sectionId:page?.closest('[data-report-section]')?.dataset.reportSection || '',
           index,
           total:reportPages.length,
           atStart:index === 0,
@@ -1351,7 +1776,16 @@
       reportWindow.addEventListener('message', event => {
         if (
           event.origin !== location.origin ||
-          event.source !== reportWindow.parent ||
+          event.source !== reportWindow.parent
+        ) return;
+        if (event.data?.type === 'vantage-report-jump') {
+          const targetIndex = reportPages.findIndex(
+            page => page.closest('[data-report-section]')?.dataset.reportSection === event.data.sectionId,
+          );
+          if (targetIndex >= 0) goToReportPage(targetIndex);
+          return;
+        }
+        if (
           event.data?.type !== 'vantage-report-nav' ||
           (event.data.direction !== 1 && event.data.direction !== -1)
         ) return;
@@ -1438,12 +1872,27 @@
     window.addEventListener('message', event => {
       if (
         event.origin !== location.origin ||
-        event.source !== reportFrame.contentWindow ||
+        event.source !== reportFrame.contentWindow
+      ) return;
+      if (event.data?.type === 'vantage-editor-state') {
+        reportEditorState = {
+          ...reportEditorState,
+          ...event.data.state,
+        };
+        updateReportEditorHud();
+        return;
+      }
+      if (event.data?.type === 'vantage-report-state') {
+        if (event.data.sectionId) activeReportSection = event.data.sectionId;
+        if (scenes[activeIndex] === reportScene) updateRailActive(activeReportSection);
+        return;
+      }
+      if (
         event.data?.type !== 'vantage-deck-nav' ||
         (event.data.direction !== 1 && event.data.direction !== -1)
       ) return;
       const next = Math.max(0,Math.min(scenes.length - 1,activeIndex + event.data.direction));
-      scenes[next].scrollIntoView({behavior:'smooth'});
+      scrollToScene(scenes[next]);
     });
 
     fullscreenButton.addEventListener('click', async () => {

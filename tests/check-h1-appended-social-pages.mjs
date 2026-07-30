@@ -16,7 +16,7 @@ const end = index.indexOf("const REPORT_MODE", start);
 assert.ok(start >= 0 && end > start, "H1 dashboard data block should exist");
 const h1Block = index.slice(start, end);
 
-for (let id = 1; id <= 15; id += 1) {
+for (let id = 1; id <= 22; id += 1) {
   assert.match(
     h1Block,
     new RegExp(`\\bid:${id}(?:,|\\s)`),
@@ -25,16 +25,15 @@ for (let id = 1; id <= 15; id += 1) {
 }
 assert.equal(
   [...h1Block.matchAll(/\bid:(\d+)(?:,|\s)/g)].length,
-  15,
-  "H1 should contain exactly 15 data pages"
+  22,
+  "H1 should contain exactly 22 data pages"
 );
 
 const orderedNewPages = [
-  'id:11, layoutType:"brand_voice"',
-  'id:12, layoutType:"brand_search_reputation"',
-  'id:13, layoutType:"social_sov_trend"',
-  'id:14, layoutType:"followers_share"',
-  'id:15, layoutType:"followers_trend"'
+  'id:11, layoutType:"brand_voice_search_combined"',
+  'id:12, layoutType:"social_sov_trend"',
+  'id:13, layoutType:"followers_share"',
+  'id:14, layoutType:"followers_trend"'
 ];
 let previousPosition = -1;
 for (const marker of orderedNewPages) {
@@ -99,6 +98,7 @@ assert.doesNotMatch(
 );
 
 for (const component of [
+  "H1BrandVoiceSearchCombinedChart",
   "H1BrandVoiceChart",
   "H1BrandSearchReputationChart",
   "H1SocialSovTrendChart",
@@ -115,12 +115,12 @@ assert.ok(
   index.includes('String(count).padStart(2,"0")'),
   "visible page numbers should remain dynamic"
 );
-assert.ok(shell.includes("'15 MODULES'"), "outer report chapter should declare 15 modules");
+assert.ok(shell.includes("'22 MODULES'"), "outer report chapter should declare 22 modules");
 assert.ok(
   shell.includes("doc.querySelectorAll('[data-report-page]')") &&
     shell.includes("reportPages.length") &&
     shell.includes("reportPageTop(reportPages[index])"),
-  "vertical PPT paging must remain dynamic across 15 data pages plus OKR"
+  "vertical PPT paging must remain dynamic across 22 data pages plus OKR"
 );
 
-console.log("H1 expanded five-page social data contract passed.");
+console.log("H1 combined brand plus social data contract passed.");

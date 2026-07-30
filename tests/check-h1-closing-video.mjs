@@ -10,7 +10,7 @@ const formal = readFileSync(
 );
 const closingAsset = resolve(
   root,
-  "previews/assets/vantage-h1-closing-sp-4k.mp4",
+  "previews/assets/vantage-h1-closing-ending-4k.mp4",
 );
 
 assert.ok(existsSync(closingAsset), "the supplied closing film must exist");
@@ -21,8 +21,8 @@ const closingScene = formal.match(
 assert.ok(closingScene, "the formal deck must retain a closing-film scene");
 assert.match(
   closingScene,
-  /<video\b(?=[^>]*class="video-bg")(?=[^>]*playsinline)(?=[^>]*preload="auto")(?=[^>]*src="assets\/vantage-h1-closing-sp-4k\.mp4")[^>]*>/,
-  "the closing scene must use the supplied compatible film",
+  /<video\b(?=[^>]*class="video-bg")(?=[^>]*playsinline)(?=[^>]*preload="none")(?=[^>]*data-src="previews\/assets\/vantage-h1-closing-ending-4k\.mp4")[^>]*>/,
+  "the closing scene must defer the supplied compatible film until activation",
 );
 assert.doesNotMatch(
   closingScene,
@@ -75,7 +75,7 @@ assert.equal(video?.height, 2160, "the supplied 4K height must be preserved");
 assert.equal(video?.pix_fmt, "yuv420p", "the closing film must use a compatible pixel format");
 assert.equal(video?.r_frame_rate, "30/1", "the supplied 30 fps motion must be preserved");
 assert.equal(audio?.codec_name, "aac", "the supplied closing soundtrack must remain AAC");
-assert.ok(Number(probe.format.duration) >= 22.2, "the complete supplied closing film must be retained");
+assert.ok(Number(probe.format.duration) >= 21.9, "the complete supplied closing film must be retained");
 
 const closingBytes = readFileSync(closingAsset);
 const moovOffset = closingBytes.indexOf(Buffer.from("moov"));

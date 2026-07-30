@@ -1,5 +1,30 @@
 {
-  "buildCommand": "",
-  "outputDirectory": ".",
-  "framework": null
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": null,
+  "routes": [
+    {
+      "src": "^(?:/(.*))$",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Frame-Options": "SAMEORIGIN"
+      },
+      "continue": true
+    },
+    {
+      "src": "^/runtime-config\\.js$",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      },
+      "continue": true
+    },
+    {
+      "src": "^/$",
+      "dest": "/previews/vantage-h1-immersive.html"
+    },
+    {
+      "handle": "filesystem"
+    }
+  ]
 }

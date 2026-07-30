@@ -1,0 +1,180 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+
+const root = path.resolve(import.meta.dirname, "..");
+const app = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const theme = fs.readFileSync(
+  path.join(root, "previews", "h1-figma-racing-theme.css"),
+  "utf8",
+);
+
+// Page 20: prioritize the percentage comparison and label the measures as absolute-value metrics.
+for (const fact of [
+  '"FTD 绝对值","+39.3%"',
+  '"ND 绝对值","+73.4%"',
+  '"TV 绝对值","+73.0%"',
+  'label="无风险收益绝对值" value="+49.7%"',
+]) {
+  assert.ok(app.includes(fact), `page 20 must expose the PPT fact: ${fact}`);
+}
+const profitPageSource = app.slice(
+  app.indexOf("function O2ProfitScale()"),
+  app.indexOf("function O2Regions()"),
+);
+assert.doesNotMatch(
+  profitPageSource,
+  /55,226|\$73\.8M|1,415\.59 Bn|h1-o2-absolute-column-title/,
+  "page 20 must remove the newly added absolute numbers and yellow column heading",
+);
+assert.doesNotMatch(
+  theme,
+  /\.h1-o2-absolute-column-title/,
+  "the removed yellow absolute-value heading must leave no dedicated CSS",
+);
+
+// Page 21: make the growth leaders and lifecycle proof explicit.
+assert.match(
+  app,
+  /h1-o2-region-card \$\{index<2\?"is-growth-leader":""\}/,
+  "APAC and MENA must receive the growth-leader emphasis",
+);
+for (const fact of [
+  '"LATAM","ROI 打正","H2 重点","聚焦渠道链路与预算效率，重点放大"',
+  'className="h1-o2-ltv-kicker">重点市场用户价值释放</div>',
+  '<div className="h1-o2-panel-title"><span>LTV / CAC 提升</span></div>',
+  'const ltvMarkets=[["印度","+485%","86%"],["阿联酋","+220%","52%"]];',
+  'const lifecycleProof={label:"印度再营销",value:"+157%",period:"Q1 vs Q2"};',
+  'className="h1-o2-lifecycle-proof"',
+  "重点市场用户价值释放",
+  "生命周期运营验证 · LTV / CAC 提升",
+  "重点市场继续做大",
+  "重点国家提升用户价值",
+  "存量激活带新增",
+]) {
+  assert.ok(app.includes(fact), `page 21 must include: ${fact}`);
+}
+const regionsPageSource = app.slice(
+  app.indexOf("function O2Regions()"),
+  app.indexOf("function O2Delivery()"),
+);
+assert.doesNotMatch(
+  regionsPageSource,
+  /<strong>生命周期运营验证<\/strong>/,
+  "page 21 must remove lifecycle validation from the top chart header",
+);
+assert.match(
+  theme,
+  /\.h1-o2-region-card\.is-growth-leader\s*\{[\s\S]*?background:/,
+  "the growth combination needs a visibly elevated background",
+);
+assert.doesNotMatch(
+  app,
+  /className="h1-o2-region-path"[\s\S]{0,260}市场分层/,
+  "the old market-segmentation path must be replaced by the approved conclusion",
+);
+assert.doesNotMatch(
+  app,
+  /className="h1-o2-region-summary"/,
+  "the approved conclusion must live inside the panel instead of being duplicated below it",
+);
+assert.doesNotMatch(
+  app,
+  /className="h1-o2-ltv-bars"[\s\S]{0,900}印度再营销/,
+  "the +157% remarketing result must move out of the LTV chart",
+);
+assert.match(
+  theme,
+  /\.h1-o2-lifecycle-proof\s*\{[\s\S]*?background:/,
+  "the relocated +157% result must use a dedicated bottom proof card",
+);
+
+// Page 22: annotated title and the four source-PPT resilience capabilities.
+for (const fact of [
+  'title:"打破受限渠道，构建增长韧性"',
+  'description:"多层次资产组合与储备，确保各市场持续在线、增长不停。"',
+  '"01","看得准","市场 & 竞品监测"',
+  '"监管要求 · 平台政策 · 行情波动 · 竞品动向"',
+  '"AI 市场行情监控｜爬虫日报监控｜响应速度 2×"',
+  '"02","上得快","资产模块化 & 效率升级"',
+  '"主体 · 账户 · 域名 · 素材"',
+  '"单页平台成本约 $6.8｜多语言落地页 3h 上线"',
+  '"03","投得进","多层媒体供给 & 受限渠道打通"',
+  '"主流媒体 · 稀缺版位资源 · AI Ads 资源"',
+  '"Snapchat · Careem · Zalo · Uber · Telegram · Microsoft Copilot"',
+  '"04","放得大","地域验证 & 业务持续增长"',
+  '"监测 · 判断 · 优化 · 复制"',
+  '"Vietnam · Thailand · Russia · Korea · UAE"',
+]) {
+  assert.ok(app.includes(fact), `page 22 must reproduce the source PPT: ${fact}`);
+}
+assert.match(
+  theme,
+  /\.h1-o2-delivery-metrics article > div b\s*\{[\s\S]*?font-size:\s*(?:1[89]|[2-9]\d)px;/,
+  "page 22 metric deltas must be enlarged for presentation readability",
+);
+
+// Page 24: annotated operating capabilities, with the crossed-out paragraph removed.
+for (const fact of [
+  'label="SEM 攻防双效" value="+156% FTD" note="筑牢流量护城河"',
+  'label="ASA 品牌关键词" value="SOV 95%"',
+  'label="竞品监测自动化 · 爬虫" value="人工 → 自动化"',
+  'note="自动化面板提效，覆盖 30+ 国家的品牌监控"',
+]) {
+  assert.ok(app.includes(fact), `page 24 must include: ${fact}`);
+}
+assert.doesNotMatch(
+  app,
+  /监测频次由周提升至天，人力成本 -50%，响应速度 ×2/,
+  "the crossed-out page 24 paragraph must be removed",
+);
+assert.doesNotMatch(
+  app,
+  /className="h1-o2-card h1-o2-barrier-summary"/,
+  "all page 24 footer content must be removed",
+);
+assert.match(
+  theme,
+  /\.h1-o2-media-grid \.h1-source-image-trigger\s*\{[\s\S]*?height:\s*430px;/,
+  "page 24 media must fill the space released by the removed footer",
+);
+
+// Page 25: one strong proof card, a four-node closed loop, clean KPI cards.
+for (const fact of [
+  'title:"从「只拿 Leads」升级为全链路可追踪、可归因的运营，且 ROI 打正"',
+  'description:""',
+  "在荷兰，每五个新 IB 就有 1 个来自我们",
+  'const steps=["Paid Ads","IB Leads","IB 转化","真实入金（ND）"];',
+  "可复制闭环",
+  "<O2MetricCard label=\"EU Leads\" value=\"+237%\"/>",
+  "<O2MetricCard label=\"IB 转化\" value=\"+156%\" tone=\"orange\"/>",
+  "<O2MetricCard label=\"CAC\" value=\"-41%\" tone=\"muted\"/>",
+  "<O2MetricCard label=\"CPL\" value=\"-55%\" tone=\"muted\"/>",
+  "复制荷兰打法",
+  "在重点市场加码",
+  "扩大 EU IB 规模",
+]) {
+  assert.ok(app.includes(fact), `page 25 must include: ${fact}`);
+}
+assert.doesNotMatch(app, /"持续复购"/, "page 25 loop must contain only four nodes");
+const ibLoopSource = app.slice(
+  app.indexOf("function O2IbLoop()"),
+  app.indexOf("function O2ReportPage("),
+);
+assert.doesNotMatch(
+  ibLoopSource,
+  /荷兰市场验证/,
+  "page 25 must remove the Netherlands market-validation label",
+);
+assert.match(
+  theme,
+  /\.h1-o2-loop-label\s*\{[\s\S]*?top:\s*50%;[\s\S]*?left:\s*50%;/,
+  "the closed-loop label must sit in the visual center of the four-node loop",
+);
+assert.match(
+  theme,
+  /\.h1-o2-nl-proof\s*\{[\s\S]*?grid-area:\s*proof;[\s\S]*?width:\s*(?:4\d\d|[5-9]\d\d)px;/,
+  "the 21% proof card must be materially enlarged",
+);
+
+console.log("H1 O2 annotated pages 20–25 contract checks passed.");

@@ -1,9 +1,17 @@
 .vercel
 .netlify
 node_modules
+vendor/
+runtime-config.js
+dist/
 .DS_Store
 .codex-backups/
 .tmp/
+.codex-tmp/
+.tmp-retail-*/
+backups/
+previews/assets/ppt-originals/
+supabase/.temp/
 *.mp4
 !previews/assets/vantage-h1-opening-final-4k.mp4
 !previews/assets/vantage-h1-second-screen-july28-sound-4k.mp4
@@ -12,3 +20,4 @@ debug-*.png
 verify-*.png
 check-*.png
 v4-*.png
+.env*.local

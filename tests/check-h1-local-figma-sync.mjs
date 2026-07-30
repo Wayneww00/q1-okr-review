@@ -11,7 +11,7 @@ const [formal, theme, report] = await Promise.all(
 );
 
 assert.ok(
-  formal.includes('src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"'),
+  formal.includes('src="../index.html?report=h1&embedded=1&v=20260731-nd-retail-v1"'),
   "the formal H1 report should explicitly request the login-free embedded report mode",
 );
 assert.ok(
@@ -45,7 +45,7 @@ assert.ok(
 );
 assert.ok(
   report.includes("const OKR_FIGMA_PAGES=") &&
-    report.includes("previews/assets/figma-exact/p25-source.png"),
+    report.includes("previews/assets/figma-exact/p25-overlay.png"),
   "the authenticated exact Figma OKR deck must replace the old long-form OKR report",
 );
 assert.ok(

@@ -8,7 +8,7 @@ const [formal, report] = await Promise.all([
 ]);
 
 assert.ok(
-  formal.includes('src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"'),
+  formal.includes('src="../index.html?report=h1&embedded=1&v=20260731-nd-retail-v1"'),
   "the formal H1 page must explicitly identify its report iframe as embedded",
 );
 
@@ -20,15 +20,23 @@ assert.ok(
 );
 
 assert.ok(
-  report.includes(
-    "useState(()=>EMBEDDED_REPORT_MODE || sessionStorage.getItem('vantage-auth')==='ok')",
-  ),
-  "embedded reports must bypass login without depending on shared session storage",
+  formal.includes("window.VantageBrowserRuntime.signIn({username,password})"),
+  "the formal shell must authenticate with the shared Supabase runtime",
+);
+
+assert.ok(
+  !formal.includes("sessionStorage.setItem('vantage-auth','ok')"),
+  "the formal shell must not grant access through session storage",
+);
+
+assert.ok(
+  report.includes("window.VantageBrowserRuntime.getSession()"),
+  "embedded and standalone reports must both restore a real Supabase session",
 );
 
 assert.ok(
   report.includes("if(!authed) return <LoginOverlay"),
-  "standalone reports must retain their existing login protection",
+  "reports without a Supabase session must retain login protection",
 );
 
-console.log("H1 embedded authentication contract passed.");
+console.log("H1 embedded Supabase authentication contract passed.");

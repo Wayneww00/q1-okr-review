@@ -15,12 +15,12 @@ assert.ok(h1Start >= 0 && h1End > h1Start, "H1 dashboard data block should exist
 const h1 = index.slice(h1Start, h1End);
 
 const ids = [...h1.matchAll(/\bid:(\d+)(?:,|\s)/g)].map(([, id]) => Number(id));
-assert.deepEqual(ids, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], "H1 should contain 15 ordered data pages");
-assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','15 MODULES'\)\)/, "shell should advertise 15 modules");
-assert.doesNotMatch(shell, /'14 MODULES'/, "stale 14-module label should be removed");
+assert.deepEqual(ids, Array.from({length:22}, (_,index)=>index+1), "H1 should contain 22 ordered data pages after the ND Retail merge");
+assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','22 MODULES'\)\)/, "shell should advertise 22 modules");
+assert.doesNotMatch(shell, /'23 MODULES'/, "stale 23-module label should not appear");
 assert.ok(
-  shell.includes('src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"'),
-  "the formal shell should invalidate the stale embedded-report cache after the follower-chart correction",
+  shell.includes('src="../index.html?report=h1&embedded=1&v=20260731-nd-retail-v1"'),
+  "the formal shell should invalidate the embedded report cache after the ND Retail integration",
 );
 assert.doesNotMatch(
   shell,
@@ -31,7 +31,7 @@ assert.doesNotMatch(
 function pageBlock(id) {
   const start = h1.search(new RegExp(`\\{\\s*id:${id}(?:,|\\s)`));
   assert.ok(start >= 0, `H1 page ${id} should exist`);
-  const next = id < 15 ? h1.search(new RegExp(`\\{\\s*id:${id + 1}(?:,|\\s)`)) : h1.length;
+  const next = id < 22 ? h1.search(new RegExp(`\\{\\s*id:${id + 1}(?:,|\\s)`)) : h1.length;
   assert.ok(next > start, `H1 page ${id} should have an isolated data block`);
   return h1.slice(start, next);
 }
@@ -49,7 +49,6 @@ const page11 = pageBlock(11);
 const page12 = pageBlock(12);
 const page13 = pageBlock(13);
 const page14 = pageBlock(14);
-const page15 = pageBlock(15);
 
 function parsePage(source) {
   const normalized = source.trim().replace(/\s*\];\s*$/, "").replace(/,\s*$/, "");
@@ -58,8 +57,8 @@ function parsePage(source) {
 
 const data11 = parsePage(page11);
 const data12 = parsePage(page12);
+const data13 = parsePage(page13);
 const data14 = parsePage(page14);
-const data15 = parsePage(page15);
 
 assert.match(
   css,
@@ -132,16 +131,15 @@ assert.match(
   "page 12 reputation conclusion must remain legible at presentation scale",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260729-okr-independent-bg-v1/g)].length,
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260731-nd-retail-v1/g)].length,
   2,
-  "the formal shell and embedded report must both bust the cached theme after the follower-chart correction",
+  "the formal shell and embedded report must both load the current cache-busted theme",
 );
 
-assert.match(page11, /layoutType:"brand_voice"/);
-assert.match(page12, /layoutType:"brand_search_reputation"/);
-assert.match(page13, /layoutType:"social_sov_trend"/);
-assert.match(page14, /layoutType:"followers_share"/);
-assert.match(page15, /layoutType:"followers_trend"/);
+assert.match(page11, /layoutType:"brand_voice_search_combined"/);
+assert.match(page12, /layoutType:"social_sov_trend"/);
+assert.match(page13, /layoutType:"followers_share"/);
+assert.match(page14, /layoutType:"followers_trend"/);
 
 for (const token of [
   "品牌整体数据 品牌SOV",
@@ -155,7 +153,7 @@ for (const token of [
   "正面情感第 2",
   "约 37%，仅次于xm",
   "Exness 30.3%",
-  "主因2025 H2 有一波高声量、今年回归常态",
+  "主因 2025 H2 有一波高声量、今年回归常态",
   "声量竞争力强、需求与口碑向好",
   "缩小与 Exness 的差距、冲击第一",
   "H2核心：把已有的口碑和专业优势，扩大到更大的认知与声量"
@@ -183,13 +181,13 @@ for (const token of [
   "editorial criteria",
   "集中在“专业 · 稳健 · 可信”，区别于竞品的促销 / 信号导向。"
 ]) {
-  assert.ok(page12.includes(token), `page 12 should preserve PPT token: ${token}`);
+  assert.ok(page11.includes(token), `combined page 11 should preserve PPT token: ${token}`);
 }
 for (const month of ["7月","8月","9月","10月","11月","12月","1月","2月","3月","4月","5月","6月"]) {
-  assert.ok(page12.includes(`"${month}"`), `page 12 should preserve month label ${month}`);
+  assert.ok(page11.includes(`"${month}"`), `combined page 11 should preserve month label ${month}`);
 }
-assert.equal(Math.round((13.0 / 9.1 - 1) * 100), 43, "page 12 +43% should reconcile with the two displayed phase averages");
-assert.equal(data12.searchMetrics.months.length, 12, "page 12 should retain all 12 month labels");
+assert.equal(Math.round((13.0 / 9.1 - 1) * 100), 43, "page 11 +43% should reconcile with the two displayed phase averages");
+assert.equal(data11.searchMetrics.months.length, 12, "page 11 should retain all 12 month labels");
 
 for (const token of [
   "2025 H2 vs 2026 年 H1 月度表现及整体占比走势",
@@ -206,7 +204,7 @@ for (const token of [
   "8.1% 提升至 10.23%（增长 26.3%）",
   "品牌在行业讨论中的竞争力和可见度持续增强"
 ]) {
-  assert.ok(page13.includes(token), `page 13 should preserve PPT token: ${token}`);
+  assert.ok(page12.includes(token), `page 12 should preserve PPT token: ${token}`);
 }
 for (const row of [
   '{month:"Jan",period:"2026 H1",vantage:62.3,vantageText:"62.3",industry:1078.9,industryText:"1,078.9",sov:5.79,sovText:"5.79%"}',
@@ -222,11 +220,11 @@ for (const row of [
   '{month:"Nov",period:"2025 H2",vantage:158.1,vantageText:"158.1",industry:2062.9,industryText:"2,062.9",sov:7.66,sovText:"7.66%"}',
   '{month:"Dec",period:"2025 H2",vantage:163.7,vantageText:"163.7",industry:2017.1,industryText:"2,017.1",sov:8.10,sovText:"8.10%"}'
 ]) {
-  assert.ok(page13.includes(row), `page 13 should preserve exact PPT row: ${row}`);
+  assert.ok(page12.includes(row), `page 12 should preserve exact PPT row: ${row}`);
 }
 // The source PPT directly displays the SOV labels, including Aug and Sep.
 // Per the user's instruction, those visible PPT percentages remain authoritative here.
-assertOrderedTokens(page13, [
+assertOrderedTokens(page12, [
   '{month:"Jan",period:"2026 H1"',
   '{month:"Feb",period:"2026 H1"',
   '{month:"Mar",period:"2026 H1"',
@@ -260,20 +258,20 @@ for (const token of [
   "行业整体受众规模增长超过 50%",
   "在更广泛的竞争格局中仍保持 16.2% 的份额"
 ]) {
-  assert.ok(page14.includes(token), `page 14 should preserve PPT token: ${token}`);
+  assert.ok(page13.includes(token), `page 13 should preserve PPT token: ${token}`);
 }
-assert.ok(page14.includes("leftTicks:[0,2000000,4000000,6000000,8000000,10000000,12000000,14000000,16000000,18000000,20000000]"), "page 14 should preserve the PPT follower-axis ticks");
-assert.ok(page14.includes("rightAxisLabel:\"VANTAGE MARKETS SHARE (%)\", rightTicks:[0,5,10,15,20,25,30,35,40]"), "page 14 should preserve the PPT share-axis ticks");
+assert.ok(page13.includes("leftTicks:[0,2000000,4000000,6000000,8000000,10000000,12000000,14000000,16000000,18000000,20000000]"), "page 13 should preserve the PPT follower-axis ticks");
+assert.ok(page13.includes("rightAxisLabel:\"VANTAGE MARKETS SHARE (%)\", rightTicks:[0,5,10,15,20,25,30,35,40]"), "page 13 should preserve the PPT share-axis ticks");
 for (const row of [
   '{scope:"Global Accounts Only",industry:10783372,industryText:"10,783,372",vantage:2291951,vantageText:"2,291,951",share:21.3,shareText:"21.3%"}',
   '{scope:"Global + Regional/Sub-Accounts",industry:16420972,industryText:"16,420,972",vantage:2653508,vantageText:"2,653,508",share:16.2,shareText:"16.2%"}'
 ]) {
-  assert.ok(page14.includes(row), `page 14 should preserve exact PPT row: ${row}`);
+  assert.ok(page13.includes(row), `page 13 should preserve exact PPT row: ${row}`);
 }
-for (const scope of data14.followerScopes) {
-  assert.equal(Number((scope.vantage / scope.industry * 100).toFixed(1)), scope.share, `page 14 ${scope.scope} share should reconcile`);
+for (const scope of data13.followerScopes) {
+  assert.equal(Number((scope.vantage / scope.industry * 100).toFixed(1)), scope.share, `page 13 ${scope.scope} share should reconcile`);
 }
-assert.ok((data14.followerScopes[1].industry / data14.followerScopes[0].industry - 1) * 100 > 50, "page 14 industry audience should grow by more than 50%");
+assert.ok((data13.followerScopes[1].industry / data13.followerScopes[0].industry - 1) * 100 > 50, "page 13 industry audience should grow by more than 50%");
 
 for (const token of [
   "FOLLOWERS TREND COMPARISON",
@@ -289,7 +287,7 @@ for (const token of [
   "绝大多数月份的环比增速均超过 2025 年下半年",
   "更强劲的受众增长势头和持续扩大的社区规模"
 ]) {
-  assert.ok(page15.includes(token), `page 15 should preserve PPT token: ${token}`);
+  assert.ok(page14.includes(token), `page 14 should preserve PPT token: ${token}`);
 }
 for (const row of [
   '{month:"Month 1",h2:1949275,h2Text:"1,949,275",h1:2064174,h1Text:"2,064,174",h2Growth:null,h2GrowthText:"—",h1Growth:null,h1GrowthText:"—"}',
@@ -299,11 +297,11 @@ for (const row of [
   '{month:"Month 5",h2:2014469,h2Text:"2,014,469",h1:2234889,h1Text:"2,234,889",h2Growth:0.02,h2GrowthText:"+0.02%",h1Growth:1.96,h1GrowthText:"+1.96%"}',
   '{month:"Month 6",h2:2044947,h2Text:"2,044,947",h1:2267829,h1Text:"2,267,829",h2Growth:1.51,h2GrowthText:"+1.51%",h1Growth:1.47,h1GrowthText:"+1.47%"}'
 ]) {
-  assert.ok(page15.includes(row), `page 15 should preserve exact PPT row: ${row}`);
+  assert.ok(page14.includes(row), `page 14 should preserve exact PPT row: ${row}`);
 }
-for (let index = 1; index < data15.followersTrend.length; index += 1) {
-  const previous = data15.followersTrend[index - 1];
-  const current = data15.followersTrend[index];
+for (let index = 1; index < data14.followersTrend.length; index += 1) {
+  const previous = data14.followersTrend[index - 1];
+  const current = data14.followersTrend[index];
   const h1Calculated = (current.h1 / previous.h1 - 1) * 100;
   const h2Calculated = (current.h2 / previous.h2 - 1) * 100;
   assert.ok(Math.abs(h1Calculated - current.h1Growth) < 0.011, `page 15 H1 growth should reconcile within the PPT's 0.01-point display precision at ${current.month}`);
@@ -311,6 +309,7 @@ for (let index = 1; index < data15.followersTrend.length; index += 1) {
 }
 
 for (const componentName of [
+  "H1BrandVoiceSearchCombinedChart",
   "H1BrandVoiceChart",
   "H1BrandSearchReputationChart",
   "H1SocialSovTrendChart",

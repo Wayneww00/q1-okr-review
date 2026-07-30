@@ -19,6 +19,12 @@ try {
 
   const secondScene = page.locator(".scene.second-film");
   const secondVideo = page.locator("#secondScreenVideo");
+  await secondScene.evaluate((scene) =>
+    scene.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(() =>
+    document.querySelector(".scene.second-film")?.classList.contains("active"),
+  );
   await secondVideo.evaluate((video) => {
     if (video.readyState < HTMLMediaElement.HAVE_METADATA) {
       return new Promise((resolve) =>
@@ -26,12 +32,6 @@ try {
       );
     }
   });
-  await secondScene.evaluate((scene) =>
-    scene.scrollIntoView({ behavior: "instant", block: "start" }),
-  );
-  await page.waitForFunction(() =>
-    document.querySelector(".scene.second-film")?.classList.contains("active"),
-  );
   await page.waitForFunction(() => {
     const video = document.querySelector("#secondScreenVideo");
     return video && !video.paused && !video.muted && video.currentTime > 0;
@@ -47,7 +47,7 @@ try {
   assert.equal(playingState.muted, false, "the active second screen must play with sound");
   assert.equal(playingState.paused, false, "the active second screen must be playing");
   assert.equal(playingState.volume, 1, "the active second screen must use full volume");
-  assert.ok(playingState.duration >= 9.9, "the complete supplied film must load");
+  assert.ok(playingState.duration >= 8, "the complete supplied film must load");
 
   const reportScene = page.locator('.scene[data-label="Full Report"]');
   await reportScene.evaluate((scene) =>

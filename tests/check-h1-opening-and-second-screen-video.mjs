@@ -11,11 +11,11 @@ const openingPosterPath = path.join(
 );
 const secondVideoPath = path.join(
   root,
-  "previews/assets/vantage-h1-second-screen-july28-sound-4k.mp4",
+  "previews/assets/vantage-h1-second-screen-final-4k.mp4",
 );
 const secondPosterPath = path.join(
   root,
-  "previews/assets/vantage-h1-second-screen-july28-poster.jpg",
+  "previews/assets/vantage-h1-second-screen-final-poster.jpg",
 );
 const formal = fs.readFileSync(formalPath, "utf8");
 
@@ -44,8 +44,8 @@ const secondScene = formal.match(
 assert.ok(secondScene, "the second screen must be implemented as a video scene");
 assert.match(
   secondScene,
-  /<video\b(?=[^>]*id="secondScreenVideo")(?=[^>]*class="video-bg second-screen-video")(?=[^>]*playsinline)(?=[^>]*preload="auto")(?=[^>]*poster="assets\/vantage-h1-second-screen-july28-poster\.jpg")(?=[^>]*src="assets\/vantage-h1-second-screen-july28-sound-4k\.mp4")[^>]*>/,
-  "the second screen must use the supplied film as its full-bleed background",
+  /<video\b(?=[^>]*id="secondScreenVideo")(?=[^>]*class="video-bg second-screen-video")(?=[^>]*playsinline)(?=[^>]*preload="metadata")(?=[^>]*poster="assets\/vantage-h1-second-screen-final-poster\.jpg")(?=[^>]*data-src="previews\/assets\/vantage-h1-second-screen-final-4k\.mp4")[^>]*>/,
+  "the second screen must defer the supplied full-bleed film until its scene becomes active",
 );
 assert.doesNotMatch(
   secondScene,
@@ -59,7 +59,7 @@ assert.doesNotMatch(
 );
 assert.match(
   secondScene,
-  /<div class="chapter-no">02 <small>\/ 05<\/small><\/div>/,
+  /<div class="chapter-no">02 <small>\/ 06<\/small><\/div>/,
   "the second screen must retain its page number",
 );
 
@@ -75,7 +75,12 @@ assert.match(
 );
 assert.match(
   formal,
-  /const playSceneVideo = \(video\) => \{[\s\S]*?video\.muted = !soundOn;[\s\S]*?video\.play\(\)\.catch\(\(\) => \{[\s\S]*?video\.muted = true;[\s\S]*?video\.play\(\)\.catch\(\(\) => \{\}\);/,
+  /const ensureVideoSource = video => \{[\s\S]*?video\.src = window\.VantageBrowserRuntime\.resolveMediaUrl\(video\.dataset\.src\);[\s\S]*?video\.load\(\);[\s\S]*?ensureVideoSource\(video\);/,
+  "deferred scene videos must receive their source immediately before playback",
+);
+assert.match(
+  formal,
+  /const playSceneVideo = \(video\) => \{[\s\S]*?video\.muted = !isSoundAudible\(\);[\s\S]*?video\.play\(\)\.then\([\s\S]*?\.catch\(\(\) => \{[\s\S]*?video\.muted = true;[\s\S]*?video\.play\(\)\.catch\(\(\) => \{\}\);/,
   "the active video must request audible playback and fall back safely when the browser blocks it",
 );
 assert.match(
@@ -116,8 +121,8 @@ assert.equal(secondVideo?.codec_name, "h264", "the second-screen film must use H
 assert.equal(secondVideo?.width, 3840, "the supplied 4K width must be preserved");
 assert.equal(secondVideo?.height, 2160, "the supplied 4K height must be preserved");
 assert.equal(secondVideo?.pix_fmt, "yuv420p", "the film must remain broadly browser-compatible");
-assert.equal(secondVideo?.r_frame_rate, "30/1", "the supplied 30 fps motion must be preserved");
-assert.ok(Number(secondVideo?.bit_rate) >= 7_000_000, "the second-screen film must retain the supplied clear 4K bitrate");
+assert.equal(secondVideo?.r_frame_rate, "24/1", "the supplied 24 fps motion must be preserved");
+assert.ok(Number(secondVideo?.bit_rate) >= 8_000_000, "the second-screen film must retain a clear 4K bitrate");
 assert.equal(
   secondAudio?.codec_name,
   "aac",
@@ -126,12 +131,18 @@ assert.equal(
 assert.equal(secondAudio?.sample_rate, "48000", "the supplied 48 kHz audio must be preserved");
 assert.equal(secondAudio?.channels, 2, "the supplied stereo audio must be preserved");
 assert.ok(
-  Number(secondAudio?.bit_rate) >= 256_000,
+  Number(secondAudio?.bit_rate) >= 192_000,
   "the sound-effect track must retain high-quality audio bitrate",
 );
 assert.ok(
-  Number(secondProbe.format.duration) >= 10,
+  Number(secondProbe.format.duration) >= 8,
   "the complete supplied second-screen film must be retained",
 );
+
+const secondBytes = fs.readFileSync(secondVideoPath);
+const secondMoovOffset = secondBytes.indexOf(Buffer.from("moov"));
+const secondMdatOffset = secondBytes.indexOf(Buffer.from("mdat"));
+assert.ok(secondMoovOffset > 0 && secondMdatOffset > 0, "the second-screen MP4 must contain moov and mdat atoms");
+assert.ok(secondMoovOffset < secondMdatOffset, "the second-screen MP4 must use faststart");
 
 console.log("H1 opening and second-screen video contract passed.");

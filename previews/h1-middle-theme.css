@@ -291,7 +291,7 @@ body.h1-embedded-report::-webkit-scrollbar-thumb {
   backdrop-filter: blur(18px) !important;
 }
 
-.h1-embedded-report .save-bar { display: none !important; }
+.h1-embedded-report .save-bar { display: flex !important; }
 
 .h1-embedded-report .h1-view-only-note {
   position: fixed;

@@ -1,10 +1,21 @@
-# Historical H1 video exports. The active opening, second-screen, and closing
-# assets are kept; these unused revisions would otherwise add hundreds of MB
-# to every Vercel deployment.
-previews/assets/vantage-h1-opening-4k.mp4
-previews/assets/vantage-h1-opening-july24-4k.mp4
-previews/assets/vantage-h1-opening.mp4
-previews/assets/vantage-h1-second-screen-25s.mp4
-previews/assets/vantage-h1-second-screen-july27-4k.mp4
-previews/assets/vantage-h1-second-screen-july28-4k.mp4
-previews/assets/vantage-h1-closing-july27-4k.mp4
+# Production media is delivered through the public remote-media manifest.
+# The remote build receives only source files and regenerates the dist artifact.
+.git/
+.vercel/
+dist/
+vendor/
+runtime-config.js
+backups/
+docs/
+tests/
+supabase/
+node_modules/
+.tmp/
+.codex-backups/
+previews/assets/ppt-originals/
+**/*.mp4
+!previews/assets/vantage-h1-opening-final-4k.mp4
+debug-*.png
+verify-*.png
+check-*.png
+v4-*.png

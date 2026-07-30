@@ -30,17 +30,17 @@ assert.match(
 );
 
 const exactPages = [
-  ["okr-review", "p25-source.png"],
-  ["okr-brand-results", "p27-source.png"],
-  ["okr-brand-refresh", "okr-p29-source.png"],
-  ["okr-brand-operating-system", "okr-p30-source.png"],
-  ["okr-tvc-matrix", "okr-p32-matrix-source.jpg"],
-  ["okr-tvc-library", "okr-p32-tvc-source.jpg"],
-  ["okr-application-roadmap", "okr-p33-source.png"],
-  ["okr-high-value-actions", "okr-p34-source.png"],
-  ["okr-awards", "awards-source.png"],
-  ["okr-offline-event-01", "salon-source.png"],
-  ["okr-offline-event-02", "expo-source.png"],
+  ["okr-review", "p25-overlay.png"],
+  ["okr-brand-results", "p27-overlay.png"],
+  ["okr-brand-refresh", "okr-p29-overlay.png"],
+  ["okr-brand-operating-system", "okr-p30-overlay.png"],
+  ["okr-tvc-matrix", "okr-p32-matrix-overlay.png"],
+  ["okr-tvc-library", "okr-p32-tvc-overlay.png"],
+  ["okr-application-roadmap", "okr-p33-overlay.png"],
+  ["okr-high-value-actions", "okr-p34-overlay.png"],
+  ["okr-awards", "awards-overlay.png"],
+  ["okr-offline-event-01", "salon-overlay.png"],
+  ["okr-offline-event-02", "expo-overlay.png"],
 ];
 for (const [pageId, fileName] of exactPages) {
   assert.ok(app.includes(`id:'${pageId}'`), `${pageId} must be registered`);
@@ -55,7 +55,6 @@ for (const [pageId, fileName] of exactPages) {
     `${fileName} must exist`,
   );
 }
-
 assert.match(
   app,
   /className="h1-okr-exact-frame"[\s\S]*?draggable="false"/,
@@ -63,14 +62,13 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*min\(100%,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;[\s\S]*?mask-composite:\s*intersect;/,
-  "each Figma page must own an independent, proportional artboard with a soft edge blend",
+  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*min\(100%,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;/,
+  "each Figma overlay must remain on a proportional 16:9 artboard",
 );
-assert.ok(
-  app.includes(
-    'style={{\'--h1-okr-page-image\':`url("/${page.src}")`}}',
-  ),
-  "each OKR page must provide its own Figma image to the responsive edge-fill layer",
+assert.match(
+  app,
+  /const H1_OKR_SHARED_BG='previews\/assets\/figma-exact\/okr-bg-65-2\.png';/,
+  "the OKR deck must bind the approved Figma BG once",
 );
 assert.match(
   theme,
@@ -79,13 +77,14 @@ assert.match(
 );
 assert.match(
   theme,
-  /main\.h1-okr-report > \.h1-okr-exact-page::before\s*\{[\s\S]*?background-image:[\s\S]*?var\(--h1-okr-page-image\);[\s\S]*?background-size:\s*cover;/,
-  "each page must independently fill non-16:9 edges from its own Figma background",
+  /\.h1-okr-shared-bg-layer\s*\{[\s\S]*?position:\s*sticky;[\s\S]*?background-image:\s*var\(--h1-okr-shared-bg\);[\s\S]*?background-size:\s*cover;/,
+  "the approved Figma BG must enter with the OKR content and stay pinned without black gutters",
 );
+assert.doesNotMatch(app, /--h1-okr-page-image/);
 assert.doesNotMatch(
   app,
   /className="h1-okr-fixed-stage"/,
-  "the rejected shared OKR background stage must stay removed",
+  "the obsolete duplicate shared-stage element must stay removed",
 );
 assert.doesNotMatch(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
@@ -94,7 +93,7 @@ assert.doesNotMatch(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260729-okr-independent-bg-v1"',
+    'src="../index.html?report=h1&embedded=1&v=20260731-nd-retail-v1"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );
