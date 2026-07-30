@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-figma-brand-refresh-v7">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-figma-table-values-v9">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -1085,7 +1085,6 @@ function H1ExtendedEditorialPage({data,count}) {
           <div><b>关键结论</b><p>{data.description}</p></div>
           {data.takeaway && <strong>{data.takeaway}</strong>}
         </footer>
-        <div className="h1-extended-editorial-page-number">{String(data.id).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span></div>
       </div>
     </div>
   );
@@ -1213,7 +1212,6 @@ function H1FigmaDataPage({data, count, editMode}) {
             />
           </aside>
         </section>
-        <div className="h1-figma-page-number">{String(data.id).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span></div>
       </div>
     </div>
   );
@@ -2351,7 +2349,7 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-awards',
     label:'奖项',
-    src:'previews/assets/figma-untitled/awards-foreground.svg',
+    src:'previews/assets/figma-untitled/awards-group-1940698522.svg',
   },
   {
     id:'okr-offline-event-01',
@@ -2701,7 +2699,7 @@ function OkrReportDeck(){
         page.id==='okr-tvc-matrix' ? <OkrBrandContentMatrixForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-tvc-framework' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-2-foreground.png"/> :
-        page.id==='okr-application-roadmap' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
+        page.id==='okr-application-roadmap' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:40,top:0,width:1920,height:1080}}/> :
         page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p31-foreground.png"/> :
         page.id==='okr-awards' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:40,width:1600,height:1012}}/> :
         page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground.png"/> :
@@ -2717,8 +2715,8 @@ function OkrReportDeck(){
         page.id==='okr-omnichannel-amplification' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p59-foreground.png" artwork={{left:106,top:75,width:1707,height:985}}/> :
         page.id==='okr-tvc-localization' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p60-foreground.png" artwork={{left:160,top:92,width:1631,height:920}}/> :
         page.id==='okr-superapp-activation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p61-foreground.png" artwork={{left:46,top:52,width:1850,height:1045}}/> :
-        page.id==='okr-premium-unlimited' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p62-foreground.png" artwork={{left:85,top:75,width:1600,height:972}}/> :
-        page.id==='okr-brand-experience-audit' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p63-foreground.png" artwork={{left:111,top:50,width:1600,height:839}}/> :
+        page.id==='okr-premium-unlimited' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p62-foreground.png" artwork={{left:160,top:75,width:1600,height:972}}/> :
+        page.id==='okr-brand-experience-audit' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p63-foreground.png" artwork={{left:111,top:90,width:1600,height:839}}/> :
           <OkrExactFigmaPage
             key={page.id}
             page={page}

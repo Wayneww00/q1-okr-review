@@ -479,9 +479,9 @@
   white-space: nowrap;
 }
 
-.h1-figma-summary-table span {
+.h1-figma-summary-table > div > span {
   color: rgba(255,255,255,.86);
-  font: 400 14.42254px/29.42px "Noto Sans SC", sans-serif !important;
+  font: 500 18px/29.42px "Noto Sans SC", sans-serif !important;
   white-space: nowrap;
 }
 
@@ -1107,19 +1107,6 @@
   box-shadow: 0 4px 12px rgba(0,0,0,.24);
 }
 
-.h1-figma-page-number {
-  position: absolute;
-  right: 0;
-  bottom: -32px;
-  color: #fff;
-  font: 700 14px/1 "Barlow Condensed", sans-serif !important;
-  letter-spacing: .08em !important;
-}
-
-.h1-figma-page-number span {
-  color: rgba(255,255,255,.42);
-}
-
 /* Expanded PPT3 pages 11–15: accuracy-first editorial layouts. */
 .h1-extended-editorial-page {
   position: relative;
@@ -1389,19 +1376,6 @@
   color: #ff9d78;
   font-size: 15px;
   line-height: 1.58;
-}
-
-.h1-extended-editorial-page-number {
-  position: absolute;
-  right: 48px;
-  bottom: 13px;
-  color: #fff;
-  font: 800 13px/1 "Barlow Condensed", sans-serif !important;
-  letter-spacing: .12em !important;
-}
-
-.h1-extended-editorial-page-number span {
-  color: rgba(255,255,255,.42);
 }
 
 .h1-brand-voice-layout {

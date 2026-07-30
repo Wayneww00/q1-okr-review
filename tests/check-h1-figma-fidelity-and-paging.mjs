@@ -63,6 +63,21 @@ assert.match(
   "Module titles must appear on the Retail opener and Paid Ads opener."
 );
 assert.match(
+  css,
+  /\.h1-figma-summary-table b\s*\{[^}]*font:\s*500 21\.6338px\/41\.66px/s,
+  "Every comparison-table header must use the same Figma type size and line height."
+);
+assert.match(
+  css,
+  /\.h1-figma-summary-table > div > span\s*\{[^}]*font:\s*500 18px\/29\.42px/s,
+  "Every comparison-table value row must use the enlarged shared 18px typography."
+);
+assert.doesNotMatch(
+  app,
+  /className="h1-(?:figma|extended-editorial)-page-number"/,
+  "The 15 data pages must not render a duplicate page counter inside the report canvas."
+);
+assert.match(
   shell,
   /reportPageTop\(reportPages\[index\]\)/,
   "PPT navigation must target an exact report-page offset."

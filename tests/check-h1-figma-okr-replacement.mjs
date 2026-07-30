@@ -170,7 +170,7 @@ assert.doesNotMatch(
   /<rect width="1920" height="1080" fill="#F5F5F5"\/>|<g id="background">/,
   "the application-roadmap foreground must not replace the fixed trophy background",
 );
-const awardsForeground = path.join(root, "previews", "assets", "figma-untitled", "awards-foreground.svg");
+const awardsForeground = path.join(root, "previews", "assets", "figma-untitled", "awards-group-1940698522.svg");
 assert.ok(fs.existsSync(awardsForeground), "the awards Figma foreground must exist locally");
 assert.doesNotMatch(
   fs.readFileSync(awardsForeground, "utf8"),
@@ -178,13 +178,18 @@ assert.doesNotMatch(
   "the Awards foreground must exclude Figma's artboard fill so the shared trophy background remains visible",
 );
 const awardsForegroundMarkup = fs.readFileSync(awardsForeground, "utf8");
-assert.ok(
-  awardsForegroundMarkup.indexOf('id="Rectangle 34"') < awardsForegroundMarkup.indexOf('id="Rectangle 37"'),
-  "the H1 card body must render behind its header rather than overlap it",
+assert.match(
+  awardsForegroundMarkup,
+  /<g id="Group 50_2" transform="translate\(0 27\.944\)">/,
+  "the H2 S badge must align vertically with the H1 S badge",
 );
 assert.ok(
-  awardsForegroundMarkup.indexOf('id="Rectangle 38"') < awardsForegroundMarkup.indexOf('id="Rectangle 39"'),
-  "the H2 card body must render behind its header rather than overlap it",
+  awardsForegroundMarkup.indexOf('id="Rectangle 37"') < awardsForegroundMarkup.indexOf('id="Rectangle 34"'),
+  "the H1 glass body must cover the lower header edge exactly as composed in Figma",
+);
+assert.ok(
+  awardsForegroundMarkup.indexOf('id="Rectangle 39"') < awardsForegroundMarkup.indexOf('id="Rectangle 38"'),
+  "the H2 glass body must cover the lower header edge exactly as composed in Figma",
 );
 assert.match(
   app,
@@ -202,7 +207,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-foreground-v13"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-s-align-v15"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

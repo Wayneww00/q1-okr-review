@@ -19,7 +19,7 @@ assert.deepEqual(ids, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], "H1 should contain 
 assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','15 MODULES'\)\)/, "shell should advertise 15 modules");
 assert.doesNotMatch(shell, /'14 MODULES'/, "stale 14-module label should be removed");
 assert.ok(
-  shell.includes('src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-foreground-v13"'),
+  shell.includes('src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-s-align-v15"'),
   "the formal shell should invalidate the stale embedded-report cache after the follower-chart correction",
 );
 assert.doesNotMatch(
@@ -132,7 +132,7 @@ assert.match(
   "page 12 reputation conclusion must remain legible at presentation scale",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260730-figma-brand-refresh-v7/g)].length,
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260730-figma-table-values-v9/g)].length,
   2,
   "the formal shell and embedded report must both bust the cached theme after the follower-chart correction",
 );
@@ -439,7 +439,7 @@ assert.match(
 );
 
 assert.match(index, /<H1FigmaDataPage data=\{board\} count=\{DASHBOARDS\.length\}/, "dynamic total count should remain wired");
-assert.match(index, /String\(data\.id\)\.padStart\(2,"0"\)[\s\S]*?String\(count\)\.padStart\(2,"0"\)/, "page counter should remain dynamic");
+assert.doesNotMatch(index, /className="h1-(?:figma|extended-editorial)-page-number"/, "data pages should not render a duplicate page counter");
 assert.match(shell, /const reportPages = \[\.\.\.doc\.querySelectorAll\('\[data-report-page\]'\)\];/, "shell should discover the unified data and OKR page registry dynamically");
 assert.match(shell, /goToReportPage\(reportPages\.length - 1\)/, "backward handoff should target the final dynamic report page");
 

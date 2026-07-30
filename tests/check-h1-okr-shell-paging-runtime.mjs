@@ -137,7 +137,7 @@ try {
         pageNumber: "10/22",
       },
       "okr-awards": {
-        source: /previews\/assets\/figma-untitled\/awards-foreground\.svg$/,
+        source: /previews\/assets\/figma-untitled\/awards-group-1940698522\.svg$/,
         pageNumber: "11/22",
       },
       "okr-offline-event-01": {

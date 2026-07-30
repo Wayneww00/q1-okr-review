@@ -75,11 +75,11 @@ assert.ok(
 );
 assert.match(
   registry,
-  /id:'okr-awards'[\s\S]*?src:'previews\/assets\/figma-untitled\/awards-foreground\.svg'/,
+  /id:'okr-awards'[\s\S]*?src:'previews\/assets\/figma-untitled\/awards-group-1940698522\.svg'/,
   "awards must use the requested transparent Figma foreground",
 );
 assert.ok(
-  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "awards-foreground.svg")),
+  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "awards-group-1940698522.svg")),
   "the awards foreground must exist locally",
 );
 assert.match(

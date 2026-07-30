@@ -76,7 +76,7 @@ assert.match(
 );
 assert.match(
   registry,
-  /id:'okr-awards'[\s\S]*?src:'previews\/assets\/figma-untitled\/awards-foreground\.svg'/,
+  /id:'okr-awards'[\s\S]*?src:'previews\/assets\/figma-untitled\/awards-group-1940698522\.svg'/,
   "awards must use the requested transparent Figma foreground",
 );
 
@@ -117,7 +117,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-foreground-v13"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-figma-awards-s-align-v15"',
   ),
   "the formal shell must invalidate the embedded report after the exact Figma update",
 );
