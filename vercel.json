@@ -2,13 +2,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": null,
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/previews/vantage-h1-immersive.html",
-      "permanent": false
-    }
-  ],
   "routes": [
     {
       "src": "^(?:/(.*))$",
@@ -25,6 +18,13 @@
         "Cache-Control": "public, max-age=0, must-revalidate"
       },
       "continue": true
+    },
+    {
+      "src": "^/$",
+      "status": 307,
+      "headers": {
+        "Location": "/previews/vantage-h1-immersive.html"
+      }
     },
     {
       "handle": "filesystem"

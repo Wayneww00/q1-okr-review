@@ -18,20 +18,23 @@ const rootShellRewriteIndex = productionRoutes.findIndex(
     route.src === "^/$" &&
     route.dest === "/previews/vantage-h1-immersive.html",
 );
-const rootShellRedirect = (vercelConfig.redirects || []).find(
-  (redirect) =>
-    redirect.source === "/" &&
-    redirect.destination === "/previews/vantage-h1-immersive.html",
+const rootShellRedirectIndex = productionRoutes.findIndex(
+  (route) =>
+    route.src === "^/$" &&
+    route.status === 307 &&
+    route.headers?.Location === "/previews/vantage-h1-immersive.html",
+);
+const filesystemRouteIndex = productionRoutes.findIndex(
+  (route) => route.handle === "filesystem",
 );
 
 assert.ok(
-  rootShellRedirect,
+  rootShellRedirectIndex >= 0,
   "the production root must redirect to the immersive shell so relative media paths keep the /previews/ base URL",
 );
-assert.equal(
-  rootShellRedirect.permanent,
-  false,
-  "the root redirect should remain temporary while the immersive entry path can evolve",
+assert.ok(
+  filesystemRouteIndex < 0 || rootShellRedirectIndex < filesystemRouteIndex,
+  "the root redirect must run before the filesystem serves index.html",
 );
 assert.equal(
   rootShellRewriteIndex,
