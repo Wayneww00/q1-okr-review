@@ -53,7 +53,7 @@ with sync_playwright() as playwright:
     }
 
     page_number = report_page.locator(".h1-okr-page-number").inner_text()
-    assert "27" in page_number and "30" in page_number
+    assert "28" in page_number and "31" in page_number
     report_page.screenshot(path=str(SCREENSHOT))
     assert not errors, f"page errors: {errors}"
     browser.close()

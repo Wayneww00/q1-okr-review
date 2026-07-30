@@ -57,8 +57,8 @@ for (const [pageId, fileName] of expectedPages) {
 
 assert.equal(
   [...registry.matchAll(/\bid:'okr-/g)].length,
-  30,
-  "the OKR section must contain the approved thirty pages after the Black Label insertion",
+  31,
+  "the OKR section must contain thirty-one pages after the Frame 73 story insertion",
 );
 assert.ok(
   registry.includes("previews/assets/figma-untitled/brand-operating-system-foreground.svg"),
@@ -127,11 +127,12 @@ assert.match(
   "the p54-1 Figma video preview must remain at its source coordinates over the panel",
 );
 assert.ok(
-  registry.indexOf("id:'okr-merchandise'") < registry.indexOf("id:'okr-cfd-public-good'") &&
+  registry.indexOf("id:'okr-merchandise'") < registry.indexOf("id:'okr-cfd-public-good-story'") &&
+    registry.indexOf("id:'okr-cfd-public-good-story'") < registry.indexOf("id:'okr-cfd-public-good'") &&
     registry.indexOf("id:'okr-cfd-public-good'") < registry.indexOf("id:'okr-public-good-video'") &&
     registry.indexOf("id:'okr-public-good-video'") < registry.indexOf("id:'okr-un-ngo-engagement'") &&
     registry.indexOf("id:'okr-un-ngo-engagement'") < registry.indexOf("id:'okr-ai-recommendation'"),
-  "the three requested Figma pages must be inserted immediately after merchandise",
+  "the Frame 73 story and following Figma pages must remain in order after merchandise",
 );
 for (const [pageId, fileName] of [
   ["okr-ai-recommendation", "p58-foreground.png"],

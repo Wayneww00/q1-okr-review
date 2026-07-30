@@ -2407,6 +2407,23 @@ const OKR_FIGMA_PAGES=[
     src:'previews/assets/figma-untitled/p52-foreground-clean.png',
   },
   {
+    id:'okr-cfd-public-good-story',
+    label:'成为 CFD 行业公益的领军者',
+    src:'previews/assets/figma-untitled/p73-cfd-public-good-video-foreground.png',
+    videoSlots:[
+      {
+        id:'cfd-public-good-story',
+        label:'成为 CFD 行业公益的领军者',
+        src:'previews/assets/tvc-library/public-good.mp4?v=figma-frame-73',
+        fit:'cover',
+        left:9.01,
+        top:26.76,
+        width:81.98,
+        height:66.39,
+      },
+    ],
+  },
+  {
     id:'okr-cfd-public-good',
     label:'成为 CFD 行业公益的领军者',
     src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',
@@ -2761,6 +2778,7 @@ function OkrReportDeck(){
         page.id==='okr-elite-black-label' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-elite-business-enablement' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground-clean.png"/> :
+        page.id==='okr-cfd-public-good-story' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
