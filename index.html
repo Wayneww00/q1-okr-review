@@ -2367,6 +2367,9 @@ const OKR_FIGMA_PAGES=[
     modalSrc:'previews/assets/figma-exact/expo-modal-source.png',
     hotspotClass:'is-expo',
   },
+  {id:'okr-elite-client-identity',label:'顶级客户身份体系',src:'previews/assets/figma-untitled/p38-39-elite-client-foreground.svg'},
+  {id:'okr-client-experience-model',label:'大客户体验体系',src:'previews/assets/figma-untitled/p66-client-experience-foreground.svg'},
+  {id:'okr-client-experience-cases',label:'顶尖大客户体验案例',src:'previews/assets/figma-untitled/p67-client-experience-cases-foreground.svg'},
   {
     id:'okr-merchandise',
     label:'周边',
@@ -2443,6 +2446,19 @@ function OkrDirectFigmaForegroundPage({page,index,count,src}){
         <div className="h1-okr-page-number" aria-hidden="true">
           {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function OkrEliteClientForegroundPage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  return (
+    <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page" data-report-page data-page-id={page.id} aria-label={page.label}>
+      <div ref={canvasRef} className="h1-okr-canvas">
+        <img className="h1-okr-figma-foreground-layer" src="previews/assets/figma-untitled/elite-client-background.png" alt="" width="1920" height="1080" style={{zIndex:0}} loading="eager" decoding="sync" draggable="false" aria-hidden="true" />
+        <img className="h1-okr-figma-foreground-layer" src={page.src} alt="" width="1920" height="1080" loading="eager" decoding="sync" draggable="false" aria-hidden="true" />
+        <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
       </div>
     </section>
   );
@@ -2690,6 +2706,9 @@ function OkrReportDeck(){
         page.id==='okr-awards' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:40,width:1600,height:1012}}/> :
         page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground.png"/> :
         page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p36-1-foreground.png"/> :
+        page.id==='okr-elite-client-identity' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-client-experience-model' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-client-experience-cases' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground.png"/> :
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
