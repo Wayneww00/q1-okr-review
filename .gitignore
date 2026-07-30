@@ -8,6 +8,7 @@ node_modules
 !previews/assets/vantage-h1-opening-final-4k.mp4
 !previews/assets/vantage-h1-second-screen-july28-sound-4k.mp4
 !previews/assets/vantage-h1-closing-sp-4k.mp4
+!previews/assets/tvc-library/*.mp4
 debug-*.png
 verify-*.png
 check-*.png

@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-elite-door-v20">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-black-label-v21">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2354,14 +2354,14 @@ const OKR_FIGMA_PAGES=[
     label:'常态化与场景化 TVC',
     src:'previews/assets/figma-exact/okr-p32-tvc-source.jpg',
     videoSlots:[
-      {id:'co-brand',label:'合作背书片',left:11.3,top:16.1,width:24.8,height:16.1},
-      {id:'chapter-01',label:'品牌章节片 01',left:38.1,top:16.1,width:24.8,height:16.1},
-      {id:'chapter-02',label:'品牌章节片 02',left:65,top:16.1,width:24.8,height:16.1},
-      {id:'public-good',label:'公益',left:11.3,top:56.7,width:24.8,height:16.1},
-      {id:'usp',label:'USP',left:38.1,top:56.7,width:24.8,height:16.1},
-      {id:'special-festival',label:'特殊节庆',left:65,top:56.7,width:24.8,height:16.1},
-      {id:'product-24-7',label:'产品 24/7',left:11.3,top:80.1,width:24.8,height:16.1},
-      {id:'product-copy-trade',label:'产品 Copy Trade',left:38.1,top:80.1,width:24.8,height:16.1},
+      {id:'co-brand',label:'合作背书片 · 法拉利合规 TVC',src:'previews/assets/tvc-library/ferrari-co-brand.mp4?v=ppt-mapping-verified-20260730',left:11.3,top:16.1,width:24.8,height:16.1},
+      {id:'chapter-01',label:'品牌章节片 01 · Think Ahead',src:'previews/assets/tvc-library/brand-chapter-think-ahead.mp4?v=ppt-mapping-verified-20260730',left:38.1,top:16.1,width:24.8,height:16.1},
+      {id:'chapter-02',label:'品牌章节片 02 · Perform Ahead',src:'previews/assets/tvc-library/brand-chapter-perform-ahead.mp4?v=ppt-mapping-verified-20260730',left:65,top:16.1,width:24.8,height:16.1},
+      {id:'public-good',label:'公益',src:'previews/assets/tvc-library/public-good.mp4?v=ppt-mapping-verified-20260730',fit:'cover',left:11.3,top:56.7,width:24.8,height:16.1},
+      {id:'usp',label:'USP',src:'previews/assets/tvc-library/usp.mp4?v=ppt-mapping-verified-20260730',left:38.1,top:56.7,width:24.8,height:16.1},
+      {id:'special-festival',label:'特殊节庆 · World Cup',src:'previews/assets/tvc-library/special-festival-world-cup.mp4?v=ppt-mapping-verified-20260730',left:65,top:56.7,width:24.8,height:16.1},
+      {id:'product-24-7',label:'产品 · 24/7',src:'previews/assets/tvc-library/product-24-7.mp4?v=ppt-mapping-verified-20260730',left:11.3,top:80.1,width:24.8,height:16.1},
+      {id:'product-copy-trade',label:'产品 · Copy Trade',src:'previews/assets/tvc-library/product-copy-trade.mp4?v=ppt-mapping-verified-20260730',left:38.1,top:80.1,width:24.8,height:16.1},
     ],
   },
   {
@@ -2399,6 +2399,7 @@ const OKR_FIGMA_PAGES=[
   {id:'okr-elite-client-no1-experience',label:'Vantage 顶级客户 No.1 体验',src:'previews/assets/figma-untitled/p70-elite-client-foreground.png'},
   {id:'okr-elite-endorsement-resources',label:'顶级背书资源',src:'previews/assets/figma-untitled/p45-elite-endorsement-resources-foreground.png'},
   {id:'okr-elite-ferrari-experience',label:'法拉利',src:'previews/assets/figma-untitled/p46-elite-ferrari-foreground.png'},
+  {id:'okr-elite-black-label',label:'Black Label 礼遇',src:'previews/assets/figma-untitled/p71-black-label-foreground.png'},
   {id:'okr-elite-business-enablement',label:'业务赋能',src:'previews/assets/figma-untitled/p48-elite-business-enablement-foreground.png'},
   {
     id:'okr-merchandise',
@@ -2451,7 +2452,7 @@ const OKR_FIGMA_PAGES=[
 /* The later report pages are exported from the same Figma source as p25 as
    transparent 1920 × 1080 foreground canvases. They intentionally sit over
    the one sticky p25 trophy background rather than bringing their own backdrop. */
-function OkrDirectFigmaForegroundPage({page,index,count,src}){
+function OkrDirectFigmaForegroundPage({page,index,count,src,onVideoPreview}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   return (
     <section
@@ -2473,6 +2474,21 @@ function OkrDirectFigmaForegroundPage({page,index,count,src}){
           draggable="false"
           aria-hidden="true"
         />
+        {page.videoSlots?.map(slot=>(
+          <button
+            key={slot.id}
+            type="button"
+            className="h1-okr-video-hotspot"
+            style={{
+              left:`${slot.left}%`,
+              top:`${slot.top}%`,
+              width:`${slot.width}%`,
+              height:`${slot.height}%`,
+            }}
+            aria-label={`播放：${slot.label}`}
+            onClick={()=>onVideoPreview?.({page,slot})}
+          />
+        ))}
         <div className="h1-okr-page-number" aria-hidden="true">
           {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
         </div>
@@ -2692,7 +2708,7 @@ function OkrVideoModal({preview,onClose}){
       <div className="h1-okr-video-modal-panel" onClick={event=>event.stopPropagation()}>
         {preview.slot.src ? (
           <video
-            className="h1-okr-video-player"
+            className={`h1-okr-video-player${preview.slot.fit==='cover' ? ' is-cover' : ''}`}
             src={preview.slot.src}
             controls
             autoPlay
@@ -2730,7 +2746,7 @@ function OkrReportDeck(){
         page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-tvc-matrix' ? <OkrBrandContentMatrixForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-tvc-framework' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
-        page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-2-foreground-clean.png"/> :
+        page.id==='okr-tvc-library' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p28-2-foreground-clean.png" onVideoPreview={setVideoPreview}/> :
         page.id==='okr-application-roadmap' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:40,top:0,width:1920,height:1080}}/> :
         page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p31-foreground-clean.png"/> :
         page.id==='okr-awards' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:40,width:1600,height:1012}}/> :
@@ -2742,6 +2758,7 @@ function OkrReportDeck(){
         page.id==='okr-elite-client-no1-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-elite-endorsement-resources' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-elite-ferrari-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-elite-black-label' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-elite-business-enablement' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground-clean.png"/> :
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :

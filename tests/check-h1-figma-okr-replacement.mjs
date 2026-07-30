@@ -190,6 +190,7 @@ const eliteClientInsertions = [
   ["okr-elite-client-no1-experience", "p70-elite-client-foreground.png"],
   ["okr-elite-endorsement-resources", "p45-elite-endorsement-resources-foreground.png"],
   ["okr-elite-ferrari-experience", "p46-elite-ferrari-foreground.png"],
+  ["okr-elite-black-label", "p71-black-label-foreground.png"],
   ["okr-elite-business-enablement", "p48-elite-business-enablement-foreground.png"],
 ];
 const eliteClientRegistration = app.slice(
@@ -350,7 +351,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-elite-door-v27"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-black-label-v28"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

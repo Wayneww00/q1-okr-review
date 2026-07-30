@@ -36,7 +36,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-elite-door-v27"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-black-label-v28"',
   ),
   "the formal shell must invalidate the embedded report after the p27 update",
 );

@@ -57,8 +57,8 @@ for (const [pageId, fileName] of expectedPages) {
 
 assert.equal(
   [...registry.matchAll(/\bid:'okr-/g)].length,
-  29,
-  "the OKR section must contain the approved twenty-nine pages after the four Elite Client insertions",
+  30,
+  "the OKR section must contain the approved thirty pages after the Black Label insertion",
 );
 assert.ok(
   registry.includes("previews/assets/figma-untitled/brand-operating-system-foreground.svg"),
