@@ -101,6 +101,41 @@ assert.match(
   "the first page must use its independently rebuilt Untitled foreground",
 );
 assert.match(
+  app,
+  /page\.id==='okr-offline-event-01'[\s\S]*?onPreview=\{setPreview\}[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?onPreview=\{setPreview\}/,
+  "salon and expo thumbnails must open the shared image-preview modal",
+);
+assert.match(
+  app,
+  /page\.id==='okr-client-experience-cases'[\s\S]*?onPreview=\{setPreview\}/,
+  "elite client case-study images must open the shared image-preview modal",
+);
+assert.match(
+  app,
+  /id:'okr-elite-client-no1-experience'[\s\S]*?id:'elite-endorsement-resource-map'[\s\S]*?page\.id==='okr-elite-client-no1-experience'[\s\S]*?onPreview=\{setPreview\}/,
+  "the elite endorsement resource map must open the shared image-preview modal",
+);
+assert.match(
+  app,
+  /id:'okr-cfd-public-good'[\s\S]*?id:'cfd-public-good-real-content'[\s\S]*?id:'cfd-public-good-earned-reach'[\s\S]*?page\.id==='okr-cfd-public-good'[\s\S]*?onPreview=\{setPreview\}/,
+  "all six CFD public-good examples must open the shared image-preview modal",
+);
+assert.match(
+  app,
+  /const crop=preview\.slot\.modalCrop;[\s\S]*?h1-okr-image-modal-crop/,
+  "cropped endorsement examples must display only the selected image in the modal",
+);
+assert.match(
+  app,
+  /function OkrExactModal\(\{preview,onClose\}\)[\s\S]*?if\(preview\.slot\)[\s\S]*?className="h1-okr-image-modal"/,
+  "image slots must use a dedicated full-resolution image modal",
+);
+assert.match(
+  theme,
+  /\.h1-okr-image-modal\s*\{[\s\S]*?backdrop-filter:\s*blur\(12px\)/,
+  "image preview must share the video modal backdrop treatment",
+);
+assert.match(
   theme,
   /\.h1-okr-exact-frame\s*\{[\s\S]*?object-fit:\s*contain;/,
   "exact Figma pages must remain uncropped and undistorted",

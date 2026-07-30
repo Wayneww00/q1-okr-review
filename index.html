@@ -2433,8 +2433,29 @@ const OKR_FIGMA_PAGES=[
       {id:'luxury-community',label:'顶级奢侈品社群',src:'previews/assets/figma-lightbox/clients/photo-7.jpg',unit:'px',left:1301,top:657,width:538,height:288},
     ],
   },
-  {id:'okr-elite-client-no1-experience',label:'Vantage 顶级客户 No.1 体验',src:'previews/assets/figma-untitled/p70-elite-client-foreground.png'},
-  {id:'okr-elite-endorsement-resources',label:'顶级背书资源',src:'previews/assets/figma-untitled/p45-elite-endorsement-resources-foreground.png'},
+  {
+    id:'okr-elite-client-no1-experience',
+    label:'Vantage 顶级客户 No.1 体验',
+    src:'previews/assets/figma-untitled/p70-elite-client-foreground.png',
+    imageSlots:[
+      {
+        id:'elite-endorsement-resource-map',
+        label:'顶级背书资源图谱',
+        src:'previews/assets/figma-untitled/p70-elite-client-foreground.png',
+        unit:'px',
+        left:165,
+        top:278,
+        width:1250,
+        height:705,
+        modalCrop:{sourceWidth:1920,sourceHeight:1080,left:165,top:278,width:1250,height:705},
+      },
+    ],
+  },
+  {
+    id:'okr-elite-endorsement-resources',
+    label:'顶级背书资源',
+    src:'previews/assets/figma-untitled/p45-elite-endorsement-resources-foreground.png',
+  },
   {
     id:'okr-elite-ferrari-experience',
     label:'法拉利',
@@ -2453,7 +2474,11 @@ const OKR_FIGMA_PAGES=[
     ],
   },
   {id:'okr-elite-black-label',label:'Black Label 礼遇',src:'previews/assets/figma-untitled/p71-black-label-foreground.png'},
-  {id:'okr-elite-business-enablement',label:'业务赋能',src:'previews/assets/figma-untitled/p48-elite-business-enablement-foreground.png'},
+  {
+    id:'okr-elite-business-enablement',
+    label:'业务赋能',
+    src:'previews/assets/figma-untitled/p48-elite-business-enablement-foreground.png',
+  },
   {
     id:'okr-merchandise',
     label:'周边',
@@ -2493,6 +2518,14 @@ const OKR_FIGMA_PAGES=[
     id:'okr-cfd-public-good',
     label:'成为 CFD 行业公益的领军者',
     src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',
+    imageSlots:[
+      {id:'cfd-public-good-real-content',label:'01 真实内容',src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',unit:'px',left:557,top:52,width:362,height:415,modalCrop:{sourceWidth:1920,sourceHeight:1080,left:557,top:52,width:362,height:415}},
+      {id:'cfd-public-good-participation',label:'02 参与入口',src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',unit:'px',left:950,top:37,width:390,height:500,modalCrop:{sourceWidth:1920,sourceHeight:1080,left:950,top:37,width:390,height:500}},
+      {id:'cfd-public-good-ib-engagement',label:'03 IB 深度参与',src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',unit:'px',left:1372,top:37,width:386,height:500,modalCrop:{sourceWidth:1920,sourceHeight:1080,left:1372,top:37,width:386,height:500}},
+      {id:'cfd-public-good-verified-delivery',label:'04 真实交付',src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',unit:'px',left:148,top:562,width:378,height:474,modalCrop:{sourceWidth:1920,sourceHeight:1080,left:148,top:562,width:378,height:474}},
+      {id:'cfd-public-good-personalised-content',label:'05 专属内容',src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',unit:'px',left:555,top:562,width:382,height:474,modalCrop:{sourceWidth:1920,sourceHeight:1080,left:555,top:562,width:382,height:474}},
+      {id:'cfd-public-good-earned-reach',label:'06 主动传播',src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',unit:'px',left:958,top:562,width:895,height:474,modalCrop:{sourceWidth:1920,sourceHeight:1080,left:958,top:562,width:895,height:474}},
+    ],
   },
   {
     id:'okr-public-good-video',
@@ -2843,6 +2876,47 @@ function OkrExactModal({preview,onClose}){
     return()=>document.removeEventListener('keydown',onKeyDown);
   },[preview,onClose]);
   if(!preview)return null;
+  if(preview.slot){
+    const crop=preview.slot.modalCrop;
+    const cropStyle=crop ? {
+      width:`min(86vw, calc(86vh * ${crop.width / crop.height}))`,
+      aspectRatio:`${crop.width} / ${crop.height}`,
+    } : undefined;
+    const cropImageStyle=crop ? {
+      backgroundImage:`url("${preview.modalSrc}")`,
+      backgroundSize:`${(crop.sourceWidth / crop.width) * 100}% auto`,
+      backgroundPosition:`${(crop.left / (crop.sourceWidth - crop.width)) * 100}% ${(crop.top / (crop.sourceHeight - crop.height)) * 100}%`,
+    } : undefined;
+    return (
+      <div
+        className="h1-okr-image-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`图片预览：${preview.label}`}
+        onClick={onClose}
+      >
+        <div className={`h1-okr-image-modal-panel${crop ? ' is-cropped' : ''}`} style={cropStyle} onClick={event=>event.stopPropagation()}>
+          {crop ? (
+            <div className="h1-okr-image-modal-crop" role="img" aria-label={`${preview.label}放大预览`} style={cropImageStyle}/>
+          ) : (
+            <img
+              className="h1-okr-image-modal-frame"
+              src={preview.modalSrc}
+              alt={`${preview.label}放大预览`}
+              decoding="sync"
+              draggable="false"
+            />
+          )}
+          <button
+            type="button"
+            className="h1-okr-image-modal-close"
+            aria-label="关闭图片预览"
+            onClick={onClose}
+          >×</button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div
       className="h1-okr-exact-modal"
@@ -2934,19 +3008,19 @@ function OkrReportDeck(){
         page.id==='okr-application-roadmap' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:40,top:0,width:1920,height:1080}}/> :
         page.id==='okr-high-value-actions' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p31-foreground-clean.png"/> :
         page.id==='okr-awards' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:40,width:1600,height:1012}}/> :
-        page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground-clean.png"/> :
-        page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p36-1-foreground-clean.png"/> :
+        page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground-clean.png" onPreview={setPreview}/> :
+        page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p36-1-foreground-clean.png" onPreview={setPreview}/> :
         page.id==='okr-elite-client-identity' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-client-experience-model' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
-        page.id==='okr-client-experience-cases' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
-        page.id==='okr-elite-client-no1-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-client-experience-cases' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onPreview={setPreview} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-elite-client-no1-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onPreview={setPreview} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-elite-endorsement-resources' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-elite-ferrari-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-elite-black-label' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-elite-business-enablement' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground-clean.png"/> :
         page.id==='okr-cfd-public-good-story' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} onVideoPreview={setVideoPreview}/> :
-        page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
+        page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} onPreview={setPreview}/> :
         page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p58-foreground.png" artwork={{left:160,top:19,width:1608,height:1042}}/> :
