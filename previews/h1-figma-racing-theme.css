@@ -1950,6 +1950,30 @@
   inset: auto;
 }
 
+.h1-okr-elite-client-page {
+  background: #020203;
+}
+
+.h1-okr-elite-client-canvas {
+  overflow: visible;
+}
+
+.h1-okr-elite-client-background {
+  position: absolute;
+  z-index: 0;
+  top: -133px;
+  left: -180px;
+  display: block;
+  width: 2280px;
+  max-width: none;
+  height: 1346px;
+  max-height: none;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 .h1-okr-visual {
   position: absolute;
   z-index: 0;

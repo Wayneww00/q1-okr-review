@@ -11,7 +11,7 @@ const [formal, theme, report] = await Promise.all(
 );
 
 assert.ok(
-  formal.includes('src="../index.html?report=h1&embedded=1&v=20260730-figma-feathered-edge-v23"'),
+  formal.includes('src="../index.html?report=h1&embedded=1&v=20260730-elite-overscan-v24"'),
   "the formal H1 report should explicitly request the login-free embedded report mode",
 );
 assert.ok(

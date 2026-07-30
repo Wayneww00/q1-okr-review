@@ -120,6 +120,28 @@ assert.match(
 );
 assert.match(
   app,
+  /function OkrEliteClientForegroundPage[\s\S]*?h1-okr-elite-client-page[\s\S]*?h1-okr-canvas h1-okr-elite-client-canvas[\s\S]*?h1-okr-elite-client-background[\s\S]*?elite-client-background-overscan\.png[\s\S]*?width="2280"[\s\S]*?height="1346"/,
+  "the three Elite Client pages must share their own full-bleed 2280 × 1346 background",
+);
+assert.match(
+  theme,
+  /\.h1-okr-elite-client-page\s*\{[\s\S]*?background:\s*#020203;[\s\S]*?\.h1-okr-elite-client-canvas\s*\{[\s\S]*?overflow:\s*visible;[\s\S]*?\.h1-okr-elite-client-background\s*\{[\s\S]*?top:\s*-133px;[\s\S]*?left:\s*-180px;[\s\S]*?width:\s*2280px;[\s\S]*?height:\s*1346px;/,
+  "the Elite Client chapter background must cover the shell gutters without moving the authored 1920 × 1080 foreground",
+);
+assert.ok(
+  fs.existsSync(
+    path.join(
+      root,
+      "previews",
+      "assets",
+      "figma-untitled",
+      "elite-client-background-overscan.png",
+    ),
+  ),
+  "the generated Elite Client overscan asset must exist locally",
+);
+assert.match(
+  app,
   /function OkrBrandSystemPage\(\)[\s\S]*?className="h1-okr-figma-foreground-layer"[\s\S]*?figma-untitled\/p25-foreground-clean\.png/,
   "the first page must use the matte-free Untitled foreground layer rather than reconstructed cards",
 );
@@ -242,7 +264,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-figma-feathered-edge-v23"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-elite-overscan-v24"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );
