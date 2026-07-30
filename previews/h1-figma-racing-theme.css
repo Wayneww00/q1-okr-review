@@ -1942,8 +1942,36 @@
   height: 1080px;
   max-height: none;
   object-fit: fill;
+  pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+/* Transparent interaction regions over exported Figma artwork.  Without these
+   rules the browser's default button chrome becomes visible as white blocks. */
+.h1-okr-image-hotspot {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.h1-okr-image-hotspot {
+  cursor: zoom-in;
+}
+
+.h1-okr-image-hotspot:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
 }
 
 .h1-okr-figma-foreground-layer.is-positioned {
