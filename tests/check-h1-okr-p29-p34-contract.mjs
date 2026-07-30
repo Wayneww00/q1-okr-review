@@ -57,8 +57,8 @@ for (const [pageId, fileName] of expectedPages) {
 
 assert.equal(
   [...registry.matchAll(/\bid:'okr-/g)].length,
-  19,
-  "the OKR section must contain the approved nineteen pages",
+  22,
+  "the OKR section must contain the approved twenty-two pages",
 );
 assert.ok(
   registry.includes("previews/assets/figma-untitled/brand-operating-system-foreground.svg"),
@@ -90,6 +90,48 @@ assert.match(
 assert.ok(
   fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p52-foreground.png")),
   "the appended merchandise foreground must exist locally",
+);
+for (const [pageId, fileName] of [
+  ["okr-cfd-public-good", "p64-cfp-foreground.svg"],
+  ["okr-un-ngo-engagement", "p65-ngo-foreground.svg"],
+]) {
+  assert.match(
+    app,
+    new RegExp(`page\\.id==='${pageId}'[\\s\\S]*?src=\\{page\\.src\\}`),
+    `${pageId} must use the direct Figma foreground renderer`,
+  );
+  const asset = path.join(root, "previews", "assets", "figma-untitled", fileName);
+  assert.ok(fs.existsSync(asset), `${fileName} must exist locally`);
+  assert.doesNotMatch(
+    fs.readFileSync(asset, "utf8"),
+    /<rect width="1920" height="1080" fill="#F5F5F5"\/>|<rect width="1920" height="1080" fill="black" fill-opacity="0\.2"\/>/,
+    `${fileName} must leave the fixed trophy background visible`,
+  );
+}
+const p54Panel = path.join(root, "previews", "assets", "figma-untitled", "p54-1-cfp-panel-foreground.svg");
+const p54Video = path.join(root, "previews", "assets", "figma-untitled", "p54-1-cfp-video-preview.png");
+assert.ok(fs.existsSync(p54Panel) && fs.existsSync(p54Video), "p54-1 must keep both of its Figma foreground layers");
+assert.doesNotMatch(
+  fs.readFileSync(p54Panel, "utf8"),
+  /<rect width="1366" height="931" fill="#F5F5F5"\/>|<rect width="1920" height="1080" transform="translate\(-277 -75\)" fill="black" fill-opacity="0\.2"\/>/,
+  "p54-1's panel layer must not cover the shared trophy background",
+);
+assert.match(
+  app,
+  /page\.id==='okr-public-good-video'[\s\S]*?OkrPublicGoodVideoPage/,
+  "p54-1 must use its dedicated two-layer Figma renderer",
+);
+assert.match(
+  app,
+  /function OkrPublicGoodVideoPage[\s\S]*?src:page\.src,left:277,top:75,width:1366,height:931[\s\S]*?src:page\.videoSrc,left:338,top:254,width:1245,height:698/,
+  "the p54-1 Figma video preview must remain at its source coordinates over the panel",
+);
+assert.ok(
+  registry.indexOf("id:'okr-merchandise'") < registry.indexOf("id:'okr-cfd-public-good'") &&
+    registry.indexOf("id:'okr-cfd-public-good'") < registry.indexOf("id:'okr-public-good-video'") &&
+    registry.indexOf("id:'okr-public-good-video'") < registry.indexOf("id:'okr-un-ngo-engagement'") &&
+    registry.indexOf("id:'okr-un-ngo-engagement'") < registry.indexOf("id:'okr-ai-recommendation'"),
+  "the three requested Figma pages must be inserted immediately after merchandise",
 );
 for (const [pageId, fileName] of [
   ["okr-ai-recommendation", "p58-foreground.png"],
@@ -137,7 +179,7 @@ assert.match(
 assert.match(
   app,
   /className="h1-okr-page-number"[\s\S]*?String\(index\+1\)\.padStart\(2,"0"\)[\s\S]*?String\(count\)\.padStart\(2,"0"\)/,
-  "OKR page numbers must run from 01/19 and match the data-page style",
+  "OKR page numbers must run from 01/22 and match the data-page style",
 );
 assert.match(
   registry,

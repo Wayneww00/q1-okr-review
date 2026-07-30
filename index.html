@@ -2373,6 +2373,22 @@ const OKR_FIGMA_PAGES=[
     src:'previews/assets/figma-untitled/p52-foreground.png',
   },
   {
+    id:'okr-cfd-public-good',
+    label:'成为 CFD 行业公益的领军者',
+    src:'previews/assets/figma-untitled/p64-cfp-foreground.svg',
+  },
+  {
+    id:'okr-public-good-video',
+    label:'H1 做了什么',
+    src:'previews/assets/figma-untitled/p54-1-cfp-panel-foreground.svg',
+    videoSrc:'previews/assets/figma-untitled/p54-1-cfp-video-preview.png',
+  },
+  {
+    id:'okr-un-ngo-engagement',
+    label:'头部联合国+NGO连接',
+    src:'previews/assets/figma-untitled/p65-ngo-foreground.svg',
+  },
+  {
     id:'okr-ai-recommendation',
     label:'24/7 AI 推荐优势',
     src:'previews/assets/figma-untitled/p58-foreground.png',
@@ -2427,6 +2443,24 @@ function OkrDirectFigmaForegroundPage({page,index,count,src}){
         <div className="h1-okr-page-number" aria-hidden="true">
           {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* Figma's p54-1 video preview is a sibling of its title/panel group. Keep both
+   source layers at their original Figma coordinates over the shared trophy. */
+function OkrPublicGoodVideoPage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  const foregrounds=[
+    {src:page.src,left:277,top:75,width:1366,height:931},
+    {src:page.videoSrc,left:338,top:254,width:1245,height:698},
+  ];
+  return (
+    <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page" data-report-page data-page-id={page.id} aria-label={page.label}>
+      <div ref={canvasRef} className="h1-okr-canvas">
+        {foregrounds.map((foreground)=><img key={foreground.src} className="h1-okr-figma-foreground-layer is-positioned" src={foreground.src} alt="" width={foreground.width} height={foreground.height} style={{left:`${foreground.left}px`,top:`${foreground.top}px`,width:`${foreground.width}px`,height:`${foreground.height}px`}} loading="eager" decoding="sync" draggable="false" aria-hidden="true" />)}
+        <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
       </div>
     </section>
   );
@@ -2657,6 +2691,9 @@ function OkrReportDeck(){
         page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p33-34-foreground.png"/> :
         page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p36-1-foreground.png"/> :
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground.png"/> :
+        page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
+        page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p58-foreground.png" artwork={{left:160,top:19,width:1608,height:1042}}/> :
         page.id==='okr-omnichannel-amplification' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p59-foreground.png" artwork={{left:106,top:75,width:1707,height:985}}/> :
         page.id==='okr-tvc-localization' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p60-foreground.png" artwork={{left:160,top:92,width:1631,height:920}}/> :

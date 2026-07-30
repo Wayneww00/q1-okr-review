@@ -90,12 +90,30 @@ assert.match(
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground\.png[\s\S]*?page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?OkrBrandContentMatrixForegroundPage[\s\S]*?page\.id==='okr-tvc-framework'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground\.png[\s\S]*?page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground\.png[\s\S]*?page\.id==='okr-ai-recommendation'[\s\S]*?figma-untitled\/p58-foreground\.png[\s\S]*?page\.id==='okr-omnichannel-amplification'[\s\S]*?figma-untitled\/p59-foreground\.png[\s\S]*?page\.id==='okr-tvc-localization'[\s\S]*?figma-untitled\/p60-foreground\.png[\s\S]*?page\.id==='okr-superapp-activation'[\s\S]*?figma-untitled\/p61-foreground\.png[\s\S]*?page\.id==='okr-premium-unlimited'[\s\S]*?figma-untitled\/p62-foreground\.png[\s\S]*?page\.id==='okr-brand-experience-audit'[\s\S]*?figma-untitled\/p63-foreground\.png/,
+  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground\.png[\s\S]*?page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?OkrBrandContentMatrixForegroundPage[\s\S]*?page\.id==='okr-tvc-framework'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground\.png[\s\S]*?page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground\.png[\s\S]*?page\.id==='okr-cfd-public-good'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-public-good-video'[\s\S]*?OkrPublicGoodVideoPage[\s\S]*?page\.id==='okr-un-ngo-engagement'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-ai-recommendation'[\s\S]*?figma-untitled\/p58-foreground\.png[\s\S]*?page\.id==='okr-omnichannel-amplification'[\s\S]*?figma-untitled\/p59-foreground\.png[\s\S]*?page\.id==='okr-tvc-localization'[\s\S]*?figma-untitled\/p60-foreground\.png[\s\S]*?page\.id==='okr-superapp-activation'[\s\S]*?figma-untitled\/p61-foreground\.png[\s\S]*?page\.id==='okr-premium-unlimited'[\s\S]*?figma-untitled\/p62-foreground\.png[\s\S]*?page\.id==='okr-brand-experience-audit'[\s\S]*?figma-untitled\/p63-foreground\.png/,
   "the remaining Figma foreground exports must be assigned to their matching report pages",
 );
 assert.ok(
   fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p52-foreground.png")),
   "the merchandise Figma foreground export must exist locally",
+);
+for (const fileName of ["p64-cfp-foreground.svg", "p54-1-cfp-panel-foreground.svg", "p65-ngo-foreground.svg"]) {
+  const asset = path.join(root, "previews", "assets", "figma-untitled", fileName);
+  assert.ok(fs.existsSync(asset), `${fileName} must exist locally`);
+  assert.doesNotMatch(
+    fs.readFileSync(asset, "utf8"),
+    /<rect width="1920" height="1080" fill="#F5F5F5"\/>|<rect width="1920" height="1080" fill="black" fill-opacity="0\.2"\/>/,
+    `${fileName} must remain transparent outside its Figma foreground content so the fixed trophy background is visible`,
+  );
+}
+assert.ok(
+  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "p54-1-cfp-video-preview.png")),
+  "the p54-1 Figma video-preview layer must exist locally",
+);
+assert.match(
+  app,
+  /function OkrPublicGoodVideoPage[\s\S]*?src:page\.src,left:277,top:75,width:1366,height:931[\s\S]*?src:page\.videoSrc,left:338,top:254,width:1245,height:698/,
+  "p54-1 must preserve its separately exported Figma panel and video-preview layers",
 );
 for (const fileName of ["p58-foreground.png", "p59-foreground.png", "p60-foreground.png", "p61-foreground.png", "p62-foreground.png", "p63-foreground.png"]) {
   assert.ok(
@@ -156,8 +174,17 @@ const awardsForeground = path.join(root, "previews", "assets", "figma-untitled",
 assert.ok(fs.existsSync(awardsForeground), "the awards Figma foreground must exist locally");
 assert.doesNotMatch(
   fs.readFileSync(awardsForeground, "utf8"),
-  /<rect width="1920" height="1080" fill="#F5F5F5"\/>|<rect width="1920" height="1080" fill="black" fill-opacity="0\.2"\/>|<g id="&#232;&#131;&#140;&#230;&#153;&#175;">/,
-  "the awards foreground must not replace the fixed trophy background",
+  /<rect width="1600" height="1012" fill="#F5F5F5"\/>|<rect width="1920" height="1080" fill="#F5F5F5"\/>|<rect width="1920" height="1080" fill="black" fill-opacity="0\.2"\/>|<g id="&#232;&#131;&#140;&#230;&#153;&#175;">/,
+  "the Awards foreground must exclude Figma's artboard fill so the shared trophy background remains visible",
+);
+const awardsForegroundMarkup = fs.readFileSync(awardsForeground, "utf8");
+assert.ok(
+  awardsForegroundMarkup.indexOf('id="Rectangle 34"') < awardsForegroundMarkup.indexOf('id="Rectangle 37"'),
+  "the H1 card body must render behind its header rather than overlap it",
+);
+assert.ok(
+  awardsForegroundMarkup.indexOf('id="Rectangle 38"') < awardsForegroundMarkup.indexOf('id="Rectangle 39"'),
+  "the H2 card body must render behind its header rather than overlap it",
 );
 assert.match(
   app,

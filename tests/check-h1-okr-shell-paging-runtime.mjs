@@ -50,6 +50,9 @@ try {
     "okr-offline-event-01",
     "okr-offline-event-02",
     "okr-merchandise",
+    "okr-cfd-public-good",
+    "okr-public-good-video",
+    "okr-un-ngo-engagement",
     "okr-ai-recommendation",
     "okr-omnichannel-amplification",
     "okr-tvc-localization",
@@ -94,80 +97,93 @@ try {
     const directForegrounds = {
       "okr-review": {
         source: /previews\/assets\/figma-untitled\/p25-foreground\.png$/,
-        pageNumber: "01/19",
+        pageNumber: "01/22",
       },
       "okr-brand-experience-audit": {
         source: /previews\/assets\/figma-untitled\/p63-foreground\.png$/,
-        pageNumber: "02/19",
+        pageNumber: "02/22",
       },
       "okr-brand-results": {
         source: /previews\/assets\/figma-untitled\/p26-foreground\.png$/,
-        pageNumber: "03/19",
+        pageNumber: "03/22",
       },
       "okr-brand-refresh": {
         source: /previews\/assets\/figma-untitled\/brand-refresh-foreground\.png$/,
-        pageNumber: "04/19",
+        pageNumber: "04/22",
       },
       "okr-brand-operating-system": {
         source: /previews\/assets\/figma-untitled\/brand-operating-system-foreground\.svg$/,
-        pageNumber: "05/19",
+        pageNumber: "05/22",
       },
       "okr-tvc-matrix": {
         source: /previews\/assets\/figma-untitled\/brand-content-matrix\/summary\.svg$/,
-        pageNumber: "06/19",
+        pageNumber: "06/22",
         foregroundCount: 3,
       },
       "okr-tvc-framework": {
         source: /previews\/assets\/figma-untitled\/tvc-framework-foreground\.svg$/,
-        pageNumber: "07/19",
+        pageNumber: "07/22",
       },
       "okr-tvc-library": {
         source: /previews\/assets\/figma-untitled\/p28-2-foreground\.png$/,
-        pageNumber: "08/19",
+        pageNumber: "08/22",
       },
       "okr-application-roadmap": {
         source: /previews\/assets\/figma-untitled\/application-roadmap-foreground\.svg$/,
-        pageNumber: "09/19",
+        pageNumber: "09/22",
       },
       "okr-high-value-actions": {
         source: /previews\/assets\/figma-untitled\/p31-foreground\.png$/,
-        pageNumber: "10/19",
+        pageNumber: "10/22",
       },
       "okr-awards": {
         source: /previews\/assets\/figma-untitled\/awards-foreground\.svg$/,
-        pageNumber: "11/19",
+        pageNumber: "11/22",
       },
       "okr-offline-event-01": {
         source: /previews\/assets\/figma-untitled\/p33-34-foreground\.png$/,
-        pageNumber: "12/19",
+        pageNumber: "12/22",
       },
       "okr-offline-event-02": {
         source: /previews\/assets\/figma-untitled\/p36-1-foreground\.png$/,
-        pageNumber: "13/19",
+        pageNumber: "13/22",
       },
       "okr-merchandise": {
         source: /previews\/assets\/figma-untitled\/p52-foreground\.png$/,
-        pageNumber: "14/19",
+        pageNumber: "14/22",
+      },
+      "okr-cfd-public-good": {
+        source: /previews\/assets\/figma-untitled\/p64-cfp-foreground\.svg$/,
+        pageNumber: "15/22",
+      },
+      "okr-public-good-video": {
+        source: /previews\/assets\/figma-untitled\/p54-1-cfp-panel-foreground\.svg$/,
+        pageNumber: "16/22",
+        foregroundCount: 2,
+      },
+      "okr-un-ngo-engagement": {
+        source: /previews\/assets\/figma-untitled\/p65-ngo-foreground\.svg$/,
+        pageNumber: "17/22",
       },
       "okr-ai-recommendation": {
         source: /previews\/assets\/figma-untitled\/p58-foreground\.png$/,
-        pageNumber: "15/19",
+        pageNumber: "18/22",
       },
       "okr-omnichannel-amplification": {
         source: /previews\/assets\/figma-untitled\/p59-foreground\.png$/,
-        pageNumber: "16/19",
+        pageNumber: "19/22",
       },
       "okr-tvc-localization": {
         source: /previews\/assets\/figma-untitled\/p60-foreground\.png$/,
-        pageNumber: "17/19",
+        pageNumber: "20/22",
       },
       "okr-superapp-activation": {
         source: /previews\/assets\/figma-untitled\/p61-foreground\.png$/,
-        pageNumber: "18/19",
+        pageNumber: "21/22",
       },
       "okr-premium-unlimited": {
         source: /previews\/assets\/figma-untitled\/p62-foreground\.png$/,
-        pageNumber: "19/19",
+        pageNumber: "22/22",
       },
     };
     const directForeground = directForegrounds[pageId];
