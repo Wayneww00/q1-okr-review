@@ -170,7 +170,7 @@ try {
         pageNumber: "18/22",
       },
       "okr-omnichannel-amplification": {
-        source: /previews\/assets\/figma-untitled\/p59-foreground\.png$/,
+        source: /previews\/assets\/figma-untitled\/p59-foreground-v2\.png$/,
         pageNumber: "19/22",
       },
       "okr-tvc-localization": {
