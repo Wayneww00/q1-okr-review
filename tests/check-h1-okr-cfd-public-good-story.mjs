@@ -11,6 +11,20 @@ const assetPath = path.join(
   "figma-untitled",
   "p73-cfd-public-good-video-foreground.png",
 );
+const publicGoodVideoPath = path.join(
+  root,
+  "previews",
+  "assets",
+  "tvc-library",
+  "cfd-public-good.mp4",
+);
+const ferrariVideoPath = path.join(
+  root,
+  "previews",
+  "assets",
+  "tvc-library",
+  "ferrari-personal-moment.mp4",
+);
 
 const registry = app.slice(
   app.indexOf("const OKR_FIGMA_PAGES=["),
@@ -43,8 +57,26 @@ assert.equal(
 
 assert.match(
   app,
-  /id:'okr-cfd-public-good-story'[\s\S]*?p73-cfd-public-good-video-foreground\.png[\s\S]*?id:'cfd-public-good-story'[\s\S]*?tvc-library\/public-good\.mp4/,
-  "the new page must use the Figma Frame 73 foreground and its matching public-good video",
+  /id:'okr-cfd-public-good-story'[\s\S]*?p73-cfd-public-good-video-foreground\.png[\s\S]*?id:'cfd-public-good-story'[\s\S]*?tvc-library\/cfd-public-good\.mp4[\s\S]*?inline:true/,
+  "the Frame 73 page must use its PPT public-good video as an inline player",
+);
+assert.match(
+  app,
+  /id:'okr-elite-ferrari-experience'[\s\S]*?p46-elite-ferrari-foreground\.png[\s\S]*?id:'ferrari-personal-moment'[\s\S]*?tvc-library\/ferrari-personal-moment\.mp4[\s\S]*?inline:true/,
+  "the Ferrari page must use its PPT Personal Moment video as an inline player",
+);
+assert.ok(
+  fs.existsSync(publicGoodVideoPath) && fs.statSync(publicGoodVideoPath).size > 100_000_000,
+  "the converted public-good MP4 must be present",
+);
+assert.ok(
+  fs.existsSync(ferrariVideoPath) && fs.statSync(ferrariVideoPath).size > 100_000_000,
+  "the Ferrari PPT MP4 must be present",
+);
+assert.match(
+  app,
+  /function OkrInlineVideo\(\{slot\}\)[\s\S]*?controls[\s\S]*?playsInline[\s\S]*?preload="metadata"/,
+  "PPT videos must render as native controllable inline video players",
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),

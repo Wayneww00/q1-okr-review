@@ -42,6 +42,7 @@ with sync_playwright() as playwright:
             stagePosition: getComputedStyle(stage).position,
             exactFrameCount: root.querySelectorAll('.h1-okr-exact-frame').length,
             hotspotCount: root.querySelectorAll('.h1-okr-video-hotspot').length,
+            inlineVideoCount: root.querySelectorAll('.h1-okr-inline-video').length,
           };
         }"""
     )
@@ -53,17 +54,21 @@ with sync_playwright() as playwright:
         "stageCount": 1,
         "stagePosition": "sticky",
         "exactFrameCount": 0,
-        "hotspotCount": 1,
+        "hotspotCount": 0,
+        "inlineVideoCount": 1,
     }
 
     report_page.screenshot(path=str(SCREENSHOT))
-    report_page.locator(".h1-okr-video-hotspot").click()
-    modal = page.locator(".h1-okr-video-modal")
-    modal.wait_for(state="visible")
-    video_src = page.locator(".h1-okr-video-player").get_attribute("src")
-    assert "tvc-library/public-good.mp4" in (video_src or ""), video_src
-    page.keyboard.press("Escape")
-    modal.wait_for(state="detached")
+    video = report_page.locator(".h1-okr-inline-video")
+    video.wait_for(state="visible")
+    video.click(position={"x": 24, "y": 24})
+    page.wait_for_function(
+        "(selector) => { const video = document.querySelector(selector);"
+        " return video && video.readyState >= 3 && !video.paused && video.currentTime > 0; }",
+        arg=f'[data-page-id="{PAGE_ID}"] .h1-okr-inline-video',
+    )
+    video_src = video.get_attribute("src")
+    assert "tvc-library/cfd-public-good.mp4" in (video_src or ""), video_src
     assert not errors, f"page errors: {errors}"
     browser.close()
 

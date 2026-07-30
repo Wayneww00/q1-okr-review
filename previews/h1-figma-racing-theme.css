@@ -3517,6 +3517,31 @@ svg.h1-okr-insight-icon circle {
   outline-offset: 4px;
 }
 
+/* Embedded PPT videos replace only their matching Figma preview areas. The
+   surrounding foreground artwork remains in place, so their page layout and
+   the shared trophy stage are not affected. */
+.h1-okr-inline-video {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: #000;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.h1-okr-inline-video.is-contain {
+  object-fit: contain;
+}
+
+.h1-okr-inline-video:focus-visible {
+  outline: 3px solid rgba(255,255,255,.95);
+  outline-offset: 4px;
+}
+
 .h1-okr-page-number {
   position: absolute;
   z-index: 5;
