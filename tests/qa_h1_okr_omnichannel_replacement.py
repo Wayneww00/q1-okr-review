@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 
 SCREENSHOT = Path("/tmp/h1-okr-omnichannel-replacement.png")
 PAGE_ID = "okr-omnichannel-amplification"
-EXPECTED_SOURCE = "p59-foreground-v2.png"
+EXPECTED_SOURCE = "p59-foreground-safe.png"
 
 
 with sync_playwright() as playwright:
@@ -15,7 +15,7 @@ with sync_playwright() as playwright:
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.goto(
         "http://127.0.0.1:4183/index.html"
-        "?report=h1&embedded=1&v=20260730-p59-foreground-v2",
+        "?report=h1&embedded=1&v=20260730-p59-foreground-safe",
         wait_until="networkidle",
     )
 
@@ -45,11 +45,11 @@ with sync_playwright() as playwright:
     assert image_state == {
         "source": f"/previews/assets/figma-untitled/{EXPECTED_SOURCE}",
         "naturalWidth": 1707,
-        "naturalHeight": 976,
+        "naturalHeight": 992,
         "left": "106px",
-        "top": "75px",
+        "top": "51px",
         "width": "1707px",
-        "height": "976px",
+        "height": "992px",
     }
 
     page_number = report_page.locator(".h1-okr-page-number").inner_text()

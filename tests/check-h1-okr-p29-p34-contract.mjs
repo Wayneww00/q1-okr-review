@@ -136,7 +136,7 @@ assert.ok(
 );
 for (const [pageId, fileName] of [
   ["okr-ai-recommendation", "p58-foreground.png"],
-  ["okr-omnichannel-amplification", "p59-foreground-v2.png"],
+  ["okr-omnichannel-amplification", "p59-foreground-safe.png"],
   ["okr-tvc-localization", "p60-foreground.png"],
   ["okr-superapp-activation", "p61-foreground.png"],
   ["okr-premium-unlimited", "p62-foreground.png"],
