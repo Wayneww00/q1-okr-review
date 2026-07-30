@@ -120,13 +120,13 @@ assert.match(
 );
 assert.match(
   app,
-  /function OkrEliteClientForegroundPage[\s\S]*?h1-okr-elite-client-page[\s\S]*?h1-okr-canvas h1-okr-elite-client-canvas[\s\S]*?h1-okr-elite-client-background[\s\S]*?elite-client-background-overscan\.png[\s\S]*?width="2280"[\s\S]*?height="1346"/,
-  "the three Elite Client pages must share their own full-bleed 2280 × 1346 background",
+  /function OkrEliteClientForegroundPage[\s\S]*?h1-okr-elite-client-page[\s\S]*?h1-okr-canvas h1-okr-elite-client-canvas[\s\S]*?h1-okr-elite-client-background[\s\S]*?elite-client-background-38-39-2\.png[\s\S]*?width="1920"[\s\S]*?height="1080"/,
+  "all Elite Client pages must share the exact 38+39-2 Figma background",
 );
 assert.match(
   theme,
-  /\.h1-okr-elite-client-page\s*\{[\s\S]*?background:\s*#020203;[\s\S]*?\.h1-okr-elite-client-canvas\s*\{[\s\S]*?overflow:\s*visible;[\s\S]*?\.h1-okr-elite-client-background\s*\{[\s\S]*?top:\s*-133px;[\s\S]*?left:\s*-180px;[\s\S]*?width:\s*2280px;[\s\S]*?height:\s*1346px;/,
-  "the Elite Client chapter background must cover the shell gutters without moving the authored 1920 × 1080 foreground",
+  /\.h1-okr-elite-client-page\s*\{[\s\S]*?background:\s*#020203;[\s\S]*?\.h1-okr-elite-client-canvas\s*\{[\s\S]*?overflow:\s*visible;[\s\S]*?\.h1-okr-elite-client-background\s*\{[\s\S]*?top:\s*0;[\s\S]*?left:\s*0;[\s\S]*?width:\s*1920px;[\s\S]*?height:\s*1080px;/,
+  "the Elite Client chapter must align the exact 1920 × 1080 Figma background with every authored foreground",
 );
 assert.ok(
   fs.existsSync(
@@ -135,11 +135,97 @@ assert.ok(
       "previews",
       "assets",
       "figma-untitled",
-      "elite-client-background-overscan.png",
+      "elite-client-background-38-39-2.png",
     ),
   ),
-  "the generated Elite Client overscan asset must exist locally",
+  "the exact 38+39-2 Elite Client background asset must exist locally",
 );
+assert.ok(
+  app.includes("previews/assets/figma-untitled/p38-39-1-elite-client-foreground.png"),
+  "the 顶级客户身份体系 page must use the exact transparent 38+39-1 foreground",
+);
+const eliteClientIdentityForeground = path.join(
+  root,
+  "previews",
+  "assets",
+  "figma-untitled",
+  "p38-39-1-elite-client-foreground.png",
+);
+assert.ok(
+  fs.existsSync(eliteClientIdentityForeground) &&
+    fs.statSync(eliteClientIdentityForeground).size > 100_000,
+  "the exact 38+39-1 foreground export must exist at presentation resolution",
+);
+assert.equal(
+  fs.readFileSync(eliteClientIdentityForeground)[25],
+  6,
+  "the 38+39-1 foreground PNG must retain alpha transparency",
+);
+assert.ok(
+  app.includes("previews/assets/figma-untitled/p69-client-experience-foreground.png"),
+  "the 大客户体验体系 page must use the completed Figma Frame 69 foreground",
+);
+const clientExperienceFrame69 = path.join(
+  root,
+  "previews",
+  "assets",
+  "figma-untitled",
+  "p69-client-experience-foreground.png",
+);
+assert.ok(
+  fs.existsSync(clientExperienceFrame69) && fs.statSync(clientExperienceFrame69).size > 500_000,
+  "the transparent Frame 69 foreground export must exist at presentation resolution",
+);
+const frame69Png = fs.readFileSync(clientExperienceFrame69);
+assert.equal(
+  frame69Png[25],
+  6,
+  "the Frame 69 PNG must retain an alpha channel so the Elite Client background remains visible",
+);
+assert.ok(
+  !app.includes("previews/assets/figma-untitled/p66-client-experience-foreground.svg"),
+  "the incomplete Frame 66 foreground must no longer be assigned to 大客户体验体系",
+);
+const eliteClientInsertions = [
+  ["okr-elite-client-no1-experience", "p70-elite-client-foreground.png"],
+  ["okr-elite-endorsement-resources", "p45-elite-endorsement-resources-foreground.png"],
+  ["okr-elite-ferrari-experience", "p46-elite-ferrari-foreground.png"],
+  ["okr-elite-business-enablement", "p48-elite-business-enablement-foreground.png"],
+];
+const eliteClientRegistration = app.slice(
+  app.indexOf("id:'okr-client-experience-cases'"),
+  app.indexOf("id:'okr-merchandise'"),
+);
+let previousEliteInsertion = -1;
+for (const [pageId, fileName] of eliteClientInsertions) {
+  const pagePosition = eliteClientRegistration.indexOf(`id:'${pageId}'`);
+  assert.ok(
+    pagePosition > previousEliteInsertion,
+    `${pageId} must be inserted after 顶尖大客户体验案例 in Figma order`,
+  );
+  previousEliteInsertion = pagePosition;
+  assert.ok(
+    app.includes(`previews/assets/figma-untitled/${fileName}`),
+    `${pageId} must use its transparent Figma foreground`,
+  );
+  const foreground = path.join(root, "previews", "assets", "figma-untitled", fileName);
+  assert.ok(
+    fs.existsSync(foreground) && fs.statSync(foreground).size > 100_000,
+    `${fileName} must exist at presentation resolution`,
+  );
+  assert.equal(
+    fs.readFileSync(foreground)[25],
+    6,
+    `${fileName} must preserve alpha transparency over the Elite Client background`,
+  );
+}
+const okrRenderer = app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══"));
+for (const [pageId] of eliteClientInsertions) {
+  assert.ok(
+    okrRenderer.includes(`page.id==='${pageId}' ? <OkrEliteClientForegroundPage`),
+    `${pageId} must reuse the Elite Client full-bleed background component`,
+  );
+}
 assert.match(
   app,
   /function OkrBrandSystemPage\(\)[\s\S]*?className="h1-okr-figma-foreground-layer"[\s\S]*?figma-untitled\/p25-foreground-clean\.png/,
@@ -264,7 +350,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-elite-overscan-v24"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-elite-door-v27"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

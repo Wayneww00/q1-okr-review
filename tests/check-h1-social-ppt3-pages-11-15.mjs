@@ -19,7 +19,7 @@ assert.deepEqual(ids, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], "H1 should contain 
 assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','15 MODULES'\)\)/, "shell should advertise 15 modules");
 assert.doesNotMatch(shell, /'14 MODULES'/, "stale 14-module label should be removed");
 assert.ok(
-  shell.includes('src="../index.html?report=h1&embedded=1&v=20260730-elite-overscan-v24"'),
+  shell.includes('src="../index.html?report=h1&embedded=1&v=20260730-elite-door-v27"'),
   "the formal shell should invalidate the stale embedded-report cache after the follower-chart correction",
 );
 assert.doesNotMatch(
@@ -132,7 +132,7 @@ assert.match(
   "page 12 reputation conclusion must remain legible at presentation scale",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260730-elite-overscan-v17/g)].length,
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260730-elite-door-v20/g)].length,
   2,
   "the formal shell and embedded report must both bust the cached theme after the follower-chart correction",
 );

@@ -66,7 +66,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-elite-overscan-v24"',
+    'src="../index.html?report=h1&embedded=1&v=20260730-elite-door-v27"',
   ),
   "the formal shell must load the exact Figma background revision",
 );

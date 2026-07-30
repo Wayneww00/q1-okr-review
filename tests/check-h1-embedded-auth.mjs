@@ -8,7 +8,7 @@ const [formal, report] = await Promise.all([
 ]);
 
 assert.ok(
-  formal.includes('src="../index.html?report=h1&embedded=1&v=20260730-elite-overscan-v24"'),
+  formal.includes('src="../index.html?report=h1&embedded=1&v=20260730-elite-door-v27"'),
   "the formal H1 page must explicitly identify its report iframe as embedded",
 );
 

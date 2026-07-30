@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-elite-overscan-v17">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-elite-door-v20">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2393,9 +2393,13 @@ const OKR_FIGMA_PAGES=[
     modalSrc:'previews/assets/figma-exact/expo-modal-source.png',
     hotspotClass:'is-expo',
   },
-  {id:'okr-elite-client-identity',label:'顶级客户身份体系',src:'previews/assets/figma-untitled/p38-39-elite-client-foreground.svg'},
-  {id:'okr-client-experience-model',label:'大客户体验体系',src:'previews/assets/figma-untitled/p66-client-experience-foreground.svg'},
+  {id:'okr-elite-client-identity',label:'顶级客户身份体系',src:'previews/assets/figma-untitled/p38-39-1-elite-client-foreground.png'},
+  {id:'okr-client-experience-model',label:'大客户体验体系',src:'previews/assets/figma-untitled/p69-client-experience-foreground.png'},
   {id:'okr-client-experience-cases',label:'顶尖大客户体验案例',src:'previews/assets/figma-untitled/p67-client-experience-cases-foreground.svg'},
+  {id:'okr-elite-client-no1-experience',label:'Vantage 顶级客户 No.1 体验',src:'previews/assets/figma-untitled/p70-elite-client-foreground.png'},
+  {id:'okr-elite-endorsement-resources',label:'顶级背书资源',src:'previews/assets/figma-untitled/p45-elite-endorsement-resources-foreground.png'},
+  {id:'okr-elite-ferrari-experience',label:'法拉利',src:'previews/assets/figma-untitled/p46-elite-ferrari-foreground.png'},
+  {id:'okr-elite-business-enablement',label:'业务赋能',src:'previews/assets/figma-untitled/p48-elite-business-enablement-foreground.png'},
   {
     id:'okr-merchandise',
     label:'周边',
@@ -2482,7 +2486,7 @@ function OkrEliteClientForegroundPage({page,index,count}){
   return (
     <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page h1-okr-elite-client-page" data-report-page data-page-id={page.id} aria-label={page.label}>
       <div ref={canvasRef} className="h1-okr-canvas h1-okr-elite-client-canvas">
-        <img className="h1-okr-elite-client-background" src="previews/assets/figma-untitled/elite-client-background-overscan.png" alt="" width="2280" height="1346" loading="eager" decoding="sync" draggable="false" aria-hidden="true" />
+        <img className="h1-okr-elite-client-background" src="previews/assets/figma-untitled/elite-client-background-38-39-2.png" alt="" width="1920" height="1080" loading="eager" decoding="sync" draggable="false" aria-hidden="true" />
         <img className="h1-okr-figma-foreground-layer" src={page.src} alt="" width="1920" height="1080" loading="eager" decoding="sync" draggable="false" aria-hidden="true" />
         <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
       </div>
@@ -2735,6 +2739,10 @@ function OkrReportDeck(){
         page.id==='okr-elite-client-identity' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-client-experience-model' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-client-experience-cases' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-elite-client-no1-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-elite-endorsement-resources' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-elite-ferrari-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-elite-business-enablement' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground-clean.png"/> :
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :

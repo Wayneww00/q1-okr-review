@@ -81,15 +81,15 @@ assert.ok(
   "the approved H1 comparison periods must remain unchanged",
 );
 assert.ok(
-  formal.includes('src="../index.html?report=h1&embedded=1&v=20260730-elite-overscan-v24"'),
+  formal.includes('src="../index.html?report=h1&embedded=1&v=20260730-elite-door-v27"'),
   "the local formal deck must keep the same embedded H1 report",
 );
 assert.ok(
-  formal.includes('href="h1-figma-racing-theme.css?v=20260730-elite-overscan-v17"'),
+  formal.includes('href="h1-figma-racing-theme.css?v=20260730-elite-door-v20"'),
   "the formal shell must load the high-contrast chart and region-table stylesheet",
 );
 assert.ok(
-  formal.includes("figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=20260730-elite-overscan-v17';"),
+  formal.includes("figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=20260730-elite-door-v20';"),
   "the embedded data report must load the high-contrast chart and region-table stylesheet",
 );
 
