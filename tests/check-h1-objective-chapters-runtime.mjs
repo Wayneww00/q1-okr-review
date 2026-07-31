@@ -70,7 +70,7 @@ try {
   const reportFrame = page.locator("#reportFrame").contentFrame();
   await reportFrame.locator('body[data-h1-prepared="true"]').waitFor();
   const reportPages = reportFrame.locator("[data-report-page]");
-  assert.equal(await reportPages.count(), 94);
+  assert.equal(await reportPages.count(), 96);
   assert.equal(
     await reportFrame
       .locator('[data-report-section="okr"] [data-report-page]')
@@ -81,7 +81,7 @@ try {
     await reportFrame
       .locator('[data-report-section="o2"] [data-report-page]')
       .count(),
-    25,
+    27,
   );
   assert.equal(
     await reportFrame
@@ -101,7 +101,7 @@ try {
     {
       id: "o2-chapter",
       title: "O2 以全面增长为核心，持续放大优势",
-      number: "01 / 25",
+      number: "01 / 27",
       backgroundSelector: "[data-o2-desert-stage]",
       backgroundNeedle: "figma-desert-vantage-bg.png",
     },

@@ -39,7 +39,7 @@ try {
     '[data-report-section="data"] [data-report-page]',
   );
   assert.equal(await dataPages.count(), 21);
-  assert.equal(await reportPages.count(), 94);
+  assert.equal(await reportPages.count(), 96);
   assert.equal(
     await reportFrame.locator(".h1-figma-fixed-stage").count(),
     1,

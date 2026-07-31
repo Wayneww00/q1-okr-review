@@ -91,8 +91,8 @@ assert.deepEqual(
 );
 assert.equal(
   topLevelStringIds(constantBlock(app, "const O2_REPORT_PAGES=[")).length,
-  25,
-  "the 25 O2 pages must remain untouched",
+  27,
+  "the 27 O2 pages must remain untouched",
 );
 assert.equal(
   topLevelStringIds(constantBlock(app, "const O3_REPORT_PAGES=[")).length,

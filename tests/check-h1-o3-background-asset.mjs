@@ -26,7 +26,7 @@ assert.doesNotMatch(
 );
 assert.match(
   app,
-  /previews\/h1-o3-theme\.css\?v=20260731-aso-density-v1/,
+  /previews\/h1-o3-theme\.css\?v=20260731-aso-proof-rank-v1/,
   "the O3 stylesheet URL must use the latest ASO-density cache key",
 );
 

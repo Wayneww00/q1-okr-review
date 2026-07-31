@@ -100,7 +100,7 @@ try {
   );
   assert.equal(
     await page.locator('[data-report-section="o2"] [data-report-page]').count(),
-    25,
+    27,
   );
   assert.equal(
     await page.locator('[data-report-section="o3"] [data-report-page]').count(),

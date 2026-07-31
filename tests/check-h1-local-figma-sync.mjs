@@ -11,7 +11,7 @@ const [formal, theme, report] = await Promise.all(
 );
 
 assert.ok(
-  formal.includes('src="../index.html?report=h1&embedded=1&v=20260731-remove-india-cover-v1"'),
+  formal.includes('src="../index.html?report=h1&embedded=1&v=20260731-h1-growth-release-v1"'),
   "the formal H1 report should explicitly request the login-free embedded report mode",
 );
 assert.ok(

@@ -49,7 +49,7 @@ try {
     31,
     "the complete 31-page O1 package must stay intact",
   );
-  assert.equal(await o2Pages.count(), 25, "the O2 section must render all 25 pages");
+  assert.equal(await o2Pages.count(), 27, "the O2 section must render all 27 pages");
   assert.equal(
     await reportFrame.locator("[data-o2-desert-stage]").count(),
     1,
@@ -74,8 +74,10 @@ try {
     "o2-geo-chapter",
     "o2-geo-baseline",
     "o2-geo-roadmap",
+    "o2-aso-chapter",
     "o2-aso-leadership",
     "o2-aso-evidence",
+    "o2-paid-ads-chapter",
     "o2-profit-scale",
     "o2-regional-engines",
     "o2-global-delivery",

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
@@ -11,6 +11,35 @@ const theme = readFileSync(
 const asoSource = app.slice(
   app.indexOf("function O3AsoRatingPanel"),
   app.indexOf("function O3Summary"),
+);
+const googlePlayProof = resolve(
+  root,
+  "previews/assets/o3/aso-google-play-5-score.png",
+);
+
+assert.ok(
+  existsSync(googlePlayProof),
+  "the ASO rating panel must ship the supplied Google Play 5.0 proof image",
+);
+assert.match(
+  asoSource,
+  /className="h1-o3-aso-google-play-proof"[\s\S]*?src="previews\/assets\/o3\/aso-google-play-5-score\.png"/,
+  "the ASO rating panel must render the supplied Google Play 5.0 proof image",
+);
+assert.match(
+  theme,
+  /\.h1-o3-aso-google-play-proof figcaption\{[^}]*clip-path:inset\(50%\)/,
+  "the proof caption must remain accessible without obscuring the supplied screenshot",
+);
+assert.ok(
+  asoSource.includes('function O3AsoRankTone(rank,cellIndex){') &&
+    asoSource.includes('if(cellIndex===0&&(rank==="#11"||rank==="#15"))return "is-low-rank";') &&
+    asoSource.includes('return cellIndex===0?"is-vantage":rank==="#1"?"is-first":"";'),
+  "only Vantage #11 and #15 may use the lighter rank treatment",
+);
+assert.ok(
+  asoSource.includes('className={O3AsoRankTone(rank,cellIndex)}'),
+  "keyword ranks must preserve the original classes except for Vantage #11 and #15",
 );
 
 for (const component of [
@@ -83,6 +112,19 @@ for (const className of [
 ]) {
   assert.ok(theme.includes(className), `${className} must be styled`);
 }
+
+for (const rankClass of [
+  ".h1-o3-aso-keyword-row>b.is-vantage",
+  ".h1-o3-aso-keyword-row>b.is-first",
+  ".h1-o3-aso-keyword-row>b.is-low-rank",
+]) {
+  assert.ok(theme.includes(rankClass), `${rankClass} must be styled`);
+}
+assert.doesNotMatch(
+  theme,
+  /\.h1-o3-aso-keyword-row>b\.is-(?:top3|top10|standard|empty)/,
+  "rank colors outside Vantage #11 and #15 must remain unchanged",
+);
 
 assert.match(
   theme,

@@ -55,7 +55,7 @@ assert.match(
 );
 assert.match(
   app,
-  /previews\/h1-o3-theme\.css\?v=20260731-aso-density-v1/,
+  /previews\/h1-o3-theme\.css\?v=20260731-aso-proof-rank-v1/,
   "the revised ASO layout must ship with a fresh stylesheet cache key",
 );
 

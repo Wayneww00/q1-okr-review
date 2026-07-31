@@ -140,33 +140,36 @@ assert.match(
   "page 24 media must fill the space released by the removed footer",
 );
 
-// Page 25: one strong proof card, a four-node closed loop, clean KPI cards.
+// Page 27: one strong proof card, a four-node closed loop, clean KPI cards.
 for (const fact of [
-  'title:"从「只拿 Leads」升级为全链路可追踪、可归因的运营，且 ROI 打正"',
-  'description:""',
-  "在荷兰，每五个新 IB 就有 1 个来自我们",
-  '<span className="h1-o2-card-label">荷兰市场验证</span>',
+  'title:"从 IB 获客，走向可复制的商业闭环"',
+  'description:"从「只拿 Leads」升级为全链路可追踪、可归因的运营，且 ROI 打正"',
+  "每 5 个新 IB",
+  "就有 1 个来自我们",
+  '<span className="h1-o2-card-label">在 荷 兰</span>',
   'const steps=["Paid Ads","IB Leads","IB 转化","真实入金（ND）"];',
   "可复制闭环",
-  "<O2MetricCard label=\"EU Leads\" value=\"+237%\"/>",
-  "<O2MetricCard label=\"IB 转化\" value=\"+156%\" tone=\"orange\"/>",
-  "<O2MetricCard label=\"CAC\" value=\"-41%\" tone=\"muted\"/>",
-  "<O2MetricCard label=\"CPL\" value=\"-55%\" tone=\"muted\"/>",
-  "复制荷兰打法",
-  "在重点市场加码",
-  "扩大 EU IB 规模",
+  "<O2MetricCard label=\"EU Leads\" value=\"+237%\" note=\"增长 · Q1→Q2\"/>",
+  "<O2MetricCard label=\"IB 转化\" value=\"+156%\" note=\"增长 · Q1→Q2\"/>",
+  "<O2MetricCard label=\"CAC\" value=\"−41%\" note=\"降本 · Q1→Q2\"/>",
+  "<O2MetricCard label=\"CPL\" value=\"−55%\" note=\"降本 · Q1→Q2\"/>",
 ]) {
-  assert.ok(app.includes(fact), `page 25 must include: ${fact}`);
+  assert.ok(app.includes(fact), `page 27 must include: ${fact}`);
 }
-assert.doesNotMatch(app, /"持续复购"/, "page 25 loop must contain only four nodes");
+assert.doesNotMatch(app, /"持续复购"/, "page 27 loop must contain only four nodes");
 const ibLoopSource = app.slice(
-  app.indexOf("function O2IbLoop()"),
+  app.indexOf("function O2IbLoop("),
   app.indexOf("function O2ReportPage("),
+);
+assert.doesNotMatch(
+  ibLoopSource,
+  /h1-o2-ib-brand|vantage-logo\.svg/,
+  "page 27 must remove the standalone Vantage logo from the IB page header",
 );
 assert.match(
   ibLoopSource,
-  /<span className="h1-o2-card-label">荷兰市场验证<\/span>\s*<strong>21%<\/strong>/,
-  "page 25 must preserve the editable Netherlands market-validation label",
+  /<span className="h1-o2-card-label">在 荷 兰<\/span>\s*<strong>21%<\/strong>/,
+  "page 27 must preserve the editable Netherlands market-validation label",
 );
 assert.match(
   theme,
@@ -175,8 +178,10 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-o2-nl-proof\s*\{[\s\S]*?grid-area:\s*proof;[\s\S]*?width:\s*(?:4\d\d|[5-9]\d\d)px;/,
-  "the 21% proof card must be materially enlarged",
+  /\.h1-o2-ib-layout\s*\{[\s\S]*?grid-template-areas:\s*"proof loop"\s*"kpis kpis";[\s\S]*?grid-template-rows:\s*510px 200px;/,
+  "page 27 must use the reference two-row composition after removing the H2 plan",
 );
+assert.doesNotMatch(ibLoopSource, /h1-o2-h2-plan/, "page 27 must remove the H2 scale-plan block");
+assert.doesNotMatch(ibLoopSource, /复制荷兰打法|在重点市场加码|扩大 EU IB 规模/, "page 27 must remove all H2 scale-plan copy");
 
-console.log("H1 O2 annotated pages 20–25 contract checks passed.");
+console.log("H1 O2 annotated pages 22–27 contract checks passed.");

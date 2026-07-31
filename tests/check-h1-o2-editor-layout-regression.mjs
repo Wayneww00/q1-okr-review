@@ -13,7 +13,7 @@ const immersive = fs.readFileSync(
   path.join(repoRoot, "previews/vantage-h1-immersive.html"),
   "utf8",
 );
-const expectedThemeVersion = "20260731-remove-india-cover-v1";
+const expectedThemeVersion = "20260731-h1-growth-release-v1";
 
 const regions = html.match(
   /function O2Regions\(\)\{([\s\S]*?)\n\}\n\nfunction O2Delivery\(\)/,
@@ -22,7 +22,7 @@ const reportPage = html.match(
   /function O2ReportPage\(\{page,index,count\}\)\{([\s\S]*?)\n\}\n\nfunction O2ReportDeck\(\)/,
 )?.[1];
 const ibLoop = html.match(
-  /function O2IbLoop\(\)\{([\s\S]*?)\n\}\n\nfunction O2ReportPage\(/,
+  /function O2IbLoop\([^)]*\)\{([\s\S]*?)\n\}\n\n(?:const H1_O2_COVER_PAGE_IDS[^\n]*\n\n)?function O2ReportPage\(/,
 )?.[1];
 const regionStyles = css.match(
   /\/\* Regions \*\/([\s\S]*?)\/\* Global delivery \*\//,
@@ -85,8 +85,8 @@ assert.match(
 
 assert.match(
   ibLoop,
-  /<span className="h1-o2-card-label">荷兰市场验证<\/span>\s*<strong>21%<\/strong>/,
-  "page 25 must preserve the previous editor text slot before the 21% proof",
+  /<span className="h1-o2-card-label">在 荷 兰<\/span>\s*<strong>21%<\/strong>/,
+  "page 27 must preserve the previous editor text slot before the 21% proof",
 );
 
 const standaloneThemeVersions = [

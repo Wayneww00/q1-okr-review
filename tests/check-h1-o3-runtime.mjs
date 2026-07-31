@@ -40,7 +40,7 @@ try {
   );
   assert.ok(
     await reportFrame.locator('[data-report-section="o2"] [data-report-page]').count() >=
-      25,
+      27,
     "the existing O2 deck must not lose pages",
   );
   const o3Pages = reportFrame.locator(

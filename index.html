@@ -15,8 +15,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-remove-india-cover-v1">
-<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-semrush-source-note-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-h1-growth-release-v1">
+<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-aso-proof-rank-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
 <style>
@@ -4316,6 +4316,14 @@ const O2_REPORT_PAGES=[
     description:"把一次性优化转化为持续提升提及率与曝光位置的日常运营能力。",
   },
   {
+    id:"o2-aso-chapter",
+    layout:"section-divider",
+    section:"ASO",
+    eyebrow:"APP STORE OPTIMIZATION",
+    title:"2026 H1 ASO",
+    description:"建立应用商店搜索优势，持续放大自然下载与品牌词增长。",
+  },
+  {
     id:"o2-aso-leadership",
     layout:"aso-summary",
     eyebrow:"APP STORE OPTIMIZATION",
@@ -4328,6 +4336,14 @@ const O2_REPORT_PAGES=[
     eyebrow:"ASO · EVIDENCE",
     title:"20 国核心词登顶 · 突破4.5高分口碑门槛 · 流量增长182% · 非品牌自然下载增长741%",
     description:"",
+  },
+  {
+    id:"o2-paid-ads-chapter",
+    layout:"section-divider",
+    section:"ADS",
+    eyebrow:"PERFORMANCE MARKETING",
+    title:"2026 H1 PAID ADS",
+    description:"以数据驱动投放效率，持续提升转化规模与 ROI。",
   },
   {
     id:"o2-profit-scale",
@@ -4368,8 +4384,8 @@ const O2_REPORT_PAGES=[
     id:"o2-ib-loop",
     layout:"ib-loop",
     eyebrow:"PARTNERSHIP GROWTH",
-    title:"从「只拿 Leads」升级为全链路可追踪、可归因的运营，且 ROI 打正",
-    description:"",
+    title:"从 IB 获客，走向可复制的商业闭环",
+    description:"从「只拿 Leads」升级为全链路可追踪、可归因的运营，且 ROI 打正",
   },
 ];
 
@@ -5316,37 +5332,42 @@ function O2Barrier(){
   );
 }
 
-function O2IbLoop(){
+function O2IbLoop({page}){
   const steps=["Paid Ads","IB Leads","IB 转化","真实入金（ND）"];
+  const stepLabels=[["投放","Paid Ads"],["IB Leads",""] ,["IB 转化",""] ,["真实入金","ND"]];
   const directions=["→","↓","←","↑"];
   return (
-    <div className="h1-o2-ib-layout">
-      <article className="h1-o2-card h1-o2-nl-proof">
-        <span className="h1-o2-card-label">荷兰市场验证</span>
-        <strong>21%</strong><p>在荷兰，每五个新 IB 就有 1 个来自我们</p>
-      </article>
-      <div className="h1-o2-ib-loop">
-        <div className="h1-o2-loop-track" aria-label="可复制的四节点商业闭环">
-          {steps.map((step,index)=>(
-            <React.Fragment key={step}>
-              <span className={`is-${index+1}`}>{step}</span>
-              <i className={`h1-o2-loop-arrow is-${index+1}`} aria-hidden="true">{directions[index]}</i>
-            </React.Fragment>
-          ))}
-          <b className="h1-o2-loop-label">可复制闭环</b>
+    <>
+      <header className="h1-o2-ib-header">
+        <div className="h1-o2-eyebrow"><O2RacingMark/><span>{page.eyebrow}</span></div>
+        <h2>{page.title}</h2>
+        <p>从「只拿 Leads」升级为<strong>全链路可追踪、可归因</strong>的运营，且 <strong>ROI 打正</strong></p>
+      </header>
+      <div className="h1-o2-ib-layout">
+        <article className="h1-o2-card h1-o2-nl-proof">
+          <span className="h1-o2-card-label">在 荷 兰</span>
+          <strong>21%</strong>
+          <p><span>每 5 个新 IB</span><span aria-label="就有 1 个来自我们">就有 <em>1 个</em>来自我们</span></p>
+        </article>
+        <div className="h1-o2-ib-loop">
+          <div className="h1-o2-loop-track" aria-label="可复制的四节点商业闭环">
+            {stepLabels.map(([label,note],index)=>(
+              <React.Fragment key={steps[index]}>
+                <span className={`is-${index+1}`}><b>{label}</b>{note&&<small>{note}</small>}</span>
+                <i className={`h1-o2-loop-arrow is-${index+1}`} aria-hidden="true">{directions[index]}</i>
+              </React.Fragment>
+            ))}
+            <b className="h1-o2-loop-label" aria-label="可复制闭环"><small>可 复 制</small><span>闭环</span></b>
+          </div>
+        </div>
+        <div className="h1-o2-ib-kpis">
+          <O2MetricCard label="EU Leads" value="+237%" note="增长 · Q1→Q2"/>
+          <O2MetricCard label="IB 转化" value="+156%" note="增长 · Q1→Q2"/>
+          <O2MetricCard label="CAC" value="−41%" note="降本 · Q1→Q2"/>
+          <O2MetricCard label="CPL" value="−55%" note="降本 · Q1→Q2"/>
         </div>
       </div>
-      <div className="h1-o2-ib-kpis">
-        <O2MetricCard label="EU Leads" value="+237%"/>
-        <O2MetricCard label="IB 转化" value="+156%" tone="orange"/>
-        <O2MetricCard label="CAC" value="-41%" tone="muted"/>
-        <O2MetricCard label="CPL" value="-55%" tone="muted"/>
-      </div>
-      <article className="h1-o2-card h1-o2-h2-plan">
-        <span>H2 SCALE PLAN</span>
-        <b>复制荷兰打法</b><i/> <b>在重点市场加码</b><i/> <b>扩大 EU IB 规模</b>
-      </article>
-    </div>
+    </>
   );
 }
 
@@ -5373,7 +5394,7 @@ function O2ReportPage({page,index,count}){
   if(page.layout==="delivery")content=<><O2PageHeader page={page}/><O2Delivery/></>;
   if(page.layout==="methodology")content=<><O2PageHeader page={page}/><O2Methodology/></>;
   if(page.layout==="barrier")content=<><O2PageHeader page={page}/><O2Barrier/></>;
-  if(page.layout==="ib-loop")content=<><O2PageHeader page={page}/><O2IbLoop/></>;
+  if(page.layout==="ib-loop")content=<O2IbLoop page={page}/>;
   return (
     <section
       className={`h1-o2-page is-${page.layout} ${H1_O2_COVER_PAGE_IDS.has(page.id)?"is-full-bleed":""}`}
@@ -5714,13 +5735,17 @@ function O3AsoRatingPanel(){
           </div>
         ))}
       </div>
-      <div className="h1-o3-aso-app-card">
-        <img src="previews/assets/o2/brands/vantage.png" alt="" width="42" height="42"/>
-        <div><small>GOOGLE PLAY</small><b>Vantage: All-In-One Trading App</b></div>
-        <strong>用户口碑行业第一</strong>
-      </div>
+      <figure className="h1-o3-aso-google-play-proof">
+        <img src="previews/assets/o3/aso-google-play-5-score.png" alt="Google Play 5.0评分与5T+下载量证据"/>
+        <figcaption>用户口碑行业第一</figcaption>
+      </figure>
     </section>
   );
+}
+
+function O3AsoRankTone(rank,cellIndex){
+  if(cellIndex===0&&(rank==="#11"||rank==="#15"))return "is-low-rank";
+  return cellIndex===0?"is-vantage":rank==="#1"?"is-first":"";
 }
 
 function O3AsoKeywordMatrix(){
@@ -5746,7 +5771,7 @@ function O3AsoKeywordMatrix(){
         {rows.map((row,index)=>(
           <div className="h1-o3-aso-keyword-row" role="row" key={row[0]}>
             <span role="cell"><small>{index+1}</small>{row[0]}</span>
-            {row.slice(1).map((rank,cellIndex)=><b className={cellIndex===0?"is-vantage":rank==="#1"?"is-first":""} role="cell" key={`${row[0]}-${cellIndex}`}>{rank}</b>)}
+            {row.slice(1).map((rank,cellIndex)=><b className={O3AsoRankTone(rank,cellIndex)} role="cell" key={`${row[0]}-${cellIndex}`}>{rank}</b>)}
           </div>
         ))}
       </div>

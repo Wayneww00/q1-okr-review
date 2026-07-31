@@ -106,7 +106,7 @@ assert.doesNotMatch(
   /<span>\/ 19<\/span>/,
   "no transplanted O1 page may retain the downloaded folder's stale 19-page denominator",
 );
-assert.equal(o2Ids.length, 25, "all 25 current O2 pages must remain");
+assert.equal(o2Ids.length, 27, "all 27 current O2 pages must remain");
 assert.deepEqual(
   o2Ids.slice(0, 2),
   ["o2-chapter", "o2-seo-chapter"],
@@ -124,8 +124,8 @@ assert.deepEqual(
 );
 assert.equal(
   dataIds.length + o1Ids.length + o2Ids.length + o3Ids.length,
-  94,
-  "the unified embedded report must contain 94 pages after removing the India chapter",
+  96,
+  "the unified embedded report must contain 96 pages after removing the India chapter and adding the two O2 chapter pages",
 );
 assert.doesNotMatch(
   app.slice(

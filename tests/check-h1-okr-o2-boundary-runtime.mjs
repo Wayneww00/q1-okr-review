@@ -95,7 +95,7 @@ try {
     "O2 以全面增长为核心，持续放大优势",
     "the approved O2 chapter must remain present",
   );
-  assert.equal(boundary.pageNumber, "01 / 25");
+  assert.equal(boundary.pageNumber, "01 / 27");
   assert.ok(Math.abs(boundary.chapterTop) <= 2);
   assert.ok(Math.abs(boundary.okrBottom) <= 2);
   assert.ok(

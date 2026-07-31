@@ -122,7 +122,7 @@ try {
       await page
         .locator('[data-report-section="o2"] [data-report-page]')
         .count(),
-      25,
+      27,
     );
     assert.equal(
       await page

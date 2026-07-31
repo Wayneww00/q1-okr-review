@@ -71,8 +71,8 @@ assert.ok(
 );
 assert.equal(
   [...app.matchAll(/\bid:"o2-/g)].length,
-  25,
-  "the O2 redesign must retain all 25 approved pages",
+  27,
+  "the O2 redesign must retain all 27 approved pages",
 );
 assert.match(
   app,

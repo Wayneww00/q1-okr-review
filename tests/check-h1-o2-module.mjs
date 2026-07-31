@@ -27,8 +27,10 @@ const expectedPages = [
   "o2-geo-chapter",
   "o2-geo-baseline",
   "o2-geo-roadmap",
+  "o2-aso-chapter",
   "o2-aso-leadership",
   "o2-aso-evidence",
+  "o2-paid-ads-chapter",
   "o2-profit-scale",
   "o2-regional-engines",
   "o2-global-delivery",
@@ -41,7 +43,7 @@ const registryStart = app.indexOf("const O2_REPORT_PAGES=");
 const registryEnd = app.indexOf("function O2ReportPage", registryStart);
 assert.ok(
   registryStart >= 0 && registryEnd > registryStart,
-  "the O2 section must expose one explicit 25-page registry",
+  "the O2 section must expose one explicit 27-page registry",
 );
 const registry = app.slice(registryStart, registryEnd);
 
@@ -53,8 +55,8 @@ for (const pageId of expectedPages) {
 }
 assert.equal(
   [...registry.matchAll(/\bid:"o2-/g)].length,
-  25,
-  "O2 must contain exactly 25 pages",
+  27,
+  "O2 must contain exactly 27 pages",
 );
 
 assert.match(
@@ -75,7 +77,7 @@ assert.match(
 assert.match(
   app,
   /className="h1-o2-page-number"[\s\S]*?String\(index\+1\)\.padStart\(2,"0"\)[\s\S]*?String\(count\)\.padStart\(2,"0"\)/,
-  "O2 page numbering must run independently from 01/25",
+  "O2 page numbering must run independently from 01/27",
 );
 assert.match(
   app,
@@ -202,4 +204,4 @@ assert.match(
   "O2 must use the approved 1920×1080 fixed-canvas scaling model",
 );
 
-console.log("H1 O2 25-page content, placement, and fixed-background contract passed.");
+console.log("H1 O2 27-page content, placement, and fixed-background contract passed.");
