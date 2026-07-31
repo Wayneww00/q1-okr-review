@@ -1249,8 +1249,11 @@
     const videos = [...document.querySelectorAll('video')];
     const aiProductsScene = scenes.find(scene => scene.dataset.label === 'AI Data Products');
     const aiProductsFrame = document.getElementById('aiProductsFrame');
+    const AI_PRODUCTS_ENTRY_WHEEL_GUARD_MS = 1500;
+    const AI_PRODUCTS_ENTRY_WHEEL_IDLE_MS = 500;
     let aiProductsNavigationRetryTimer = 0;
     let aiProductsNavigationRetriesRemaining = 0;
+    let aiProductsEntryWheelResetTimer = 0;
     let resetAiProductsNavigationIntent = () => {};
     let activeIndex = 0;
     let soundOn = true;
@@ -1278,6 +1281,36 @@
       aiProductsNavigationRetriesRemaining = 120;
       prepareAiProductsNavigation();
     };
+
+    const clearAiProductsEntryMomentum = () => {
+      window.clearTimeout(aiProductsEntryWheelResetTimer);
+      aiProductsEntryWheelResetTimer = 0;
+      delete aiProductsFrame.dataset.wheelBlockedUntil;
+      delete aiProductsFrame.dataset.wheelBlockedDirection;
+    };
+
+    const guardAiProductsEntryMomentum = direction => {
+      window.clearTimeout(aiProductsEntryWheelResetTimer);
+      aiProductsFrame.dataset.wheelBlockedDirection = String(direction);
+      aiProductsFrame.dataset.wheelBlockedUntil = String(
+        window.performance.now() + AI_PRODUCTS_ENTRY_WHEEL_GUARD_MS,
+      );
+      aiProductsEntryWheelResetTimer = window.setTimeout(
+        clearAiProductsEntryMomentum,
+        AI_PRODUCTS_ENTRY_WHEEL_GUARD_MS,
+      );
+    };
+
+    closingScene.addEventListener('wheel', event => {
+      if (event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) {
+        event.preventDefault();
+        return;
+      }
+      if (event.deltaY >= 0) return;
+      event.preventDefault();
+      guardAiProductsEntryMomentum(-1);
+      scrollToScene(aiProductsScene);
+    }, {capture:true, passive:false});
 
     const scrollToScene = scene => {
       if (!scene) return;
@@ -1686,7 +1719,7 @@
 
     closingVideo.addEventListener('ended', () => closingScene.classList.add('end-reveal'));
 
-    const moveDeckFromReport = direction => {
+    const moveDeckFromReport = (direction, source = 'keyboard') => {
       if (direction !== 1 && direction !== -1) return;
       const reportSceneIndex = scenes.findIndex(scene => scene.dataset.label === 'Full Report');
       if (reportSceneIndex < 0) return;
@@ -1694,6 +1727,9 @@
         0,
         Math.min(scenes.length - 1, reportSceneIndex + direction),
       );
+      if (source === 'wheel' && scenes[nextSceneIndex] === aiProductsScene) {
+        guardAiProductsEntryMomentum(direction);
+      }
       scrollToScene(scenes[nextSceneIndex]);
     };
 
@@ -1826,6 +1862,36 @@
         if (isProductInteraction() || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
         event.preventDefault();
         event.stopPropagation();
+        const wheelDirection = event.deltaY > 0 ? 1 : -1;
+        const blockedDirection = Number(
+          aiProductsFrame.dataset.wheelBlockedDirection || 0,
+        );
+        const blockedUntil = Number(
+          aiProductsFrame.dataset.wheelBlockedUntil || 0,
+        );
+        if (
+          window.performance.now() < blockedUntil
+          && (
+            blockedDirection === 0
+            || wheelDirection === blockedDirection
+          )
+        ) {
+          window.clearTimeout(aiProductsEntryWheelResetTimer);
+          aiProductsFrame.dataset.wheelBlockedUntil = String(
+            window.performance.now() + AI_PRODUCTS_ENTRY_WHEEL_IDLE_MS,
+          );
+          aiProductsEntryWheelResetTimer = window.setTimeout(
+            clearAiProductsEntryMomentum,
+            AI_PRODUCTS_ENTRY_WHEEL_IDLE_MS,
+          );
+          return;
+        }
+        if (
+          blockedDirection !== 0
+          && wheelDirection !== blockedDirection
+        ) {
+          clearAiProductsEntryMomentum();
+        }
         if (!productsRailOverflows()) {
           wheelDelta = 0;
           routeStaticRailWheel(event.deltaY);
@@ -1948,7 +2014,7 @@
       let reportTargetIndex = 0;
       let reportPaging = false;
       let reportSettleTimer = 0;
-      const queuedReportDirections = [];
+      const queuedReportNavigations = [];
 
       const publishReportState = index => {
         reportPages.forEach((page,pageIndex) => page.classList.toggle('is-active', pageIndex === index));
@@ -2000,9 +2066,11 @@
           reportTargetIndex = index;
           reportPaging = false;
           publishReportState(index);
-          const queuedDirection = queuedReportDirections.shift() || 0;
-          if (queuedDirection) {
-            reportWindow.requestAnimationFrame(() => moveInsideReport(queuedDirection));
+          const queuedNavigation = queuedReportNavigations.shift();
+          if (queuedNavigation) {
+            reportWindow.requestAnimationFrame(() =>
+              moveInsideReport(queuedNavigation.direction, queuedNavigation.source),
+            );
           }
         };
         reportWindow.addEventListener('scrollend', finishReportPage, {once:true});
@@ -2020,7 +2088,7 @@
         return true;
       };
 
-      const moveInsideReport = direction => {
+      const moveInsideReport = (direction, source = 'keyboard') => {
         if (reportPaging) return;
         if (direction !== 1 && direction !== -1) return;
         const reportTop = reportPageTop(reportPages[0]);
@@ -2033,11 +2101,11 @@
           const next = current + direction;
           if (next >= 0 && next < reportPages.length && goToReportPage(next)) return;
           if (next >= reportPages.length) {
-            moveDeckFromReport(1);
+            moveDeckFromReport(1, source);
             return;
           }
           if (next < 0) {
-            moveDeckFromReport(-1);
+            moveDeckFromReport(-1, source);
             return;
           }
         }
@@ -2139,10 +2207,10 @@
         reportWheelGestureConsumed = true;
         reportWheelTriggeredAt = now;
         if (reportPaging) {
-          queuedReportDirections.push(direction);
+          queuedReportNavigations.push({direction, source:'wheel'});
           return;
         }
-        moveInsideReport(direction);
+        moveInsideReport(direction, 'wheel');
       }, {passive:false});
       publishReportState(nearestReportIndex());
     }
