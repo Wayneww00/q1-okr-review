@@ -28,58 +28,52 @@ const page = Function(`"use strict"; return (${pageSource});`)();
 
 assert.equal(
   page.subtitle,
-  "2025 H2 vs 2026 H1 月度表现及整体占比走势",
+  "2025 H2 vs 2026 年 H1 月度环比增长率对比趋势",
   "the page subtitle should introduce 2025 H2 before 2026 H1",
 );
 assert.equal(
   page.chart.subtitle,
-  "Monthly Vantage Mentions vs. Industry Mentions (2025 H2 vs 2026 H1)",
+  "2025 Jul to 2026 Jun Monthly Performance",
   "the chart subtitle should describe the same chronological order",
 );
 assert.equal(
   page.editorRevision,
-  "social-sov-h2-first-v3",
+  "social-sov-vantage-exness-v1",
   "the corrected page should use a new editable-text namespace instead of restoring stale reversed labels",
 );
 assert.deepEqual(
-  page.socialMonthly.map(({month, period}) => `${period}:${month}`),
+  page.socialMonthly.map(({month}) => month),
   [
-    "2025 H2:Jul",
-    "2025 H2:Aug",
-    "2025 H2:Sep",
-    "2025 H2:Oct",
-    "2025 H2:Nov",
-    "2025 H2:Dec",
-    "2026 H1:Jan",
-    "2026 H1:Feb",
-    "2026 H1:Mar",
-    "2026 H1:Apr",
-    "2026 H1:May",
-    "2026 H1:Jun",
+    "Jul '25",
+    "Aug '25",
+    "Sep '25",
+    "Oct '25",
+    "Nov '25",
+    "Dec '25",
+    "Jan '26",
+    "Feb '26",
+    "Mar '26",
+    "Apr '26",
+    "May '26",
+    "Jun '26",
   ],
   "the chart should put 2025 H2 on the left and 2026 H1 on the right",
 );
-assert.equal(page.socialMonthly[5].sovText, "8.10%", "2025 H2 should end at 8.10%");
-assert.equal(page.socialMonthly[11].sovText, "10.23%", "2026 H1 should end at 10.23%");
+assert.equal(page.socialMonthly[5].vantageSovText, "8.10%", "2025 H2 should end at 8.10%");
+assert.equal(page.socialMonthly[11].vantageSovText, "10.23%", "2026 H1 should end at 10.23%");
+assert.equal(page.socialMonthly[0].exnessSovText, "16.20%", "the Exness comparison should begin in Jul 2025");
+assert.equal(page.socialMonthly[11].exnessSovText, "13.32%", "the Exness comparison should end in Jun 2026");
 
 const componentStart = report.indexOf("function H1SocialSovTrendChart");
 const componentEnd = report.indexOf("function H1FollowersShareChart", componentStart);
 const component = report.slice(componentStart, componentEnd);
-assert.match(
-  component,
-  /const periods = \[\.\.\.new Set\(chartData\.map\(row=>row\.period\)\)\];/,
-  "period bands should derive their order from the chart data",
-);
-assert.match(
-  component,
-  /h1-social-period-bands">\{periods\.map\(period=><span key=\{period\}>\{period\}<\/span>\)\}<\/div>/,
-  "the chart should render the derived period bands",
-);
 assert.doesNotMatch(
   component,
-  /<span>2026 H1<\/span><span>2025 H2<\/span>/,
-  "the component should not retain the reversed hard-coded period order",
+  /h1-social-period-bands|h1-social-values/,
+  "the chart should not retain the obsolete period band and mentions table",
 );
+assert.match(component, /dataKey="vantageSov"/, "the component should render the Vantage SOV line");
+assert.match(component, /dataKey="exnessSov"/, "the component should render the Exness SOV line");
 assert.match(
   report,
   /data-editor-revision=\{board\.editorRevision \|\| \(H1_RETAIL_GROWTH_LAYOUTS\.has\(board\.layoutType\) \? "retail-nd-ppt-v4" : undefined\)\}/,

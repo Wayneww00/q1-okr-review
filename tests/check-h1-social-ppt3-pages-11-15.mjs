@@ -190,53 +190,49 @@ assert.equal(Math.round((13.0 / 9.1 - 1) * 100), 43, "page 11 +43% should reconc
 assert.equal(data11.searchMetrics.months.length, 12, "page 11 should retain all 12 month labels");
 
 for (const token of [
-  "2025 H2 vs 2026 H1 月度表现及整体占比走势",
+  "2025 H2 vs 2026 年 H1 月度环比增长率对比趋势",
   "SHARE OF VOICE (SOV) TREND",
-  "Monthly Vantage Mentions vs. Industry Mentions (2025 H2 vs 2026 H1)",
-  "Vantage Mentions (in thousands)",
-  "Total Industry Mentions (in thousands)",
+  "2025 Jul to 2026 Jun Monthly Performance",
   "Vantage SOV (%)",
-  "MENTIONS (IN THOUSANDS)",
+  "Exness SOV (%)",
   "SOV (%)",
-  "leftTicks:[0,50,100,150,200,250,300,350,400,450,500]",
-  "rightAxisLabel:\"SOV (%)\", rightTicks:[0,2,4,6,8,10,12,14,16,18,20]",
-  "Note: Mentions include major social media platforms. Data checked on 24 July 2026.",
-  "8.1% 提升至 10.23%（增长 26.3%）",
-  "品牌在行业讨论中的竞争力和可见度持续增强"
+  "ticks:[0,2,4,6,8,10,12,14,16,18,20]",
+  "尽管 Exness 在行业品牌声量占比（Share of Voice）方面仍保持领先",
+  "与 2025 年 6 月相比",
+  "Vantage 与 Exness 的差距正持续缩小",
+  "Vantage 的品牌影响力不断增强"
 ]) {
-  assert.ok(page12.includes(token), `page 12 should preserve PPT token: ${token}`);
+  assert.ok(page12.includes(token), `page 12 should preserve approved figure token: ${token}`);
 }
 for (const row of [
-  '{month:"Jul",period:"2025 H2",vantage:51.8,vantageText:"51.8",industry:1081.7,industryText:"1,081.7",sov:4.79,sovText:"4.79%"}',
-  '{month:"Aug",period:"2025 H2",vantage:61.0,vantageText:"61.0",industry:1554.6,industryText:"1,554.6",sov:4.61,sovText:"4.61%"}',
-  '{month:"Sep",period:"2025 H2",vantage:76.5,vantageText:"76.5",industry:1721.5,industryText:"1,721.5",sov:5.65,sovText:"5.65%"}',
-  '{month:"Oct",period:"2025 H2",vantage:122.1,vantageText:"122.1",industry:2011.5,industryText:"2,011.5",sov:6.06,sovText:"6.06%"}',
-  '{month:"Nov",period:"2025 H2",vantage:158.1,vantageText:"158.1",industry:2062.9,industryText:"2,062.9",sov:7.66,sovText:"7.66%"}',
-  '{month:"Dec",period:"2025 H2",vantage:163.7,vantageText:"163.7",industry:2017.1,industryText:"2,017.1",sov:8.10,sovText:"8.10%"}',
-  '{month:"Jan",period:"2026 H1",vantage:62.3,vantageText:"62.3",industry:1078.9,industryText:"1,078.9",sov:5.79,sovText:"5.79%"}',
-  '{month:"Feb",period:"2026 H1",vantage:59.6,vantageText:"59.6",industry:1072.6,industryText:"1,072.6",sov:5.53,sovText:"5.53%"}',
-  '{month:"Mar",period:"2026 H1",vantage:68.2,vantageText:"68.2",industry:1079.3,industryText:"1,079.3",sov:6.33,sovText:"6.33%"}',
-  '{month:"Apr",period:"2026 H1",vantage:84.0,vantageText:"84.0",industry:1077.6,industryText:"1,077.6",sov:7.80,sovText:"7.80%"}',
-  '{month:"May",period:"2026 H1",vantage:96.9,vantageText:"96.9",industry:1023.7,industryText:"1,023.7",sov:9.43,sovText:"9.43%"}',
-  '{month:"Jun",period:"2026 H1",vantage:104.7,vantageText:"104.7",industry:1023.5,industryText:"1,023.5",sov:10.23,sovText:"10.23%"}'
+  '{month:"Jul \'25",vantageSov:4.79,vantageSovText:"4.79%",exnessSov:16.20,exnessSovText:"16.20%"}',
+  '{month:"Aug \'25",vantageSov:4.68,vantageSovText:"4.68%",exnessSov:15.76,exnessSovText:"15.76%"}',
+  '{month:"Sep \'25",vantageSov:5.90,vantageSovText:"5.90%",exnessSov:15.48,exnessSovText:"15.48%"}',
+  '{month:"Oct \'25",vantageSov:6.65,vantageSovText:"6.65%",exnessSov:16.82,exnessSovText:"16.82%"}',
+  '{month:"Nov \'25",vantageSov:7.61,vantageSovText:"7.61%",exnessSov:13.28,exnessSovText:"13.28%"}',
+  '{month:"Dec \'25",vantageSov:8.10,vantageSovText:"8.10%",exnessSov:11.67,exnessSovText:"11.67%"}',
+  '{month:"Jan \'26",vantageSov:5.79,vantageSovText:"5.79%",exnessSov:10.00,exnessSovText:"10.00%"}',
+  '{month:"Feb \'26",vantageSov:5.53,vantageSovText:"5.53%",exnessSov:15.05,exnessSovText:"15.05%"}',
+  '{month:"Mar \'26",vantageSov:6.33,vantageSovText:"6.33%",exnessSov:12.97,exnessSovText:"12.97%"}',
+  '{month:"Apr \'26",vantageSov:7.80,vantageSovText:"7.80%",exnessSov:13.42,exnessSovText:"13.42%"}',
+  '{month:"May \'26",vantageSov:9.43,vantageSovText:"9.43%",exnessSov:13.76,exnessSovText:"13.76%"}',
+  '{month:"Jun \'26",vantageSov:10.23,vantageSovText:"10.23%",exnessSov:13.32,exnessSovText:"13.32%"}'
 ]) {
-  assert.ok(page12.includes(row), `page 12 should preserve exact PPT row: ${row}`);
+  assert.ok(page12.includes(row), `page 12 should preserve exact approved row: ${row}`);
 }
-// The source PPT directly displays the SOV labels, including Aug and Sep.
-// Per the user's instruction, those visible PPT percentages remain authoritative here.
 assertOrderedTokens(page12, [
-  '{month:"Jul",period:"2025 H2"',
-  '{month:"Aug",period:"2025 H2"',
-  '{month:"Sep",period:"2025 H2"',
-  '{month:"Oct",period:"2025 H2"',
-  '{month:"Nov",period:"2025 H2"',
-  '{month:"Dec",period:"2025 H2"',
-  '{month:"Jan",period:"2026 H1"',
-  '{month:"Feb",period:"2026 H1"',
-  '{month:"Mar",period:"2026 H1"',
-  '{month:"Apr",period:"2026 H1"',
-  '{month:"May",period:"2026 H1"',
-  '{month:"Jun",period:"2026 H1"'
+  '{month:"Jul \'25"',
+  '{month:"Aug \'25"',
+  '{month:"Sep \'25"',
+  '{month:"Oct \'25"',
+  '{month:"Nov \'25"',
+  '{month:"Dec \'25"',
+  '{month:"Jan \'26"',
+  '{month:"Feb \'26"',
+  '{month:"Mar \'26"',
+  '{month:"Apr \'26"',
+  '{month:"May \'26"',
+  '{month:"Jun \'26"'
 ], "page 12 chronological monthly groups");
 
 for (const token of [
@@ -334,9 +330,10 @@ const socialChartEnd = index.indexOf("\nfunction ", socialChartStart + 10);
 const socialChartSource = index.slice(socialChartStart, socialChartEnd);
 assert.match(
   socialChartSource,
-  /const periods = \[\.\.\.new Set\(chartData\.map\(row=>row\.period\)\)\];[\s\S]*h1-social-period-bands">\{periods\.map\(period=><span key=\{period\}>\{period\}<\/span>\)\}<\/div>/,
-  "page 12 period bands should follow the chronological order supplied by the data"
+  /dataKey="vantageSov"[\s\S]*dataKey="exnessSov"/,
+  "page 12 should render the approved Vantage and Exness SOV lines",
 );
+assert.doesNotMatch(socialChartSource, /<Bar\b|h1-social-period-bands|h1-social-values/, "page 12 should remove the obsolete mentions bars and detail table");
 
 const followersShareStart = index.indexOf("function H1FollowersShareChart");
 const followersShareEnd = index.indexOf("\nfunction ", followersShareStart + 10);
