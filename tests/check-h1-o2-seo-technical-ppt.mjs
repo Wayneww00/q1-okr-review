@@ -101,7 +101,7 @@ assert.match(
   /\.h1-o2-page\.is-seo-technical \.h1-o2-seo-tech-metrics\s*\{[\s\S]*?border-top:\s*9px solid var\(--h1-o2-gold\)/,
 );
 
-const expectedCacheKey = "20260731-social-sov-order-v1";
+const expectedCacheKey = "20260731-region-lifecycle-proof-v1";
 assert.ok(app.includes(`h1-figma-racing-theme.css?v=${expectedCacheKey}`));
 assert.ok(
   [...shell.matchAll(new RegExp(

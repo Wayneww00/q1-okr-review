@@ -25,7 +25,7 @@ assert.ok(
 );
 assert.match(
   formal,
-  /<video\b(?=[^>]*class="video-bg")(?=[^>]*poster="assets\/vantage-h1-opening-final-poster\.jpg")(?=[^>]*src="assets\/vantage-h1-opening-final-4k\.mp4")[^>]*>/,
+  /<video\b(?=[^>]*class="video-bg")(?=[^>]*poster="assets\/vantage-h1-opening-final-poster\.jpg")[^>]*>[\s\S]*?<source\b(?=[^>]*src="assets\/vantage-h1-opening-final-4k\.mp4")(?=[^>]*type="video\/mp4")[^>]*>/,
   "the opening video must render its poster while the 4K source is loading",
 );
 
@@ -44,7 +44,7 @@ const secondScene = formal.match(
 assert.ok(secondScene, "the second screen must be implemented as a video scene");
 assert.match(
   secondScene,
-  /<video\b(?=[^>]*id="secondScreenVideo")(?=[^>]*class="video-bg second-screen-video")(?=[^>]*playsinline)(?=[^>]*preload="metadata")(?=[^>]*poster="assets\/vantage-h1-second-screen-final-poster\.jpg")(?=[^>]*data-src="previews\/assets\/vantage-h1-second-screen-final-4k\.mp4")[^>]*>/,
+  /<video\b(?=[^>]*id="secondScreenVideo")(?=[^>]*class="video-bg second-screen-video")(?=[^>]*playsinline)(?=[^>]*preload="metadata")(?=[^>]*poster="assets\/vantage-h1-second-screen-final-poster\.jpg")(?=[^>]*data-src="previews\/assets\/vantage-h1-second-screen-final-4k\.mp4")[^>]*>[\s\S]*?<source\b(?=[^>]*type="video\/mp4")[^>]*>/,
   "the second screen must defer the supplied full-bleed film until its scene becomes active",
 );
 assert.doesNotMatch(
@@ -75,7 +75,7 @@ assert.match(
 );
 assert.match(
   formal,
-  /const ensureVideoSource = video => \{[\s\S]*?video\.src = window\.VantageBrowserRuntime\.resolveMediaUrl\(video\.dataset\.src\);[\s\S]*?video\.load\(\);[\s\S]*?ensureVideoSource\(video\);/,
+  /const ensureVideoSource = video => \{[\s\S]*?VantageBrowserRuntime\.setVideoSource\([\s\S]*?VantageBrowserRuntime\.resolveMediaUrl\(video\.dataset\.src\)[\s\S]*?ensureVideoSource\(video\);/,
   "deferred scene videos must receive their source immediately before playback",
 );
 assert.match(

@@ -42,9 +42,12 @@ assert.match(
 for (const fact of [
   '"LATAM","ROI 打正","H2 重点","聚焦渠道链路与预算效率，重点放大"',
   'className="h1-o2-ltv-kicker">重点市场用户价值释放</div>',
-  '<div className="h1-o2-panel-title"><span>LTV / CAC 提升</span><strong>生命周期运营验证</strong></div>',
-  '<div><span>印度再营销</span><i style={{height:"38%"}}/><b>+157%</b><small>Q1 vs Q2</small></div>',
+  '<div className="h1-o2-panel-title"><span>LTV / CAC 提升</span></div>',
+  'const ltvMarkets=[["印度","+485%","86%"],["阿联酋","+220%","52%"]];',
+  'const lifecycleProof={label:"印度再营销",value:"+157%",period:"Q1 vs Q2"};',
+  'className="h1-o2-lifecycle-proof"',
   "重点市场用户价值释放",
+  "生命周期运营验证 · LTV / CAC 提升",
   "重点市场继续做大",
   "重点国家提升用户价值",
   "存量激活带新增",
@@ -55,10 +58,10 @@ const regionsPageSource = app.slice(
   app.indexOf("function O2Regions()"),
   app.indexOf("function O2Delivery()"),
 );
-assert.doesNotMatch(
+assert.match(
   regionsPageSource,
-  /const ltvMarkets|const lifecycleProof|h1-o2-lifecycle-proof/,
-  "page 21 must keep all three editable values in the chart instead of a generated list or proof card",
+  /const ltvMarkets[\s\S]*?const lifecycleProof[\s\S]*?h1-o2-lifecycle-proof/,
+  "page 21 must keep the chart markets separate from the relocated lifecycle proof",
 );
 assert.match(
   theme,
@@ -75,15 +78,15 @@ assert.doesNotMatch(
   /className="h1-o2-region-summary"/,
   "the approved conclusion must live inside the panel instead of being duplicated below it",
 );
-assert.match(
+assert.doesNotMatch(
   regionsPageSource,
   /className="h1-o2-ltv-bars"[\s\S]{0,900}印度再营销/,
-  "the +157% remarketing result must remain the third editable LTV/CAC bar",
+  "the +157% remarketing result must move out of the LTV chart",
 );
-assert.doesNotMatch(
+assert.match(
   theme,
-  /\.h1-o2-lifecycle-proof/,
-  "page 21 must not retain the removed proof-card styles",
+  /\.h1-o2-lifecycle-proof\s*\{[\s\S]*?background:/,
+  "the relocated +157% result must use a dedicated bottom proof card",
 );
 
 // Page 22: annotated title and the four source-PPT resilience capabilities.

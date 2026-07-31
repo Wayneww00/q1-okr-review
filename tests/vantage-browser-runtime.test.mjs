@@ -165,6 +165,174 @@ assert.equal(
   "re-entering edit mode must restore title and subtitle as plain multiline text",
 );
 
+const dataHeaderDom = new JSDOM(`<!doctype html><body>
+  <main data-report-section="data">
+    <section
+      data-report-page
+      data-page-id="data-15"
+      data-editor-revision="retail-nd-ppt-v4"
+    >
+      <header class="h1-extended-editorial-header">
+        <div class="h1-extended-editorial-section">
+          <span></span>
+          <b
+            data-vantage-header-field="eyebrow"
+            data-vantage-single-line
+          >整体数据 · RETAIL ND｜区域占比</b>
+        </div>
+        <h1
+          data-vantage-header-field="title"
+          data-vantage-single-line
+        >原始大标题</h1>
+        <p
+          data-vantage-header-field="subtitle"
+          data-vantage-text-key="header-subtitle"
+          data-vantage-empty-editable
+          data-vantage-single-line
+        ></p>
+      </header>
+      <h2>图表标题</h2>
+    </section>
+  </main>
+</body>`);
+const dataHeaderEntries = discoverEditableText(dataHeaderDom.window.document);
+assert.deepEqual(
+  dataHeaderEntries.map(({ id }) => id),
+  [
+    "data:data-15@retail-nd-ppt-v4:0",
+    "data:data-15@retail-nd-ppt-v4:1",
+    "data:data-15@retail-nd-ppt-v4:header-subtitle",
+    "data:data-15@retail-nd-ppt-v4:2",
+  ],
+  "an empty keyed subtitle must be editable without shifting existing text IDs",
+);
+
+applyTextRevision(dataHeaderEntries, {
+  texts: {
+    "data:data-15@retail-nd-ppt-v4:1":
+      "Retail ND占比分享专题\n\nH1 Retail ND APAC -2.0% GS +0.5%",
+  },
+});
+const dataHeaderTitle = dataHeaderDom.window.document.querySelector(
+  '[data-vantage-header-field="title"]',
+);
+const dataHeaderSubtitle = dataHeaderDom.window.document.querySelector(
+  '[data-vantage-header-field="subtitle"]',
+);
+assert.equal(
+  dataHeaderTitle.textContent,
+  "Retail ND占比分享专题",
+  "legacy multiline data-page titles must keep only the first line as the main title",
+);
+assert.equal(
+  dataHeaderSubtitle.textContent,
+  "H1 Retail ND APAC -2.0% GS +0.5%",
+  "legacy title continuation must migrate into the dedicated lower subtitle field",
+);
+assert.equal(
+  dataHeaderTitle.classList.contains("vantage-title-with-subtitle"),
+  false,
+  "a migrated data-page title must no longer render an embedded subtitle",
+);
+
+setEntriesEditing(dataHeaderEntries, true);
+dataHeaderSubtitle.textContent = "H1 Retail ND\nAPAC -2.0%";
+assert.equal(
+  collectTextEntries(dataHeaderEntries).find(
+    ({ id }) => id.endsWith(":header-subtitle"),
+  )?.text,
+  "H1 Retail ND APAC -2.0%",
+  "dedicated data-page header fields must persist as a single line",
+);
+dataHeaderSubtitle.textContent = "\n";
+assert.equal(
+  collectTextEntries(dataHeaderEntries).find(
+    ({ id }) => id.endsWith(":header-subtitle"),
+  )?.text,
+  "",
+  "a whitespace-only dedicated header field must persist as empty",
+);
+
+const indexedDataHeaderDom = new JSDOM(`<!doctype html><body>
+  <main data-report-section="data">
+    <section data-report-page data-page-id="data-13">
+      <header class="h1-extended-editorial-header">
+        <div class="h1-extended-editorial-section">
+          <span></span>
+          <b
+            data-vantage-header-field="eyebrow"
+            data-vantage-single-line
+          >整体数据 GM Social Media</b>
+        </div>
+        <h1
+          data-vantage-header-field="title"
+          data-vantage-single-line
+        >CFD 行业关注者份额</h1>
+        <p
+          data-vantage-header-field="subtitle"
+          data-vantage-text-key="header-subtitle"
+          data-vantage-empty-editable
+          data-vantage-single-line
+          data-vantage-legacy-indexed
+        >VANTAGE MARKETS’ SHARE OF CFD INDUSTRY FOLLOWERS</p>
+        <small>原始来源</small>
+      </header>
+      <h2>原始图表标题</h2>
+    </section>
+  </main>
+</body>`);
+const indexedDataHeaderEntries = discoverEditableText(
+  indexedDataHeaderDom.window.document,
+);
+assert.deepEqual(
+  indexedDataHeaderEntries.map(({ id, legacyId }) => ({
+    id,
+    legacyId: legacyId || null,
+  })),
+  [
+    { id: "data:data-13:0", legacyId: null },
+    { id: "data:data-13:1", legacyId: null },
+    {
+      id: "data:data-13:header-subtitle",
+      legacyId: "data:data-13:2",
+    },
+    { id: "data:data-13:3", legacyId: null },
+    { id: "data:data-13:4", legacyId: null },
+  ],
+  "a formerly indexed subtitle must retain its old slot while writing to a stable named key",
+);
+applyTextRevision(indexedDataHeaderEntries, {
+  texts: {
+    "data:data-13:1": "CFD 行业关注者份额\n新增下方说明",
+    "data:data-13:2": "远端原有下方小标题",
+    "data:data-13:3": "远端来源",
+    "data:data-13:4": "远端图表标题",
+  },
+});
+assert.equal(
+  indexedDataHeaderDom.window.document.querySelector(
+    '[data-vantage-header-field="title"]',
+  ).textContent,
+  "CFD 行业关注者份额",
+);
+assert.equal(
+  indexedDataHeaderDom.window.document.querySelector(
+    '[data-vantage-header-field="subtitle"]',
+  ).textContent,
+  "新增下方说明 · 远端原有下方小标题",
+  "legacy title continuation and an existing lower subtitle must both survive migration",
+);
+assert.equal(
+  indexedDataHeaderDom.window.document.querySelector("small").textContent,
+  "远端来源",
+  "a migrated subtitle must not take over the old source-text ID",
+);
+assert.equal(
+  indexedDataHeaderDom.window.document.querySelector("h2").textContent,
+  "远端图表标题",
+  "a migrated subtitle must not shift the old chart-title ID",
+);
+
 const richPasteDom = new JSDOM(`<!doctype html><body>
   <main data-report-section="data">
     <section data-report-page data-page-id="data-rich-paste">
@@ -257,6 +425,29 @@ assert.deepEqual(listPresentationMedia(), [
     bytes: 4,
   },
 ]);
+
+assert.equal(
+  typeof VantageBrowserRuntime.setVideoSource,
+  "function",
+  "the browser runtime must attach an explicit MP4 source for Safari",
+);
+if (typeof VantageBrowserRuntime.setVideoSource === "function") {
+  const mediaDom = new JSDOM("<!doctype html><body><video></video></body>");
+  const mediaVideo = mediaDom.window.document.querySelector("video");
+  let loadCalls = 0;
+  mediaVideo.load = () => {
+    loadCalls += 1;
+  };
+  VantageBrowserRuntime.setVideoSource(
+    mediaVideo,
+    "https://blob.example/video.mp4",
+  );
+  const mediaSource = mediaVideo.querySelector("source");
+  assert.equal(mediaVideo.hasAttribute("src"), false);
+  assert.equal(mediaSource?.getAttribute("src"), "https://blob.example/video.mp4");
+  assert.equal(mediaSource?.getAttribute("type"), "video/mp4");
+  assert.equal(loadCalls, 1);
+}
 
 assert.equal(
   typeof VantageBrowserRuntime.progressivelyWarmPresentationMedia,
@@ -454,6 +645,87 @@ assert.equal(
   discardEntry.textContent,
   "Original unpublished text",
   "discard must restore every field to its pre-edit value, including fields absent from the stored revision",
+);
+
+const legacyConflictDom = new JSDOM(`<!doctype html><body>
+  <main data-report-section="data">
+    <section data-report-page data-page-id="data-13">
+      <header class="h1-extended-editorial-header">
+        <div class="h1-extended-editorial-section">
+          <span></span>
+          <b data-vantage-header-field="eyebrow" data-vantage-single-line>
+            整体数据 GM Social Media
+          </b>
+        </div>
+        <h1 data-vantage-header-field="title" data-vantage-single-line>
+          原始标题
+        </h1>
+        <p
+          data-vantage-header-field="subtitle"
+          data-vantage-text-key="header-subtitle"
+          data-vantage-empty-editable
+          data-vantage-single-line
+          data-vantage-legacy-indexed
+        >原始下方小标题</p>
+      </header>
+      <h2>原始图表标题</h2>
+    </section>
+  </main>
+</body>`);
+const legacyConflictController = new ReportContentController({
+  document: legacyConflictDom.window.document,
+  client: conflictClient,
+});
+legacyConflictController.ready = true;
+legacyConflictController.revision = {
+  version: 1,
+  texts: {
+    "data:data-13:1": "旧标题\n旧标题续行",
+    "data:data-13:2": "旧下方小标题",
+    "data:data-13:3": "旧图表标题",
+  },
+};
+applyTextRevision(
+  legacyConflictController.refreshEntries(),
+  legacyConflictController.revision,
+);
+legacyConflictController.beginEditing();
+const legacyConflictTitle = legacyConflictDom.window.document.querySelector(
+  '[data-vantage-header-field="title"]',
+);
+legacyConflictTitle.textContent = "未保存的本地标题";
+legacyConflictTitle.dispatchEvent(
+  new legacyConflictDom.window.InputEvent("input", { bubbles: true }),
+);
+legacyConflictController.handleRemoteRow({
+  report_id: "vantage-h1",
+  content: {
+    texts: {
+      "data:data-13:1": "新远端标题\n新远端标题续行",
+      "data:data-13:2": "新远端下方小标题",
+      "data:data-13:3": "新远端图表标题",
+    },
+  },
+  version: 2,
+  updated_at: "2026-07-31T12:00:00.000Z",
+});
+legacyConflictController.discard();
+assert.equal(
+  legacyConflictTitle.textContent,
+  "新远端标题",
+  "discarding after a conflict must apply the newer legacy-format title",
+);
+assert.equal(
+  legacyConflictDom.window.document.querySelector(
+    '[data-vantage-header-field="subtitle"]',
+  ).textContent,
+  "新远端标题续行 · 新远端下方小标题",
+  "discarding after a conflict must rebuild the subtitle from the newer legacy-format revision",
+);
+assert.equal(
+  legacyConflictDom.window.document.querySelector("h2").textContent,
+  "新远端图表标题",
+  "discarding after a conflict must keep downstream legacy IDs aligned",
 );
 
 console.log("Vantage browser editor DOM contract passed.");

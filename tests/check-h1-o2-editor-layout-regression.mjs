@@ -13,7 +13,7 @@ const immersive = fs.readFileSync(
   path.join(repoRoot, "previews/vantage-h1-immersive.html"),
   "utf8",
 );
-const expectedThemeVersion = "20260731-social-sov-order-v1";
+const expectedThemeVersion = "20260731-region-lifecycle-proof-v1";
 
 const regions = html.match(
   /function O2Regions\(\)\{([\s\S]*?)\n\}\n\nfunction O2Delivery\(\)/,
@@ -24,40 +24,62 @@ const ibLoop = html.match(
 const regionStyles = css.match(
   /\/\* Regions \*\/([\s\S]*?)\/\* Global delivery \*\//,
 )?.[1];
+const ltvBarsStart = regions?.indexOf(
+  '<div className="h1-o2-ltv-bars">',
+) ?? -1;
+const ltvBarsEnd = regions?.indexOf("</article>", ltvBarsStart) ?? -1;
+const ltvBarsSource = regions?.slice(ltvBarsStart, ltvBarsEnd);
+const conclusionStart = regions?.indexOf(
+  '<article className="h1-o2-card h1-o2-region-conclusion">',
+) ?? -1;
+const conclusionEnd = regions?.indexOf("</article>", conclusionStart) ?? -1;
+const conclusionSource = regions?.slice(conclusionStart, conclusionEnd);
 
 assert.ok(regions, "O2 regional-growth page source must be discoverable");
 assert.ok(ibLoop, "O2 partnership-growth page source must be discoverable");
 assert.ok(regionStyles, "O2 regional-growth styles must be discoverable");
+assert.ok(ltvBarsSource, "page 21 LTV/CAC chart source must be discoverable");
+assert.ok(conclusionSource, "page 21 conclusion source must be discoverable");
 
 assert.match(
   regions,
-  /<div className="h1-o2-panel-title"><span>LTV \/ CAC 提升<\/span><strong>生命周期运营验证<\/strong><\/div>/,
-  "page 21 must preserve the previous editor text slot before the LTV/CAC bars",
+  /<div className="h1-o2-panel-title"><span>LTV \/ CAC 提升<\/span><\/div>/,
+  "page 21 must keep lifecycle validation in the relocated bottom proof card",
 );
 assert.match(
   regions,
-  /<div><span>印度再营销<\/span><i style=\{\{height:"38%"\}\}\/><b>\+157%<\/b><small>Q1 vs Q2<\/small><\/div>/,
-  "page 21 must keep India remarketing as the third LTV/CAC bar",
+  /const lifecycleProof=\{label:"印度再营销",value:"\+157%",period:"Q1 vs Q2"\};/,
+  "page 21 must preserve the India remarketing proof data",
+);
+assert.match(
+  conclusionSource,
+  /className="h1-o2-lifecycle-proof"[\s\S]*?\{lifecycleProof\.value\}[\s\S]*?\{lifecycleProof\.label\}[\s\S]*?\{lifecycleProof\.period\}/,
+  "page 21 must render India remarketing inside the bottom conclusion panel",
+);
+assert.match(
+  ltvBarsSource,
+  /\{ltvMarkets\.map\(/,
+  "page 21 chart must render only the two approved LTV markets",
 );
 assert.doesNotMatch(
-  regions,
-  /h1-o2-lifecycle-proof/,
-  "page 21 must not move the third bar into a separately ordered proof card",
+  ltvBarsSource,
+  /lifecycleProof|印度再营销|\+157%/,
+  "page 21 chart must not render the relocated India remarketing proof",
 );
 assert.match(
   regionStyles,
-  /\.h1-o2-ltv-bars\s*\{[\s\S]*?justify-content:\s*center;[\s\S]*?gap:\s*70px;/,
-  "page 21 must use the previous three-bar spacing",
+  /\.h1-o2-ltv-bars\s*\{[\s\S]*?justify-content:\s*space-evenly;[\s\S]*?gap:\s*92px;/,
+  "page 21 must use the two-bar spacing after relocating India remarketing",
 );
 assert.match(
   regionStyles,
-  /\.h1-o2-region-conclusion\s*\{[\s\S]*?grid-template-columns:\s*1fr;[\s\S]*?gap:\s*18px;/,
-  "page 21 conclusion must use the previous single-column layout",
+  /\.h1-o2-region-conclusion\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,1fr\) 330px;[\s\S]*?gap:\s*18px 34px;/,
+  "page 21 conclusion must reserve the right column for the relocated proof",
 );
-assert.doesNotMatch(
+assert.match(
   regionStyles,
-  /\.h1-o2-lifecycle-proof/,
-  "page 21 styles must not retain the removed proof-card layout",
+  /\.h1-o2-lifecycle-proof\s*\{[\s\S]*?grid-column:\s*2;[\s\S]*?background:/,
+  "page 21 must style the relocated proof as a dedicated bottom card",
 );
 
 assert.match(
@@ -66,19 +88,31 @@ assert.match(
   "page 25 must preserve the previous editor text slot before the 21% proof",
 );
 
-assert.match(
-  html,
-  new RegExp(
-    `h1-figma-racing-theme\\.css\\?v=${expectedThemeVersion}`,
-  ),
-  "the standalone report must cache-bust the restored O2 layout",
+const standaloneThemeVersions = [
+  ...html.matchAll(/h1-figma-racing-theme\.css\?v=([^'"\s>]+)/g),
+].map((match) => match[1]);
+assert.deepEqual(
+  standaloneThemeVersions,
+  [expectedThemeVersion],
+  "the standalone report must use exactly the restored O2 theme revision",
 );
-assert.match(
-  immersive,
-  new RegExp(
-    `h1-figma-racing-theme\\.css\\?v=${expectedThemeVersion}`,
+const immersiveThemeVersions = [
+  ...immersive.matchAll(/h1-figma-racing-theme\.css\?v=([^'"\s;]+)/g),
+].map((match) => match[1]);
+assert.deepEqual(
+  immersiveThemeVersions,
+  [expectedThemeVersion, expectedThemeVersion],
+  "both immersive theme consumers must use the restored O2 revision",
+);
+const immersiveReportVersions = [
+  ...immersive.matchAll(
+    /\.\.\/index\.html\?report=h1&embedded=1&v=([^'"\s>]+)/g,
   ),
-  "the immersive report shell must cache-bust the restored O2 layout",
+].map((match) => match[1]);
+assert.deepEqual(
+  immersiveReportVersions,
+  [expectedThemeVersion],
+  "the immersive iframe must invalidate the embedded report with the same revision",
 );
 
 console.log("O2 editor/layout regression contract passed.");

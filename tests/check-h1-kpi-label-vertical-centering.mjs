@@ -7,7 +7,7 @@ const immersive = fs.readFileSync(
   "previews/vantage-h1-immersive.html",
   "utf8",
 );
-const centeringRevision = "20260731-social-sov-order-v1";
+const centeringRevision = "20260731-region-lifecycle-proof-v1";
 
 const imageRule = theme.match(
   /\.h1-figma-kpi\s*>\s*img\s*\{([^}]*)\}/,

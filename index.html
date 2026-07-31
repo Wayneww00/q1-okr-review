@@ -11,11 +11,11 @@
 <script src="/vendor/babel.min.js"></script>
 <script src="/vendor/prop-types.min.js"></script>
 <script src="/vendor/recharts.js"></script>
-<script src="/vendor/vantage-runtime.js?v=20260731-editor-keyboard-v1"></script>
+<script src="/vendor/vantage-runtime.js?v=20260731-safari-video-v1"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-social-sov-order-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-region-lifecycle-proof-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-aso-density-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -68,6 +68,21 @@
     white-space:pre-line
   }
   .vantage-title-with-subtitle[contenteditable]{white-space:pre-line!important}
+  .h1-extended-editorial-header [data-vantage-header-field]:empty:not([contenteditable]){
+    visibility:hidden
+  }
+  .h1-extended-editorial-header [data-vantage-header-field][contenteditable]{
+    min-width:10rem;
+    min-height:1em;
+    visibility:visible
+  }
+  .h1-extended-editorial-header [data-vantage-header-field][contenteditable]:empty::before{
+    content:attr(data-vantage-placeholder);
+    color:rgba(255,255,255,.34);
+    font:inherit;
+    letter-spacing:inherit;
+    pointer-events:none
+  }
 
   /* ═══ All animations: compositor-only (transform + opacity) ═══ */
 
@@ -1804,9 +1819,27 @@ function H1DataModulePageShell({
       <div className={canvasClasses}>
         {showHeader && (
           <header className="h1-extended-editorial-header">
-            <div className="h1-extended-editorial-section"><span></span><b>{sectionLabel}</b></div>
-            <h1>{pageTitle}</h1>
-            {contextLine && <p>{contextLine}</p>}
+            <div className="h1-extended-editorial-section">
+              <span></span>
+              <b
+                data-vantage-header-field="eyebrow"
+                data-vantage-single-line
+                data-vantage-placeholder="点击添加上方小标题"
+              >{sectionLabel}</b>
+            </div>
+            <h1
+              data-vantage-header-field="title"
+              data-vantage-single-line
+              data-vantage-placeholder="点击添加大标题"
+            >{pageTitle}</h1>
+            <p
+              data-vantage-header-field="subtitle"
+              data-vantage-text-key="header-subtitle"
+              data-vantage-empty-editable
+              data-vantage-legacy-indexed={contextLine ? "true" : undefined}
+              data-vantage-single-line
+              data-vantage-placeholder="点击添加下方小标题"
+            >{contextLine || ""}</p>
             {sourceLine && <small>{sourceLine}</small>}
           </header>
         )}
@@ -2649,8 +2682,13 @@ function HeroSection({data,editMode,addHeroKpi,delHeroKpi,sectionRef}){
 
   return(
     <section id="hero" ref={function(el){if(sectionRef)sectionRef.current=el;heroRef.current=el;}} style={{position:'relative',height:'90vh',overflow:'hidden',background:'#0a0a0a',willChange:'height',borderRadius:'0 0 24px 24px'}}>
-      <video ref={vidRef} src={EMBEDDED_REPORT_MODE?undefined:window.VantageBrowserRuntime.resolveMediaUrl('hero-bg.mp4')} autoPlay muted playsInline
-        style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:1}}/>
+      <video ref={vidRef} autoPlay muted playsInline
+        style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:1}}>
+        <source
+          src={EMBEDDED_REPORT_MODE?undefined:window.VantageBrowserRuntime.resolveMediaUrl('hero-bg.mp4')}
+          type="video/mp4"
+        />
+      </video>
       {/* Ink wash gradient overlay — darker bottom-left for text, lighter center for video */}
       <div style={{position:'absolute',inset:0,zIndex:2,background:'linear-gradient(135deg,rgba(10,6,6,0.85) 0%,rgba(10,6,6,0.3) 40%,rgba(10,6,6,0.15) 60%,rgba(10,6,6,0.6) 100%)'}}/>
 
@@ -2848,8 +2886,13 @@ function FooterVideo(){
 
   return(
     <div ref={containerRef} style={{position:'relative',width:'100%',height:'100vh',overflow:'hidden'}}>
-      <video ref={vidRef} src={EMBEDDED_REPORT_MODE?undefined:window.VantageBrowserRuntime.resolveMediaUrl('footer-bg.mp4')} muted playsInline preload="auto"
-        style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:1}}/>
+      <video ref={vidRef} muted playsInline preload="auto"
+        style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:1}}>
+        <source
+          src={EMBEDDED_REPORT_MODE?undefined:window.VantageBrowserRuntime.resolveMediaUrl('footer-bg.mp4')}
+          type="video/mp4"
+        />
+      </video>
       <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at center,transparent 40%,rgba(10,6,6,0.6) 70%,rgba(10,6,6,0.95) 100%)',pointerEvents:'none',zIndex:2}}/>
     </div>
   );
@@ -3527,7 +3570,6 @@ function OkrInlineVideo({slot}){
   return (
     <video
       className={`h1-okr-inline-video${slot.fit==='contain' ? ' is-contain' : ''}`}
-      src={window.VantageBrowserRuntime.resolveMediaUrl(slot.src)}
       controls
       playsInline
       preload="metadata"
@@ -3538,7 +3580,12 @@ function OkrInlineVideo({slot}){
         width:coordinate(slot.width),
         height:coordinate(slot.height),
       }}
-    />
+    >
+      <source
+        src={window.VantageBrowserRuntime.resolveMediaUrl(slot.src)}
+        type="video/mp4"
+      />
+    </video>
   );
 }
 
@@ -3943,11 +3990,15 @@ function OkrVideoModal({preview,onClose}){
           <video
             ref={videoRef}
             className={`h1-okr-video-player${preview.slot.fit==='cover' ? ' is-cover' : ''}`}
-            src={window.VantageBrowserRuntime.resolveMediaUrl(preview.slot.src)}
             controls
             autoPlay
             playsInline
-          />
+          >
+            <source
+              src={window.VantageBrowserRuntime.resolveMediaUrl(preview.slot.src)}
+              type="video/mp4"
+            />
+          </video>
         ) : (
           <div className="h1-okr-video-placeholder">
             <strong>{preview.slot.label}</strong>
@@ -4922,6 +4973,8 @@ function O2Regions(){
     ["EU","FTD +30%","ND +47%","流量收缩但质量提升，稳固基本盘"],
     ["LATAM","ROI 打正","H2 重点","聚焦渠道链路与预算效率，重点放大"],
   ];
+  const ltvMarkets=[["印度","+485%","86%"],["阿联酋","+220%","52%"]];
+  const lifecycleProof={label:"印度再营销",value:"+157%",period:"Q1 vs Q2"};
   return (
     <div className="h1-o2-region-layout">
       <div className="h1-o2-region-grid">
@@ -4935,17 +4988,23 @@ function O2Regions(){
       <div className="h1-o2-ltv-wrap">
         <div className="h1-o2-ltv-kicker">重点市场用户价值释放</div>
         <article className="h1-o2-card h1-o2-ltv-panel">
-          <div className="h1-o2-panel-title"><span>LTV / CAC 提升</span><strong>生命周期运营验证</strong></div>
+          <div className="h1-o2-panel-title"><span>LTV / CAC 提升</span></div>
           <div className="h1-o2-ltv-bars">
-            <div><span>印度</span><i style={{height:"86%"}}/><b>+485%</b></div>
-            <div><span>阿联酋</span><i style={{height:"52%"}}/><b>+220%</b></div>
-            <div><span>印度再营销</span><i style={{height:"38%"}}/><b>+157%</b><small>Q1 vs Q2</small></div>
+            {ltvMarkets.map(([market,value,height])=>(
+              <div key={market}><span>{market}</span><i style={{height}}/><b>{value}</b></div>
+            ))}
           </div>
         </article>
       </div>
       <article className="h1-o2-card h1-o2-region-conclusion">
         <div className="h1-o2-region-path"><b>重点市场继续做大</b><i/> <b>重点国家提升用户价值</b><i/> <b>存量激活带新增</b></div>
         <p>重点国家的增长从“更多用户”升级为“更高单用户价值”；印度 Q1 停止拉新、Q2 试点拉活，存量重激活性价比显著优于纯拉新。</p>
+        <div className="h1-o2-lifecycle-proof">
+          <span>生命周期运营验证 · LTV / CAC 提升</span>
+          <strong>{lifecycleProof.value}</strong>
+          <b>{lifecycleProof.label}</b>
+          <small>{lifecycleProof.period}</small>
+        </div>
       </article>
     </div>
   );

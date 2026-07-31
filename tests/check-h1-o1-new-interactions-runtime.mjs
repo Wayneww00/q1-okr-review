@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { chromium } = require(
+const { chromium, webkit } = require(
   "/Users/julian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
 );
 const baseUrl = process.env.H1_O1_TEST_URL || "http://127.0.0.1:4180";
+const browserName = process.env.H1_O1_TEST_BROWSER || "chromium";
 const expectedO1Ids = [
   "okr-review",
   "okr-brand-experience-audit",
@@ -53,6 +54,12 @@ const runtimeStub = `
     window.VantageBrowserRuntime = {
       getClient: () => client,
       getSession: async () => session,
+      progressivelyWarmPresentationMedia: async () => ({
+        completed: 0,
+        failed: 0,
+        skipped: false,
+        total: 0,
+      }),
       resolveMediaUrl: (path) => path,
       createReportController: () => ({
         initialize: async () => true,
@@ -65,7 +72,9 @@ const runtimeStub = `
   })();
 `;
 
-const browser = await chromium.launch({ headless: true });
+const browserType = { chromium, webkit }[browserName];
+assert.ok(browserType, `unsupported H1_O1_TEST_BROWSER: ${browserName}`);
+const browser = await browserType.launch({ headless: true });
 try {
   for (const viewport of [
     { width: 1280, height: 720 },
@@ -233,8 +242,12 @@ try {
       await videoHotspots.nth(hotspotIndex).click();
       await videoDialog.waitFor({ state: "visible" });
       assert.match(
-        (await videoDialog.locator("video").getAttribute("src")) || "",
+        (await videoDialog.locator("video source").getAttribute("src")) || "",
         /o1-complete\/tvc-library\/.+\.mp4/,
+      );
+      assert.equal(
+        await videoDialog.locator("video source").getAttribute("type"),
+        "video/mp4",
       );
       if (hotspotIndex % 3 === 0) {
         await page.keyboard.press("Escape");
@@ -248,15 +261,20 @@ try {
 
     const inlineVideos = o1.locator("video.h1-okr-inline-video");
     const inlineVideoSources = await inlineVideos.evaluateAll((videos) =>
-      videos.map((video) => ({
-        src: video.getAttribute("src"),
-        controls: video.hasAttribute("controls"),
-        playsInline: video.hasAttribute("playsinline"),
-      })),
+      videos.map((video) => {
+        const source = video.querySelector("source");
+        return {
+          src: source?.getAttribute("src"),
+          type: source?.getAttribute("type"),
+          controls: video.hasAttribute("controls"),
+          playsInline: video.hasAttribute("playsinline"),
+        };
+      }),
     );
     assert.ok(
       inlineVideoSources.every(
-        (video) => video.controls && video.playsInline,
+        (video) =>
+          video.controls && video.playsInline && video.type === "video/mp4",
       ),
     );
     assert.deepEqual(

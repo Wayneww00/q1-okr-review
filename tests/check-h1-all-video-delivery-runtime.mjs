@@ -2,11 +2,12 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { chromium } = require(
+const { chromium, webkit } = require(
   "/Users/julian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
 );
 
 const baseUrl = process.env.H1_VIDEO_TEST_URL || "http://127.0.0.1:4180";
+const browserName = process.env.H1_VIDEO_BROWSER || "webkit";
 const resolutionHostname =
   process.env.H1_VIDEO_RESOLUTION_HOSTNAME || new URL(baseUrl).hostname;
 const activeVideoPaths = [
@@ -34,7 +35,9 @@ const activeVideoPaths = [
   "previews/assets/o3/vn-online-offline.mp4",
 ];
 
-const browser = await chromium.launch({ headless: true });
+const browserType = { chromium, webkit }[browserName];
+assert.ok(browserType, `unsupported H1_VIDEO_BROWSER: ${browserName}`);
+const browser = await browserType.launch({ headless: true });
 
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
@@ -47,6 +50,7 @@ try {
     const inspectVideo = (path) =>
       new Promise((resolve) => {
         const video = document.createElement("video");
+        const source = document.createElement("source");
         const timeout = window.setTimeout(
           () =>
             finish({
@@ -57,7 +61,7 @@ try {
         );
         const finish = (result) => {
           window.clearTimeout(timeout);
-          video.removeAttribute("src");
+          source.removeAttribute("src");
           video.load();
           video.remove();
           resolve({
@@ -93,9 +97,11 @@ try {
           { once: true },
         );
         document.body.appendChild(video);
-        video.src = window.VantageBrowserRuntime.resolveMediaUrl(path, {
+        source.type = "video/mp4";
+        source.src = window.VantageBrowserRuntime.resolveMediaUrl(path, {
           hostname,
         });
+        video.append(source);
         video.load();
       });
 
@@ -128,10 +134,58 @@ try {
       "production must resolve every presentation video through a public GitHub media release",
     );
   }
+
+  const playbackPaths = [
+    "previews/assets/o1-complete/tvc-library/ferrari-personal-moment.mp4",
+    "previews/assets/o1-complete/tvc-library/public-good.mp4",
+  ];
+  const playbackResults = await page.evaluate(async ({ paths, hostname }) => {
+    const results = [];
+    for (const path of paths) {
+      const video = document.createElement("video");
+      const source = document.createElement("source");
+      source.type = "video/mp4";
+      source.src = window.VantageBrowserRuntime.resolveMediaUrl(path, {
+        hostname,
+      });
+      video.append(source);
+      video.muted = true;
+      video.playsInline = true;
+      document.body.append(video);
+      let playError = "";
+      try {
+        await video.play();
+      } catch (error) {
+        playError = `${error.name}: ${error.message}`;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1_500));
+      results.push({
+        currentTime: video.currentTime,
+        errorCode: video.error?.code || 0,
+        path,
+        playError,
+      });
+      video.pause();
+      video.remove();
+    }
+    return results;
+  }, { paths: playbackPaths, hostname: resolutionHostname });
+  assert.deepEqual(
+    playbackResults.filter(
+      ({ currentTime, errorCode, playError }) =>
+        currentTime <= 0 || errorCode || playError,
+    ),
+    [],
+    `Safari-stress video variants must decode and advance:\n${JSON.stringify(
+      playbackResults,
+      null,
+      2,
+    )}`,
+  );
 } finally {
   await browser.close();
 }
 
 console.log(
-  `All ${activeVideoPaths.length} active H1 presentation videos passed delivery and metadata checks.`,
+  `All ${activeVideoPaths.length} active H1 presentation videos passed ${browserName} delivery, metadata, and playback checks.`,
 );

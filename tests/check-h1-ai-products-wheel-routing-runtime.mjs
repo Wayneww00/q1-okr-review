@@ -188,6 +188,17 @@ try {
       }),
     );
   });
+  await page.waitForTimeout(40);
+  await productsRail.evaluate((element) => {
+    element.dispatchEvent(
+      new WheelEvent("wheel", {
+        deltaX: 0,
+        deltaY: 24,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+  });
   await page.waitForFunction(
     () =>
       Math.abs(
@@ -195,6 +206,124 @@ try {
           .querySelector('section[data-label="Closing Film"]')
           .getBoundingClientRect().top,
       ) < 2,
+  );
+
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await aiScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  const wideRailMetrics = await productsRail.evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  }));
+  assert.ok(
+    wideRailMetrics.scrollWidth <= wideRailMetrics.clientWidth + 2,
+    "the wide regression viewport must display all product cards without horizontal overflow",
+  );
+
+  await page.evaluate(() => {
+    window.__aiBoundaryScrollCalls = [];
+  });
+  await productsRail.evaluate((element) => {
+    element.dispatchEvent(
+      new WheelEvent("wheel", {
+        deltaX: 0,
+        deltaY: 320,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+  });
+  await page.waitForTimeout(220);
+  await productsRail.evaluate((element) => {
+    element.dispatchEvent(
+      new WheelEvent("wheel", {
+        deltaX: 0,
+        deltaY: 24,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+  });
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Closing Film"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  assert.equal(
+    await page.evaluate(
+      () =>
+        window.__aiBoundaryScrollCalls.filter(
+          (label) => label === "Closing Film",
+        ).length,
+    ),
+    1,
+    "one downward wheel gesture and its delayed inertial tail must navigate only once",
+  );
+
+  await aiScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.evaluate(() => {
+    window.__aiBoundaryScrollCalls = [];
+  });
+  await productsRail.evaluate((element) => {
+    element.dispatchEvent(
+      new WheelEvent("wheel", {
+        deltaX: 0,
+        deltaY: -320,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+  });
+  await page.waitForTimeout(220);
+  await productsRail.evaluate((element) => {
+    element.dispatchEvent(
+      new WheelEvent("wheel", {
+        deltaX: 0,
+        deltaY: -24,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+  });
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  assert.equal(
+    await page.evaluate(
+      () =>
+        window.__aiBoundaryScrollCalls.filter(
+          (label) => label === "Full Report",
+        ).length,
+    ),
+    1,
+    "one upward wheel gesture and its delayed inertial tail must navigate only once",
   );
 } finally {
   await browser.close();

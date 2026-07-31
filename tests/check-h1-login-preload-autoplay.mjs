@@ -9,8 +9,8 @@ const formal = await readFile(
 
 assert.match(
   formal,
-  /id="loginGate"[\s\S]*?VANTAGE[\s\S]*?H1 2026 REVIEW[\s\S]*?AUTHORIZED ACCESS ONLY/,
-  "the formal H1 page must restore the previous Vantage login presentation",
+  /id="loginGate"[\s\S]*?class="login-logo"[\s\S]*?alt="Vantage"[\s\S]*?H1 2026 Review[\s\S]*?Authorized Access Only/,
+  "the formal H1 page must use the approved Figma Vantage login presentation",
 );
 
 assert.match(
@@ -39,8 +39,8 @@ assert.match(
 
 assert.match(
   formal,
-  /const preloadLoginVideos = \(\) => \{[\s\S]*?addEventListener\('canplay'[\s\S]*?addEventListener\('error'[\s\S]*?video\.preload = 'auto'[\s\S]*?video\.load\(\)/,
-  "preload listeners must be attached before both videos are explicitly loaded",
+  /const preloadLoginVideos = \(\) => \{[\s\S]*?addEventListener\('canplay'[\s\S]*?addEventListener\('error'[\s\S]*?video\.preload = 'auto'[\s\S]*?VantageBrowserRuntime\.setVideoSource\([\s\S]*?video\.load\(\)/,
+  "preload listeners must be attached before both typed video sources load their metadata",
 );
 
 assert.match(
