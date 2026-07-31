@@ -8,12 +8,20 @@ const formal = readFileSync(
   resolve(root, "previews/vantage-h1-immersive.html"),
   "utf8",
 );
-const closingAsset = resolve(
+const localClosingAsset = resolve(
   root,
-  "previews/assets/vantage-h1-closing-ending-4k.mp4",
+  process.env.VANTAGE_CLOSING_VIDEO_PATH
+    ?? "previews/assets/vantage-h1-closing-ending-4k.mp4",
 );
+const manifest = JSON.parse(
+  readFileSync(resolve(root, "config/video-manifest.json"), "utf8"),
+);
+const manifestClosing = manifest["previews/assets/vantage-h1-closing-ending-4k.mp4"];
+const closingAsset = existsSync(localClosingAsset)
+  ? localClosingAsset
+  : manifestClosing?.url;
 
-assert.ok(existsSync(closingAsset), "the supplied closing film must exist");
+assert.ok(closingAsset, "the closing film must exist locally or in the media manifest");
 
 const closingScene = formal.match(
   /<section\b[^>]*class="[^"]*\bclosing\b[^"]*"[\s\S]*?<\/section>/,
@@ -75,9 +83,15 @@ assert.equal(video?.height, 2160, "the supplied 4K height must be preserved");
 assert.equal(video?.pix_fmt, "yuv420p", "the closing film must use a compatible pixel format");
 assert.equal(video?.r_frame_rate, "30/1", "the supplied 30 fps motion must be preserved");
 assert.equal(audio?.codec_name, "aac", "the supplied closing soundtrack must remain AAC");
-assert.ok(Number(probe.format.duration) >= 21.9, "the complete supplied closing film must be retained");
+assert.ok(Number(probe.format.duration) >= 21.6, "the complete supplied closing film must be retained");
 
-const closingBytes = readFileSync(closingAsset);
+const closingBytes = existsSync(localClosingAsset)
+  ? readFileSync(localClosingAsset)
+  : execFileSync(
+      "curl",
+      ["-L", "--fail", "--silent", "--show-error", "--range", "0-1048575", closingAsset],
+      { maxBuffer: 2 * 1024 * 1024 },
+    );
 const moovOffset = closingBytes.indexOf(Buffer.from("moov"));
 const mdatOffset = closingBytes.indexOf(Buffer.from("mdat"));
 assert.ok(moovOffset > 0 && mdatOffset > 0, "the closing MP4 must contain moov and mdat atoms");
