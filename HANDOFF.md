@@ -171,8 +171,8 @@ AI 模块通过同源 iframe 隔离，不增加或改写 Full Report 的 95 页�
 当前关键缓存版本：
 
 ```text
-报告运行时：20260731-progressive-video-cache-v1
-沉浸式壳运行时：20260731-editor-hud-v6-media
+报告运行时：20260731-editor-keyboard-v1
+沉浸式壳运行时：20260731-editor-keyboard-v1
 正式主题：20260731-o2-editor-layout-fix-v1
 报告 iframe：20260731-o1-new-merge-v1
 ```

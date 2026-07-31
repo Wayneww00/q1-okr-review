@@ -526,7 +526,12 @@ export async function progressivelyWarmPresentationMedia({
 }
 
 function elementHasOnlyTextAndBreaks(element) {
-  return [...element.children].every((child) => child.tagName === "BR");
+  if (element.hasAttribute("data-vantage-text-id")) return true;
+
+  if ([...element.children].every((child) => child.tagName === "BR")) {
+    return true;
+  }
+  return false;
 }
 
 function isExcludedElement(element) {
@@ -534,6 +539,18 @@ function isExcludedElement(element) {
 }
 
 function elementPlainText(element) {
+  const titlePrimary = [...element.children].find((child) =>
+    child.classList.contains("vantage-title-primary"),
+  );
+  const titleSubtitle = [...element.children].find((child) =>
+    child.classList.contains("vantage-title-subtitle"),
+  );
+  if (titlePrimary && titleSubtitle) {
+    return normalizePlainText(
+      `${elementPlainText(titlePrimary)}\n${elementPlainText(titleSubtitle)}`,
+    );
+  }
+
   const blockTags = new Set(["DIV", "P", "LI"]);
   let result = "";
 
@@ -556,7 +573,45 @@ function elementPlainText(element) {
   return normalizePlainText(result);
 }
 
+function isTitleTextElement(element) {
+  return Boolean(
+    element.matches("h1,h2,h3,h4,h5,h6") ||
+      element.closest("h1,h2,h3,h4,h5,h6"),
+  );
+}
+
+function renderReadOnlyTitle(element, text) {
+  const normalized = normalizePlainText(text)
+    .replace(/\u00a0/g, " ")
+    .replace(/\n+$/g, "");
+  const [primaryText, ...subtitleLines] = normalized.split("\n");
+  const subtitleText = subtitleLines.join("\n");
+
+  if (!subtitleText.trim()) {
+    element.textContent = normalized;
+    element.classList.remove("vantage-title-with-subtitle");
+    return;
+  }
+
+  const primary = element.ownerDocument.createElement("span");
+  primary.className = "vantage-title-primary";
+  primary.textContent = primaryText;
+  const subtitle = element.ownerDocument.createElement("span");
+  subtitle.className = "vantage-title-subtitle";
+  subtitle.textContent = subtitleText;
+
+  element.replaceChildren(primary, subtitle);
+  element.classList.add("vantage-title-with-subtitle");
+}
+
 function setElementPlainText(element, text) {
+  if (
+    element.classList.contains("vantage-title-text") &&
+    !element.hasAttribute("contenteditable")
+  ) {
+    renderReadOnlyTitle(element, text);
+    return;
+  }
   element.textContent = normalizePlainText(text);
 }
 
@@ -582,9 +637,11 @@ export function discoverEditableText(document) {
       let textIndex = 0;
 
       for (const element of scope.querySelectorAll(EDITABLE_TEXT_SELECTOR)) {
+        if (element.parentElement?.closest("[data-vantage-text-id]")) continue;
+        const isManaged = element.hasAttribute("data-vantage-text-id");
         if (!elementHasOnlyTextAndBreaks(element)) continue;
         if (isExcludedElement(element)) continue;
-        if (!elementPlainText(element).trim()) continue;
+        if (!isManaged && !elementPlainText(element).trim()) continue;
 
         const id = buildTextId({
           sectionId,
@@ -594,6 +651,9 @@ export function discoverEditableText(document) {
         textIndex += 1;
         element.dataset.vantageTextId = id;
         element.classList.add("vantage-managed-text");
+        if (isTitleTextElement(element)) {
+          element.classList.add("vantage-title-text");
+        }
         entries.push({ id, element });
       }
     });
@@ -604,7 +664,13 @@ export function discoverEditableText(document) {
 
 export function setEntriesEditing(entries, editing) {
   for (const { element } of entries) {
+    const isTitle = element.classList.contains("vantage-title-text");
+    const currentText = isTitle ? elementPlainText(element) : "";
     if (editing) {
+      if (isTitle) {
+        element.textContent = currentText;
+        element.classList.remove("vantage-title-with-subtitle");
+      }
       element.setAttribute("contenteditable", "plaintext-only");
       element.setAttribute("spellcheck", "false");
       element.classList.add("vantage-editable-text");
@@ -612,15 +678,19 @@ export function setEntriesEditing(entries, editing) {
       element.removeAttribute("contenteditable");
       element.removeAttribute("spellcheck");
       element.classList.remove("vantage-editable-text");
+      if (isTitle) renderReadOnlyTitle(element, currentText);
     }
   }
 }
 
 export function collectTextEntries(entries) {
-  return entries.map(({ id, element }) => ({
-    id,
-    text: elementPlainText(element),
-  }));
+  return entries.map(({ id, element }) => {
+    let text = elementPlainText(element);
+    if (element.classList.contains("vantage-title-text")) {
+      text = text.replace(/\u00a0/g, " ").replace(/\n+$/g, "");
+    }
+    return { id, text };
+  });
 }
 
 export function applyTextRevision(entries, content) {
@@ -657,7 +727,14 @@ export class ReportContentController {
     this.dirty = false;
     this.ready = false;
     this.inputHandler = (event) => {
-      if (!event.target?.closest?.("[data-vantage-text-id]")) return;
+      const element = event.target?.closest?.("[data-vantage-text-id]");
+      if (!element) return;
+      if (element.classList.contains("vantage-title-text")) {
+        element.classList.toggle(
+          "vantage-title-with-subtitle",
+          elementPlainText(element).includes("\n"),
+        );
+      }
       this.dirty = true;
       this.emit("editing", { dirty: true });
     };

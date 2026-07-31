@@ -144,6 +144,21 @@ assert.match(
   "editing mode must support Escape for cancel or exit",
 );
 assert.match(
+  immersive,
+  /const isKeyboardInteractionTarget = target => Boolean\([\s\S]*?\[contenteditable\]:not\(\[contenteditable="false"\]\)/,
+  "the immersive shell must recognize plaintext-only contenteditable fields as keyboard interaction targets",
+);
+assert.match(
+  immersive,
+  /document\.addEventListener\('keydown', event => \{[\s\S]*?if \(isKeyboardInteractionTarget\(event\.target\)\) return;[\s\S]*?activeIndex === 2/,
+  "outer scene shortcuts must yield to focused editor fields and controls before paging",
+);
+assert.match(
+  immersive,
+  /doc\.addEventListener\('keydown', event => \{\s*if \(!\['ArrowDown','PageDown',' ','ArrowUp','PageUp'\]\.includes\(event\.key\)\) return;\s*if \(isKeyboardInteractionTarget\(event\.target\)\) return;\s*event\.preventDefault\(\);/,
+  "embedded report paging must not intercept Space or navigation keys from editable text",
+);
+assert.match(
   report,
   /role="dialog" aria-modal="true"/,
   "the unsaved-changes confirmation must use dialog semantics",

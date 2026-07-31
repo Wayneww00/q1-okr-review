@@ -117,6 +117,92 @@ assert.ok(
   "saved line breaks must remain visible after the report returns to read-only mode",
 );
 
+const titleDom = new JSDOM(`<!doctype html><body>
+  <main data-report-section="data">
+    <section data-report-page data-page-id="data-title">
+      <header><h2><span>经营数据</span></h2></header>
+    </section>
+  </main>
+</body>`);
+const [titleEntry] = discoverEditableText(titleDom.window.document);
+assert.ok(
+  titleEntry.element.classList.contains("vantage-title-text"),
+  "editable text inside a heading must be identified as a title field",
+);
+setEntriesEditing([titleEntry], true);
+titleEntry.element.textContent = "经营数据\n2026 H1 核心表现";
+assert.deepEqual(collectTextEntries([titleEntry]), [
+  {
+    id: "data:data-title:0",
+    text: "经营数据\n2026 H1 核心表现",
+  },
+]);
+setEntriesEditing([titleEntry], false);
+assert.equal(
+  titleEntry.element.querySelector(".vantage-title-primary")?.textContent,
+  "经营数据",
+  "the first line must remain the primary title after editing",
+);
+assert.equal(
+  titleEntry.element.querySelector(".vantage-title-subtitle")?.textContent,
+  "2026 H1 核心表现",
+  "pressing Enter in a title must create a persisted subtitle line",
+);
+assert.deepEqual(
+  collectTextEntries(discoverEditableText(titleDom.window.document)),
+  [
+    {
+      id: "data:data-title:0",
+      text: "经营数据\n2026 H1 核心表现",
+    },
+  ],
+  "a structured title and subtitle must round-trip through rediscovery",
+);
+setEntriesEditing(discoverEditableText(titleDom.window.document), true);
+assert.equal(
+  titleEntry.element.textContent,
+  "经营数据\n2026 H1 核心表现",
+  "re-entering edit mode must restore title and subtitle as plain multiline text",
+);
+
+const richPasteDom = new JSDOM(`<!doctype html><body>
+  <main data-report-section="data">
+    <section data-report-page data-page-id="data-rich-paste">
+      <p>第一段</p>
+      <p>第二段</p>
+    </section>
+  </main>
+</body>`);
+const richPasteEntries = discoverEditableText(richPasteDom.window.document);
+setEntriesEditing(richPasteEntries, true);
+richPasteEntries[0].element.innerHTML =
+  '更新 <b>加粗</b><span style="color:red">内容</span>';
+const rediscoveredRichPasteEntries = discoverEditableText(
+  richPasteDom.window.document,
+);
+assert.deepEqual(
+  rediscoveredRichPasteEntries.map(({ id }) => id),
+  ["data:data-rich-paste:0", "data:data-rich-paste:1"],
+  "unexpected browser or paste wrappers must not shift managed text IDs",
+);
+assert.deepEqual(collectTextEntries(rediscoveredRichPasteEntries), [
+  { id: "data:data-rich-paste:0", text: "更新 加粗内容" },
+  { id: "data:data-rich-paste:1", text: "第二段" },
+]);
+richPasteEntries[0].element.textContent = "";
+const rediscoveredEmptyManagedEntries = discoverEditableText(
+  richPasteDom.window.document,
+);
+assert.deepEqual(
+  rediscoveredEmptyManagedEntries.map(({ id }) => id),
+  ["data:data-rich-paste:0", "data:data-rich-paste:1"],
+  "clearing a managed field must preserve its text slot and following IDs",
+);
+assert.deepEqual(collectTextEntries(rediscoveredEmptyManagedEntries), [
+  { id: "data:data-rich-paste:0", text: "" },
+  { id: "data:data-rich-paste:1", text: "第二段" },
+]);
+
 globalThis.__VANTAGE_VIDEO_MANIFEST__ = {
   "previews/assets/video.mp4": {
     url: "https://blob.example/video.mp4",
