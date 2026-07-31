@@ -20,8 +20,8 @@ for (const filename of [
 
 assert.match(
   app,
-  /id:'okr-public-good-video'[\s\S]*?id:'cfd-h1-summary'[\s\S]*?tvc-library\/cfd-h1-summary-web\.mp4[\s\S]*?pptSource:'previews\/assets\/tvc-library\/cfd-h1-summary-ppt\.mp4'[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/cfd-h1-summary\.jpg'[\s\S]*?fit:'contain'/,
-  "the H1 public-good page must use its supplied PPT video without cropping it",
+  /id:'okr-public-good-video'[\s\S]*?id:'cfd-h1-summary'[\s\S]*?tvc-library\/cfd-h1-summary-web\.mp4[\s\S]*?pptSource:'previews\/assets\/tvc-library\/cfd-h1-summary-ppt\.mp4'[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/cfd-h1-summary\.jpg'[\s\S]*?fit:'contain'[\s\S]*?playback:'modal'/,
+  "the H1 public-good page must use its supplied PPT video without cropping it and open it in the shared modal",
 );
 const pptSource = path.join(assetDirectory, "cfd-h1-summary-ppt.mp4");
 assert.ok(
@@ -47,6 +47,11 @@ assert.match(
   app,
   /function OkrTvcLocalizationPage\(\{page,onVideoPreview\}\)[\s\S]*?page\.videoSlots\.map\(slot=><OkrModalVideoTrigger[\s\S]*?onVideoPreview=\{onVideoPreview\}/,
   "the dedicated four-video Figma page must open every supplied video in the shared modal player",
+);
+assert.match(
+  app,
+  /function OkrPublicGoodVideoPage\(\{page,index,count,onVideoPreview\}\)[\s\S]*?<OkrModalVideoTrigger page=\{page\} slot=\{page\.videoSlot\} onVideoPreview=\{onVideoPreview\}/,
+  "the H1 summary page must use the same poster-to-modal playback architecture",
 );
 assert.match(
   app,

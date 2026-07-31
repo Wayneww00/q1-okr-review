@@ -64,8 +64,8 @@ assert.equal(
 
 assert.match(
   app,
-  /id:'okr-cfd-public-good-story'[\s\S]*?p73-cfd-public-good-video-foreground\.png[\s\S]*?id:'cfd-public-good-story'[\s\S]*?tvc-library\/cfd-public-good-web\.mp4\?v=ppt-20260731-1948'[\s\S]*?pptSource:'previews\/assets\/tvc-library\/cfd-public-good-ppt\.mp4'[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/cfd-public-good\.jpg'[\s\S]*?inline:true/,
-  "the Frame 73 page must use its PPT public-good video as an inline player",
+  /id:'okr-cfd-public-good-story'[\s\S]*?p73-cfd-public-good-video-foreground\.png[\s\S]*?id:'cfd-public-good-story'[\s\S]*?tvc-library\/cfd-public-good-web\.mp4\?v=ppt-20260731-1948'[\s\S]*?pptSource:'previews\/assets\/tvc-library\/cfd-public-good-ppt\.mp4'[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/cfd-public-good\.jpg'[\s\S]*?inline:true[\s\S]*?playback:'modal'/,
+  "the Frame 73 page must use its PPT public-good video in the shared modal player",
 );
 assert.match(
   app,
@@ -88,7 +88,7 @@ assert.ok(
 assert.match(
   app,
   /function OkrInlineVideo\(\{slot\}\)[\s\S]*?h1-okr-inline-video-trigger[\s\S]*?onClick=\{activate\}/,
-  "PPT videos must wait for an explicit user click before creating the native player",
+  "remaining inline PPT videos must wait for an explicit user click before creating the native player",
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),

@@ -74,12 +74,15 @@ with sync_playwright() as playwright:
     assert wrapper.locator(".h1-okr-inline-video-player").count() == 0
     assert video_requests == [], video_requests
     wrapper.locator(".h1-okr-inline-video-trigger").click()
-    video = wrapper.locator(".h1-okr-inline-video-player")
+    modal = page.locator(".h1-okr-video-modal")
+    modal.wait_for(state="visible")
+    video = modal.locator(".h1-okr-video-player")
     video.wait_for(state="visible")
+    assert wrapper.locator(".h1-okr-inline-video-player").count() == 0
     page.wait_for_function(
         "(selector) => { const video = document.querySelector(selector);"
         " return video && video.readyState >= 3 && !video.paused && video.currentTime > 0; }",
-        arg=f'[data-page-id="{PAGE_ID}"] .h1-okr-inline-video-player',
+        arg=".h1-okr-video-modal .h1-okr-video-player",
     )
     video_src = video.get_attribute("src")
     assert "tvc-library/cfd-public-good-web.mp4" in (video_src or ""), video_src
@@ -94,6 +97,8 @@ with sync_playwright() as playwright:
     assert media_state["width"] == 1280, media_state
     assert media_state["height"] == 720, media_state
     assert len(video_requests) == 1, video_requests
+    page.keyboard.press("Escape")
+    modal.wait_for(state="detached")
     assert not errors, f"page errors: {errors}"
     browser.close()
 

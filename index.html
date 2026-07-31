@@ -2508,6 +2508,7 @@ const OKR_FIGMA_PAGES=[
         poster:'previews/assets/tvc-library/posters/cfd-public-good.jpg',
         fit:'contain',
         inline:true,
+        playback:'modal',
         left:9.01,
         top:26.76,
         width:81.98,
@@ -2545,6 +2546,7 @@ const OKR_FIGMA_PAGES=[
       width:1245,
       height:698,
       fit:'contain',
+      playback:'modal',
     },
   },
   {
@@ -2963,7 +2965,7 @@ function OkrEliteEndorsementResourcesPage({page,index,count}){
 
 /* Figma's p54-1 video preview is a sibling of its title/panel group. Keep both
    source layers at their original Figma coordinates over the shared trophy. */
-function OkrPublicGoodVideoPage({page,index,count}){
+function OkrPublicGoodVideoPage({page,index,count,onVideoPreview}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   const foregrounds=[
     {src:page.src,left:277,top:75,width:1366,height:931},
@@ -2973,7 +2975,7 @@ function OkrPublicGoodVideoPage({page,index,count}){
     <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page" data-report-page data-page-id={page.id} aria-label={page.label}>
       <div ref={canvasRef} className="h1-okr-canvas">
         {foregrounds.map((foreground)=><img key={foreground.src} className="h1-okr-figma-foreground-layer is-positioned" src={foreground.src} alt="" width={foreground.width} height={foreground.height} style={{left:`${foreground.left}px`,top:`${foreground.top}px`,width:`${foreground.width}px`,height:`${foreground.height}px`}} loading="eager" decoding="sync" draggable="false" aria-hidden="true" />)}
-        {page.videoSlot && <OkrInlineVideo slot={page.videoSlot}/>}
+        {page.videoSlot && <OkrModalVideoTrigger page={page} slot={page.videoSlot} onVideoPreview={onVideoPreview}/>}
         <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
       </div>
     </section>
@@ -3334,7 +3336,7 @@ function OkrReportDeck(){
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p52-foreground-clean.png"/> :
         page.id==='okr-cfd-public-good-story' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} onPreview={setPreview}/> :
-        page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
+        page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:19,width:1608,height:1042}} onPreview={setPreview}/> :
         page.id==='okr-omnichannel-amplification' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:195,top:75,width:1575,height:987}}/> :

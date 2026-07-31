@@ -48,15 +48,19 @@ with sync_playwright() as playwright:
     assert public_video.locator(".h1-okr-inline-video-player").count() == 0
     assert inline_video_requests == [], inline_video_requests
     public_video.locator(".h1-okr-inline-video-trigger").click()
-    public_player = public_video.locator(".h1-okr-inline-video-player")
+    public_modal = page.locator(".h1-okr-video-modal")
+    public_modal.wait_for(state="visible")
+    public_player = public_modal.locator(".h1-okr-video-player")
     public_player.wait_for(state="visible")
+    assert public_video.locator(".h1-okr-inline-video-player").count() == 0
     assert "tvc-library/cfd-h1-summary-web.mp4" in (public_player.get_attribute("src") or "")
     page.wait_for_function(
         "(selector) => { const video = document.querySelector(selector);"
         " return video && video.readyState >= 3 && !video.paused && video.currentTime > 0; }",
-        arg=f'[data-page-id="{PUBLIC_GOOD_PAGE}"] .h1-okr-inline-video-player',
+        arg=".h1-okr-video-modal .h1-okr-video-player",
     )
-    public_player.evaluate("video => video.pause()")
+    page.keyboard.press("Escape")
+    public_modal.wait_for(state="detached")
 
     ferrari = page.locator(f'[data-page-id="{FERRARI_PAGE}"]')
     ferrari.scroll_into_view_if_needed()
