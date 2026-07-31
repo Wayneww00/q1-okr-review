@@ -2257,11 +2257,13 @@
       const reportWindow = doc.defaultView;
       const reportPageTop = page => page.getBoundingClientRect().top + reportWindow.scrollY;
       let reportTargetIndex = 0;
+      let publishedReportIndex = 0;
       let reportPaging = false;
       let reportSettleTimer = 0;
       const queuedReportNavigations = [];
 
       const publishReportState = index => {
+        publishedReportIndex = index;
         reportPages.forEach((page,pageIndex) => page.classList.toggle('is-active', pageIndex === index));
         const page = reportPages[index];
         reportWindow.parent.postMessage({
@@ -2297,6 +2299,21 @@
           publishReportState(nearestReportIndex());
         });
       }, {passive:true});
+      reportWindow.addEventListener('resize', () => {
+        const preservedIndex = reportPaging
+          ? reportTargetIndex
+          : publishedReportIndex;
+        const preservedPage = reportPages[preservedIndex];
+        if (!preservedPage) return;
+        reportWindow.cancelAnimationFrame(reportScrollRaf);
+        reportScrollRaf = 0;
+        reportWindow.scrollTo({
+          top: reportPageTop(preservedPage),
+          behavior:'instant',
+        });
+        reportTargetIndex = preservedIndex;
+        publishReportState(preservedIndex);
+      });
 
       const settleReportPage = index => {
         reportWindow.clearTimeout(reportSettleTimer);
