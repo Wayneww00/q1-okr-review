@@ -4383,6 +4383,7 @@ const O2_REPORT_PAGES=[
   {
     id:"o2-ib-loop",
     layout:"ib-loop",
+    editorRevision:"ib-loop-structure-v2",
     eyebrow:"PARTNERSHIP GROWTH",
     title:"从 IB 获客，走向可复制的商业闭环",
     description:"从「只拿 Leads」升级为全链路可追踪、可归因的运营，且 ROI 打正",
@@ -5400,7 +5401,7 @@ function O2ReportPage({page,index,count}){
       className={`h1-o2-page is-${page.layout} ${H1_O2_COVER_PAGE_IDS.has(page.id)?"is-full-bleed":""}`}
       data-report-page
       data-page-id={page.id}
-      data-editor-revision={page.id==="o2-regional-engines"?"india-proof-below-v3":undefined}
+      data-editor-revision={page.editorRevision||(page.id==="o2-regional-engines"?"india-proof-below-v3":undefined)}
     >
       <div className="h1-o2-artboard">
         {content}

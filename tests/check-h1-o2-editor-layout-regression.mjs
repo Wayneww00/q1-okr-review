@@ -79,8 +79,14 @@ assert.match(
 );
 assert.match(
   reportPage,
-  /data-editor-revision=\{page\.id==="o2-regional-engines"\?"india-proof-below-v3":undefined\}/,
+  /data-editor-revision=\{page\.editorRevision\|\|\(page\.id==="o2-regional-engines"\?"india-proof-below-v3":undefined\)\}/,
   "page 21 must use a new editor revision so stale index-based text cannot overwrite the relocated proof",
+);
+
+assert.match(
+  html,
+  /id:"o2-ib-loop",[\s\S]*?layout:"ib-loop",[\s\S]*?editorRevision:"ib-loop-structure-v2"/,
+  "page 27 must use a dedicated editor revision so legacy text slots cannot overwrite the redesigned loop",
 );
 
 assert.match(
