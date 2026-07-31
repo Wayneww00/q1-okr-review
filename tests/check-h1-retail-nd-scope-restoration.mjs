@@ -68,6 +68,20 @@ assert.match(app, /function H1RetailNdScopeRestorationChart\(\{data\}\)/);
 assert.match(app, /data\.layoutType === "retail_nd_scope_restoration" \? <H1RetailNdScopeRestorationChart data=\{data\}\/>/);
 assert.match(app, /h1-retail-growth-scope-arrow/);
 assert.match(app, /h1-retail-growth-restored-stack/);
+assert.match(app, /data-vietnam-scope-card="current"/);
+assert.match(app, /data-vietnam-comparison-placement="left-panel"/);
+assert.match(app, /data-vietnam-scope-card="primary"/);
+
+const vietnamChartStart = app.indexOf("function H1VietnamRetailNdChart");
+const vietnamChartEnd = app.indexOf("function H1RetailNdScopeRestorationChart", vietnamChartStart);
+const vietnamChartBlock = app.slice(vietnamChartStart, vietnamChartEnd);
+const currentCardStart = vietnamChartBlock.indexOf('data-vietnam-scope-card="current"');
+const comparisonStart = vietnamChartBlock.indexOf('data-vietnam-comparison-placement="left-panel"');
+const connectorStart = vietnamChartBlock.indexOf('className="h1-retail-growth-scope-arrow"');
+assert.ok(currentCardStart >= 0 && comparisonStart > currentCardStart && connectorStart > comparisonStart, "Vietnam comparison must live inside the left data card before the scope connector");
+
+assert.match(theme, /\.h1-retail-growth-vietnam-scope-grid\s*\{[^}]*height:\s*100%;[^}]*grid-template-columns:\s*minmax\(0,\.9fr\)\s+68px\s+minmax\(0,1\.18fr\);/s);
+assert.match(theme, /\.is-vietnam-retail-nd \.h1-retail-growth-comparison\s*\{[^}]*position:\s*relative;[^}]*grid-template-columns:\s*100px\s+minmax\(0,1fr\);/s);
 
 const paletteStart = theme.indexOf(".h1-retail-growth-scope-panel.is-restored");
 const paletteEnd = theme.indexOf(".h1-retail-growth-transition", paletteStart);

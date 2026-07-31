@@ -1869,7 +1869,7 @@ function H1VietnamRetailNdChart({data}) {
   return (
     <div className="h1-retail-growth-chart h1-editorial-chart-surface is-vietnam-scope" data-editor-ignore>
       <div className="h1-retail-growth-vietnam-scope-grid">
-        <section className="h1-retail-growth-scope-panel is-current">
+        <section className="h1-retail-growth-scope-panel is-current" data-vietnam-scope-card="current">
           <div className="h1-retail-growth-chart-heading"><h2>{data.chartTitle}</h2></div>
           <svg viewBox="0 0 520 390" role="img" aria-label={data.chartTitle}>
             <defs>
@@ -1895,11 +1895,14 @@ function H1VietnamRetailNdChart({data}) {
             <text x="166" y="360" className="h1-retail-growth-x-label" textAnchor="middle">{first.label}</text>
             <text x="390" y="360" className="h1-retail-growth-x-label" textAnchor="middle">{second.label}</text>
           </svg>
+          <div className="h1-retail-growth-comparison" data-vietnam-comparison-placement="left-panel">
+            <strong>H1口径对照</strong><span>{data.comparisonLeft}</span><span>{data.comparisonRight}</span>
+          </div>
         </section>
 
         <div className="h1-retail-growth-scope-arrow" aria-label="口径回归后"><span>口径回归后</span></div>
 
-        <section className="h1-retail-growth-scope-panel is-restored">
+        <section className="h1-retail-growth-scope-panel is-restored" data-vietnam-scope-card="primary">
           <div className="h1-retail-growth-chart-heading is-restored-heading">
             <h2>{data.restoredChartTitle}</h2>
             <div><span>{data.restoredAxisTitle}</span><span>{data.restoredShareAxisTitle}</span></div>
@@ -1935,9 +1938,6 @@ function H1VietnamRetailNdChart({data}) {
             {data.restoredLegend.map((legend,index)=><span key={legend}><i className={`is-${["current","dynamic","mib","share"][index]}`}/>{legend}</span>)}
           </div>
         </section>
-      </div>
-      <div className="h1-retail-growth-comparison">
-        <strong>H1口径对照</strong><span>{data.comparisonLeft}</span><span>{data.comparisonRight}</span>
       </div>
     </div>
   );
