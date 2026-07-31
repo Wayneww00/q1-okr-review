@@ -47,6 +47,7 @@ python3 -m http.server 4180 --bind 127.0.0.1
 - 登录后按固定顺序、单文件串行预热 8 个 O1 TVC；节省流量模式和 2G 网络自动跳过，退出时可中止。
 - O2“SEO 技术基础”页按 PPT 重做截图裁切、品牌标识、VS 徽章和四列指标区，页面被排除在 Supabase 文本编辑之外。
 - O2 ASO 第 18–19 页恢复为可持久化正文编辑，PPT 构图和四列证据结构保持不变。
+- O2 第 21 页保留三列 LTV/CAC 文本槽，第 25 页保留“荷兰市场验证”标签，避免编辑器槽位因生成式数组或独立证明卡发生漂移。
 - 生产构建现在会复制完整 `previews/ai-data-products/` 模块。
 - 媒体清单解析会忽略 URL 查询参数，带缓存版本的本地路径仍能命中 CDN manifest。
 
@@ -254,6 +255,7 @@ Manifest 的 key 不带查询参数；运行时会自动去掉 `?v=...` 后匹�
 | `config/video-manifest.json` | 可选的生产 CDN 映射；被 Git 忽略，不得包含密钥。 |
 | `tests/check-h1-o2-seo-technical-ppt.mjs` | O2 SEO 技术页文案、结构、品牌图和 PPT 几何契约。 |
 | `tests/check-h1-o2-aso-ppt-restoration.mjs` | O2 ASO 18–19 页 PPT 构图和正文可编辑契约。 |
+| `tests/check-h1-o2-editor-layout-regression.mjs` | O2 第 21/25 页编辑器文本槽与布局回归契约。 |
 | `tests/check-h1-video-loading-policy.mjs` | 登录预载、O1 串行预热和全量 manifest 禁用契约。 |
 | `tests/check-h1-nd-retail-eight-pages.mjs` | ND Retail 8 页、原稿数据、原生图表、样式、缓存和编辑器排除静态契约。 |
 | `tests/check-h1-nd-retail-eight-pages-runtime.mjs` | 22/31/25/17、95 页、Supabase 编辑态、无重叠与 data-22 → O1 边界运行时契约。 |
@@ -287,6 +289,7 @@ node tests/check-h1-media-memory-budget-runtime.mjs
 node tests/check-h1-okr-tvc-video-playback.mjs
 node tests/check-h1-o2-seo-technical-ppt.mjs
 node tests/check-h1-o2-aso-ppt-restoration.mjs
+node tests/check-h1-o2-editor-layout-regression.mjs
 node tests/check-h1-video-loading-policy.mjs
 node tests/check-h1-okr-native-card-opacity.mjs
 node tests/check-h1-ai-data-products-integration.mjs

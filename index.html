@@ -4908,8 +4908,6 @@ function O2Regions(){
     ["EU","FTD +30%","ND +47%","流量收缩但质量提升，稳固基本盘"],
     ["LATAM","ROI 打正","H2 重点","聚焦渠道链路与预算效率，重点放大"],
   ];
-  const ltvMarkets=[["印度","+485%","86%"],["阿联酋","+220%","52%"]];
-  const lifecycleProof={label:"印度再营销",value:"+157%",period:"Q1 vs Q2"};
   return (
     <div className="h1-o2-region-layout">
       <div className="h1-o2-region-grid">
@@ -4923,23 +4921,17 @@ function O2Regions(){
       <div className="h1-o2-ltv-wrap">
         <div className="h1-o2-ltv-kicker">重点市场用户价值释放</div>
         <article className="h1-o2-card h1-o2-ltv-panel">
-          <div className="h1-o2-panel-title"><span>LTV / CAC 提升</span></div>
+          <div className="h1-o2-panel-title"><span>LTV / CAC 提升</span><strong>生命周期运营验证</strong></div>
           <div className="h1-o2-ltv-bars">
-            {ltvMarkets.map(([market,value,height])=>(
-              <div key={market}><span>{market}</span><i style={{height}}/><b>{value}</b></div>
-            ))}
+            <div><span>印度</span><i style={{height:"86%"}}/><b>+485%</b></div>
+            <div><span>阿联酋</span><i style={{height:"52%"}}/><b>+220%</b></div>
+            <div><span>印度再营销</span><i style={{height:"38%"}}/><b>+157%</b><small>Q1 vs Q2</small></div>
           </div>
         </article>
       </div>
       <article className="h1-o2-card h1-o2-region-conclusion">
         <div className="h1-o2-region-path"><b>重点市场继续做大</b><i/> <b>重点国家提升用户价值</b><i/> <b>存量激活带新增</b></div>
         <p>重点国家的增长从“更多用户”升级为“更高单用户价值”；印度 Q1 停止拉新、Q2 试点拉活，存量重激活性价比显著优于纯拉新。</p>
-        <div className="h1-o2-lifecycle-proof">
-          <span>生命周期运营验证 · LTV / CAC 提升</span>
-          <strong>{lifecycleProof.value}</strong>
-          <b>{lifecycleProof.label}</b>
-          <small>{lifecycleProof.period}</small>
-        </div>
       </article>
     </div>
   );
@@ -5050,6 +5042,7 @@ function O2IbLoop(){
   return (
     <div className="h1-o2-ib-layout">
       <article className="h1-o2-card h1-o2-nl-proof">
+        <span className="h1-o2-card-label">荷兰市场验证</span>
         <strong>21%</strong><p>在荷兰，每五个新 IB 就有 1 个来自我们</p>
       </article>
       <div className="h1-o2-ib-loop">

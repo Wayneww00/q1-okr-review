@@ -42,12 +42,9 @@ assert.match(
 for (const fact of [
   '"LATAM","ROI 打正","H2 重点","聚焦渠道链路与预算效率，重点放大"',
   'className="h1-o2-ltv-kicker">重点市场用户价值释放</div>',
-  '<div className="h1-o2-panel-title"><span>LTV / CAC 提升</span></div>',
-  'const ltvMarkets=[["印度","+485%","86%"],["阿联酋","+220%","52%"]];',
-  'const lifecycleProof={label:"印度再营销",value:"+157%",period:"Q1 vs Q2"};',
-  'className="h1-o2-lifecycle-proof"',
+  '<div className="h1-o2-panel-title"><span>LTV / CAC 提升</span><strong>生命周期运营验证</strong></div>',
+  '<div><span>印度再营销</span><i style={{height:"38%"}}/><b>+157%</b><small>Q1 vs Q2</small></div>',
   "重点市场用户价值释放",
-  "生命周期运营验证 · LTV / CAC 提升",
   "重点市场继续做大",
   "重点国家提升用户价值",
   "存量激活带新增",
@@ -60,8 +57,8 @@ const regionsPageSource = app.slice(
 );
 assert.doesNotMatch(
   regionsPageSource,
-  /<strong>生命周期运营验证<\/strong>/,
-  "page 21 must remove lifecycle validation from the top chart header",
+  /const ltvMarkets|const lifecycleProof|h1-o2-lifecycle-proof/,
+  "page 21 must keep all three editable values in the chart instead of a generated list or proof card",
 );
 assert.match(
   theme,
@@ -78,15 +75,15 @@ assert.doesNotMatch(
   /className="h1-o2-region-summary"/,
   "the approved conclusion must live inside the panel instead of being duplicated below it",
 );
-assert.doesNotMatch(
-  app,
-  /className="h1-o2-ltv-bars"[\s\S]{0,900}印度再营销/,
-  "the +157% remarketing result must move out of the LTV chart",
-);
 assert.match(
+  regionsPageSource,
+  /className="h1-o2-ltv-bars"[\s\S]{0,900}印度再营销/,
+  "the +157% remarketing result must remain the third editable LTV/CAC bar",
+);
+assert.doesNotMatch(
   theme,
-  /\.h1-o2-lifecycle-proof\s*\{[\s\S]*?background:/,
-  "the relocated +157% result must use a dedicated bottom proof card",
+  /\.h1-o2-lifecycle-proof/,
+  "page 21 must not retain the removed proof-card styles",
 );
 
 // Page 22: annotated title and the four source-PPT resilience capabilities.
@@ -144,6 +141,7 @@ for (const fact of [
   'title:"从「只拿 Leads」升级为全链路可追踪、可归因的运营，且 ROI 打正"',
   'description:""',
   "在荷兰，每五个新 IB 就有 1 个来自我们",
+  '<span className="h1-o2-card-label">荷兰市场验证</span>',
   'const steps=["Paid Ads","IB Leads","IB 转化","真实入金（ND）"];',
   "可复制闭环",
   "<O2MetricCard label=\"EU Leads\" value=\"+237%\"/>",
@@ -161,10 +159,10 @@ const ibLoopSource = app.slice(
   app.indexOf("function O2IbLoop()"),
   app.indexOf("function O2ReportPage("),
 );
-assert.doesNotMatch(
+assert.match(
   ibLoopSource,
-  /荷兰市场验证/,
-  "page 25 must remove the Netherlands market-validation label",
+  /<span className="h1-o2-card-label">荷兰市场验证<\/span>\s*<strong>21%<\/strong>/,
+  "page 25 must preserve the editable Netherlands market-validation label",
 );
 assert.match(
   theme,
