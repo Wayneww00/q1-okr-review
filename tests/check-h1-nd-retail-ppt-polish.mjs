@@ -120,7 +120,7 @@ assert.match(
   "the transition lines must animate in a deliberate sequence",
 );
 
-const expectedCacheKey = "20260731-seo-technical-ppt-v3";
+const expectedCacheKey = "20260731-o2-editor-layout-fix-v1";
 assert.ok(app.includes(`h1-figma-racing-theme.css?v=${expectedCacheKey}`));
 const shellCacheKeys = [
   ...shell.matchAll(

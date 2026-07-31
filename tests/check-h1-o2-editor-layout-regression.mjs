@@ -9,6 +9,11 @@ const css = fs.readFileSync(
   path.join(repoRoot, "previews/h1-figma-racing-theme.css"),
   "utf8",
 );
+const immersive = fs.readFileSync(
+  path.join(repoRoot, "previews/vantage-h1-immersive.html"),
+  "utf8",
+);
+const expectedThemeVersion = "20260731-o2-editor-layout-fix-v1";
 
 const regions = html.match(
   /function O2Regions\(\)\{([\s\S]*?)\n\}\n\nfunction O2Delivery\(\)/,
@@ -59,6 +64,21 @@ assert.match(
   ibLoop,
   /<span className="h1-o2-card-label">荷兰市场验证<\/span>\s*<strong>21%<\/strong>/,
   "page 25 must preserve the previous editor text slot before the 21% proof",
+);
+
+assert.match(
+  html,
+  new RegExp(
+    `h1-figma-racing-theme\\.css\\?v=${expectedThemeVersion}`,
+  ),
+  "the standalone report must cache-bust the restored O2 layout",
+);
+assert.match(
+  immersive,
+  new RegExp(
+    `h1-figma-racing-theme\\.css\\?v=${expectedThemeVersion}`,
+  ),
+  "the immersive report shell must cache-bust the restored O2 layout",
 );
 
 console.log("O2 editor/layout regression contract passed.");
