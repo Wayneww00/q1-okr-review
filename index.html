@@ -15,8 +15,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-region-lifecycle-proof-v1">
-<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-aso-density-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-o2-india-proof-below-v3">
+<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-semrush-source-note-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
 <style>
@@ -5095,13 +5095,17 @@ function O2Regions(){
         </article>
       </div>
       <article className="h1-o2-card h1-o2-region-conclusion">
-        <div className="h1-o2-region-path"><b>重点市场继续做大</b><i/> <b>重点国家提升用户价值</b><i/> <b>存量激活带新增</b></div>
-        <p>重点国家的增长从“更多用户”升级为“更高单用户价值”；印度 Q1 停止拉新、Q2 试点拉活，存量重激活性价比显著优于纯拉新。</p>
+        <div className="h1-o2-region-copy">
+          <div className="h1-o2-region-path"><b>重点市场继续做大</b><i/> <b>重点国家提升用户价值</b><i/> <b>存量激活带新增</b></div>
+          <p>重点国家的增长从“更多用户”升级为“更高单用户价值”；印度 Q1 停止拉新、Q2 试点拉活，存量重激活性价比显著优于纯拉新。</p>
+        </div>
         <div className="h1-o2-lifecycle-proof">
-          <span>生命周期运营验证 · LTV / CAC 提升</span>
+          <span>生命周期运营验证</span>
           <strong>{lifecycleProof.value}</strong>
-          <b>{lifecycleProof.label}</b>
-          <small>{lifecycleProof.period}</small>
+          <div className="h1-o2-lifecycle-proof-copy">
+            <b>{lifecycleProof.label}</b>
+            <small>{lifecycleProof.period}</small>
+          </div>
         </div>
       </article>
     </div>
@@ -5264,7 +5268,12 @@ function O2ReportPage({page,index,count}){
   if(page.layout==="barrier")content=<><O2PageHeader page={page}/><O2Barrier/></>;
   if(page.layout==="ib-loop")content=<><O2PageHeader page={page}/><O2IbLoop/></>;
   return (
-    <section className={`h1-o2-page is-${page.layout}`} data-report-page data-page-id={page.id}>
+    <section
+      className={`h1-o2-page is-${page.layout}`}
+      data-report-page
+      data-page-id={page.id}
+      data-editor-revision={page.id==="o2-regional-engines"?"india-proof-below-v3":undefined}
+    >
       <div className="h1-o2-artboard">
         {content}
         <div className="h1-o2-page-number">{String(index+1).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span></div>
@@ -5484,11 +5493,14 @@ function O3Seo(){
     <div className="h1-o3-figma-page h1-o3-figma-95" data-figma-frame="95">
       <O3FigmaTitle eyebrow="SEO · 搜索引擎优化" title="越南SEO自然流量已经成为行业第一" subtitle="核心关键词和特色关键词Copytrading均成为行业第一，是Vantage增速最快的国家"/>
       <article className="h1-o3-figma-card h1-o3-95-market-card">
-        <h3><O3RacingMark/> Vantage自然流量成为行业第</h3>
+        <h3><O3RacingMark/> Vantage自然流量成为行业第一</h3>
         <div className="h1-o3-figma-table is-six">
           <div className="is-head"><span>#</span><span>Brand</span><span>Jan</span><span>July</span><span>Change</span><span>Grown</span></div>
           {rows.map((row,index)=><div key={row[0]} className={index===0?"is-highlight":""}><span>{index+1}</span>{row.map(cell=><span key={cell}>{cell}</span>)}</div>)}
         </div>
+        <p className="h1-o3-95-market-source" data-editor-ignore>
+          数据来自 <strong>Semrush Domain Analytics</strong>（域名分析），按国家数据库估算各域名的自然搜索流量。表中 Jan 为 2025 年 12 月、July 为 2026 年 7 月 23 日的<strong>月度估算访问量</strong>，两个时点采用同一测算口径，因此增幅具备可比性
+        </p>
       </article>
       <article className="h1-o3-figma-card h1-o3-95-keyword-card">
         <h3><O3RacingMark/> 核心关键词和特色关键词均是行业第一</h3>
@@ -6007,7 +6019,12 @@ function O3ReportPage({page,index,count,onVideoPreview}){
   if(page.layout==="online-offline")content=<><O3PageHeader page={page}/><O3OnlineOffline onVideoPreview={onVideoPreview}/></>;
   if(page.layout==="vn-key-insight")content=<O3VnKeyInsight/>;
   return (
-    <section className={`h1-o3-page is-${page.layout}`} data-report-page data-page-id={page.id}>
+    <section
+      className={`h1-o3-page is-${page.layout}`}
+      data-report-page
+      data-page-id={page.id}
+      data-editor-revision={page.id==="o3-seo"?"semrush-source-note-v1":undefined}
+    >
       <div className="h1-o3-artboard">
         {content}
         <div className="h1-o3-page-number">{String(index+1).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span></div>

@@ -80,6 +80,38 @@ const exactTargetSource = app.slice(
   app.indexOf("function O3Seo"),
   app.indexOf("function O3CopyTrade"),
 );
+const o3ReportPageSource = app.slice(
+  app.indexOf("function O3ReportPage"),
+  app.indexOf("function O3ReportDeck"),
+);
+assert.match(
+  exactTargetSource,
+  /<article className="h1-o3-figma-card h1-o3-95-market-card">[\s\S]*?<h3><O3RacingMark\/> Vantage自然流量成为行业第一<\/h3>/,
+  "frame 95 market-card title must include the missing Chinese character 一",
+);
+for (const sourceCopy of [
+  "数据来自",
+  "Semrush Domain Analytics",
+  "（域名分析），按国家数据库估算各域名的自然搜索流量。",
+  "表中 Jan 为 2025 年 12 月、July 为 2026 年 7 月 23 日的",
+  "月度估算访问量",
+  "两个时点采用同一测算口径，因此增幅具备可比性",
+]) {
+  assert.ok(
+    exactTargetSource.includes(sourceCopy),
+    `frame 95 market-card must include the Semrush source note: ${sourceCopy}`,
+  );
+}
+assert.match(
+  exactTargetSource,
+  /<p className="h1-o3-95-market-source" data-editor-ignore>[\s\S]*?<strong>Semrush Domain Analytics<\/strong>[\s\S]*?<strong>月度估算访问量<\/strong>[\s\S]*?<\/p>/,
+  "frame 95 source note must sit inside the market card and preserve both bold phrases",
+);
+assert.match(
+  o3ReportPageSource,
+  /data-editor-revision=\{page\.id==="o3-seo"\?"semrush-source-note-v1":undefined\}/,
+  "frame 95 must use a new editor revision so stale indexed copy cannot remove 一 again",
+);
 assert.doesNotMatch(
   exactTargetSource,
   /<O3FigmaProof\b/,
@@ -101,8 +133,8 @@ assert.match(
   "Figma cards must retain the amber glass treatment",
 );
 for (const [selector, geometry] of [
-  [".h1-o3-95-market-card", ["left:155px", "top:248px", "width:716px", "height:517px"]],
-  [".h1-o3-95-keyword-card", ["left:908px", "top:248px", "width:837px", "height:517px"]],
+  [".h1-o3-95-market-card", ["left:155px", "top:248px", "width:716px", "height:537px"]],
+  [".h1-o3-95-keyword-card", ["left:908px", "top:248px", "width:837px", "height:537px"]],
   [".h1-o3-95-growth-card", ["left:155px", "top:806px", "width:1590px", "height:218px"]],
   [".h1-o3-98-table", ["left:148px", "top:397px", "width:1048px", "height:458px"]],
   [".h1-o3-98-pie", ["left:1232px", "top:397px", "width:557px", "height:458px"]],
@@ -117,6 +149,11 @@ for (const [selector, geometry] of [
     );
   }
 }
+assert.match(
+  theme,
+  /\.h1-o3-95-market-source\s*\{[^}]*position:\s*absolute;[^}]*left:\s*36px;[^}]*right:\s*36px;[^}]*bottom:\s*21px;[^}]*font-size:\s*11\.5px;/,
+  "the Semrush source note must occupy the approved small-print position at the bottom of the left card",
+);
 assert.match(
   theme,
   /\.h1-o3-figma-page\s*\{[^}]*font-family:\s*"Gilroy","Noto Sans SC"/,

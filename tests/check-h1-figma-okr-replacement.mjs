@@ -93,7 +93,7 @@ assert.doesNotMatch(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260731-region-lifecycle-proof-v1"',
+    'src="../index.html?report=h1&embedded=1&v=20260731-o2-india-proof-below-v3"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

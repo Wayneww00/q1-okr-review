@@ -13,10 +13,13 @@ const immersive = fs.readFileSync(
   path.join(repoRoot, "previews/vantage-h1-immersive.html"),
   "utf8",
 );
-const expectedThemeVersion = "20260731-region-lifecycle-proof-v1";
+const expectedThemeVersion = "20260731-o2-india-proof-below-v3";
 
 const regions = html.match(
   /function O2Regions\(\)\{([\s\S]*?)\n\}\n\nfunction O2Delivery\(\)/,
+)?.[1];
+const reportPage = html.match(
+  /function O2ReportPage\(\{page,index,count\}\)\{([\s\S]*?)\n\}\n\nfunction O2ReportDeck\(\)/,
 )?.[1];
 const ibLoop = html.match(
   /function O2IbLoop\(\)\{([\s\S]*?)\n\}\n\nfunction O2ReportPage\(/,
@@ -24,27 +27,15 @@ const ibLoop = html.match(
 const regionStyles = css.match(
   /\/\* Regions \*\/([\s\S]*?)\/\* Global delivery \*\//,
 )?.[1];
-const ltvBarsStart = regions?.indexOf(
-  '<div className="h1-o2-ltv-bars">',
-) ?? -1;
-const ltvBarsEnd = regions?.indexOf("</article>", ltvBarsStart) ?? -1;
-const ltvBarsSource = regions?.slice(ltvBarsStart, ltvBarsEnd);
-const conclusionStart = regions?.indexOf(
-  '<article className="h1-o2-card h1-o2-region-conclusion">',
-) ?? -1;
-const conclusionEnd = regions?.indexOf("</article>", conclusionStart) ?? -1;
-const conclusionSource = regions?.slice(conclusionStart, conclusionEnd);
-
 assert.ok(regions, "O2 regional-growth page source must be discoverable");
+assert.ok(reportPage, "O2 report-page shell source must be discoverable");
 assert.ok(ibLoop, "O2 partnership-growth page source must be discoverable");
 assert.ok(regionStyles, "O2 regional-growth styles must be discoverable");
-assert.ok(ltvBarsSource, "page 21 LTV/CAC chart source must be discoverable");
-assert.ok(conclusionSource, "page 21 conclusion source must be discoverable");
 
 assert.match(
   regions,
-  /<div className="h1-o2-panel-title"><span>LTV \/ CAC 提升<\/span><\/div>/,
-  "page 21 must keep lifecycle validation in the relocated bottom proof card",
+  /const ltvMarkets=\[\["印度","\+485%","86%"\],\["阿联酋","\+220%","52%"\]\];/,
+  "page 21 must keep only India and UAE in the main LTV/CAC chart",
 );
 assert.match(
   regions,
@@ -52,34 +43,44 @@ assert.match(
   "page 21 must preserve the India remarketing proof data",
 );
 assert.match(
-  conclusionSource,
-  /className="h1-o2-lifecycle-proof"[\s\S]*?\{lifecycleProof\.value\}[\s\S]*?\{lifecycleProof\.label\}[\s\S]*?\{lifecycleProof\.period\}/,
-  "page 21 must render India remarketing inside the bottom conclusion panel",
-);
-assert.match(
-  ltvBarsSource,
-  /\{ltvMarkets\.map\(/,
-  "page 21 chart must render only the two approved LTV markets",
+  regions,
+  /className="h1-o2-region-copy"[\s\S]*?className="h1-o2-lifecycle-proof"[\s\S]*?\{lifecycleProof\.value\}[\s\S]*?\{lifecycleProof\.label\}[\s\S]*?\{lifecycleProof\.period\}/,
+  "page 21 must place India remarketing in a dedicated proof card below the chart",
 );
 assert.doesNotMatch(
-  ltvBarsSource,
-  /lifecycleProof|印度再营销|\+157%/,
-  "page 21 chart must not render the relocated India remarketing proof",
+  regions,
+  /className="h1-o2-ltv-bars"[\s\S]{0,900}印度再营销/,
+  "page 21 must not leave India remarketing as a third chart bar",
 );
 assert.match(
   regionStyles,
-  /\.h1-o2-ltv-bars\s*\{[\s\S]*?justify-content:\s*space-evenly;[\s\S]*?gap:\s*92px;/,
-  "page 21 must use the two-bar spacing after relocating India remarketing",
+  /\.h1-o2-ltv-bars\s*\{[\s\S]*?justify-content:\s*center;[\s\S]*?gap:\s*108px;/,
+  "page 21 must use balanced spacing for the two remaining chart bars",
 );
 assert.match(
   regionStyles,
-  /\.h1-o2-region-conclusion\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,1fr\) 330px;[\s\S]*?gap:\s*18px 34px;/,
-  "page 21 conclusion must reserve the right column for the relocated proof",
+  /\.h1-o2-region-conclusion\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,1fr\) 360px;[\s\S]*?gap:\s*32px;/,
+  "page 21 conclusion must reserve a stable right column for the relocated proof",
 );
 assert.match(
   regionStyles,
-  /\.h1-o2-lifecycle-proof\s*\{[\s\S]*?grid-column:\s*2;[\s\S]*?background:/,
-  "page 21 must style the relocated proof as a dedicated bottom card",
+  /\.h1-o2-lifecycle-proof\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,1fr\) auto;[\s\S]*?overflow:\s*hidden;[\s\S]*?background:/,
+  "page 21 must render the relocated India proof as a compact card",
+);
+assert.match(
+  regionStyles,
+  /\.h1-o2-lifecycle-proof > strong\s*\{[\s\S]*?white-space:\s*nowrap;[\s\S]*?writing-mode:\s*horizontal-tb;/,
+  "the relocated +157% value must stay horizontal and unclipped",
+);
+assert.match(
+  regionStyles,
+  /\.h1-o2-lifecycle-proof-copy\s*\{[\s\S]*?white-space:\s*nowrap;[\s\S]*?writing-mode:\s*horizontal-tb;/,
+  "the relocated India label and period must stay horizontal and unclipped",
+);
+assert.match(
+  reportPage,
+  /data-editor-revision=\{page\.id==="o2-regional-engines"\?"india-proof-below-v3":undefined\}/,
+  "page 21 must use a new editor revision so stale index-based text cannot overwrite the relocated proof",
 );
 
 assert.match(

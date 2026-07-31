@@ -45,9 +45,10 @@ for (const fact of [
   '<div className="h1-o2-panel-title"><span>LTV / CAC 提升</span></div>',
   'const ltvMarkets=[["印度","+485%","86%"],["阿联酋","+220%","52%"]];',
   'const lifecycleProof={label:"印度再营销",value:"+157%",period:"Q1 vs Q2"};',
+  'className="h1-o2-region-copy"',
   'className="h1-o2-lifecycle-proof"',
   "重点市场用户价值释放",
-  "生命周期运营验证 · LTV / CAC 提升",
+  "生命周期运营验证",
   "重点市场继续做大",
   "重点国家提升用户价值",
   "存量激活带新增",
@@ -60,7 +61,7 @@ const regionsPageSource = app.slice(
 );
 assert.match(
   regionsPageSource,
-  /const ltvMarkets[\s\S]*?const lifecycleProof[\s\S]*?h1-o2-lifecycle-proof/,
+  /const ltvMarkets[\s\S]*?const lifecycleProof[\s\S]*?h1-o2-region-copy[\s\S]*?h1-o2-lifecycle-proof/,
   "page 21 must keep the chart markets separate from the relocated lifecycle proof",
 );
 assert.match(
