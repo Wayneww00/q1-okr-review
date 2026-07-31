@@ -4981,55 +4981,15 @@ svg.h1-okr-insight-icon circle {
 }
 
 /* IB loop */
-.h1-o2-ib-header {
-  position: absolute;
-  z-index: 5;
-  top: 48px;
-  left: 72px;
-  width: 1776px;
-}
-
-.h1-o2-ib-header .h1-o2-eyebrow {
-  gap: 14px;
-  color: #ff7a3c;
-  font-size: 17px;
-}
-
-.h1-o2-ib-header h2 {
-  margin: 15px 0 5px;
-  color: #fff;
-  font-size: 64px;
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -.01em;
-}
-
-.h1-o2-ib-header p {
-  margin: 0;
-  color: rgba(255,255,255,.7);
-  font-size: 23px;
-  font-weight: 600;
-  line-height: 1.45;
-}
-
-.h1-o2-ib-header p strong {
-  color: #ff7c3d;
-  font-weight: 800;
-}
-
 .h1-o2-ib-layout {
   display: grid;
   grid-template-areas:
     "proof loop"
     "kpis kpis";
-  grid-template-columns: 744px minmax(0, 1fr);
-  grid-template-rows: 510px 200px;
-  column-gap: 34px;
-  row-gap: 39px;
-  top: 314px;
-  left: 72px;
-  width: 1848px;
-  height: 741px;
+  grid-template-columns: 520px minmax(0, 1fr);
+  grid-template-rows: 460px 190px;
+  column-gap: 22px;
+  row-gap: 22px;
 }
 
 .h1-o2-nl-proof {
@@ -5037,23 +4997,23 @@ svg.h1-okr-insight-icon circle {
   position: relative;
   width: auto;
   height: auto;
-  padding: 52px 54px;
+  padding: 38px 42px;
   border-color: rgba(244,129,53,.28) !important;
-  border-radius: 26px !important;
+  border-radius: 24px !important;
   background: linear-gradient(145deg, rgba(35,17,10,.92), rgba(63,30,14,.88)) !important;
 }
 
 .h1-o2-nl-proof strong {
   display: block;
-  margin: 24px 0 54px;
+  margin: 20px 0 32px;
   color: #ff7838;
-  font: 900 210px/.86 "Arial Black", "Noto Sans SC", sans-serif !important;
+  font: 900 140px/.9 "Arial Black", "Noto Sans SC", sans-serif !important;
   letter-spacing: -.07em;
 }
 
 .h1-o2-nl-proof .h1-o2-card-label {
   color: rgba(255,255,255,.68);
-  font-size: 25px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: .28em;
 }
@@ -5061,10 +5021,10 @@ svg.h1-okr-insight-icon circle {
 .h1-o2-nl-proof p {
   display: grid;
   gap: 4px;
-  max-width: 560px;
+  max-width: 420px;
   margin: 0;
   color: #fff;
-  font-size: 36px;
+  font-size: 25px;
   font-weight: 800;
   line-height: 1.28;
 }
@@ -5086,7 +5046,7 @@ svg.h1-okr-insight-icon circle {
   width: auto;
   height: auto;
   border: 1px solid rgba(244,129,53,.26);
-  border-radius: 26px;
+  border-radius: 24px;
   background:
     radial-gradient(circle at 50% 54%, rgba(255,103,44,.12), transparent 31%),
     linear-gradient(145deg, rgba(35,17,10,.92), rgba(63,30,14,.86));
@@ -5095,9 +5055,9 @@ svg.h1-okr-insight-icon circle {
 
 .h1-o2-loop-track {
   position: relative;
-  width: 640px;
-  height: 320px;
-  border: 3px solid rgba(255,106,43,.82);
+  width: 560px;
+  height: 240px;
+  border: 2px solid rgba(255,106,43,.82);
   border-radius: 50%;
   box-shadow: inset 0 0 48px rgba(171,30,10,.12), 0 0 34px rgba(184,39,13,.16);
 }
@@ -5107,13 +5067,13 @@ svg.h1-okr-insight-icon circle {
   display: grid;
   place-items: center;
   z-index: 2;
-  width: 150px;
-  height: 88px;
+  width: 128px;
+  height: 66px;
   border: 1px solid rgba(255,157,101,.62);
   border-radius: 999px;
   background: linear-gradient(135deg, #ff7a3c, #f04a20);
   box-shadow: 0 14px 32px rgba(255,72,20,.28), inset 0 1px rgba(255,255,255,.16);
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 800;
   line-height: 1.1;
   text-align: center;
@@ -5125,32 +5085,32 @@ svg.h1-okr-insight-icon circle {
 }
 
 .h1-o2-loop-track span small {
-  margin-top: 5px;
+  margin-top: 4px;
   color: rgba(255,255,255,.86);
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .h1-o2-loop-track span.is-1 {
-  top: -22px;
+  top: -18px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .h1-o2-loop-track span.is-2 {
   top: 50%;
-  right: -144px;
+  right: -100px;
   transform: translateY(-50%);
 }
 
 .h1-o2-loop-track span.is-3 {
-  bottom: -22px;
+  bottom: -18px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .h1-o2-loop-track span.is-4 {
   top: 50%;
-  left: -144px;
+  left: -100px;
   transform: translateY(-50%);
 }
 
@@ -5158,32 +5118,32 @@ svg.h1-okr-insight-icon circle {
   position: absolute;
   z-index: 3;
   color: #ff7746;
-  font-size: 28px;
+  font-size: 24px;
   font-style: normal;
   line-height: 1;
   text-shadow: 0 0 12px rgba(255,85,35,.55);
 }
 
 .h1-o2-loop-arrow.is-1 {
-  top: 40px;
-  right: 100px;
+  top: 30px;
+  right: 84px;
   transform: rotate(28deg);
 }
 
 .h1-o2-loop-arrow.is-2 {
   right: -6px;
-  bottom: 70px;
+  bottom: 50px;
   transform: rotate(58deg);
 }
 
 .h1-o2-loop-arrow.is-3 {
-  bottom: 40px;
-  left: 100px;
+  bottom: 30px;
+  left: 84px;
   transform: rotate(28deg);
 }
 
 .h1-o2-loop-arrow.is-4 {
-  top: 70px;
+  top: 50px;
   left: -6px;
   transform: rotate(58deg);
 }
@@ -5197,14 +5157,14 @@ svg.h1-okr-insight-icon circle {
   justify-items: center;
   gap: 7px;
   color: #fff;
-  font-size: 28px;
+  font-size: 24px;
   line-height: 1;
   transform: translate(-50%,-50%);
 }
 
 .h1-o2-loop-label small {
   color: #ff7838;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: .22em;
 }
 
@@ -5216,7 +5176,7 @@ svg.h1-okr-insight-icon circle {
   border: 0;
   background: transparent;
   box-shadow: none;
-  font-size: 28px;
+  font-size: 24px;
   transform: none;
 }
 
@@ -5225,16 +5185,16 @@ svg.h1-okr-insight-icon circle {
   position: relative;
   display: grid;
   grid-template-columns: repeat(4,1fr);
-  gap: 25px;
-  width: 1812px;
+  gap: 22px;
+  width: auto;
   height: auto;
   min-height: 0;
 }
 
 .h1-o2-ib-kpis .h1-o2-metric {
-  padding: 31px 34px;
+  padding: 24px 28px;
   border-color: rgba(244,129,53,.24);
-  border-radius: 24px;
+  border-radius: 22px;
   background: linear-gradient(145deg, rgba(44,21,11,.93), rgba(73,35,16,.88));
 }
 
@@ -5243,21 +5203,16 @@ svg.h1-okr-insight-icon circle {
 }
 
 .h1-o2-ib-kpis .h1-o2-metric > strong {
-  margin-top: 21px;
+  margin-top: 12px;
   color: #ff7838;
-  font: 900 54px/1 "Arial Black", "Noto Sans SC", sans-serif !important;
+  font: 900 48px/1 "Arial Black", "Noto Sans SC", sans-serif !important;
   letter-spacing: -.045em;
 }
 
 .h1-o2-ib-kpis .h1-o2-metric > small {
-  margin-top: 18px;
+  margin-top: 12px;
   color: rgba(255,255,255,.46);
   font-size: 14px;
-}
-
-.is-ib-loop .h1-o2-page-number {
-  right: 72px;
-  bottom: 14px;
 }
 
 /* O2 SEO / GEO pages — code-rendered from o21.pptx. */

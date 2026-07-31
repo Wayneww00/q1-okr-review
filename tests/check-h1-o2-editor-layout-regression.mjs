@@ -85,7 +85,7 @@ assert.match(
 
 assert.match(
   html,
-  /id:"o2-ib-loop",[\s\S]*?layout:"ib-loop",[\s\S]*?editorRevision:"ib-loop-structure-v2"/,
+  /id:"o2-ib-loop",[\s\S]*?layout:"ib-loop",[\s\S]*?editorRevision:"ib-loop-standard-layout-v3"/,
   "page 27 must use a dedicated editor revision so legacy text slots cannot overwrite the redesigned loop",
 );
 

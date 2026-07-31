@@ -196,12 +196,7 @@ try {
         }))
         .filter(
           (card) =>
-            (card.verticalOverflow > 1 || card.horizontalOverflow > 1) &&
-            !(
-              card.pageId === "o2-ib-loop" &&
-              card.verticalOverflow <= 24 &&
-              card.horizontalOverflow <= 1
-            ),
+            card.verticalOverflow > 1 || card.horizontalOverflow > 1,
         ),
     );
   assert.deepEqual(

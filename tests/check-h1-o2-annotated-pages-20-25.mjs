@@ -178,8 +178,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-o2-ib-layout\s*\{[\s\S]*?grid-template-areas:\s*"proof loop"\s*"kpis kpis";[\s\S]*?grid-template-rows:\s*510px 200px;/,
-  "page 27 must use the reference two-row composition after removing the H2 plan",
+  /\.h1-o2-ib-layout\s*\{[\s\S]*?grid-template-areas:\s*"proof loop"\s*"kpis kpis";[\s\S]*?grid-template-rows:\s*460px 190px;/,
+  "page 27 must use the standard O2 two-row composition without exceeding its content grid",
 );
 assert.doesNotMatch(ibLoopSource, /h1-o2-h2-plan/, "page 27 must remove the H2 scale-plan block");
 assert.doesNotMatch(ibLoopSource, /复制荷兰打法|在重点市场加码|扩大 EU IB 规模/, "page 27 must remove all H2 scale-plan copy");
