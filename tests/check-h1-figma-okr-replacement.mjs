@@ -125,8 +125,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-elite-client-page\s*\{[\s\S]*?background:\s*#020203;[\s\S]*?\.h1-okr-elite-client-canvas\s*\{[\s\S]*?overflow:\s*visible;[\s\S]*?\.h1-okr-elite-client-background\s*\{[\s\S]*?top:\s*0;[\s\S]*?left:\s*0;[\s\S]*?width:\s*1920px;[\s\S]*?height:\s*1080px;/,
-  "the Elite Client chapter must align the exact 1920 × 1080 Figma background with every authored foreground",
+  /\.h1-okr-page\.h1-okr-elite-client-page\s*\{[\s\S]*?isolation:\s*isolate;[\s\S]*?background:\s*#000\s*!important;[\s\S]*?\.h1-okr-page\.h1-okr-elite-client-page::before\s*\{[\s\S]*?inset:\s*0;[\s\S]*?background:\s*#000;[\s\S]*?\.h1-okr-elite-client-canvas\s*\{[\s\S]*?overflow:\s*hidden;[\s\S]*?\.h1-okr-elite-client-background\s*\{[\s\S]*?top:\s*0;[\s\S]*?left:\s*0;[\s\S]*?width:\s*1920px;[\s\S]*?height:\s*1080px;/,
+  "the Elite Client chapter must keep black widescreen letterboxing while aligning the exact 1920 × 1080 Figma background with every authored foreground",
 );
 assert.ok(
   fs.existsSync(
@@ -372,7 +372,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260731-figma-145-716"',
+    'src="../index.html?report=h1&embedded=1&v=20260731-elite-black-matte-v1"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

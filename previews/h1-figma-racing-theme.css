@@ -1947,6 +1947,39 @@
   -webkit-user-drag: none;
 }
 
+/* O1 is a chapter anchor, not a badge: it shares the title baseline and uses
+   the warm objective-number language established by the O2 / O3 covers. */
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-objective-marker {
+  position: absolute;
+  z-index: 2;
+  top: 165px;
+  left: 250px;
+  display: flex;
+  align-items: center;
+  height: 62px;
+  color: #f0a33c;
+  font-family: "Gilroy", "Barlow Condensed", sans-serif !important;
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.055em;
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, .48),
+    0 0 26px rgba(240, 163, 60, .12);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.h1-figma-racing-report body.h1-embedded-report .h1-okr-objective-marker::after {
+  content: "";
+  display: block;
+  width: 2px;
+  height: 36px;
+  margin-left: 18px;
+  background: linear-gradient(180deg, rgba(255, 197, 105, .18), #f0a33c 46%, rgba(255, 91, 17, .7));
+  box-shadow: 0 0 12px rgba(240, 163, 60, .22);
+}
+
 /* Transparent interaction regions over exported Figma artwork.  Without these
    rules the browser's default button chrome becomes visible as white blocks. */
 .h1-okr-image-hotspot {
@@ -1978,12 +2011,25 @@
   inset: auto;
 }
 
-.h1-okr-elite-client-page {
-  background: #020203;
+/* Elite Client is its own black chapter. On wide displays the centred
+   1920 × 1080 canvas leaves letterbox space at both sides; keep that space
+   opaque black so the shared gold trophy stage can never bleed through. */
+.h1-okr-page.h1-okr-elite-client-page {
+  isolation: isolate;
+  background: #000 !important;
+}
+
+.h1-okr-page.h1-okr-elite-client-page::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background: #000;
 }
 
 .h1-okr-elite-client-canvas {
-  overflow: visible;
+  overflow: hidden;
 }
 
 .h1-okr-elite-client-background {

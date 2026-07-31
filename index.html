@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260730-black-label-v21">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-elite-black-matte-v1">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2137,7 +2137,7 @@ function OkrFixedBackdrop(){
 function OkrBrandSystemPage(){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   return (
-    <section ref={pageRef} className="h1-okr-page" data-report-page data-page-id="okr-review" aria-label="将 Vantage 建设成全球一线品牌">
+    <section ref={pageRef} className="h1-okr-page" data-report-page data-page-id="okr-review" data-objective-index="O1" aria-label="O1 将 Vantage 建设成全球一线品牌">
       <div ref={canvasRef} className="h1-okr-canvas">
         <img
           className="h1-okr-figma-foreground-layer"
@@ -2149,6 +2149,9 @@ function OkrBrandSystemPage(){
           draggable="false"
           aria-hidden="true"
         />
+        <div className="h1-okr-objective-marker" aria-label="Objective 1">
+          O1
+        </div>
         <div className="h1-okr-page-number" aria-hidden="true">
           01 <span>/ 19</span>
         </div>

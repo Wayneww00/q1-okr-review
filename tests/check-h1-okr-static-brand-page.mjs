@@ -19,9 +19,24 @@ const operatingSystemPage = app.slice(
 );
 
 assert.match(staticPage, /className="h1-okr-page"/);
+assert.match(
+  staticPage,
+  /data-objective-index="O1"[\s\S]*?aria-label="O1 将 Vantage 建设成全球一线品牌"/,
+  "the first OKR page must identify itself as Objective 1",
+);
+assert.match(
+  staticPage,
+  /className="h1-okr-objective-marker"[\s\S]*?O1/,
+  "the first OKR page must render the visible O1 chapter marker",
+);
 assert.doesNotMatch(staticPage, /OkrImageHotspots|onPreview|setPreview|modalSrc/);
 assert.doesNotMatch(staticPage, /h1-okr-static-click-shield/);
 assert.doesNotMatch(operatingSystemPage, /imageSlots|figma-lightbox|modalSrc/);
 assert.doesNotMatch(theme, /\.h1-okr-static-click-shield/);
+assert.match(
+  theme,
+  /\.h1-figma-racing-report body\.h1-embedded-report \.h1-okr-objective-marker\s*\{[\s\S]*?top:\s*165px;[\s\S]*?left:\s*250px;[\s\S]*?color:\s*#f0a33c;[\s\S]*?font-size:\s*52px;/,
+  "O1 must align to the title baseline and use the warm objective-number accent",
+);
 
 console.log("Static 05/31 brand page contract passed.");
