@@ -30,8 +30,8 @@ const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) =>
 );
 assert.deepEqual(
   ids,
-  Array.from({ length: 20 }, (_, index) => index + 1),
-  "the removed H2 target page must reduce the data module to 20 pages",
+  Array.from({ length: 21 }, (_, index) => index + 1),
+  "the restored-scope comparison must append a 21st data page",
 );
 
 for (const note of [

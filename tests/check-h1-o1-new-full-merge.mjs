@@ -86,8 +86,8 @@ assert.match(
 
 assert.deepEqual(
   topLevelNumericIds(constantBlock(app, "const H1_DASHBOARDS = [")),
-  Array.from({ length: 20 }, (_, index) => index + 1),
-  "the 20 retained Data pages must remain in order",
+  Array.from({ length: 21 }, (_, index) => index + 1),
+  "the 21 retained Data pages must remain in order",
 );
 assert.equal(
   topLevelStringIds(constantBlock(app, "const O2_REPORT_PAGES=[")).length,

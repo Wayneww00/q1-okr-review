@@ -27,8 +27,8 @@ const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) =>
 );
 assert.deepEqual(
   ids,
-  Array.from({ length: 20 }, (_, index) => index + 1),
-  "the data section must contain the original 14 pages followed by six Retail ND pages",
+  Array.from({ length: 21 }, (_, index) => index + 1),
+  "the data section must contain the original 14 pages followed by seven Retail ND pages",
 );
 
 const expectedLayouts = [
@@ -38,11 +38,12 @@ const expectedLayouts = [
   "vietnam_retail_nd",
   "attribution_question",
   "mib_attribution",
+  "retail_nd_scope_restoration",
 ];
 const appendedLayouts = ids.slice(14).map((id) => {
   const start = dataBlock.search(new RegExp(`^  \\{\\s*id:${id},`, "m"));
   const next =
-    id < 20
+    id < 21
       ? dataBlock.search(new RegExp(`^  \\{\\s*id:${id + 1},`, "m"))
       : dataBlock.length;
   const page = dataBlock.slice(start, next);
@@ -171,6 +172,7 @@ for (const component of [
   "H1ApacNdBreakdownChart",
   "H1VietnamRetailNdChart",
   "H1MibAttributionChart",
+  "H1RetailNdScopeRestorationChart",
   "H1RetailGrowthTransition",
   "H1RetailGrowthPage",
 ]) {
@@ -220,7 +222,7 @@ assert.doesNotMatch(
   /"\.h1-retail-growth-page-number"/,
   "the editor must not retain a duplicate imported-page exclusion",
 );
-assert.match(shell, /'Performance Data','经营数据','20 MODULES'/);
+assert.match(shell, /'Performance Data','经营数据','21 MODULES'/);
 const shellThemeCacheKeys = [
   ...shell.matchAll(
     /h1-figma-racing-theme\.css\?v=([^'"\s]+)/g,

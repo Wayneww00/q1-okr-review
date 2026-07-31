@@ -38,8 +38,8 @@ try {
   const dataPages = reportFrame.locator(
     '[data-report-section="data"] [data-report-page]',
   );
-  assert.equal(await dataPages.count(), 20);
-  assert.equal(await reportPages.count(), 96);
+  assert.equal(await dataPages.count(), 21);
+  assert.equal(await reportPages.count(), 97);
   assert.equal(
     await reportFrame.locator(".h1-figma-fixed-stage").count(),
     1,
@@ -75,10 +75,10 @@ try {
       .replace(/\s+/g, " ")
       .trim();
 
-  for (let id = 15; id <= 20; id += 1) {
+  for (let id = 15; id <= 21; id += 1) {
     const pageId = `data-${id}`;
     await scrollFrameToPage(pageId);
-    assert.match(await pageNumberText(pageId), new RegExp(`^${id} / 20$`));
+    assert.match(await pageNumberText(pageId), new RegExp(`^${id} / 21$`));
     assert.equal(
       await reportFrame
         .locator(`[data-page-id="${pageId}"] .h1-extended-editorial-canvas`)
@@ -137,7 +137,7 @@ try {
   assert.deepEqual(sharedVisualSystem.surface15, sharedVisualSystem.surface14);
   assert.deepEqual(sharedVisualSystem.canvas15, sharedVisualSystem.canvas14);
 
-  for (const id of [15, 16, 18, 20]) {
+  for (const id of [15, 16, 18, 20, 21]) {
     assert.ok(
       (await reportFrame.locator(`[data-page-id="data-${id}"] svg`).count()) > 0,
       `data-${id} must render a native SVG chart`,
@@ -150,7 +150,8 @@ try {
   );
   assert.match(
     await reportFrame.locator('[data-page-id="data-19"]').innerText(),
-    /Marketing价值未充分体现？[\s\S]*or[\s\S]*还有哪些关键原因？/,
+    /(?:Marketing价值未充分体现？[\s\S]*or[\s\S]*还有哪些关键原因？|为什么Marketing做得好，反而ND占比低？)/,
+    "the mutable transition page must preserve either its source or approved editor copy",
   );
   assert.match(
     await reportFrame.locator('[data-page-id="data-16"]').innerText(),
@@ -158,7 +159,7 @@ try {
   );
   assert.match(
     await reportFrame.locator('[data-page-id="data-18"]').innerText(),
-    /−\$0\.4[\s\S]*\$1\.2[\s\S]*-5\.0%[\s\S]*30\.0%/,
+    /−\$0\.4[\s\S]*-5\.0%[\s\S]*\$1\.2[\s\S]*30\.0%/,
     "the Vietnam chart must expose both source axes",
   );
   assert.match(
@@ -170,6 +171,11 @@ try {
     await reportFrame.locator('[data-page-id="data-20"]').innerText(),
     /0K[\s\S]*14K[\s\S]*0M[\s\S]*8M[\s\S]*9\.1M[\s\S]*3\.9M[\s\S]*6\.2M[\s\S]*2\.3M/,
     "the interval chart must retain its user columns, ND line, and source axes",
+  );
+  assert.match(
+    await reportFrame.locator('[data-page-id="data-21"]').innerText(),
+    /\$0\.0M[\s\S]*\$250\.0M[\s\S]*\$145\.4M[\s\S]*\$221\.6M[\s\S]*\$0\.00M[\s\S]*\$300\.00M[\s\S]*\$159\.30M[\s\S]*\$269\.10M/,
+    "the scope-restoration page must render the approved one-decimal and two-decimal money units",
   );
   const page20Geometry = await reportFrame
     .locator('[data-page-id="data-20"]')
@@ -218,14 +224,14 @@ try {
   await editButton.click();
   await page.waitForFunction(() => {
     const doc = document.querySelector("#reportFrame")?.contentDocument;
-    return Array.from({ length: 6 }, (_, index) => index + 15).every(
+    return Array.from({ length: 7 }, (_, index) => index + 15).every(
       (id) =>
         doc
           ?.querySelector(`[data-page-id="data-${id}"] h1`)
           ?.getAttribute("contenteditable") === "plaintext-only",
     );
   });
-  for (let id = 15; id <= 20; id += 1) {
+  for (let id = 15; id <= 21; id += 1) {
     assert.equal(
       await reportFrame
         .locator(
@@ -236,7 +242,7 @@ try {
       `data-${id} page number must not be editable`,
     );
   }
-  for (const id of [15, 16, 18, 20]) {
+  for (const id of [15, 16, 18, 20, 21]) {
     assert.equal(
       await reportFrame
         .locator(`[data-page-id="data-${id}"] .h1-retail-growth-chart`)
@@ -256,11 +262,11 @@ try {
       .querySelector('.scene[data-label="Full Report"]')
       ?.classList.contains("active"),
   );
-  await scrollFrameToPage("data-20");
+  await scrollFrameToPage("data-21");
   await page.locator("body").press("PageDown");
   await waitForActivePage("o1-chapter");
   await page.locator("body").press("PageUp");
-  await waitForActivePage("data-20");
+  await waitForActivePage("data-21");
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   const reducedMotionState = await reportFrame
