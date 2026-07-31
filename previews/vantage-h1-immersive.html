@@ -1114,6 +1114,8 @@
     const videos = [...document.querySelectorAll('video')];
     const aiProductsScene = scenes.find(scene => scene.dataset.label === 'AI Data Products');
     const aiProductsFrame = document.getElementById('aiProductsFrame');
+    let aiProductsNavigationRetryTimer = 0;
+    let aiProductsNavigationRetriesRemaining = 0;
     let activeIndex = 0;
     let soundOn = true;
     let soundBlocked = false;
@@ -1137,6 +1139,8 @@
     const ensureAiProductsFrameSource = () => {
       if (aiProductsFrame.getAttribute('src') || !aiProductsFrame.dataset.src) return;
       aiProductsFrame.src = aiProductsFrame.dataset.src;
+      aiProductsNavigationRetriesRemaining = 120;
+      prepareAiProductsNavigation();
     };
 
     const scrollToScene = scene => {
@@ -1557,8 +1561,21 @@
       if (
         !doc ||
         doc.URL === 'about:blank' ||
-        doc.body?.dataset.deckNavigationPrepared === 'true'
-      ) return;
+        !doc.getElementById('products')
+      ) {
+        if (aiProductsNavigationRetriesRemaining > 0) {
+          aiProductsNavigationRetriesRemaining -= 1;
+          window.clearTimeout(aiProductsNavigationRetryTimer);
+          aiProductsNavigationRetryTimer = window.setTimeout(
+            prepareAiProductsNavigation,
+            50,
+          );
+        }
+        return;
+      }
+      if (doc.body?.dataset.deckNavigationPrepared === 'true') return;
+      window.clearTimeout(aiProductsNavigationRetryTimer);
+      aiProductsNavigationRetriesRemaining = 0;
       doc.body.dataset.deckNavigationPrepared = 'true';
 
       const isProductInteraction = () => !doc.getElementById('tool-modal')?.hidden;
