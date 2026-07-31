@@ -128,7 +128,7 @@ try {
 
   // After the first gesture has gone idle, a deliberate second gesture in the
   // same direction must not be mistaken for more entry momentum.
-  await page.waitForTimeout(260);
+  await page.waitForTimeout(380);
   await page.mouse.wheel(0, -320);
   await page.waitForFunction(
     () =>
@@ -162,6 +162,9 @@ try {
           .querySelector('section[data-label="Closing Film"]')
           .getBoundingClientRect().top,
       ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
   );
 
   const reportFrame = page.frameLocator("#reportFrame");
@@ -230,7 +233,7 @@ try {
 
   // A single upward gesture may cross from AI back to Full Report, but its
   // inertial tail must not continue paging inside the newly exposed iframe.
-  await page.waitForTimeout(260);
+  await page.waitForTimeout(380);
   for (const deltaY of [-320, -180, -100, -60, -30]) {
     await page.mouse.wheel(0, deltaY);
     await page.waitForTimeout(90);
@@ -272,6 +275,49 @@ try {
           .querySelector('section[data-label="Closing Film"]')
           .getBoundingClientRect().top,
       ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+
+  await reportScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await reportFrame.locator("[data-report-page]").last().evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(() => {
+    const pages = [
+      ...document
+        .querySelector("#reportFrame")
+        .contentDocument.querySelectorAll("[data-report-page]"),
+    ];
+    return Math.abs(pages.at(-1).getBoundingClientRect().top) < 2;
+  });
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+
+  // Even an unusually long continuous trackpad gesture must cross at most one
+  // outer scene; the safety timeout must not unlock while wheel input is active.
+  await page.mouse.move(960, 540);
+  for (const deltaY of [1000, ...Array(24).fill(48)]) {
+    await page.mouse.wheel(0, deltaY);
+    await page.waitForTimeout(90);
+  }
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+  assert.ok(
+    await aiScene.evaluate(
+      (element) => Math.abs(element.getBoundingClientRect().top) < 2,
+    ),
+    "a continuous long wheel gesture must stop on AI Data Products instead of skipping to Closing Film",
   );
 
   await reportScene.evaluate((element) =>

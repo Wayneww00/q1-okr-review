@@ -1250,7 +1250,7 @@
     const videos = [...document.querySelectorAll('video')];
     const aiProductsScene = scenes.find(scene => scene.dataset.label === 'AI Data Products');
     const aiProductsFrame = document.getElementById('aiProductsFrame');
-    const OUTER_WHEEL_GESTURE_IDLE_MS = 180;
+    const OUTER_WHEEL_GESTURE_IDLE_MS = 320;
     const OUTER_WHEEL_TRANSITION_TIMEOUT_MS = 1400;
     let aiProductsNavigationRetryTimer = 0;
     let aiProductsNavigationRetriesRemaining = 0;
@@ -1308,7 +1308,10 @@
           clearOuterWheelTransition();
           return;
         }
-        if (transitionAge >= OUTER_WHEEL_TRANSITION_TIMEOUT_MS) {
+        if (
+          transitionAge >= OUTER_WHEEL_TRANSITION_TIMEOUT_MS
+          && idleFor >= OUTER_WHEEL_GESTURE_IDLE_MS
+        ) {
           outerWheelTransitionTarget.scrollIntoView({behavior:'instant', block:'start'});
           clearOuterWheelTransition();
           return;
@@ -1333,12 +1336,17 @@
       scheduleOuterWheelRelease();
     };
 
-    document.addEventListener('wheel', event => {
-      if (!outerWheelTransitionTarget) return;
+    const absorbOuterWheelTransition = event => {
+      if (!outerWheelTransitionTarget) return false;
       event.preventDefault();
       event.stopImmediatePropagation();
       outerWheelLastEventAt = window.performance.now();
       scheduleOuterWheelRelease();
+      return true;
+    };
+
+    document.addEventListener('wheel', event => {
+      absorbOuterWheelTransition(event);
     }, {capture:true, passive:false});
 
     closingScene.addEventListener('wheel', event => {
@@ -1356,7 +1364,10 @@
       if (scene === aiProductsScene) ensureAiProductsFrameSource();
       if (source === 'wheel') beginOuterWheelTransition(scene);
       else if (outerWheelTransitionTarget) clearOuterWheelTransition();
-      scene.scrollIntoView({behavior:'smooth'});
+      scene.scrollIntoView({
+        behavior: source === 'wheel' ? 'instant' : 'smooth',
+        block: 'start',
+      });
     };
     const isKeyboardInteractionTarget = target => Boolean(
       target?.closest?.(
@@ -1947,6 +1958,7 @@
       };
 
       doc.addEventListener('wheel', event => {
+        if (absorbOuterWheelTransition(event)) return;
         if (isProductInteraction() || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
         event.preventDefault();
         event.stopPropagation();
@@ -2235,6 +2247,7 @@
       let reportWheelLastDirection = 0;
       let reportWheelLastEventAt = 0;
       doc.addEventListener('wheel', event => {
+        if (absorbOuterWheelTransition(event)) return;
         const scrollTop = reportWindow.scrollY;
         const firstReportPage = reportPages[0];
         const lastReportPage = reportPages[reportPages.length - 1];

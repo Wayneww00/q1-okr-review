@@ -105,6 +105,12 @@ try {
     element.focus();
   });
   await scrollToAiScene();
+  await reportFrame.locator("body").evaluate((element) => element.focus());
+  assert.equal(
+    await page.evaluate(() => document.activeElement?.id),
+    "reportFrame",
+    "the regression setup must force focus back into the off-screen report iframe",
+  );
   await page.keyboard.press("PageDown");
   await page.waitForFunction(
     () =>
@@ -123,6 +129,12 @@ try {
     element.focus();
   });
   await scrollToAiScene();
+  await reportFrame.locator("body").evaluate((element) => element.focus());
+  assert.equal(
+    await page.evaluate(() => document.activeElement?.id),
+    "reportFrame",
+    "the backward regression setup must force stale report focus",
+  );
   await page.keyboard.press("PageUp");
   await page.waitForFunction(
     () =>
