@@ -1554,7 +1554,11 @@
 
     function prepareAiProductsNavigation() {
       const doc = aiProductsFrame.contentDocument;
-      if (!doc || doc.body?.dataset.deckNavigationPrepared === 'true') return;
+      if (
+        !doc ||
+        doc.URL === 'about:blank' ||
+        doc.body?.dataset.deckNavigationPrepared === 'true'
+      ) return;
       doc.body.dataset.deckNavigationPrepared = 'true';
 
       const isProductInteraction = () => !doc.getElementById('tool-modal')?.hidden;

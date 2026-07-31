@@ -33,6 +33,13 @@ try {
   const eyeBrainHandTrigger = frame.getByRole("button", {
     name: "翻转以查看眼脑手 Dashboard 产品进展与上线计划",
   });
+  const placeholderBody = frame.locator("body");
+  await placeholderBody.waitFor();
+  assert.equal(
+    await placeholderBody.getAttribute("data-deck-navigation-prepared"),
+    null,
+    "the transient about:blank iframe must not claim that deck navigation is ready",
+  );
   const scrollToAiScene = async () => {
     await aiScene.evaluate((element) =>
       element.scrollIntoView({ behavior: "instant", block: "start" }),
