@@ -134,8 +134,8 @@
 
 /* Figma 861:1172 — India H2 SSS chapter */
 .h1-o3-india-chapter{position:absolute;inset:0;overflow:hidden;background:#2a0c06;color:#fff}
-.h1-o3-india-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
-.h1-o3-india-wait{position:absolute;z-index:2;top:724px;left:1050px;width:760px;height:238px;color:#fff7ec;text-align:left;isolation:isolate}
+.h1-o3-india-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
+.h1-o3-india-wait{position:absolute;z-index:2;top:724px;left:1050px;width:760px;height:238px;color:#fff7ec;text-align:left;isolation:isolate;pointer-events:none}
 .h1-o3-india-wait-ghost{position:absolute;z-index:-1;top:-18px;left:54px;color:transparent;font-family:"Gilroy","Barlow Condensed",sans-serif!important;font-size:196px;font-weight:300;line-height:.78;letter-spacing:.035em;-webkit-text-stroke:1px rgba(255,226,202,.16);text-shadow:none}
 .h1-o3-india-wait-kicker{position:relative;display:flex;align-items:center;gap:16px;margin:36px 0 0 104px;color:#f27a32;font-family:"Barlow Condensed","Gilroy",sans-serif!important;font-size:18px;font-weight:800;line-height:1;letter-spacing:.11em;text-transform:uppercase;text-shadow:0 3px 18px rgba(36,6,2,.5)}
 .h1-o3-india-wait-mark{display:grid;grid-template-columns:repeat(3,10px);grid-template-rows:repeat(2,8px);gap:3px;transform:skewX(-14deg)}

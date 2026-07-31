@@ -39,6 +39,8 @@ for (const selector of [
 ]) assert.ok(theme.includes(selector), `${selector} must be styled`);
 
 assert.match(theme, /\.h1-o3-india-background\{[^}]*width:100%[^}]*height:100%[^}]*object-fit:cover/s);
+assert.match(theme, /\.h1-o3-india-background\{[^}]*pointer-events:none/s);
+assert.match(theme, /\.h1-o3-india-wait\{[^}]*pointer-events:none/s);
 
 const figmaAsset = path.join(root, "previews", "assets", "o3", "india-h2-sss-figma.png");
 assert.ok(fs.existsSync(figmaAsset), "the India frame exported from Figma must ship with the presentation");

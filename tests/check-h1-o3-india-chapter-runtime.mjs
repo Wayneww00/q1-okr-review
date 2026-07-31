@@ -59,6 +59,7 @@ try {
     const label = node.querySelector(".h1-o3-india-wait p span");
     const imageBounds = image.getBoundingClientRect();
     const imageStyle = getComputedStyle(image);
+    const waitStyle = getComputedStyle(node.querySelector(".h1-o3-india-wait"));
     const ghostStyle = getComputedStyle(ghost);
     const numberStyle = getComputedStyle(number);
     const labelStyle = getComputedStyle(label);
@@ -70,6 +71,7 @@ try {
       wait: { left: wait.left, top: wait.top, right: wait.right, bottom: wait.bottom },
       imageBounds: { left: imageBounds.left, top: imageBounds.top, right: imageBounds.right, bottom: imageBounds.bottom },
       objectFit: imageStyle.objectFit,
+      pointerEvents: { image: imageStyle.pointerEvents, wait: waitStyle.pointerEvents },
       ghostStroke: ghostStyle.webkitTextStrokeWidth,
       fontSizes: { number: parseFloat(numberStyle.fontSize), label: parseFloat(labelStyle.fontSize) },
       image: { naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight },
@@ -80,6 +82,7 @@ try {
   assert.ok(state.overflowX <= 1 && state.overflowY <= 1);
   assert.deepEqual(state.image, { naturalWidth: 2280, naturalHeight: 1346 });
   assert.equal(state.objectFit, "cover");
+  assert.deepEqual(state.pointerEvents, { image: "none", wait: "none" });
   assert.ok(Math.abs(state.imageBounds.left - state.artboard.left) <= 1);
   assert.ok(Math.abs(state.imageBounds.top - state.artboard.top) <= 1);
   assert.ok(Math.abs(state.imageBounds.right - state.artboard.right) <= 1);
@@ -94,6 +97,31 @@ try {
   assert.notEqual(state.ghostStroke, "0px");
   assert.ok(state.fontSizes.number >= state.fontSizes.label * 2);
   assert.match(state.text, /PROJECT COUNTDOWN 145\s*天的等待 18 \/ 18/);
+
+  const waitForReportPage = (pageId) => page.waitForFunction((targetPageId) => {
+    const frame = document.querySelector("#reportFrame");
+    const target = frame?.contentDocument?.querySelector(`[data-page-id="${targetPageId}"]`);
+    return target
+      && target.classList.contains("is-active")
+      && Math.abs(target.getBoundingClientRect().top) <= 2;
+  }, pageId);
+  const reportBody = reportFrame.locator("body");
+  await reportBody.press("ArrowUp");
+  await waitForReportPage("o3-vn-key-insight");
+  await reportBody.press("ArrowDown");
+  await waitForReportPage("o3-india-chapter");
+
+  const countdownBox = await indiaPage.locator(".h1-o3-india-wait").boundingBox();
+  assert.ok(countdownBox);
+  await page.mouse.move(
+    countdownBox.x + countdownBox.width / 2,
+    countdownBox.y + countdownBox.height / 2,
+  );
+  await page.mouse.wheel(0, -320);
+  await waitForReportPage("o3-vn-key-insight");
+  await page.waitForTimeout(240);
+  await page.mouse.wheel(0, 320);
+  await waitForReportPage("o3-india-chapter");
 
   const screenshotDir = path.join(root, ".tmp");
   fs.mkdirSync(screenshotDir, { recursive: true });
@@ -133,7 +161,7 @@ try {
     consoleErrors.filter((message) => !message.startsWith("Failed to load resource:")),
     [],
   );
-  console.log("H1 O3 India chapter runtime, responsive bounds, and console checks passed.");
+  console.log("H1 O3 India fullscreen, keyboard/wheel paging, responsive bounds, and console checks passed.");
 } finally {
   await browser.close();
 }
