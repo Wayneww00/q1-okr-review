@@ -105,6 +105,16 @@ assert.match(
 );
 assert.match(
   theme,
+  /\.h1-okr-fixed-stage-edge--left\s*\{[\s\S]*?mask-image:\s*linear-gradient\(90deg,\s*transparent 0,\s*#000 112px\);[\s\S]*?\.h1-okr-fixed-stage-edge--right\s*\{[\s\S]*?mask-image:\s*linear-gradient\(90deg,\s*#000 calc\(100% - 112px\),\s*transparent 100%\);/,
+  "the original overscan layers must feather into the responsive side fills without a vertical seam",
+);
+assert.match(
+  theme,
+  /\.h1-okr-fixed-trophy-stage::before,[\s\S]*?\.h1-okr-fixed-trophy-stage::after\s*\{[\s\S]*?width:\s*max\(0px,\s*calc\(\(100vw - 177\.7777778vh\) \/ 2 \+ 4px\)\);[\s\S]*?background-size:\s*1px 100%;[\s\S]*?\.h1-okr-fixed-trophy-stage::before\s*\{[\s\S]*?p68-trophy-edge-left\.png[\s\S]*?\.h1-okr-fixed-trophy-stage::after\s*\{[\s\S]*?p68-trophy-edge-right\.png/,
+  "ultra-wide side gutters must dynamically continue the exact trophy boundary pixels",
+);
+assert.match(
+  theme,
   /\.h1-okr-fixed-stage-background\s*\{[\s\S]*?-webkit-mask-image:\s*linear-gradient\([\s\S]*?transparent 0,[\s\S]*?#000 48px,[\s\S]*?#000 calc\(100% - 48px\),[\s\S]*?transparent 100%[\s\S]*?mask-image:\s*linear-gradient\(/,
   "the original Figma canvas must feather into the edge fills instead of exposing a vertical boundary",
 );

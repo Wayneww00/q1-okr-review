@@ -1813,6 +1813,34 @@
   background: #000;
 }
 
+/* On ultra-wide displays the 16:9 stage scales by viewport height, leaving
+   side gutters wider than the fixed 180px artwork overscan. Repeat the exact
+   boundary pixels across only those gutters so the gold left edge and black
+   right edge continue naturally without stretching the trophy composition. */
+.h1-okr-fixed-trophy-stage::before,
+.h1-okr-fixed-trophy-stage::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  width: max(0px, calc((100vw - 177.7777778vh) / 2 + 4px));
+  pointer-events: none;
+  background-repeat: repeat-x;
+  background-position: 50% 50%;
+  background-size: 1px 100%;
+}
+
+.h1-okr-fixed-trophy-stage::before {
+  left: 0;
+  background-image: url("assets/figma-untitled/p68-trophy-edge-left.png");
+}
+
+.h1-okr-fixed-trophy-stage::after {
+  right: 0;
+  background-image: url("assets/figma-untitled/p68-trophy-edge-right.png");
+}
+
 .h1-okr-fixed-stage-canvas {
   --h1-okr-scale: .5;
   position: absolute;
@@ -1849,6 +1877,20 @@
       transparent 86%,
       rgba(0, 0, 0, .48) 100%
     );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 112px,
+    #000 calc(100% - 112px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 112px,
+    #000 calc(100% - 112px),
+    transparent 100%
+  );
 }
 
 .h1-okr-fixed-stage-ambient {
@@ -1866,6 +1908,20 @@
   filter: blur(22px) saturate(.92) brightness(.84);
   transform: scale(1.014);
   transform-origin: 50% 50%;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 112px,
+    #000 calc(100% - 112px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 112px,
+    #000 calc(100% - 112px),
+    transparent 100%
+  );
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -1886,10 +1942,14 @@
 
 .h1-okr-fixed-stage-edge--left {
   left: -180px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 112px);
+  mask-image: linear-gradient(90deg, transparent 0, #000 112px);
 }
 
 .h1-okr-fixed-stage-edge--right {
   right: -180px;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 112px), transparent 100%);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 112px), transparent 100%);
 }
 
 .h1-okr-fixed-stage-background {
@@ -1930,6 +1990,20 @@
   height: 1346px;
   pointer-events: none;
   background: rgba(0, 0, 0, .12);
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 112px,
+    #000 calc(100% - 112px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 112px,
+    #000 calc(100% - 112px),
+    transparent 100%
+  );
 }
 
 .h1-okr-figma-foreground-layer {
