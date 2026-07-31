@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-production.mjs",
-    "test": "node tests/vantage-content-model.test.mjs && node tests/vantage-browser-runtime.test.mjs && node tests/check-h1-safari-video-contract.mjs && node tests/check-h1-social-sov-vantage-exness.mjs && node tests/check-h1-social-sov-chronology.mjs && node tests/check-h1-followers-share-css-pies.mjs && node tests/check-h1-o3-retail-ppt-update.mjs && node tests/check-h1-production-regression-recovery.mjs && node tests/check-h1-supabase-editor-contract.mjs && node tests/check-h1-vietnam-share-label-clearance.mjs && node tests/build-artifact-contract.test.mjs"
+    "test": "node tests/vantage-content-model.test.mjs && node tests/vantage-browser-runtime.test.mjs && node tests/check-h1-safari-video-contract.mjs && node tests/check-h1-social-sov-vantage-exness.mjs && node tests/check-h1-social-sov-chronology.mjs && node tests/check-h1-followers-share-css-pies.mjs && node tests/check-h1-o3-retail-ppt-update.mjs && node tests/check-h1-production-regression-recovery.mjs && node tests/check-h1-supabase-editor-contract.mjs && node tests/check-h1-o2-ib-h2-scale-plan.mjs && node tests/check-h1-summary-table-type-scale.mjs && node tests/check-h1-retail-share-annotation-clearance.mjs && node tests/check-h1-vietnam-share-label-clearance.mjs && node tests/build-artifact-contract.test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.111.0"

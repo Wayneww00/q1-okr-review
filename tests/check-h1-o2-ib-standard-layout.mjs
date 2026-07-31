@@ -26,7 +26,7 @@ assert.ok(ibStyles, "the IB loop styles must remain isolated");
 
 assert.match(
   html,
-  /id:"o2-ib-loop",[\s\S]*?layout:"ib-loop",[\s\S]*?editorRevision:"ib-loop-standard-layout-v3"/,
+  /id:"o2-ib-loop",[\s\S]*?layout:"ib-loop",[\s\S]*?editorRevision:"ib-loop-h2-scale-plan-v1"/,
   "the standardized page must use a fresh editor namespace",
 );
 assert.doesNotMatch(
@@ -41,7 +41,7 @@ assert.match(
 );
 assert.match(
   ibStyles,
-  /\.h1-o2-ib-layout\s*\{[\s\S]*?grid-template-columns:\s*520px minmax\(0,\s*1fr\);[\s\S]*?grid-template-rows:\s*460px 190px;[\s\S]*?column-gap:\s*22px;[\s\S]*?row-gap:\s*22px;/,
+  /\.h1-o2-ib-layout\s*\{[\s\S]*?grid-template-columns:\s*520px minmax\(0,\s*1fr\);[\s\S]*?grid-template-rows:\s*410px 150px 98px;[\s\S]*?column-gap:\s*22px;[\s\S]*?row-gap:\s*23px;/,
   "the IB composition must fit the common 1612×704 O2 content grid",
 );
 const ibLayoutRule = ibStyles.match(/\.h1-o2-ib-layout\s*\{([\s\S]*?)\}/)?.[1] || "";

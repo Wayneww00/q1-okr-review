@@ -39,16 +39,16 @@ try {
       const header = root.querySelector(".h1-o2-page-header");
       const layout = root.querySelector(".h1-o2-ib-layout");
       const kpis = root.querySelector(".h1-o2-ib-kpis");
+      const plan = root.querySelector(".h1-o2-h2-plan");
       const pageNumber = root.querySelector(".h1-o2-page-number");
-      const lastCard = [...root.querySelectorAll(".h1-o2-ib-kpis .h1-o2-metric")].at(-1);
       const artboardRect = artboard.getBoundingClientRect();
       const pageNumberRect = pageNumber.getBoundingClientRect();
-      const lastCardRect = lastCard.getBoundingClientRect();
-      const pageNumberOverlapsLastCard = !(
-        pageNumberRect.right < lastCardRect.left ||
-        pageNumberRect.left > lastCardRect.right ||
-        pageNumberRect.bottom < lastCardRect.top ||
-        pageNumberRect.top > lastCardRect.bottom
+      const planRect = plan.getBoundingClientRect();
+      const pageNumberOverlapsPlan = !(
+        pageNumberRect.right < planRect.left ||
+        pageNumberRect.left > planRect.right ||
+        pageNumberRect.bottom < planRect.top ||
+        pageNumberRect.top > planRect.bottom
       );
       const textIds = [...root.querySelectorAll("[data-vantage-text-id]")].map(
         (node) => node.dataset.vantageTextId,
@@ -61,14 +61,16 @@ try {
         layoutOffset: [layout.offsetLeft, layout.offsetTop, layout.offsetWidth, layout.offsetHeight],
         layoutOverflow: [layout.scrollWidth - layout.clientWidth, layout.scrollHeight - layout.clientHeight],
         kpiOverflow: [kpis.scrollWidth - kpis.clientWidth, kpis.scrollHeight - kpis.clientHeight],
-        pageNumberOverlapsLastCard,
+        planOffset: [plan.offsetLeft, plan.offsetTop, plan.offsetWidth, plan.offsetHeight],
+        planOverflow: [plan.scrollWidth - plan.clientWidth, plan.scrollHeight - plan.clientHeight],
+        pageNumberOverlapsPlan,
         pageNumberBottomInset: Number.parseFloat(getComputedStyle(pageNumber).bottom),
         contentInsideArtboard:
-          lastCardRect.bottom <= artboardRect.bottom + 0.5 &&
-          lastCardRect.right <= artboardRect.right + 0.5,
+          planRect.bottom <= artboardRect.bottom + 0.5 &&
+          planRect.right <= artboardRect.right + 0.5,
         allKeysVersioned:
-          textIds.length === 27 &&
-          textIds.every((id) => id.startsWith("o2:o2-ib-loop@ib-loop-standard-layout-v3:")),
+          textIds.length === 31 &&
+          textIds.every((id) => id.startsWith("o2:o2-ib-loop@ib-loop-h2-scale-plan-v1:")),
       };
     });
 
@@ -78,10 +80,12 @@ try {
     assert.deepEqual(state.layoutOffset, [154, 244, 1612, 704]);
     assert.deepEqual(state.layoutOverflow, [0, 0], `${viewport.width}: layout must not overflow`);
     assert.deepEqual(state.kpiOverflow, [0, 0], `${viewport.width}: KPI row must not overflow`);
-    assert.equal(state.pageNumberOverlapsLastCard, false, `${viewport.width}: page number must stay clear`);
+    assert.deepEqual(state.planOffset, [0, 606, 1612, 98]);
+    assert.deepEqual(state.planOverflow, [0, 0], `${viewport.width}: H2 plan must not overflow`);
+    assert.equal(state.pageNumberOverlapsPlan, false, `${viewport.width}: page number must stay clear`);
     assert.ok(state.pageNumberBottomInset >= 60, `${viewport.width}: keep the standard page-number inset`);
     assert.equal(state.contentInsideArtboard, true, `${viewport.width}: all content must remain inside`);
-    assert.equal(state.revision, "ib-loop-standard-layout-v3");
+    assert.equal(state.revision, "ib-loop-h2-scale-plan-v1");
     assert.equal(state.allKeysVersioned, true);
   }
 

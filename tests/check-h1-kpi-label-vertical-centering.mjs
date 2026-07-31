@@ -7,7 +7,8 @@ const immersive = fs.readFileSync(
   "previews/vantage-h1-immersive.html",
   "utf8",
 );
-const centeringRevision = "20260801-vietnam-share-labels-v1";
+const centeringRevision = "20260801-unified-visual-release-v1";
+const reportRevision = "20260801-unified-visual-release-v1";
 
 const imageRule = theme.match(
   /\.h1-figma-kpi\s*>\s*img\s*\{([^}]*)\}/,
@@ -74,7 +75,7 @@ assert.ok(
 );
 assert.ok(
   immersive.includes(
-    `../index.html?report=h1&embedded=1&v=${centeringRevision}`,
+    `../index.html?report=h1&embedded=1&v=${reportRevision}`,
   ),
   "the embedded report iframe must invalidate its previous layout document",
 );

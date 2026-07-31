@@ -185,10 +185,12 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-o2-ib-layout\s*\{[\s\S]*?grid-template-areas:\s*"proof loop"\s*"kpis kpis";[\s\S]*?grid-template-rows:\s*460px 190px;/,
-  "page 27 must use the standard O2 two-row composition without exceeding its content grid",
+  /\.h1-o2-ib-layout\s*\{[\s\S]*?grid-template-areas:\s*"proof loop"\s*"kpis kpis"\s*"plan plan";[\s\S]*?grid-template-rows:\s*410px 150px 98px;/,
+  "page 27 must fit proof, loop, KPIs, and the H2 plan inside the standard O2 content grid",
 );
-assert.doesNotMatch(ibLoopSource, /h1-o2-h2-plan/, "page 27 must remove the H2 scale-plan block");
-assert.doesNotMatch(ibLoopSource, /复制荷兰打法|在重点市场加码|扩大 EU IB 规模/, "page 27 must remove all H2 scale-plan copy");
+assert.match(ibLoopSource, /h1-o2-h2-plan/, "page 27 must include the H2 scale-plan block");
+for (const stage of ["复制荷兰打法", "在重点市场加码", "扩大 EU IB 规模"]) {
+  assert.ok(ibLoopSource.includes(stage), `page 27 must include H2 scale-plan stage: ${stage}`);
+}
 
 console.log("H1 O2 annotated pages 22–27 contract checks passed.");

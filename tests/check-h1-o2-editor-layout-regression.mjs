@@ -13,7 +13,8 @@ const immersive = fs.readFileSync(
   path.join(repoRoot, "previews/vantage-h1-immersive.html"),
   "utf8",
 );
-const expectedThemeVersion = "20260801-vietnam-share-labels-v1";
+const expectedThemeVersion = "20260801-unified-visual-release-v1";
+const expectedReportVersion = "20260801-unified-visual-release-v1";
 
 const regions = html.match(
   /function O2Regions\(\)\{([\s\S]*?)\n\}\n\nfunction O2Delivery\(\)/,
@@ -85,8 +86,8 @@ assert.match(
 
 assert.match(
   html,
-  /id:"o2-ib-loop",[\s\S]*?layout:"ib-loop",[\s\S]*?editorRevision:"ib-loop-standard-layout-v3"/,
-  "page 27 must use a dedicated editor revision so legacy text slots cannot overwrite the redesigned loop",
+  /id:"o2-ib-loop",[\s\S]*?layout:"ib-loop",[\s\S]*?editorRevision:"ib-loop-h2-scale-plan-v1"/,
+  "page 27 must use a dedicated editor revision so legacy text slots cannot overwrite the added scale plan",
 );
 
 assert.match(
@@ -118,8 +119,8 @@ const immersiveReportVersions = [
 ].map((match) => match[1]);
 assert.deepEqual(
   immersiveReportVersions,
-  [expectedThemeVersion],
-  "the immersive iframe must invalidate the embedded report with the same revision",
+  [expectedReportVersion],
+  "the immersive iframe must invalidate the embedded report for the H2 scale-plan revision",
 );
 
 console.log("O2 editor/layout regression contract passed.");
