@@ -13,6 +13,15 @@ const browser = await chromium.launch({ headless: true });
 
 try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+  const consoleErrors = [];
+  const missingResources = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") consoleErrors.push(message.text());
+  });
+  page.on("pageerror", (error) => consoleErrors.push(error.message));
+  page.on("response", (response) => {
+    if (response.status() === 404) missingResources.push(response.url());
+  });
   await page.goto(`${baseUrl}/previews/vantage-h1-immersive.html?audit=o3-india-chapter`, { waitUntil: "domcontentloaded" });
   await page.locator("#loginSubmit").click();
   const reportScene = page.locator('.scene[data-label="Full Report"]');
@@ -44,30 +53,74 @@ try {
   const state = await indiaPage.evaluate((node) => {
     const artboard = node.querySelector(".h1-o3-artboard").getBoundingClientRect();
     const image = node.querySelector(".h1-o3-india-background");
-    const copy = node.querySelector(".h1-o3-india-copy").getBoundingClientRect();
+    const wait = node.querySelector(".h1-o3-india-wait").getBoundingClientRect();
+    const imageBounds = image.getBoundingClientRect();
+    const imageStyle = getComputedStyle(image);
     return {
       pageTop: node.getBoundingClientRect().top,
       overflowX: node.scrollWidth - node.clientWidth,
       overflowY: node.scrollHeight - node.clientHeight,
       artboard: { left: artboard.left, top: artboard.top, right: artboard.right, bottom: artboard.bottom },
-      copy: { left: copy.left, top: copy.top, right: copy.right, bottom: copy.bottom },
+      wait: { left: wait.left, top: wait.top, right: wait.right, bottom: wait.bottom },
+      imageBounds: { left: imageBounds.left, top: imageBounds.top, right: imageBounds.right, bottom: imageBounds.bottom },
+      objectFit: imageStyle.objectFit,
       image: { naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight },
       text: node.innerText.replace(/\s+/g, " ").trim(),
     };
   });
   assert.ok(Math.abs(state.pageTop) <= 2);
   assert.ok(state.overflowX <= 1 && state.overflowY <= 1);
-  assert.ok(state.image.naturalWidth >= 1600 && state.image.naturalHeight >= 900);
-  assert.ok(state.copy.left >= state.artboard.left + 900);
-  assert.ok(state.copy.right <= state.artboard.right + 1);
-  assert.ok(state.copy.top >= state.artboard.top);
-  assert.ok(state.copy.bottom <= state.artboard.bottom + 1);
-  assert.match(state.text, /印度 2026年H2 SSS级项目 18 \/ 18/);
+  assert.deepEqual(state.image, { naturalWidth: 2280, naturalHeight: 1346 });
+  assert.equal(state.objectFit, "cover");
+  assert.ok(Math.abs(state.imageBounds.left - state.artboard.left) <= 1);
+  assert.ok(Math.abs(state.imageBounds.top - state.artboard.top) <= 1);
+  assert.ok(Math.abs(state.imageBounds.right - state.artboard.right) <= 1);
+  assert.ok(Math.abs(state.imageBounds.bottom - state.artboard.bottom) <= 1);
+  assert.ok(state.wait.left >= state.artboard.left + 900);
+  assert.ok(state.wait.right <= state.artboard.right + 1);
+  assert.ok(state.wait.top >= state.artboard.top + 700);
+  assert.ok(state.wait.bottom <= state.artboard.bottom + 1);
+  assert.match(state.text, /45天的等待 18 \/ 18/);
 
   const screenshotDir = path.join(root, ".tmp");
   fs.mkdirSync(screenshotDir, { recursive: true });
   await indiaPage.locator(".h1-o3-artboard").screenshot({ path: path.join(screenshotDir, "o3-india-chapter-final.png") });
-  console.log("H1 O3 India chapter runtime and visual bounds passed.");
+
+  for (const viewport of [
+    { width: 1366, height: 768 },
+    { width: 1440, height: 900 },
+    { width: 2560, height: 1440 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const responsive = await indiaPage.evaluate((node) => {
+      const artboard = node.querySelector(".h1-o3-artboard").getBoundingClientRect();
+      const image = node.querySelector(".h1-o3-india-background").getBoundingClientRect();
+      const wait = node.querySelector(".h1-o3-india-wait").getBoundingClientRect();
+      return {
+        artboard: { left: artboard.left, top: artboard.top, right: artboard.right, bottom: artboard.bottom },
+        image: { left: image.left, top: image.top, right: image.right, bottom: image.bottom },
+        wait: { left: wait.left, top: wait.top, right: wait.right, bottom: wait.bottom },
+      };
+    });
+    assert.ok(Math.abs(responsive.image.left - responsive.artboard.left) <= 1);
+    assert.ok(Math.abs(responsive.image.top - responsive.artboard.top) <= 1);
+    assert.ok(Math.abs(responsive.image.right - responsive.artboard.right) <= 1);
+    assert.ok(Math.abs(responsive.image.bottom - responsive.artboard.bottom) <= 1);
+    assert.ok(responsive.wait.left >= responsive.artboard.left);
+    assert.ok(responsive.wait.right <= responsive.artboard.right + 1);
+    assert.ok(responsive.wait.top >= responsive.artboard.top);
+    assert.ok(responsive.wait.bottom <= responsive.artboard.bottom + 1);
+    await indiaPage.locator(".h1-o3-artboard").screenshot({
+      path: path.join(screenshotDir, `o3-india-${viewport.width}x${viewport.height}.png`),
+    });
+  }
+
+  assert.deepEqual(missingResources.filter((url) => /india/i.test(url)), []);
+  assert.deepEqual(
+    consoleErrors.filter((message) => !message.startsWith("Failed to load resource:")),
+    [],
+  );
+  console.log("H1 O3 India chapter runtime, responsive bounds, and console checks passed.");
 } finally {
   await browser.close();
 }
