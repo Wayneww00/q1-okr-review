@@ -1868,8 +1868,8 @@ function H1MibAttributionChart({data}) {
             <p>{data.leftInsight}</p>
             <strong>{data.leftImpact}</strong>
           </div>
-          <h3>Q2 MIB 用户类型人数及其贡献ND占比</h3>
-          <svg className="h1-retail-growth-mib-svg" viewBox="0 0 620 390" role="img" aria-label="Q2 MIB 用户类型人数及其贡献ND占比">
+          <h3>2026-Q2 MIB 用户类型人数及其贡献ND占比</h3>
+          <svg className="h1-retail-growth-mib-svg" viewBox="0 0 620 390" role="img" aria-label="2026-Q2 MIB 用户类型人数及其贡献ND占比">
             <rect x="86" y="38" width="342" height="338" rx="9" className="h1-retail-growth-evidence-frame is-user-types"/>
             {data.mibUserAxisTicks.map((tick,index)=>{
               const y=leftPlot.bottom-(index/4)*leftHeight;
@@ -3530,6 +3530,7 @@ const OKR_FIGMA_PAGES=[
     id:'okr-awards',
     label:'奖项',
     src:'previews/assets/o1-complete/figma-untitled/awards-group-1940698522.svg',
+    imagePreview:false,
     imageSlots:[
       {id:'fortune-crypto',label:'Fortune Crypto Innovators 2026',src:'previews/assets/o1-complete/figma-lightbox/awards/fortune-crypto-innovators.png',unit:'px',left:826,top:400,width:164,height:121},
       {id:'global-forex',label:'Global Forex Awards',src:'previews/assets/o1-complete/figma-lightbox/awards/global-forex-awards.png',unit:'px',left:826,top:571,width:164,height:126},
@@ -3908,6 +3909,7 @@ function OkrExternalLinks({page}){
 }
 
 function OkrImageHotspots({page,onPreview}){
+  if(page.imagePreview===false)return null;
   return page.imageSlots?.map((slot)=>{
     const unit=slot.unit || '%';
     const coordinate=(value)=>`${value}${unit}`;

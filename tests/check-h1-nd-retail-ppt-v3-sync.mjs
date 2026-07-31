@@ -96,6 +96,12 @@ for (const component of [
   assert.ok(app.includes(`function ${component}`), `${component} must exist`);
 }
 
+assert.match(
+  app,
+  /<h3>2026-Q2 MIB 用户类型人数及其贡献ND占比<\/h3>[\s\S]*?aria-label="2026-Q2 MIB 用户类型人数及其贡献ND占比"/,
+  "page 20 must show the full 2026-Q2 period on the highlighted MIB chart label",
+);
+
 for (const selector of [
   ".h1-retail-growth-chart-notes",
   ".h1-retail-growth-factor-panel",

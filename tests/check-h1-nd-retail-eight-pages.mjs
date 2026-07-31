@@ -221,14 +221,23 @@ assert.doesNotMatch(
   "the editor must not retain a duplicate imported-page exclusion",
 );
 assert.match(shell, /'Performance Data','经营数据','20 MODULES'/);
-const shellCacheKeys = [
+const shellThemeCacheKeys = [
   ...shell.matchAll(
-    /(?:h1-figma-racing-theme\.css\?v=|index\.html\?report=h1&embedded=1&v=)([^'"\s]+)/g,
+    /h1-figma-racing-theme\.css\?v=([^'"\s]+)/g,
   ),
 ].map((match) => match[1]);
-assert.ok(
-  shellCacheKeys.length >= 3 && new Set(shellCacheKeys).size === 1,
-  "the preview shell must use one consistent cache key for its theme and report frame",
+const shellReportCacheKeys = [
+  ...shell.matchAll(/index\.html\?report=h1&embedded=1&v=([^'"\s]+)/g),
+].map((match) => match[1]);
+assert.deepEqual(
+  new Set(shellThemeCacheKeys),
+  new Set(["20260801-unified-visual-release-v1"]),
+  "the preview shell must retain the approved presentation theme revision",
+);
+assert.deepEqual(
+  shellReportCacheKeys,
+  ["20260801-awards-q2-label-v1"],
+  "the preview shell must independently invalidate the updated report frame",
 );
 
 for (const selector of [

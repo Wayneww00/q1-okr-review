@@ -8,7 +8,7 @@ const root = path.resolve(here, "..");
 const report = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const shell = fs.readFileSync(path.join(root, "previews", "vantage-h1-immersive.html"), "utf8");
 const presentationRevision = "20260801-unified-visual-release-v1";
-const reportRevision = "20260801-unified-visual-release-v1";
+const reportRevision = "20260801-awards-q2-label-v1";
 
 const dashboardsStart = report.indexOf("const H1_DASHBOARDS = [");
 const dashboardsEnd = report.indexOf("const REPORT_MODE", dashboardsStart);

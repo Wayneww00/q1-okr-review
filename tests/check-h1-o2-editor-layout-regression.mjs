@@ -14,7 +14,7 @@ const immersive = fs.readFileSync(
   "utf8",
 );
 const expectedThemeVersion = "20260801-unified-visual-release-v1";
-const expectedReportVersion = "20260801-unified-visual-release-v1";
+const expectedReportVersion = "20260801-awards-q2-label-v1";
 
 const regions = html.match(
   /function O2Regions\(\)\{([\s\S]*?)\n\}\n\nfunction O2Delivery\(\)/,
