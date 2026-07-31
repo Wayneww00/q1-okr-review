@@ -105,9 +105,12 @@ try {
   // Model one fast upward trackpad gesture: the leading impulse enters the AI
   // scene and the smaller values are inertia from that same physical gesture.
   await page.mouse.move(960, 540);
-  for (const deltaY of [-1000, -260, -160, -100, -60, -30]) {
+  const entryGestureDeltas = [-1000, -260, -160, -100, -60, -30];
+  for (const [index, deltaY] of entryGestureDeltas.entries()) {
     await page.mouse.wheel(0, deltaY);
-    await page.waitForTimeout(90);
+    if (index < entryGestureDeltas.length - 1) {
+      await page.waitForTimeout(90);
+    }
   }
   await page.waitForFunction(
     () =>
@@ -126,9 +129,9 @@ try {
     `one continuous wheel gesture must stop on the newly entered AI scene; got top ${aiSceneTop}`,
   );
 
-  // After the first gesture has gone idle, a deliberate second gesture in the
-  // same direction must not be mistaken for more entry momentum.
-  await page.waitForTimeout(380);
+  // A deliberate second gesture after 250 ms of silence must not be mistaken
+  // for more inertia from the entry gesture.
+  await page.waitForTimeout(250);
   await page.mouse.wheel(0, -320);
   await page.waitForFunction(
     () =>
@@ -160,6 +163,40 @@ try {
       Math.abs(
         document
           .querySelector('section[data-label="Closing Film"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+
+  // A delayed, low-energy tail must remain absorbed, while a later strong
+  // impulse after the shorter fresh-intent gap must count as a new gesture.
+  await page.mouse.wheel(0, -1000);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForTimeout(220);
+  await page.mouse.wheel(0, -24);
+  await page.waitForTimeout(80);
+  assert.ok(
+    await aiScene.evaluate(
+      (element) => Math.abs(element.getBoundingClientRect().top) < 2,
+    ),
+    "a delayed small inertia tail must remain on the newly entered AI scene",
+  );
+  await page.waitForTimeout(140);
+  await page.mouse.wheel(0, -320);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
           .getBoundingClientRect().top,
       ) < 2,
   );
@@ -254,6 +291,54 @@ try {
       (element) => Math.abs(element.getBoundingClientRect().top) < 2,
     ),
     "the inertial tail from leaving AI must not page backward inside Full Report",
+  );
+
+  // If a fresh gesture starts while the AI-to-report entry gate is still
+  // active, its own tail must remain attached to that gesture. It may move the
+  // report back one page, but it must not queue a second report-page movement.
+  await aiScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.mouse.wheel(0, -1000);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForTimeout(250);
+  await page.mouse.wheel(0, -320);
+  await page.waitForTimeout(90);
+  await page.mouse.wheel(0, -60);
+  await page.waitForTimeout(2200);
+  const reportIndexAfterFreshGesture = await reportFrame
+    .locator("[data-report-page]")
+    .evaluateAll((pages) => {
+      let nearestIndex = 0;
+      let nearestDistance = Infinity;
+      pages.forEach((page, index) => {
+        const distance = Math.abs(page.getBoundingClientRect().top);
+        if (distance < nearestDistance) {
+          nearestIndex = index;
+          nearestDistance = distance;
+        }
+      });
+      return { nearestIndex, total: pages.length };
+    });
+  assert.equal(
+    reportIndexAfterFreshGesture.nearestIndex,
+    reportIndexAfterFreshGesture.total - 2,
+    "one fresh wheel gesture and its tail must move Full Report by exactly one page",
   );
 
   await aiScene.evaluate((element) =>

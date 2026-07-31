@@ -1250,6 +1250,8 @@
     const videos = [...document.querySelectorAll('video')];
     const aiProductsScene = scenes.find(scene => scene.dataset.label === 'AI Data Products');
     const aiProductsFrame = document.getElementById('aiProductsFrame');
+    const OUTER_WHEEL_FRESH_INTENT_GAP_MS = 180;
+    const OUTER_WHEEL_FRESH_INTENT_MIN_DELTA = 96;
     const OUTER_WHEEL_GESTURE_IDLE_MS = 320;
     const OUTER_WHEEL_TRANSITION_TIMEOUT_MS = 1400;
     let aiProductsNavigationRetryTimer = 0;
@@ -1258,6 +1260,9 @@
     let outerWheelTransitionStartedAt = 0;
     let outerWheelLastEventAt = 0;
     let outerWheelReleaseTimer = 0;
+    let routeFreshOuterWheelIntent = () => {};
+    let routeAiProductsWheelIntent = () => {};
+    let routeReportWheelIntent = () => false;
     let resetAiProductsNavigationIntent = () => {};
     let activeIndex = 0;
     let soundOn = true;
@@ -1338,9 +1343,22 @@
 
     const absorbOuterWheelTransition = event => {
       if (!outerWheelTransitionTarget) return false;
+      const now = window.performance.now();
+      const eventGap = now - outerWheelLastEventAt;
+      const isVerticalWheel = !event.shiftKey
+        && Math.abs(event.deltaY) > Math.abs(event.deltaX);
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const isFreshIntent = isVerticalWheel
+        && Math.abs(event.deltaY) >= OUTER_WHEEL_FRESH_INTENT_MIN_DELTA
+        && eventGap >= OUTER_WHEEL_FRESH_INTENT_GAP_MS;
       event.preventDefault();
       event.stopImmediatePropagation();
-      outerWheelLastEventAt = window.performance.now();
+      if (isFreshIntent) {
+        clearOuterWheelTransition();
+        routeFreshOuterWheelIntent(direction, event.deltaY);
+        return true;
+      }
+      outerWheelLastEventAt = now;
       scheduleOuterWheelRelease();
       return true;
     };
@@ -1850,6 +1868,31 @@
       window.requestAnimationFrame(() => moveAfterSceneActivation(4));
     };
 
+    routeFreshOuterWheelIntent = (direction, deltaY) => {
+      const visibleSceneIndex = sceneIndexNearestViewport();
+      const visibleScene = scenes[visibleSceneIndex];
+      if (visibleScene === aiProductsScene) {
+        routeAiProductsWheelIntent(deltaY);
+        return;
+      }
+      if (visibleScene === reportScene) {
+        beginOuterWheelTransition(reportScene);
+        if (!routeReportWheelIntent(deltaY)) {
+          reportFrame.contentWindow?.postMessage({
+            type:'vantage-report-nav',
+            direction,
+            source:'wheel',
+          }, location.origin);
+        }
+        return;
+      }
+      const nextSceneIndex = Math.max(
+        0,
+        Math.min(scenes.length - 1, visibleSceneIndex + direction),
+      );
+      scrollToScene(scenes[nextSceneIndex], 'wheel');
+    };
+
     function prepareAiProductsNavigation() {
       const doc = aiProductsFrame.contentDocument;
       if (
@@ -1957,18 +2000,15 @@
         resetStaticRailGesture();
       };
 
-      doc.addEventListener('wheel', event => {
-        if (absorbOuterWheelTransition(event)) return;
-        if (isProductInteraction() || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
-        event.preventDefault();
-        event.stopPropagation();
+      routeAiProductsWheelIntent = deltaY => {
+        if (isProductInteraction()) return;
         if (!productsRailOverflows()) {
           wheelDelta = 0;
-          routeStaticRailWheel(event.deltaY);
+          routeStaticRailWheel(deltaY);
           return;
         }
         resetStaticRailGesture();
-        wheelDelta += event.deltaY;
+        wheelDelta += deltaY;
         if (Math.abs(wheelDelta) < AI_PRODUCTS_WHEEL_THRESHOLD) return;
         const direction = wheelDelta > 0 ? 1 : -1;
         const distance = wheelDelta;
@@ -1982,6 +2022,14 @@
           return;
         }
         armOuterDeckExit(direction);
+      };
+
+      doc.addEventListener('wheel', event => {
+        if (absorbOuterWheelTransition(event)) return;
+        if (isProductInteraction() || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        routeAiProductsWheelIntent(event.deltaY);
       }, {capture:true, passive:false});
 
       doc.addEventListener('keydown', event => {
@@ -2215,7 +2263,10 @@
           event.data?.type !== 'vantage-report-nav' ||
           (event.data.direction !== 1 && event.data.direction !== -1)
         ) return;
-        moveInsideReport(event.data.direction);
+        moveInsideReport(
+          event.data.direction,
+          event.data.source === 'wheel' ? 'wheel' : 'keyboard',
+        );
       });
       doc.addEventListener('keydown', event => {
         if (!['ArrowDown','PageDown',' ','ArrowUp','PageUp'].includes(event.key)) return;
@@ -2246,18 +2297,16 @@
       let reportWheelLastMagnitude = 0;
       let reportWheelLastDirection = 0;
       let reportWheelLastEventAt = 0;
-      doc.addEventListener('wheel', event => {
-        if (absorbOuterWheelTransition(event)) return;
+      routeReportWheelIntent = (deltaY, eventTime = 0) => {
         const scrollTop = reportWindow.scrollY;
         const firstReportPage = reportPages[0];
         const lastReportPage = reportPages[reportPages.length - 1];
         const reviewingReport = scrollTop >= reportPageTop(firstReportPage) - 2
           && scrollTop < reportPageTop(lastReportPage) + lastReportPage.offsetHeight - 2;
-        if (!reviewingReport) return;
-        event.preventDefault();
-        const now = event.timeStamp || reportWindow.performance.now();
-        const wheelDirection = event.deltaY > 0 ? 1 : -1;
-        const magnitude = Math.abs(event.deltaY);
+        if (!reviewingReport) return false;
+        const now = eventTime || reportWindow.performance.now();
+        const wheelDirection = deltaY > 0 ? 1 : -1;
+        const magnitude = Math.abs(deltaY);
         const eventGap = reportWheelLastEventAt ? now - reportWheelLastEventAt : Infinity;
         const isIdleRestart = reportWheelGestureConsumed
           && eventGap >= REPORT_WHEEL_IDLE_REARM_MS;
@@ -2282,25 +2331,31 @@
           reportWheelLastDirection = 0;
           reportWheelLastEventAt = 0;
         }, 180);
-        if (reportWheelGestureConsumed && !isFreshIntent) return;
+        if (reportWheelGestureConsumed && !isFreshIntent) return true;
         if (isFreshIntent) {
           reportWheelGestureConsumed = false;
           reportWheelDelta = 0;
         }
-        if (reportWheelDelta && Math.sign(reportWheelDelta) !== Math.sign(event.deltaY)) {
+        if (reportWheelDelta && Math.sign(reportWheelDelta) !== Math.sign(deltaY)) {
           reportWheelDelta = 0;
         }
-        reportWheelDelta += event.deltaY;
-        if (Math.abs(reportWheelDelta) < REPORT_WHEEL_THRESHOLD) return;
+        reportWheelDelta += deltaY;
+        if (Math.abs(reportWheelDelta) < REPORT_WHEEL_THRESHOLD) return true;
         const direction = reportWheelDelta > 0 ? 1 : -1;
         reportWheelDelta = 0;
         reportWheelGestureConsumed = true;
         reportWheelTriggeredAt = now;
         if (reportPaging) {
           queuedReportNavigations.push({direction, source:'wheel'});
-          return;
+          return true;
         }
         moveInsideReport(direction, 'wheel');
+        return true;
+      };
+      doc.addEventListener('wheel', event => {
+        if (absorbOuterWheelTransition(event)) return;
+        if (!routeReportWheelIntent(event.deltaY, event.timeStamp)) return;
+        event.preventDefault();
       }, {passive:false});
       publishReportState(nearestReportIndex());
     }

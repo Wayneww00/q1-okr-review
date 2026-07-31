@@ -2,12 +2,15 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { chromium } = require(
+const { chromium, webkit } = require(
   "/Users/julian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
 );
 
 const baseUrl = process.env.H1_AI_TEST_URL || "http://127.0.0.1:4180";
-const browser = await chromium.launch({ headless: true });
+const browserName = process.env.H1_AI_BROWSER || "chromium";
+const browserType = { chromium, webkit }[browserName];
+assert.ok(browserType, `unsupported H1 AI browser: ${browserName}`);
+const browser = await browserType.launch({ headless: true });
 
 try {
   const page = await browser.newPage({
@@ -23,6 +26,7 @@ try {
   });
 
   const aiScene = page.locator('section[data-label="AI Data Products"]');
+  const closingScene = page.locator('section[data-label="Closing Film"]');
   await aiScene.evaluate((element) => element.scrollIntoView());
   await page.waitForFunction(
     () =>
@@ -60,6 +64,58 @@ try {
     railMetrics.scrollWidth > railMetrics.clientWidth,
     "the products rail must overflow horizontally for this regression test",
   );
+
+  // A fresh outer gesture delivered while the AI entry lock is still active
+  // must reuse the complete AI router. On a narrow viewport, that means moving
+  // the horizontal products rail before leaving the AI scene.
+  await closingScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Closing Film"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await productsRail.evaluate((element) => {
+    element.style.scrollSnapType = "none";
+    element.scrollLeft = 24;
+  });
+  await page.mouse.move(557, 486);
+  await page.mouse.wheel(0, -1000);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  const railLeftBeforeFreshGesture = await productsRail.evaluate(
+    (element) => element.scrollLeft,
+  );
+  assert.ok(
+    railLeftBeforeFreshGesture
+      < railMetrics.scrollWidth - railMetrics.clientWidth - 2,
+    "the fresh-intent setup must leave room to advance the products rail",
+  );
+  await page.waitForTimeout(250);
+  await page.mouse.wheel(0, 320);
+  await page.waitForTimeout(600);
+  assert.ok(
+    await aiScene.evaluate(
+      (element) => Math.abs(element.getBoundingClientRect().top) < 2,
+    ),
+    "a fresh wheel gesture must stay in AI while the products rail can advance",
+  );
+  assert.ok(
+    (await productsRail.evaluate((element) => element.scrollLeft))
+      > railLeftBeforeFreshGesture,
+    "a fresh wheel gesture must advance the narrow products rail",
+  );
+
   await productsRail.evaluate((element) => {
     element.style.scrollSnapType = "none";
     element.scrollLeft = 0;
@@ -338,4 +394,6 @@ try {
   await browser.close();
 }
 
-console.log("H1 AI products wheel routing runtime contract passed.");
+console.log(
+  `H1 AI products wheel routing runtime contract passed in ${browserName}.`,
+);
