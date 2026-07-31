@@ -134,6 +134,20 @@ try {
   // A deliberate second gesture after 250 ms of silence must not be mistaken
   // for more inertia from the entry gesture.
   await page.waitForTimeout(250);
+  await page.evaluate(() => {
+    window.__outerWheelClassStates = [];
+    window.__outerWheelClassObserver?.disconnect();
+    const recordClasses = () => window.__outerWheelClassStates.push({
+      pointerLock: document.body.classList.contains("deck-wheel-pointer-lock"),
+      transitionGuard: document.body.classList.contains("deck-wheel-transitioning"),
+    });
+    window.__outerWheelClassObserver = new MutationObserver(recordClasses);
+    window.__outerWheelClassObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    recordClasses();
+  });
   await page.mouse.wheel(0, -320);
   await page.waitForFunction(
     () =>
@@ -143,21 +157,23 @@ try {
           .getBoundingClientRect().top,
       ) < 2,
   );
-  assert.equal(
-    await page.locator("body").evaluate((body) =>
-      body.classList.contains("deck-wheel-pointer-lock"),
-    ),
-    true,
-    "outer entry must briefly protect iframe hit testing",
-  );
   await page.waitForFunction(
     () => !document.body.classList.contains("deck-wheel-pointer-lock"),
   );
-  assert.equal(
-    await page.locator("body").evaluate((body) =>
-      body.classList.contains("deck-wheel-transitioning"),
+  const outerWheelClassStates = await page.evaluate(() => {
+    window.__outerWheelClassObserver?.disconnect();
+    return window.__outerWheelClassStates;
+  });
+  assert.ok(
+    outerWheelClassStates.some(
+      ({ pointerLock, transitionGuard }) => pointerLock && transitionGuard,
     ),
-    true,
+    "outer entry must briefly protect iframe hit testing",
+  );
+  assert.ok(
+    outerWheelClassStates.some(
+      ({ pointerLock, transitionGuard }) => !pointerLock && transitionGuard,
+    ),
     "iframe hit testing must recover before delayed wheel-tail protection ends",
   );
   await page.waitForFunction(
