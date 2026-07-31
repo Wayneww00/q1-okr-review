@@ -236,7 +236,7 @@ assert.deepEqual(
 );
 assert.deepEqual(
   shellReportCacheKeys,
-  ["20260801-awards-q2-label-v1"],
+  ["20260801-o1-static-images-v1"],
   "the preview shell must independently invalidate the updated report frame",
 );
 

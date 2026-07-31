@@ -8,7 +8,7 @@ const immersive = fs.readFileSync(
   "utf8",
 );
 const centeringRevision = "20260801-unified-visual-release-v1";
-const reportRevision = "20260801-awards-q2-label-v1";
+const reportRevision = "20260801-o1-static-images-v1";
 
 const imageRule = theme.match(
   /\.h1-figma-kpi\s*>\s*img\s*\{([^}]*)\}/,

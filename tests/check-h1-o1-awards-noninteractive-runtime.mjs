@@ -63,6 +63,8 @@ try {
   await o1.waitFor();
   const awardsPage = o1.locator('[data-page-id="okr-awards"]');
   await awardsPage.waitFor();
+  const auditPage = o1.locator('[data-page-id="okr-brand-experience-audit"]');
+  await auditPage.waitFor();
 
   assert.equal(
     await awardsPage.locator(".h1-okr-image-hotspot").count(),
@@ -83,12 +85,32 @@ try {
     0,
     "the awards page must not show a zoom-in cursor",
   );
-  assert.ok(
-    (await o1.locator(".h1-okr-image-hotspot").count()) > 0,
-    "other O1 image previews must remain available",
+  assert.equal(
+    await auditPage.locator(".h1-okr-image-hotspot").count(),
+    0,
+    "the brand audit collage must not have zoom-in hotspots",
+  );
+  assert.equal(
+    await auditPage.locator('button[aria-label^="放大查看："]').count(),
+    0,
+    "the brand audit collage must not expose image-preview buttons",
+  );
+  assert.equal(
+    await auditPage.evaluate((node) =>
+      [...node.querySelectorAll("*")].filter(
+        (element) => getComputedStyle(element).cursor === "zoom-in",
+      ).length,
+    ),
+    0,
+    "the brand audit page must not show a zoom-in cursor",
+  );
+  assert.equal(
+    await o1.locator(".h1-okr-image-hotspot").count(),
+    30,
+    "the other 30 intentional O1 image previews must remain available",
   );
 
-  console.log("H1 O1 awards noninteractive runtime check passed.");
+  console.log("H1 O1 static-image pages noninteractive runtime check passed.");
 } finally {
   await browser.close();
 }

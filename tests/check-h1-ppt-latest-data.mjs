@@ -58,7 +58,7 @@ assert.ok(!h1.includes('absoluteText:"$37.4M"'), "the superseded $37.4M profit v
 assert.ok(!h1.includes('value:"+68.4%"'), "the superseded +68.4% profit growth must be removed");
 
 assert.ok(
-  formal.includes('src="../index.html?report=h1&embedded=1&v=20260801-awards-q2-label-v1"'),
+  formal.includes('src="../index.html?report=h1&embedded=1&v=20260801-o1-static-images-v1"'),
   "the formal shell must cache-bust the embedded report so the latest PPT data is visible immediately",
 );
 

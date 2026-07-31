@@ -165,7 +165,7 @@ try {
     assert.equal(
       await o1.locator(".h1-okr-image-hotspot").count(),
       30,
-      "all 30 source image hotspots must render",
+      "the 30 intentional source image hotspots must render",
     );
     assert.equal(
       await o1.locator(".h1-okr-video-hotspot").count(),
@@ -220,19 +220,6 @@ try {
       }
       await imageDialog.waitFor({ state: "detached" });
     }
-
-    const auditPage = o1.locator(
-      '[data-page-id="okr-brand-experience-audit"]',
-    );
-    await auditPage.scrollIntoViewIfNeeded();
-    await auditPage.locator(".h1-okr-image-hotspot").first().click();
-    await imageDialog.waitFor({ state: "visible" });
-    assert.match(
-      (await imageDialog.locator("img").getAttribute("src")) || "",
-      /o1-complete\/figma-lightbox\/audit\/app-digital\.png$/,
-    );
-    await page.keyboard.press("Escape");
-    await imageDialog.waitFor({ state: "detached" });
 
     const tvcLibrary = o1.locator('[data-page-id="okr-tvc-library"]');
     await tvcLibrary.scrollIntoViewIfNeeded();
