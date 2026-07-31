@@ -1728,50 +1728,116 @@
 .h1-brand-combined-side {
   min-height: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1.44fr) minmax(0, .96fr);
+  grid-template-rows: minmax(0, 1.52fr) minmax(0, .88fr);
   gap: 14px;
 }
 
 .h1-figma-racing-report .h1-brand-combined-search {
-  padding: 18px 20px 12px !important;
+  padding: 14px 16px 11px !important;
+  overflow: hidden;
 }
 
-.h1-brand-combined-search .h1-editorial-chart-title {
-  min-height: 44px;
+.h1-brand-search-four-series {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto 22px auto minmax(0, 1fr) auto;
+  gap: 4px;
 }
 
-.h1-brand-combined-search .h1-editorial-chart-title span {
-  font-size: 17px;
+.h1-brand-search-chart-heading {
+  min-width: 0;
 }
 
-.h1-brand-combined-search .h1-editorial-chart-title > strong {
-  min-width: 112px;
-  padding: 7px 10px;
-  font-size: 22px !important;
-}
-
-.h1-brand-combined-search .h1-brand-search-trend {
-  height: 151px;
-  margin: -4px 0 0;
-}
-
-.h1-brand-combined-search .h1-brand-search-phase {
+.h1-brand-search-chart-heading h2 {
+  margin: 0;
+  color: #fff7f2;
   font-size: 15px;
+  font-weight: 760;
+  line-height: 1.22;
+  letter-spacing: -.01em;
+  text-shadow: 0 1px 2px rgba(0,0,0,.9);
 }
 
-.h1-brand-combined-search .h1-brand-search-trend text:not(.h1-brand-search-phase) {
-  font-size: 13px;
+.h1-brand-search-chart-heading p {
+  margin: 3px 0 0;
+  color: rgba(255,241,227,.55);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-.h1-brand-combined-search .h1-search-direction {
-  margin-top: -7px;
-  color: #fff;
-  font-size: 12px;
+.h1-brand-search-series-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px 14px;
+  min-width: 0;
+  color: rgba(255,241,227,.72);
+  font-size: 9.5px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.h1-brand-combined-search .h1-editorial-source-note {
-  margin-top: 6px;
-  font-size: 8.5px;
+.h1-brand-search-series-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.h1-brand-search-series-legend i {
+  width: 17px;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--h1-data-accent);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--h1-data-accent) 48%, transparent);
+}
+
+.h1-brand-search-series-legend .is-vantage i { background:var(--h1-data-accent); }
+.h1-brand-search-series-legend .is-exness i { background:#e2ad45; box-shadow:0 0 7px rgba(226,173,69,.38); }
+.h1-brand-search-series-legend .is-ic-markets i { background:var(--h1-data-ivory); box-shadow:none; }
+.h1-brand-search-series-legend .is-xm i { background:var(--h1-data-secondary); box-shadow:0 0 7px rgba(185,24,32,.42); }
+
+.h1-brand-search-chart-annotation {
+  padding: 5px 8px;
+  border-left: 3px solid var(--h1-data-accent);
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(143,22,32,.28), rgba(143,22,32,.04));
+  color: rgba(255,241,227,.84);
+  font-size: 9.5px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.h1-brand-search-chart-plot {
+  width: 100%;
+  min-height: 0;
+  overflow: visible;
+}
+
+.h1-brand-search-series-value {
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif;
+  font-size: 9.5px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.92);
+  stroke-width: 2.4px;
+  stroke-linejoin: round;
+}
+
+.h1-brand-search-chart-conclusion {
+  margin: 0;
+  padding: 7px 9px 7px 11px;
+  border: 1px solid rgba(255,91,17,.34);
+  border-left: 3px solid var(--h1-data-accent);
+  border-radius: 6px;
+  background: linear-gradient(100deg, rgba(81,7,12,.9), rgba(19,2,4,.72));
+  color: #eadfd9;
+  font-size: 10px;
+  font-weight: 620;
+  line-height: 1.38;
+  text-shadow: 0 1px 2px rgba(0,0,0,.9);
 }
 
 .h1-figma-racing-report .h1-brand-combined-reputation {

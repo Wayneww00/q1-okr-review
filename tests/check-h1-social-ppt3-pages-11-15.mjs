@@ -144,7 +144,7 @@ assert.match(page14, /layoutType:"followers_trend"/);
 for (const token of [
   "品牌整体数据 品牌SOV",
   "2025 H2 vs 2026 年 H1 月度表现及整体对比",
-  "2025 H2 → 2026 H1 同比 · Vantage · 数据源：Meltwater（声量 / 口碑）+ Google Trends（品牌搜索）",
+  "声量：Meltwater · 自然流量：Excel（Worldwide Organic Traffic，2026 H1）· 口碑：Meltwater",
   "声量 · Meltwater SoV",
   "Share of Voice by Mentions",
   "−30% 同比",
@@ -154,9 +154,9 @@ for (const token of [
   "约 37%，仅次于xm",
   "Exness 30.3%",
   "主因 2025 H2 有一波高声量、今年回归常态",
-  "声量竞争力强、需求与口碑向好",
-  "缩小与 Exness 的差距、冲击第一",
-  "H2核心：把已有的口碑和专业优势，扩大到更大的认知与声量"
+  "自 2 月起持续领先 IC Markets，但与 Exness 和 XM 仍有明显差距",
+  "扩大自然搜索覆盖并持续缩小竞品差距",
+  "H2核心：扩大自然搜索覆盖，把已有的口碑和专业优势转化为更大的认知与声量"
 ]) {
   assert.ok(page11.includes(token), `page 11 should preserve PPT token: ${token}`);
 }
@@ -167,13 +167,10 @@ assertOrderedTokens(page11, [
 assert.equal(Math.round((data11.voiceMetrics.points[0].value / data11.voiceMetrics.points[1].value - 1) * 100), -30, "page 11 -30% should reconcile with 25.7k vs 36.8k");
 
 for (const token of [
-  "品牌搜索 · Google Trends",
-  "+43% 同比",
-  "2025 H2 月均 9.1 → 2026 H1 13.0",
-  "2025 H2 · 月均 9.1",
-  "2026 H1 · 月均 13.0",
-  "主动品牌搜索 · Jul’25 → Jun’26 上行",
-  "数据源：Google Trends（0-100 相对指数，非绝对搜索量），全球，周度数据按月汇总。",
+  "2026 H1：Vantage、Exness、IC Markets 与 XM 月度 Organic Traffic",
+  "数据源：overview-trend-2026-07-31T15_27_38Z.xlsx｜Worldwide｜月度 Organic Traffic",
+  "Vantage 从 1 月 281,879 增长至 6 月 346,906；2 月起持续领先 IC Markets",
+  "关键结论：2026 H1，Vantage Organic Traffic 从 281,879 增长至 346,906（+23.1%）",
   "口碑关键词 · Meltwater",
   "transparent ecosystem",
   "reliable platform",
@@ -183,11 +180,19 @@ for (const token of [
 ]) {
   assert.ok(page11.includes(token), `combined page 11 should preserve PPT token: ${token}`);
 }
-for (const month of ["7月","8月","9月","10月","11月","12月","1月","2月","3月","4月","5月","6月"]) {
+for (const month of ["1月","2月","3月","4月","5月","6月"]) {
   assert.ok(page11.includes(`"${month}"`), `combined page 11 should preserve month label ${month}`);
 }
-assert.equal(Math.round((13.0 / 9.1 - 1) * 100), 43, "page 11 +43% should reconcile with the two displayed phase averages");
-assert.equal(data11.searchMetrics.months.length, 12, "page 11 should retain all 12 month labels");
+assert.deepEqual(data11.searchMetrics.series.map(series=>series.values), [
+  [281879,280432,284742,377242,326603,346906],
+  [968962,965658,930173,970707,673913,762862],
+  [286463,274734,258355,277135,269437,290741],
+  [955636,942214,884564,975333,1013629,1105283],
+]);
+assert.deepEqual(data11.searchMetrics.axisDomain, [0,1200000]);
+assert.deepEqual(data11.searchMetrics.axisTicks, [0,200000,400000,600000,800000,1000000,1200000]);
+assert.equal(data11.searchMetrics.months.length, 6, "page 11 should show the six 2026 H1 month labels");
+assert.doesNotMatch(page11, /Google Trends|月均搜索热度|1 月 21\.6|6 月 3\.6/);
 
 for (const token of [
   "2025 H2 vs 2026 年 H1 月度环比增长率对比趋势",

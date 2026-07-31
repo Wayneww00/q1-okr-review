@@ -822,11 +822,11 @@ const H1_DASHBOARDS = [
     chart:{title:"SEO 日均点击",leftAxisLabel:"日均点击",rightAxisLabel:"",barLegend:"日均点击",lineLegend:"",leftDomain:[0,15000],leftTicks:[0,5000,10000,15000],format:"number"}
   },
   {
-    id:11, layoutType:"brand_voice_search_combined", moduleTitle:"品牌整体数据 品牌SOV",
+    id:11, layoutType:"brand_voice_search_combined", editorRevision:"organic-traffic-four-series-v1", moduleTitle:"品牌整体数据 品牌SOV",
     title:"品牌整体数据 品牌SOV", subtitle:"2025 H2 vs 2026 年 H1 月度表现及整体对比",
-    sourceLine:"2025 H2 → 2026 H1 同比 · Vantage · 数据源：Meltwater（声量 / 口碑）+ Google Trends（品牌搜索）",
-    description:"竞品声量对比中 Vantage 位列第 2（29.3%，仅次于 Exness 30.3%）；自身同比从 2025 H2 高点回落 30%（36.8k → 25.7k）——主因 2025 H2 有一波高声量、今年回归常态。同期主动品牌搜索 +43%、口碑正面且定位专业可信。整体：声量竞争力强、需求与口碑向好。H2 核心：缩小与 Exness 的差距、冲击第一。",
-    takeaway:"H2核心：把已有的口碑和专业优势，扩大到更大的认知与声量",
+    sourceLine:"声量：Meltwater · 自然流量：Excel（Worldwide Organic Traffic，2026 H1）· 口碑：Meltwater",
+    description:"竞品声量对比中 Vantage 位列第 2（29.3%，仅次于 Exness 30.3%）；自身同比从 2025 H2 高点回落 30%（36.8k → 25.7k）——主因 2025 H2 有一波高声量、今年回归常态。自然搜索方面，2026 H1 Vantage Organic Traffic 由 281,879 增至 346,906（+23.1%），自 2 月起持续领先 IC Markets，但与 Exness 和 XM 仍有明显差距；口碑正面且定位专业可信。H2 核心：扩大自然搜索覆盖并持续缩小竞品差距。",
+    takeaway:"H2核心：扩大自然搜索覆盖，把已有的口碑和专业优势转化为更大的认知与声量",
     voiceMetrics:{
       title:"声量 · Meltwater SoV", figureTitle:"Share of Voice by Mentions", change:"−30% 同比",
       comparison:"2025 H2 36.8k → 2026 H1 25.7k",
@@ -839,12 +839,19 @@ const H1_DASHBOARDS = [
       ]
     },
     searchMetrics:{
-      title:"品牌搜索 · Google Trends", change:"+43% 同比",
-      comparison:"2025 H2 月均 9.1 → 2026 H1 13.0",
-      previousPhase:"2025 H2 · 月均 9.1", currentPhase:"2026 H1 · 月均 13.0",
-      direction:"主动品牌搜索 · Jul’25 → Jun’26 上行",
-      note:"数据源：Google Trends（0-100 相对指数，非绝对搜索量），全球，周度数据按月汇总。",
-      months:["7月","8月","9月","10月","11月","12月","1月","2月","3月","4月","5月","6月"]
+      title:"2026 H1：Vantage、Exness、IC Markets 与 XM 月度 Organic Traffic",
+      subtitle:"数据源：overview-trend-2026-07-31T15_27_38Z.xlsx｜Worldwide｜月度 Organic Traffic",
+      annotation:"Vantage 从 1 月 281,879 增长至 6 月 346,906；2 月起持续领先 IC Markets",
+      months:["1月","2月","3月","4月","5月","6月"],
+      axisDomain:[0,1200000],
+      axisTicks:[0,200000,400000,600000,800000,1000000,1200000],
+      series:[
+        {key:"vantage",label:"Vantage",values:[281879,280432,284742,377242,326603,346906]},
+        {key:"exness",label:"Exness",values:[968962,965658,930173,970707,673913,762862]},
+        {key:"ic-markets",label:"IC Markets",values:[286463,274734,258355,277135,269437,290741]},
+        {key:"xm",label:"XM",values:[955636,942214,884564,975333,1013629,1105283]}
+      ],
+      conclusion:"关键结论：2026 H1，Vantage Organic Traffic 从 281,879 增长至 346,906（+23.1%），2 月起持续领先 IC Markets；但与 Exness、XM 仍有显著差距，后续需继续扩大自然搜索流量。"
     },
     reputation:{
       title:"口碑关键词 · Meltwater",
@@ -1359,6 +1366,84 @@ function H1SearchTrendGlyph({data}) {
   );
 }
 
+const H1_BRAND_SEARCH_SERIES_TONES = {
+  vantage:"#ff5b11",
+  exness:"#e2ad45",
+  "ic-markets":"#fff1e3",
+  xm:"#b91820"
+};
+
+function formatH1OrganicTrafficAxis(value) {
+  if (value >= 1000000) return `${(value/1000000).toFixed(1)}M`;
+  if (value >= 1000) return `${Math.round(value/1000)}K`;
+  return String(value);
+}
+
+function formatH1OrganicTrafficValue(value) {
+  if (value >= 1000000) return `${(value/1000000).toFixed(2)}M`;
+  if (value >= 1000) return `${(value/1000).toFixed(1)}K`;
+  return String(value);
+}
+
+function H1BrandSearchValueLabel({x,y,value,seriesKey}) {
+  if (value === undefined || value === null) return null;
+  const labelOffset = seriesKey === "ic-markets" || seriesKey === "xm" ? 14 : -9;
+  return (
+    <text
+      x={x}
+      y={y+labelOffset}
+      fill={H1_BRAND_SEARCH_SERIES_TONES[seriesKey]}
+      className={`h1-brand-search-series-value is-${seriesKey}`}
+      textAnchor="middle"
+    >{formatH1OrganicTrafficValue(Number(value))}</text>
+  );
+}
+
+function H1BrandSearchFourSeriesChart({data}) {
+  const chartData = data.months.map((month,index)=>{
+    const row = {month};
+    data.series.forEach(series=>{ row[series.key] = series.values[index]; });
+    return row;
+  });
+  return (
+    <div className="h1-brand-search-four-series">
+      <header className="h1-brand-search-chart-heading">
+        <h2>{data.title}</h2>
+        <p>{data.subtitle}</p>
+      </header>
+      <div className="h1-brand-search-series-legend" aria-label="自然流量趋势图例">
+        {data.series.map(series=><span key={series.key} className={`is-${series.key}`}><i></i>{series.label}</span>)}
+      </div>
+      <div className="h1-brand-search-chart-annotation">{data.annotation}</div>
+      <div className="h1-brand-search-chart-plot">
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={chartData} margin={{top:14,right:12,left:-14,bottom:2}}>
+            <CartesianGrid stroke="rgba(255,255,255,.13)" vertical={false} strokeDasharray="3 5"/>
+            <XAxis dataKey="month" axisLine={{stroke:"rgba(255,255,255,.32)"}} tickLine={false} tick={{fill:"rgba(255,255,255,.7)",fontSize:9.5,fontWeight:650}} dy={5}/>
+            <YAxis domain={data.axisDomain} ticks={data.axisTicks} axisLine={false} tickLine={false} width={42} tick={{fill:"rgba(255,255,255,.48)",fontSize:8.5}} tickFormatter={formatH1OrganicTrafficAxis}/>
+            {data.series.map(series=>(
+              <Line
+                key={series.key}
+                type="linear"
+                dataKey={series.key}
+                stroke={H1_BRAND_SEARCH_SERIES_TONES[series.key]}
+                strokeWidth={series.key === "vantage" ? 3 : 2.35}
+                strokeDasharray={series.key === "ic-markets" ? "5 4" : undefined}
+                dot={{r:3.2,fill:H1_BRAND_SEARCH_SERIES_TONES[series.key],stroke:"#120203",strokeWidth:1.3}}
+                activeDot={{r:4.2}}
+                isAnimationActive={false}
+              >
+                <LabelList dataKey={series.key} content={(props)=><H1BrandSearchValueLabel {...props} seriesKey={series.key}/>}/>
+              </Line>
+            ))}
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="h1-brand-search-chart-conclusion">{data.conclusion}</p>
+    </div>
+  );
+}
+
 function H1BrandVoiceChart({data}) {
   const chartData = data.voiceMetrics.points;
   return (
@@ -1507,13 +1592,7 @@ function H1BrandVoiceSearchCombinedChart({data}) {
       </section>
       <div className="h1-brand-combined-side">
         <section className="h1-editorial-chart-surface h1-brand-combined-search">
-          <div className="h1-editorial-chart-title">
-            <div><span>{data.searchMetrics.title}</span><h2>{data.searchMetrics.comparison}</h2></div>
-            <strong>{data.searchMetrics.change}</strong>
-          </div>
-          <H1SearchTrendGlyph data={data.searchMetrics}/>
-          <div className="h1-search-direction">{data.searchMetrics.direction}</div>
-          <small className="h1-editorial-source-note">{data.searchMetrics.note}</small>
+          <H1BrandSearchFourSeriesChart data={data.searchMetrics}/>
         </section>
         <aside className="h1-reputation-panel h1-brand-combined-reputation">
           <header><span></span><h2>{data.reputation.title}</h2></header>
@@ -2236,7 +2315,7 @@ function H1RetailGrowthPage({data,count}) {
 }
 
 function H1ExtendedEditorialPage({data,count}) {
-  const pageTitle = data.layoutType === "brand_voice_search_combined" ? "品牌声量、搜索与口碑"
+  const pageTitle = data.layoutType === "brand_voice_search_combined" ? "品牌声量、自然流量与口碑"
     : data.layoutType === "social_sov_trend" ? "社交声量份额趋势"
     : data.layoutType === "followers_share" ? "CFD 行业关注者份额"
     : "关注者增长趋势对比";

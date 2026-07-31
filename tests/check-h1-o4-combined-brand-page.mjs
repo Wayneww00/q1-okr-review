@@ -47,30 +47,34 @@ assert.match(h1, /id:14, layoutType:"followers_trend"/);
 for (const token of [
   "品牌整体数据 品牌SOV",
   "2025 H2 vs 2026 年 H1 月度表现及整体对比",
-  "2025 H2 → 2026 H1 同比 · Vantage · 数据源：Meltwater（声量 / 口碑）+ Google Trends（品牌搜索）",
+  "声量：Meltwater · 自然流量：Excel（Worldwide Organic Traffic，2026 H1）· 口碑：Meltwater",
   "声量 · Meltwater SoV",
   "−30% 同比",
   "2025 H2 36.8k → 2026 H1 25.7k",
   "2026全球声量占比 29.3%（仅次于Exness）",
   "正面情感第 2",
   "约 37%，仅次于xm",
-  "品牌搜索 · Google Trends",
-  "+43% 同比",
-  "2025 H2 月均 9.1 → 2026 H1 13.0",
-  "主动品牌搜索 · Jul’25 → Jun’26 上行",
+  "2026 H1：Vantage、Exness、IC Markets 与 XM 月度 Organic Traffic",
+  "数据源：overview-trend-2026-07-31T15_27_38Z.xlsx｜Worldwide｜月度 Organic Traffic",
+  "Vantage 从 1 月 281,879 增长至 6 月 346,906；2 月起持续领先 IC Markets",
+  "关键结论：2026 H1，Vantage Organic Traffic 从 281,879 增长至 346,906（+23.1%）",
   "口碑关键词 · Meltwater",
   "transparent ecosystem",
   "reliable platform",
   "multi-asset brokerage",
   "editorial criteria",
   "集中在“专业 · 稳健 · 可信”，区别于竞品的促销 / 信号导向。",
-  "声量竞争力强、需求与口碑向好",
-  "H2核心：把已有的口碑和专业优势，扩大到更大的认知与声量",
+  "自 2 月起持续领先 IC Markets，但与 Exness 和 XM 仍有明显差距",
+  "H2核心：扩大自然搜索覆盖，把已有的口碑和专业优势转化为更大的认知与声量",
 ]) {
   assert.ok(page11.includes(token), `combined page 11 should preserve PPT content: ${token}`);
 }
 
-for (const month of ["7月", "8月", "9月", "10月", "11月", "12月", "1月", "2月", "3月", "4月", "5月", "6月"]) {
+for (const stale of ["Google Trends", "月均搜索热度", "1 月 21.6", "6 月 3.6"]) {
+  assert.ok(!page11.includes(stale), `combined page 11 should remove stale search copy: ${stale}`);
+}
+
+for (const month of ["1月", "2月", "3月", "4月", "5月", "6月"]) {
   assert.ok(page11.includes(`"${month}"`), `combined page 11 should preserve ${month}`);
 }
 
