@@ -7,7 +7,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const report = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const shell = fs.readFileSync(path.join(root, "previews", "vantage-h1-immersive.html"), "utf8");
-const revision = "20260731-social-sov-h1-first-v2";
+const revision = "20260731-social-sov-h2-first-v3";
 
 const dashboardsStart = report.indexOf("const H1_DASHBOARDS = [");
 const dashboardsEnd = report.indexOf("const REPORT_MODE", dashboardsStart);
@@ -27,39 +27,39 @@ const page = Function(`"use strict"; return (${pageSource});`)();
 
 assert.equal(
   page.subtitle,
-  "2026 H1 vs 2025 H2 月度表现及整体占比走势",
-  "the page subtitle should introduce the current period before the comparison period",
+  "2025 H2 vs 2026 H1 月度表现及整体占比走势",
+  "the page subtitle should introduce 2025 H2 before 2026 H1",
 );
 assert.equal(
   page.chart.subtitle,
-  "Monthly Vantage Mentions vs. Industry Mentions (2026 H1 vs 2025 H2)",
-  "the chart subtitle should describe the same current-period-first order",
+  "Monthly Vantage Mentions vs. Industry Mentions (2025 H2 vs 2026 H1)",
+  "the chart subtitle should describe the same chronological order",
 );
 assert.equal(
   page.editorRevision,
-  "social-sov-h1-first-v2",
+  "social-sov-h2-first-v3",
   "the corrected page should use a new editable-text namespace instead of restoring stale reversed labels",
 );
 assert.deepEqual(
   page.socialMonthly.map(({month, period}) => `${period}:${month}`),
   [
-    "2026 H1:Jan",
-    "2026 H1:Feb",
-    "2026 H1:Mar",
-    "2026 H1:Apr",
-    "2026 H1:May",
-    "2026 H1:Jun",
     "2025 H2:Jul",
     "2025 H2:Aug",
     "2025 H2:Sep",
     "2025 H2:Oct",
     "2025 H2:Nov",
     "2025 H2:Dec",
+    "2026 H1:Jan",
+    "2026 H1:Feb",
+    "2026 H1:Mar",
+    "2026 H1:Apr",
+    "2026 H1:May",
+    "2026 H1:Jun",
   ],
-  "the chart should put 2026 H1 on the left and 2025 H2 on the right",
+  "the chart should put 2025 H2 on the left and 2026 H1 on the right",
 );
-assert.equal(page.socialMonthly[5].sovText, "10.23%", "the current period should end at 10.23%");
-assert.equal(page.socialMonthly[11].sovText, "8.10%", "the previous period should end at 8.10%");
+assert.equal(page.socialMonthly[5].sovText, "8.10%", "2025 H2 should end at 8.10%");
+assert.equal(page.socialMonthly[11].sovText, "10.23%", "2026 H1 should end at 10.23%");
 
 const componentStart = report.indexOf("function H1SocialSovTrendChart");
 const componentEnd = report.indexOf("function H1FollowersShareChart", componentStart);
@@ -76,7 +76,7 @@ assert.match(
 );
 assert.doesNotMatch(
   component,
-  /<span>2025 H2<\/span><span>2026 H1<\/span>/,
+  /<span>2026 H1<\/span><span>2025 H2<\/span>/,
   "the component should not retain the reversed hard-coded period order",
 );
 assert.match(
@@ -95,4 +95,4 @@ assert.ok(
   "the immersive shell should invalidate both report and theme caches for the corrected chart order",
 );
 
-console.log("H1 social SOV current-period-first order contract passed.");
+console.log("H1 social SOV chronological order contract passed.");
