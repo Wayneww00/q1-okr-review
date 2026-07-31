@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-unified-visual-release-v1">
-<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-vn-retail-ppt-v1">
+<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260801-vn-retail-dual-axis-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
 <style>
@@ -6094,12 +6094,85 @@ function O3Bars({items,unit,shareLabel}){
   );
 }
 
+function O3RetailDualAxisChart({data}){
+  const width=744;
+  const height=495;
+  const plot={left:76,right:670,top:66,bottom:420};
+  const xPositions=[236,510];
+  const valueY=value=>plot.bottom-(value/data.valueMax)*(plot.bottom-plot.top);
+  const shareY=value=>plot.bottom-(value/data.shareMax)*(plot.bottom-plot.top);
+  const linePoints=data.rows.map((row,index)=>`${xPositions[index]},${shareY(row.shareRaw)}`).join(" ");
+  return (
+    <div className="h1-o3-retail-dual-axis" data-o3-retail-dual-axis>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${data.axisLabel}与${data.shareLabel}双轴对比图`}>
+        <defs>
+          <linearGradient id={`o3-retail-bar-${data.chartKey}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#ff5b20"/>
+            <stop offset="62%" stopColor="#c92112"/>
+            <stop offset="100%" stopColor="#721608"/>
+          </linearGradient>
+          <filter id={`o3-retail-bar-glow-${data.chartKey}`} x="-30%" y="-25%" width="160%" height="150%">
+            <feDropShadow dx="0" dy="-5" stdDeviation="8" floodColor="#ff4e17" floodOpacity=".18"/>
+          </filter>
+        </defs>
+        <text className="h1-o3-retail-axis-title is-left" x={plot.left} y="24">{data.axisLabel}</text>
+        <text className="h1-o3-retail-axis-title is-right" x={plot.right} y="24">{data.shareLabel}</text>
+        <g className="h1-o3-retail-grid" aria-hidden="true">
+          {data.leftAxisTicks.map(tick=>{
+            const y=valueY(tick);
+            return <line key={tick} x1={plot.left} x2={plot.right} y1={y} y2={y}/>;
+          })}
+        </g>
+        <g data-axis-side="left" aria-label="左侧纵轴">
+          <line className="h1-o3-retail-axis-line" x1={plot.left} x2={plot.left} y1={plot.top} y2={plot.bottom}/>
+          {data.leftAxisTicks.map(tick=><text className="h1-o3-retail-axis-tick is-left" key={tick} x={plot.left-13} y={valueY(tick)+5}>{data.formatValueTick(tick)}</text>)}
+        </g>
+        <g data-axis-side="right" aria-label="右侧纵轴">
+          <line className="h1-o3-retail-axis-line" x1={plot.right} x2={plot.right} y1={plot.top} y2={plot.bottom}/>
+          {data.rightAxisTicks.map(tick=><text className="h1-o3-retail-axis-tick is-right" key={tick} x={plot.right+13} y={shareY(tick)+5}>{tick.toFixed(1)}%</text>)}
+        </g>
+        <line className="h1-o3-retail-baseline" x1={plot.left} x2={plot.right} y1={plot.bottom} y2={plot.bottom}/>
+        {data.rows.map((row,index)=>{
+          const x=xPositions[index];
+          const top=valueY(row.raw);
+          return (
+            <g className="h1-o3-retail-bar-group" key={row.period}>
+              <rect x={x-47} y={top} width="94" height={plot.bottom-top} rx="8" fill={`url(#o3-retail-bar-${data.chartKey})`} filter={`url(#o3-retail-bar-glow-${data.chartKey})`}/>
+              <text className="h1-o3-retail-bar-value" x={x} y={Math.max(plot.top+17,top-12)}>{row.value}</text>
+              <text className="h1-o3-retail-period" x={x} y={plot.bottom+34}>{row.period}</text>
+            </g>
+          );
+        })}
+        <polyline className="h1-o3-retail-share-path" data-o3-retail-share-line points={linePoints}/>
+        {data.rows.map((row,index)=>{
+          const x=xPositions[index];
+          const y=shareY(row.shareRaw);
+          return (
+            <g className="h1-o3-retail-share-point" key={row.period} transform={`translate(${x} ${y})`}>
+              <circle r="7"/>
+              <circle className="is-core" r="3"/>
+              <rect x="-32" y="-37" width="64" height="25" rx="6"/>
+              <text x="0" y="-19">{row.share}</text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 function O3RetailComparison({kind}){
   const ftd=kind==="ftd";
   const data=ftd?{
+    chartKey:"ftd",
     sectionTitle:"2026 H1 FTD",
     tableMetric:"越南 FTD",
-    rows:[{period:"2025 H2",raw:7695,value:"7,695",share:"2.7%"},{period:"2026 H1",raw:22910,value:"22,910",share:"5.5%"}],
+    rows:[{period:"2025 H2",raw:7695,value:"7,695",share:"2.7%",shareRaw:2.7},{period:"2026 H1",raw:22910,value:"22,910",share:"5.5%",shareRaw:5.5}],
+    valueMax:25000,
+    shareMax:7,
+    leftAxisTicks:[0,5000,10000,15000,20000,25000],
+    rightAxisTicks:[0,1,2,3,4,5,6,7],
+    formatValueTick:value=>value.toLocaleString("en-US"),
     summary:"越南整体 FTD 绝对值较2025 H2增长 197.7%，FTD 越南占比提升 2.8 个百分点。",
     chartTitle:"2026 H1 越南 FTD 半年表现及整体占比变化",
     axisLabel:"Retail FTD（绝对值）",
@@ -6111,9 +6184,15 @@ function O3RetailComparison({kind}){
     shareGrowth:"+2.8%",
     shareNote:"2.7% → 5.5%",
   }:{
+    chartKey:"tv",
     sectionTitle:"2026 H1 TV",
     tableMetric:"越南 TV",
-    rows:[{period:"2025 H2",raw:210.3,value:"210.3 Bn",share:"1.5%"},{period:"2026 H1",raw:660.2,value:"660.2 Bn",share:"3.4%"}],
+    rows:[{period:"2025 H2",raw:210.3,value:"210.3 Bn",share:"1.5%",shareRaw:1.5},{period:"2026 H1",raw:660.2,value:"660.2 Bn",share:"3.4%",shareRaw:3.4}],
+    valueMax:700,
+    shareMax:4,
+    leftAxisTicks:[0,100,200,300,400,500,600,700],
+    rightAxisTicks:[0,1,2,3,4],
+    formatValueTick:value=>`${value.toFixed(1)} Bn`,
     summary:"越南整体 TV 绝对值较2025 H2增长 214%，TV 越南占比提升 1.9 个百分点。",
     chartTitle:"2026 H1 越南 TV 半年表现及整体占比变化",
     axisLabel:"Trading Volume (Bn)",
@@ -6141,7 +6220,7 @@ function O3RetailComparison({kind}){
           <span><i className="is-bar"/>{data.barLegend}</span>
           <span><i className="is-share"/>{data.shareLegend}</span>
         </div>
-        <O3Bars items={data.rows} unit={data.axisLabel} shareLabel={data.shareLabel}/>
+        <O3RetailDualAxisChart data={data}/>
       </article>
       <div className="h1-o3-retail-kpis">
         <O3Metric label={data.metricLabel} value={data.growth} note="2026 H1 vs 2025 H2" tone="orange"/>
