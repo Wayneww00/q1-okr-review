@@ -27,8 +27,8 @@ const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) =>
 );
 assert.deepEqual(
   ids,
-  Array.from({ length: 22 }, (_, index) => index + 1),
-  "the data section must contain the original 14 pages followed by pages 15–22",
+  Array.from({ length: 21 }, (_, index) => index + 1),
+  "the data section must contain the original 14 pages followed by seven Retail ND pages",
 );
 
 const expectedLayouts = [
@@ -38,13 +38,12 @@ const expectedLayouts = [
   "vietnam_retail_nd",
   "attribution_question",
   "mib_attribution",
-  "india_chapter",
   "h2_retail_nd_target",
 ];
 const appendedLayouts = ids.slice(14).map((id) => {
   const start = dataBlock.search(new RegExp(`^  \\{\\s*id:${id},`, "m"));
   const next =
-    id < 22
+    id < 21
       ? dataBlock.search(new RegExp(`^  \\{\\s*id:${id + 1},`, "m"))
       : dataBlock.length;
   const page = dataBlock.slice(start, next);
@@ -224,7 +223,7 @@ assert.doesNotMatch(
   /"\.h1-retail-growth-page-number"/,
   "the editor must not retain a duplicate imported-page exclusion",
 );
-assert.match(shell, /'Performance Data','经营数据','22 MODULES'/);
+assert.match(shell, /'Performance Data','经营数据','21 MODULES'/);
 const shellCacheKeys = [
   ...shell.matchAll(
     /(?:h1-figma-racing-theme\.css\?v=|index\.html\?report=h1&embedded=1&v=)([^'"\s]+)/g,
@@ -276,6 +275,6 @@ assert.match(
   "new motion must respect reduced-motion preferences",
 );
 
-assert.equal(22 + 31 + 25 + 17, 95);
+assert.equal(21 + 31 + 25 + 17, 94);
 
-console.log("H1 ND Retail eight-page static integration contract passed.");
+console.log("H1 ND Retail seven-page static integration contract passed.");

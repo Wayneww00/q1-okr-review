@@ -15,12 +15,12 @@ assert.ok(h1Start >= 0 && h1End > h1Start, "H1 dashboard data block should exist
 const h1 = index.slice(h1Start, h1End);
 
 const ids = [...h1.matchAll(/\bid:(\d+)(?:,|\s)/g)].map(([, id]) => Number(id));
-assert.deepEqual(ids, Array.from({length:22}, (_,index)=>index+1), "H1 should contain 22 ordered data pages after the ND Retail merge");
-assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','22 MODULES'\)\)/, "shell should advertise 22 modules");
+assert.deepEqual(ids, Array.from({length:21}, (_,index)=>index+1), "H1 should contain 21 ordered data pages after removing the standalone India chapter");
+assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','21 MODULES'\)\)/, "shell should advertise 21 modules");
 assert.doesNotMatch(shell, /'23 MODULES'/, "stale 23-module label should not appear");
 assert.ok(
-  shell.includes('src="../index.html?report=h1&embedded=1&v=20260731-geo-aso-release-v1"'),
-  "the formal shell should invalidate the embedded report cache after the SOV chronology correction",
+  shell.includes('src="../index.html?report=h1&embedded=1&v=20260731-remove-india-cover-v1"'),
+  "the formal shell should invalidate the embedded report cache after removing the India chapter",
 );
 assert.doesNotMatch(
   shell,
@@ -31,7 +31,7 @@ assert.doesNotMatch(
 function pageBlock(id) {
   const start = h1.search(new RegExp(`\\{\\s*id:${id}(?:,|\\s)`));
   assert.ok(start >= 0, `H1 page ${id} should exist`);
-  const next = id < 22 ? h1.search(new RegExp(`\\{\\s*id:${id + 1}(?:,|\\s)`)) : h1.length;
+  const next = id < 21 ? h1.search(new RegExp(`\\{\\s*id:${id + 1}(?:,|\\s)`)) : h1.length;
   assert.ok(next > start, `H1 page ${id} should have an isolated data block`);
   return h1.slice(start, next);
 }
@@ -131,7 +131,7 @@ assert.match(
   "page 12 reputation conclusion must remain legible at presentation scale",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260731-geo-aso-release-v1/g)].length,
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260731-remove-india-cover-v1/g)].length,
   2,
   "the formal shell and embedded report must both load the current cache-busted theme",
 );

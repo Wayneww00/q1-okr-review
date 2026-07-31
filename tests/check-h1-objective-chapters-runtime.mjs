@@ -70,7 +70,7 @@ try {
   const reportFrame = page.locator("#reportFrame").contentFrame();
   await reportFrame.locator('body[data-h1-prepared="true"]').waitFor();
   const reportPages = reportFrame.locator("[data-report-page]");
-  assert.equal(await reportPages.count(), 95);
+  assert.equal(await reportPages.count(), 94);
   assert.equal(
     await reportFrame
       .locator('[data-report-section="okr"] [data-report-page]')

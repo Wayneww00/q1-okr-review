@@ -31,7 +31,7 @@ try {
   const frame = page.frameLocator("#aiProductsFrame");
   const productsRail = frame.locator("#products");
   const eyeBrainHandTrigger = frame.getByRole("button", {
-    name: "翻转以查看眼脑手 Dashboard 产品进展与上线计划",
+    name: "翻转以查看 The Matrix 产品进展与上线计划",
   });
   const placeholderBody = frame.locator("body");
   await placeholderBody.waitFor();

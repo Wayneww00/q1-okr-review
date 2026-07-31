@@ -109,7 +109,8 @@
     .eih-card .card-copy { padding-top:31px; }
     .eih-card .kicker { display:none; }
     .kicker { margin:0 0 13px; font-size:13px; letter-spacing:0; color:#a64719; }
-    .product-card h3 { font-size:31px; line-height:1.08; letter-spacing:-.04em; }
+    .product-card h3 { display:flex; align-items:center; flex-wrap:wrap; gap:12px; font-size:31px; line-height:1.08; letter-spacing:-.04em; }
+    .product-status { display:inline-flex; align-items:center; min-height:27px; padding:5px 9px; border:1px solid rgba(255,194,77,.72); border-radius:6px; background:#111; color:#ffc24d; font-size:14px; font-weight:700; line-height:1; letter-spacing:0; white-space:nowrap; }
     .product-card p { margin-top:16px; font-size:16px; line-height:1.42; letter-spacing:-.018em; }
     .product-card .action { display:none; }
     .toolbox .kicker { color:#ff8b3d; }
@@ -582,7 +583,7 @@
           <div class="cockpit-flipper">
             <section class="cockpit-face cockpit-front">
               <div class="card-copy cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="cockpit-progress-panel" aria-label="翻转以查看驾驶舱 Dashboard 产品进展与上线计划">
-                <h3>驾驶舱 Dashboard</h3>
+                <h3>驾驶舱 Dashboard <span class="product-status">已上线</span></h3>
                 <p>聚合关键指标与多维市场信号，一屏看清 Marketing 业务全局</p>
               </div>
               <a class="preview sentiment-preview cockpit-demo-link" href="https://cmo-insight-dashboard-two.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开驾驶舱 Dashboard 产品演示"><img class="sentiment-preview__full" src="assets/cockpit-laptop-white.png" alt="笔记本电脑展示驾驶舱 Dashboard，画面下方由手托举，背景为纯白色" /></a>
@@ -609,29 +610,29 @@
             </section>
           </div>
         </article>
-        <article class="product-card cockpit-card trend-card eih-dashboard-card" aria-label="眼脑手 Dashboard">
+        <article class="product-card cockpit-card trend-card eih-dashboard-card" aria-label="The Matrix">
           <div class="cockpit-flipper">
             <section class="cockpit-face cockpit-front">
-              <div class="card-copy cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="eih-progress-panel" aria-label="翻转以查看眼脑手 Dashboard 产品进展与上线计划">
-                <h3>眼脑手 Dashboard</h3>
-                <p>连接全域监测、AI 分析与行动闭环，让品牌风险更早发现、更快解决</p>
+              <div class="card-copy cockpit-flip-trigger" role="button" tabindex="0" aria-pressed="false" aria-controls="eih-progress-panel" aria-label="翻转以查看 The Matrix 产品进展与上线计划">
+                <h3>The Matrix <span class="product-status">9月第一版</span></h3>
+                <p>眼脑手联动，全面链接检测、ai分析与行动闭环，让品牌风险更早发现、更快解决</p>
               </div>
-              <a class="preview eih-dashboard-preview cockpit-demo-link" href="https://matrix-system-tau.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开眼脑手 Dashboard 产品演示"><img class="eih-preview__full" src="assets/eih-dashboard-monitor.png" alt="眼脑手 Dashboard：全球洞察驾驶舱显示器预览" /></a>
+              <a class="preview eih-dashboard-preview cockpit-demo-link" href="https://matrix-system-tau.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="在新窗口打开 The Matrix 产品演示"><img class="eih-preview__full" src="assets/eih-dashboard-monitor.png" alt="The Matrix：全球洞察驾驶舱显示器预览" /></a>
             </section>
-            <section class="cockpit-face cockpit-back" id="eih-progress-panel" aria-label="眼脑手 Dashboard 产品进展与上线计划">
+            <section class="cockpit-face cockpit-back" id="eih-progress-panel" aria-label="The Matrix 产品进展与上线计划">
               <div class="cockpit-progress-visual">
-                <h3 class="cockpit-progress-title">眼脑手 Dashboard</h3>
+                <h3 class="cockpit-progress-title">The Matrix</h3>
                 <p class="cockpit-progress-subtitle">产品进展与上线计划</p>
                 <section class="progress-stage progress-stage--current" aria-label="当前阶段｜核心功能开发与数据接入：优化数据采集、AI 分析与消息推送链路；提升数据的准确性和系统的稳定性"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M6 5.3c3.6-2.4 6.7 2.4 12 .1v8.7c-5.3 2.3-8.4-2.5-12-.1z" fill="currentColor" stroke="none"/><path d="M9.2 8.2h5.4" stroke="#fff" stroke-width="1.7" opacity=".95"/></svg></div><div class="stage-copy"><h4>当前阶段｜核心功能开发与数据接入</h4><ul><li>优化数据采集、AI 分析与消息推送链路</li><li>提升数据的准确性和系统的稳定性</li></ul></div></section>
                 <section class="progress-stage progress-stage--h1" aria-label="H1 完成｜完成“眼、脑”的产品规划：围绕业务场景，完成“眼、脑”功能设计；完成社媒、新闻等多渠道内容监测框架"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="15" rx="3"/><path d="M9 5V3.5h6V5M8.5 13l2.2 2.2 4.8-5M9 17h6"/></svg></div><div class="stage-copy"><h4>H1 完成｜完成“眼、脑”的产品规划</h4><ul><li>围绕业务场景，完成“眼、脑”功能设计</li><li>完成社媒、新闻等多渠道内容监测框架</li></ul></div></section>
                 <section class="progress-stage progress-stage--h2" aria-label="H2 计划｜完善“手”与产品完整闭环：闭环行动建议、任务分发、执行反馈链路；扩大重点市场、竞品、机会场景的覆盖"><div class="stage-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.45 4.15L17.6 8.6l-4.15 1.45L12 14.2l-1.45-4.15L6.4 8.6l4.15-1.45z"/><path d="m18 14 .85 2.3L21 17.15l-2.15.85L18 20.3l-.85-2.3-2.3-.85 2.3-.85z"/><path d="m6.2 15 .7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"/></svg></div><div class="stage-copy"><h4>H2 计划｜完善“手”与产品完整闭环</h4><ul><li>闭环行动建议、任务分发、执行反馈链路</li><li>扩大重点市场、竞品、机会场景的覆盖</li></ul></div></section>
                 <div class="progress-goal"><div class="goal-copy"><strong>最终价值：</strong><span>更早识别潜在风险，完成判断、行动与效果验证</span></div></div>
-                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="eih-progress-panel" aria-label="翻转返回眼脑手 Dashboard 概览"></button>
+                <button class="cockpit-back-toggle" type="button" aria-pressed="false" aria-controls="eih-progress-panel" aria-label="翻转返回 The Matrix 概览"></button>
               </div>
             </section>
           </div>
         </article>
-        <article class="product-card toolbox-card" id="toolbox-launcher" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="tool-modal"><div class="card-copy"><h3>工具百宝箱</h3><p>覆盖情报、趋势、舆情、合规与内容生产，为具体 Marketing 场景提供即用型 AI 工具</p><span class="action">浏览 8 个工具 <b>›</b></span></div><div class="preview toolbox" aria-label="工具百宝箱产品预览图"><img class="toolbox-preview__full" src="assets/toolbox-dashboard-shadowed-v4.png" alt="工具百宝箱：带柔和右下投影的趋势洞察、资讯自动化、广告监测、Trustpilot 监测与分析、内容监控、热点监测、视频生成与评论分析工具" /></div></article>
+        <article class="product-card toolbox-card" id="toolbox-launcher" tabindex="0" role="button" aria-haspopup="dialog" aria-controls="tool-modal"><div class="card-copy"><h3>工具百宝箱 <span class="product-status">陆续发布中</span></h3><p>覆盖情报、趋势、舆情、合规与内容生产，为具体 Marketing 场景提供即用型 AI 工具</p><span class="action">浏览 8 个工具 <b>›</b></span></div><div class="preview toolbox" aria-label="工具百宝箱产品预览图"><img class="toolbox-preview__full" src="assets/toolbox-dashboard-shadowed-v4.png" alt="工具百宝箱：带柔和右下投影的趋势洞察、资讯自动化、广告监测、Trustpilot 监测与分析、内容监控、热点监测、视频生成与评论分析工具" /></div></article>
       </div><p class="rail-hint">横向滚动、拖拽或使用方向键，浏览全部产品。</p>
     </section>
   </main>

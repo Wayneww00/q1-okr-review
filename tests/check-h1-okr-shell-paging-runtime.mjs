@@ -66,13 +66,13 @@ try {
   const reportFrame = page.locator("#reportFrame").contentFrame();
   await reportFrame.locator('body[data-h1-prepared="true"]').waitFor();
   const reportPages = reportFrame.locator("[data-report-page]");
-  assert.equal(await reportPages.count(), 95);
+  assert.equal(await reportPages.count(), 94);
 
   assert.equal(
     await reportFrame
       .locator('[data-report-section="data"] [data-report-page]')
       .count(),
-    22,
+    21,
   );
   assert.equal(
     await reportFrame
@@ -115,7 +115,7 @@ try {
     await waitForActivePage(pageId);
   };
 
-  await scrollFrameToPage("data-22");
+  await scrollFrameToPage("data-21");
   await page.locator("body").press("PageDown");
   await waitForActivePage("okr-review");
   assert.match(
@@ -181,7 +181,7 @@ try {
 
   await scrollFrameToPage("okr-review");
   await page.locator("body").press("PageUp");
-  await waitForActivePage("data-22");
+  await waitForActivePage("data-21");
 } finally {
   await browser.close();
 }

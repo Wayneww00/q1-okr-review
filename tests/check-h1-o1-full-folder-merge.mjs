@@ -90,8 +90,8 @@ const o3Ids = topLevelStringIds(constantBlock(app, "const O3_REPORT_PAGES=["));
 
 assert.deepEqual(
   dataIds,
-  Array.from({ length: 22 }, (_, index) => index + 1),
-  "the current 22 data pages must remain in order",
+  Array.from({ length: 21 }, (_, index) => index + 1),
+  "the current 21 data pages must remain in order",
 );
 assert.deepEqual(
   o1Ids,
@@ -124,8 +124,8 @@ assert.deepEqual(
 );
 assert.equal(
   dataIds.length + o1Ids.length + o2Ids.length + o3Ids.length,
-  95,
-  "the unified embedded report must contain 95 pages after adding the ND Retail sequence",
+  94,
+  "the unified embedded report must contain 94 pages after removing the India chapter",
 );
 assert.doesNotMatch(
   app.slice(
@@ -152,7 +152,7 @@ function numericPageBlock(block, id, finalId) {
 }
 for (let id = 1; id <= 14; id += 1) {
   assert.equal(
-    numericPageBlock(currentDataBlock, id, 22),
+    numericPageBlock(currentDataBlock, id, 21),
     numericPageBlock(rollbackDataBlock, id, 14),
     `retained data page ${id} must remain byte-for-byte unchanged`,
   );

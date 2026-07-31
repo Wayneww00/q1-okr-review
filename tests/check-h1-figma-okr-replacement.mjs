@@ -62,8 +62,8 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*min\(100%,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;/,
-  "each Figma overlay must remain on a proportional 16:9 artboard",
+  /\.h1-okr-exact-artboard\s*\{[\s\S]*?position:\s*absolute;[\s\S]*?width:\s*max\(100%,\s*calc\(100vh \* 16 \/ 9\)\);[\s\S]*?aspect-ratio:\s*16\s*\/\s*9;/,
+  "each Figma overlay must cover the viewport on a proportional 16:9 artboard",
 );
 assert.match(
   app,
@@ -93,7 +93,7 @@ assert.doesNotMatch(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260731-geo-aso-release-v1"',
+    'src="../index.html?report=h1&embedded=1&v=20260731-remove-india-cover-v1"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

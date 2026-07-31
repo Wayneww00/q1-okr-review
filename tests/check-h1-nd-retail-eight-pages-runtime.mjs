@@ -16,7 +16,7 @@ try {
   page.on("pageerror", (error) => pageErrors.push(error.message));
 
   await page.goto(
-    `${baseUrl}/previews/vantage-h1-immersive.html?audit=nd-retail-eight-pages`,
+    `${baseUrl}/previews/vantage-h1-immersive.html?audit=nd-retail-seven-pages`,
     { waitUntil: "domcontentloaded" },
   );
   await page.locator("#loginSubmit").click();
@@ -38,8 +38,8 @@ try {
   const dataPages = reportFrame.locator(
     '[data-report-section="data"] [data-report-page]',
   );
-  assert.equal(await dataPages.count(), 22);
-  assert.equal(await reportPages.count(), 95);
+  assert.equal(await dataPages.count(), 21);
+  assert.equal(await reportPages.count(), 94);
   assert.equal(
     await reportFrame.locator(".h1-figma-fixed-stage").count(),
     1,
@@ -75,10 +75,10 @@ try {
       .replace(/\s+/g, " ")
       .trim();
 
-  for (let id = 15; id <= 22; id += 1) {
+  for (let id = 15; id <= 21; id += 1) {
     const pageId = `data-${id}`;
     await scrollFrameToPage(pageId);
-    assert.match(await pageNumberText(pageId), new RegExp(`^${id} / 22$`));
+    assert.match(await pageNumberText(pageId), new RegExp(`^${id} / 21$`));
     assert.equal(
       await reportFrame
         .locator(`[data-page-id="${pageId}"] .h1-extended-editorial-canvas`)
@@ -137,7 +137,7 @@ try {
   assert.deepEqual(sharedVisualSystem.surface15, sharedVisualSystem.surface14);
   assert.deepEqual(sharedVisualSystem.canvas15, sharedVisualSystem.canvas14);
 
-  for (const id of [15, 16, 18, 20, 22]) {
+  for (const id of [15, 16, 18, 20, 21]) {
     assert.ok(
       (await reportFrame.locator(`[data-page-id="data-${id}"] svg`).count()) > 0,
       `data-${id} must render a native SVG chart`,
@@ -154,10 +154,6 @@ try {
   );
   assert.match(
     await reportFrame.locator('[data-page-id="data-21"]').innerText(),
-    /H2[\s\S]*印度/,
-  );
-  assert.match(
-    await reportFrame.locator('[data-page-id="data-22"]').innerText(),
     /H2 Retail ND占比迈向32\.0%！[\s\S]*\$137\.6M/,
   );
   assert.match(
@@ -222,14 +218,14 @@ try {
   await editButton.click();
   await page.waitForFunction(() => {
     const doc = document.querySelector("#reportFrame")?.contentDocument;
-    return Array.from({ length: 8 }, (_, index) => index + 15).every(
+    return Array.from({ length: 7 }, (_, index) => index + 15).every(
       (id) =>
         doc
           ?.querySelector(`[data-page-id="data-${id}"] h1`)
           ?.getAttribute("contenteditable") === "plaintext-only",
     );
   });
-  for (let id = 15; id <= 22; id += 1) {
+  for (let id = 15; id <= 21; id += 1) {
     assert.equal(
       await reportFrame
         .locator(
@@ -240,7 +236,7 @@ try {
       `data-${id} page number must not be editable`,
     );
   }
-  for (const id of [15, 16, 18, 20, 22]) {
+  for (const id of [15, 16, 18, 20, 21]) {
     assert.equal(
       await reportFrame
         .locator(`[data-page-id="data-${id}"] .h1-retail-growth-chart`)
@@ -260,19 +256,19 @@ try {
       .querySelector('.scene[data-label="Full Report"]')
       ?.classList.contains("active"),
   );
-  await scrollFrameToPage("data-22");
+  await scrollFrameToPage("data-21");
   await page.locator("body").press("PageDown");
   await waitForActivePage("o1-chapter");
   await page.locator("body").press("PageUp");
-  await waitForActivePage("data-22");
+  await waitForActivePage("data-21");
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   const reducedMotionState = await reportFrame
-    .locator('[data-page-id="data-22"]')
+    .locator('[data-page-id="data-21"]')
     .evaluate((root) => {
       const stage = root.querySelector(".h1-extended-editorial-canvas");
       const stageRect = stage.getBoundingClientRect();
-      const transition = document.querySelector('[data-page-id="data-21"]');
+      const transition = document.querySelector('[data-page-id="data-17"]');
       return {
         stageTransform: getComputedStyle(stage).transform,
         stageLeft: stageRect.left,
@@ -282,7 +278,7 @@ try {
           root.querySelector(".h1-retail-growth-bar"),
         ).animationName,
         transitionAnimation: getComputedStyle(
-          transition.querySelector(".h1-retail-growth-india-title"),
+          transition.querySelector(".h1-retail-growth-transition > h1"),
         ).animationName,
         scanOpacity: getComputedStyle(
           transition.querySelector(".h1-retail-growth-scan i"),
@@ -311,4 +307,4 @@ try {
   await browser.close();
 }
 
-console.log("H1 ND Retail eight-page runtime contract passed.");
+console.log("H1 ND Retail seven-page runtime contract passed.");

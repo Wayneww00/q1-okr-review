@@ -40,6 +40,7 @@
   --h1-figma-first-height: 970.208;
   --h1-figma-detail-height: 736.366;
   --h1-figma-scale: 1;
+  --h1-artboard-cover-scale: 1;
 }
 
 /* Formal deck shell */
@@ -3285,6 +3286,10 @@ svg.h1-okr-insight-icon circle {
   margin-right: 0 !important;
   margin-left: calc(50% - 50vw) !important;
   padding: 0 !important;
+}
+
+.h1-o2-page.is-full-bleed {
+  --h1-o2-scale: var(--h1-artboard-cover-scale, 1);
 }
 
 .h1-o2-fixed-stage {

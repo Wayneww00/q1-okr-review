@@ -39,7 +39,11 @@ try {
   const o2Pages = reportFrame.locator(
     '[data-report-section="o2"] [data-report-page]',
   );
-  assert.equal(await dataPages.count(), 22, "the data section must stay intact");
+  assert.equal(
+    await dataPages.count(),
+    21,
+    "the data section must retain all pages except the removed India chapter",
+  );
   assert.equal(
     await okrPages.count(),
     31,
@@ -252,9 +256,9 @@ try {
     });
     assert.ok(Math.abs(responsiveState.pageTop) <= 2);
     assert.ok(
-      responsiveState.artboardWidth <= responsiveState.viewportWidth + 1 &&
-        responsiveState.artboardHeight <= responsiveState.viewportHeight + 1,
-      `the 1920×1080 O2 artboard must fit ${viewport.width}×${viewport.height}`,
+      responsiveState.artboardWidth >= responsiveState.viewportWidth - 1 &&
+        responsiveState.artboardHeight >= responsiveState.viewportHeight - 1,
+      `the 1920×1080 O2 artboard must cover ${viewport.width}×${viewport.height}`,
     );
     assert.ok(
       Math.abs(

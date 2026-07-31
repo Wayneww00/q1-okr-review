@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-geo-aso-release-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-remove-india-cover-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-semrush-source-note-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -998,13 +998,8 @@ const H1_DASHBOARDS = [
   },
   {
     id:21,
-    layoutType:"india_chapter",
-    eyebrow:"H2",
-    title:"印度"
-  },
-  {
-    id:22,
     layoutType:"h2_retail_nd_target",
+    editorRevision:"retail-nd-target-no-india-chapter-v1",
     headline:"让Marketing真正驱动增长",
     title:"H2 Retail ND占比迈向32.0%！",
     subtitle:"（印度新增大盘占比3.6%）",
@@ -1597,7 +1592,6 @@ const H1_RETAIL_GROWTH_LAYOUTS = new Set([
   "vietnam_retail_nd",
   "attribution_question",
   "mib_attribution",
-  "india_chapter",
   "h2_retail_nd_target",
 ]);
 
@@ -2521,8 +2515,10 @@ function DashboardSection({editMode}) {
   useEffect(() => {
     if (!isH1Report) return;
     const syncFigmaScale = () => {
-      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080, 1);
-      document.documentElement.style.setProperty('--h1-figma-scale', String(scale));
+      const containScale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080, 1);
+      const coverScale = Math.max(window.innerWidth / 1920, window.innerHeight / 1080);
+      document.documentElement.style.setProperty('--h1-figma-scale', String(containScale));
+      document.documentElement.style.setProperty('--h1-artboard-cover-scale', String(coverScale));
     };
     syncFigmaScale();
     window.addEventListener('resize', syncFigmaScale);
@@ -3013,7 +3009,7 @@ function OkrInsightIcon({type}){
   return <img className={`h1-okr-insight-icon is-${type}`} src={src} alt="" aria-hidden="true"/>;
 }
 
-function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY}={}){
+function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY,cover=false}={}){
   const pageRef=useRef(null);
   const canvasRef=useRef(null);
   useEffect(()=>{
@@ -3021,7 +3017,9 @@ function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY}={}){
     const canvas=canvasRef.current;
     if(!page || !canvas)return;
     const updateScale=()=>{
-      const scale=Math.min(page.clientWidth/1920,page.clientHeight/1080,maxScale);
+      const scale=cover
+        ? Math.max(page.clientWidth/1920,page.clientHeight/1080)
+        : Math.min(page.clientWidth/1920,page.clientHeight/1080,maxScale);
       canvas.style.setProperty('--h1-okr-scale',String(scale));
       canvas.classList.add('is-scaled');
     };
@@ -3789,8 +3787,19 @@ function OkrDirectFigmaForegroundPage({page,index,count,src,onPreview,onVideoPre
   );
 }
 
+const H1_OKR_COVER_PAGE_IDS=new Set([
+  'okr-elite-client-identity',
+  'okr-client-experience-model',
+  'okr-client-experience-cases',
+  'okr-elite-client-no1-experience',
+  'okr-elite-endorsement-resources',
+  'okr-elite-ferrari-experience',
+  'okr-elite-black-label',
+  'okr-elite-business-enablement',
+]);
+
 function OkrEliteClientForegroundPage({page,index,count,onPreview,onVideoPreview}){
-  const {pageRef,canvasRef}=useOkrCanvasScale();
+  const {pageRef,canvasRef}=useOkrCanvasScale({cover:H1_OKR_COVER_PAGE_IDS.has(page.id)});
   return (
     <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page h1-okr-elite-client-page" data-report-page data-page-id={page.id} aria-label={page.label}>
       <div ref={canvasRef} className="h1-okr-canvas h1-okr-elite-client-canvas">
@@ -5341,6 +5350,8 @@ function O2IbLoop(){
   );
 }
 
+const H1_O2_COVER_PAGE_IDS=new Set(["o2-aso-leadership","o2-aso-evidence"]);
+
 function O2ReportPage({page,index,count}){
   let content=null;
   if(page.layout==="chapter")content=<O2ChapterPage page={page}/>;
@@ -5365,7 +5376,7 @@ function O2ReportPage({page,index,count}){
   if(page.layout==="ib-loop")content=<><O2PageHeader page={page}/><O2IbLoop/></>;
   return (
     <section
-      className={`h1-o2-page is-${page.layout}`}
+      className={`h1-o2-page is-${page.layout} ${H1_O2_COVER_PAGE_IDS.has(page.id)?"is-full-bleed":""}`}
       data-report-page
       data-page-id={page.id}
       data-editor-revision={page.id==="o2-regional-engines"?"india-proof-below-v3":undefined}

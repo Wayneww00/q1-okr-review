@@ -80,7 +80,11 @@ const aiScene = shell.match(
   /<section\b[^>]*class="[^"]*\bai-products-scene\b[^"]*"[\s\S]*?<\/section>/,
 )?.[0];
 assert.ok(aiScene, "the shell must contain one isolated AI products scene");
-assert.match(aiScene, /data-src="ai-data-products\/index\.html"/);
+assert.match(
+  aiScene,
+  /data-src="ai-data-products\/index\.html\?v=20260731-matrix-status-v1"/,
+  "the renamed product and release labels must invalidate the cached AI module",
+);
 assert.doesNotMatch(
   aiScene,
   /(?:^|\s)src="ai-data-products\/index\.html"/,
@@ -110,7 +114,7 @@ assert.match(
 );
 assert.match(
   shell,
-  /if \(isProductInteraction\(\) \|\| event\.defaultPrevented\) return;/,
+  /if \(isProductInteraction\(\) \|\| event\.shiftKey \|\| Math\.abs\(event\.deltaX\) >= Math\.abs\(event\.deltaY\)\) return;/,
 );
 assert.match(
   shell,
@@ -125,5 +129,41 @@ const moduleSource = readFileSync(modulePath, "utf8");
 assert.match(moduleSource, /id="products"/);
 assert.match(moduleSource, /id="tool-modal"/);
 assert.equal((moduleSource.match(/target="_blank"/g) || []).length, 10);
+assert.equal(
+  (moduleSource.match(/class="product-status"/g) || []).length,
+  3,
+  "each primary product name must carry one inline release-status label",
+);
+assert.match(
+  moduleSource,
+  /<h3>驾驶舱 Dashboard <span class="product-status">已上线<\/span><\/h3>/,
+);
+assert.match(
+  moduleSource,
+  /<h3>The Matrix <span class="product-status">9月第一版<\/span><\/h3>/,
+);
+assert.match(
+  moduleSource,
+  /<h3>工具百宝箱 <span class="product-status">陆续发布中<\/span><\/h3>/,
+);
+assert.match(
+  moduleSource,
+  /眼脑手联动，全面链接检测、ai分析与行动闭环，让品牌风险更早发现、更快解决/,
+);
+assert.doesNotMatch(
+  moduleSource,
+  /<h3>眼脑手 Dashboard<\/h3>/,
+  "the former product name must not remain in any visible card title",
+);
+assert.match(
+  moduleSource,
+  /\.product-card h3\s*\{[^}]*display:flex;[^}]*align-items:center;[^}]*gap:/s,
+  "product names and release labels must share one aligned title row",
+);
+assert.match(
+  moduleSource,
+  /\.product-status\s*\{[^}]*font-size:[^;}]+;[^}]*white-space:nowrap;/s,
+  "release labels must remain compact and must not break across lines",
+);
 
 console.log("H1 AI data products static integration contract passed.");
