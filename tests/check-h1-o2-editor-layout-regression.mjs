@@ -13,7 +13,7 @@ const immersive = fs.readFileSync(
   path.join(repoRoot, "previews/vantage-h1-immersive.html"),
   "utf8",
 );
-const expectedThemeVersion = "20260731-h1-growth-release-v1";
+const expectedThemeVersion = "20260731-delivery-ppt88-v1";
 
 const regions = html.match(
   /function O2Regions\(\)\{([\s\S]*?)\n\}\n\nfunction O2Delivery\(\)/,

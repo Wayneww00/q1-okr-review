@@ -94,25 +94,32 @@ assert.match(
 for (const fact of [
   'title:"打破受限渠道，构建增长韧性"',
   'description:"多层次资产组合与储备，确保各市场持续在线、增长不停。"',
-  '"01","看得准","市场 & 竞品监测"',
-  '"监管要求 · 平台政策 · 行情波动 · 竞品动向"',
-  '"AI 市场行情监控｜爬虫日报监控｜响应速度 2×"',
-  '"02","上得快","资产模块化 & 效率升级"',
-  '"主体 · 账户 · 域名 · 素材"',
-  '"单页平台成本约 $6.8｜多语言落地页 3h 上线"',
-  '"03","投得进","多层媒体供给 & 受限渠道打通"',
-  '"主流媒体 · 稀缺版位资源 · AI Ads 资源"',
-  '"Snapchat · Careem · Zalo · Uber · Telegram · Microsoft Copilot"',
-  '"04","放得大","地域验证 & 业务持续增长"',
-  '"监测 · 判断 · 优化 · 复制"',
-  '"Vietnam · Thailand · Russia · Korea · UAE"',
+  'editorRevision:"delivery-ppt88-v1"',
+  'title:"看得准【市场 & 竞品监测】"',
+  'copy:"监管要求 · 平台政策 · 行情变动 · 竞品动向"',
+  'proof:"AI（市场&行情监控）｜爬虫日级监控（竞品动态监控）｜响应速度2x"',
+  'title:"上得快【资产模块化 & 效率升级】"',
+  'copy:"主体 · 账户 · 域名 · 素材"',
+  'proof:"【单页平台成本约$6.8 ｜ 多语言落地页生产到上线仅需3h】"',
+  'title:"投得进【多层媒体供给 & 受限渠道打通】"',
+  'copy:"主流媒体 · 稀缺曝光资源 · AI Ads资源"',
+  'channels:["Snapchat","careem","Zalo","Uber","Telegram","Microsoft Copilot"]',
+  'note:"【差异化渠道&流量补位】"',
+  'title:"放得大【地域验证 & 业务持续增长】"',
+  'copy:"监测 · 判断 · 优化 · 复制"',
+  'proof:"重点市场验证先行：Vietnam ｜ Thailand ｜ Russia ｜ Korea ｜ UAE"',
+  'brand:"Meta TikTok"',
+  'outcome:"盈利增量跑通"',
+  'outcome:"高质量增量验证"',
+  '"区域稀缺渠道：Naver ｜ Yandex"',
+  '"AI Ads 布局：ChatGPT Ads｜Gemini Ads"',
 ]) {
   assert.ok(app.includes(fact), `page 22 must reproduce the source PPT: ${fact}`);
 }
 assert.match(
   theme,
-  /\.h1-o2-delivery-metrics article > div b\s*\{[\s\S]*?font-size:\s*(?:1[89]|[2-9]\d)px;/,
-  "page 22 metric deltas must be enlarged for presentation readability",
+  /\.h1-o2-delivery-metric-main strong\s*\{[\s\S]*?font:\s*800 50px\/\.95/,
+  "page 22 ROI and CAC values must remain presentation-readable",
 );
 
 // Page 24: annotated operating capabilities, with the crossed-out paragraph removed.

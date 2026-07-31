@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-h1-growth-release-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-delivery-ppt88-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-aso-proof-rank-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -4362,6 +4362,7 @@ const O2_REPORT_PAGES=[
   {
     id:"o2-global-delivery",
     layout:"delivery",
+    editorRevision:"delivery-ppt88-v1",
     eyebrow:"GLOBAL DELIVERY SYSTEM",
     title:"打破受限渠道，构建增长韧性",
     description:"多层次资产组合与储备，确保各市场持续在线、增长不停。",
@@ -5236,36 +5237,108 @@ function O2Regions(){
 
 function O2Delivery(){
   const steps=[
-    ["01","看得准","市场 & 竞品监测","监管要求 · 平台政策 · 行情波动 · 竞品动向","AI 市场行情监控｜爬虫日报监控｜响应速度 2×"],
-    ["02","上得快","资产模块化 & 效率升级","主体 · 账户 · 域名 · 素材","单页平台成本约 $6.8｜多语言落地页 3h 上线"],
-    ["03","投得进","多层媒体供给 & 受限渠道打通","主流媒体 · 稀缺版位资源 · AI Ads 资源","Snapchat · Careem · Zalo · Uber · Telegram · Microsoft Copilot"],
-    ["04","放得大","地域验证 & 业务持续增长","监测 · 判断 · 优化 · 复制","Vietnam · Thailand · Russia · Korea · UAE"],
+    {
+      number:"1",
+      title:"看得准【市场 & 竞品监测】",
+      copy:"监管要求 · 平台政策 · 行情变动 · 竞品动向",
+      proof:"AI（市场&行情监控）｜爬虫日级监控（竞品动态监控）｜响应速度2x",
+    },
+    {
+      number:"2",
+      title:"上得快【资产模块化 & 效率升级】",
+      copy:"主体 · 账户 · 域名 · 素材",
+      proof:"【单页平台成本约$6.8 ｜ 多语言落地页生产到上线仅需3h】",
+    },
+    {
+      number:"3",
+      title:"投得进【多层媒体供给 & 受限渠道打通】",
+      copy:"主流媒体 · 稀缺曝光资源 · AI Ads资源",
+      channels:["Snapchat","careem","Zalo","Uber","Telegram","Microsoft Copilot"],
+      note:"【差异化渠道&流量补位】",
+    },
+    {
+      number:"4",
+      title:"放得大【地域验证 & 业务持续增长】",
+      copy:"监测 · 判断 · 优化 · 复制",
+      proof:"重点市场验证先行：Vietnam ｜ Thailand ｜ Russia ｜ Korea ｜ UAE",
+    },
+  ];
+  const proofCards=[
+    {
+      brand:"Meta TikTok",
+      outcome:"盈利增量跑通",
+      roi:"2.2",
+      cac:"-53%",
+      lift:null,
+      footer:["FTD +46%","Net Deposit +115%"],
+    },
+    {
+      brand:"DSP",
+      outcome:"高质量增量验证",
+      roi:"19.9",
+      cac:"-21%",
+      lift:"ROI +66%",
+      footer:["FTD +13%","Net Deposit +49%"],
+    },
+  ];
+  const breakthroughs=[
+    "区域稀缺渠道：Naver ｜ Yandex",
+    "AI Ads 布局：ChatGPT Ads｜Gemini Ads",
   ];
   return (
-    <div className="h1-o2-delivery-layout">
-      <div className="h1-o2-delivery-metrics">
-        <article className="h1-o2-card">
-          <span className="h1-o2-card-label">Meta / TikTok</span><strong>ROI 2.2</strong>
-          <div><b>CAC -53%</b><b>FTD +46%</b><b>Net Deposit +115%</b></div>
-        </article>
-        <article className="h1-o2-card">
-          <span className="h1-o2-card-label">DSP</span><strong>ROI 19.9</strong>
-          <div><b>ROI +66%</b><b>CAC -21%</b><b>FTD +13%</b><b>Net Deposit +49%</b></div>
-        </article>
-      </div>
-      <div className="h1-o2-resilience-grid">
-        {steps.map(([number,verb,title,copy,proof])=>(
-          <article className="h1-o2-card" key={number}>
-            <span>{number}</span>
-            <div className="h1-o2-resilience-title"><strong>{verb}</strong><h3>{title}</h3></div>
-            <p>{copy}</p>
-            <small>{proof}</small>
+    <div className="h1-o2-delivery-layout" data-ppt-reference="88">
+      <div className="h1-o2-delivery-columns">
+        <section className="h1-o2-delivery-left" aria-label="增长韧性四项能力">
+          <article className="h1-o2-card h1-o2-delivery-intro">
+            <strong>外部监管与平台合规约束常态化</strong>
+            <p>多层次资产组合与储备，确保各市场持续在线、增长不停。</p>
           </article>
-        ))}
+          <div className="h1-o2-delivery-step-list">
+            {steps.map((step)=>(
+              <article className="h1-o2-card h1-o2-delivery-step" key={step.number}>
+                <span className="h1-o2-delivery-step-number">{step.number}</span>
+                <div className="h1-o2-delivery-step-copy">
+                  <h3>{step.title}</h3>
+                  <p>{step.copy}</p>
+                </div>
+                <div className={`h1-o2-delivery-proof${step.channels?" is-channels":""}`}>
+                  {step.channels ? (
+                    <>
+                      <div>{step.channels.map(channel=><b key={channel}>{channel}</b>)}</div>
+                      <small>{step.note}</small>
+                    </>
+                  ) : <strong>{step.proof}</strong>}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="h1-o2-delivery-right" aria-label="H1 增量验证与 H2 突破重点">
+          <header className="h1-o2-delivery-section-title">
+            <i/><strong>H1增量验证</strong><span>｜</span><b>2026 H1 vs 2025 H2</b>
+          </header>
+          {proofCards.map(card=>(
+            <article className="h1-o2-card h1-o2-delivery-metric-card" key={card.brand}>
+              <h3>{card.brand}<span>｜{card.outcome}</span></h3>
+              <div className="h1-o2-delivery-metric-main">
+                <div><span>ROI</span><strong>{card.roi}</strong>{card.lift&&<em>{card.lift}</em>}</div>
+                <div><span>CAC</span><strong>{card.cac}</strong></div>
+              </div>
+              <div className="h1-o2-delivery-metric-footer">
+                {card.footer.map((item,index)=><React.Fragment key={item}><b>{item}</b>{index===0&&<i/>}</React.Fragment>)}
+              </div>
+            </article>
+          ))}
+          <header className="h1-o2-delivery-section-title is-h2">
+            <i/><strong>H2 突破重点</strong><span>｜</span><b>稀缺流量 x AI Ads</b>
+          </header>
+          <article className="h1-o2-card h1-o2-delivery-breakthrough">
+            {breakthroughs.map(item=><p key={item}><i/><span>{item}</span></p>)}
+          </article>
+        </section>
       </div>
-      <div className="h1-o2-delivery-tagline">
-        {["限制可识别","资产可转移","媒体可调度","业务可恢复"].map((label,index)=><React.Fragment key={label}><b>{label}</b>{index<3&&<i/>}</React.Fragment>)}
-      </div>
+      <div className="h1-o2-delivery-source-footer">Performance Marketing · 2026 H1 Review</div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ assert.deepEqual(ids, Array.from({length:21}, (_,index)=>index+1), "H1 should co
 assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','21 MODULES'\)\)/, "shell should advertise 21 modules");
 assert.doesNotMatch(shell, /'23 MODULES'/, "stale 23-module label should not appear");
 assert.ok(
-  shell.includes('src="../index.html?report=h1&embedded=1&v=20260731-h1-growth-release-v1"'),
+  shell.includes('src="../index.html?report=h1&embedded=1&v=20260731-delivery-ppt88-v1"'),
   "the formal shell should invalidate the embedded report cache after removing the India chapter",
 );
 assert.doesNotMatch(
@@ -131,7 +131,7 @@ assert.match(
   "page 12 reputation conclusion must remain legible at presentation scale",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260731-h1-growth-release-v1/g)].length,
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260731-delivery-ppt88-v1/g)].length,
   2,
   "the formal shell and embedded report must both load the current cache-busted theme",
 );
