@@ -25,6 +25,16 @@ assert.match(
 const page13Start = source.indexOf('id:13, layoutType:"followers_share"');
 const page13End = source.indexOf('id:14, layoutType:"followers_trend"', page13Start);
 const page13 = source.slice(page13Start, page13End);
+const editorRevision = "followers-share-css-ranking-v1";
+assert.ok(
+  page13.includes(`editorRevision:"${editorRevision}"`),
+  "the rebuilt page must isolate its text IDs from the legacy chart's saved Supabase slots",
+);
+assert.match(
+  source,
+  /data-editor-revision=\{board\.editorRevision \|\|/,
+  "the data-page wrapper must pass the page revision into editable text discovery",
+);
 const expectedPanels = [
   {
     key: "global",
