@@ -29,5 +29,20 @@ assert.match(
   /const O1_TVC_PRELOAD_PATHS = \[[\s\S]*?ferrari-co-brand\.mp4[\s\S]*?public-good\.mp4[\s\S]*?\];/,
   "the progressive warm-up list must be explicit and keep the largest public-good film last",
 );
+const preloadBlock = report.match(
+  /const O1_TVC_PRELOAD_PATHS = \[([\s\S]*?)\];/,
+)?.[1] || "";
+const preloadPaths = [...preloadBlock.matchAll(/'([^']+\.mp4(?:\?[^']*)?)'/g)]
+  .map((match) => match[1].split("?", 1)[0]);
+assert.equal(
+  preloadPaths.at(-2),
+  "previews/assets/o1-complete/tvc-library/cfd-public-good-web.mp4",
+  "the second-largest new public-good film must warm immediately before the largest film",
+);
+assert.equal(
+  preloadPaths.at(-1),
+  "previews/assets/o1-complete/tvc-library/public-good.mp4",
+  "the largest O1 public-good film must remain last in the serial warm-up queue",
+);
 
 console.log("H1 video loading policy uses bounded progressive O1 TVC warm-up.");

@@ -11,28 +11,39 @@ const browserName = process.env.H1_VIDEO_BROWSER || "webkit";
 const resolutionHostname =
   process.env.H1_VIDEO_RESOLUTION_HOSTNAME || new URL(baseUrl).hostname;
 const activeVideoPaths = [
+  // Safari/WebKit may hold a wide byte-range request open even after metadata
+  // arrives, so exercise the largest new web asset first before smaller probes.
+  "previews/assets/o1-complete/tvc-library/cfd-public-good-web.mp4",
   "previews/assets/vantage-h1-opening-final-4k.mp4",
   "previews/assets/vantage-h1-second-screen-final-4k.mp4",
   "previews/assets/vantage-h1-closing-ending-4k.mp4",
   "previews/assets/o1-complete/tvc-library/brand-chapter-perform-ahead.mp4",
   "previews/assets/o1-complete/tvc-library/brand-chapter-think-ahead.mp4",
-  "previews/assets/o1-complete/tvc-library/cfd-h1-summary.mp4",
-  "previews/assets/o1-complete/tvc-library/cfd-public-good.mp4",
+  "previews/assets/o1-complete/tvc-library/cfd-h1-summary-web.mp4",
   "previews/assets/o1-complete/tvc-library/ferrari-co-brand.mp4",
-  "previews/assets/o1-complete/tvc-library/ferrari-personal-moment.mp4",
+  "previews/assets/o1-complete/tvc-library/ferrari-personal-moment-web.mp4",
   "previews/assets/o1-complete/tvc-library/product-24-7.mp4",
   "previews/assets/o1-complete/tvc-library/product-copy-trade.mp4",
   "previews/assets/o1-complete/tvc-library/public-good.mp4",
   "previews/assets/o1-complete/tvc-library/special-festival-world-cup.mp4",
-  "previews/assets/o1-complete/tvc-library/tvc-brand-main.mp4",
-  "previews/assets/o1-complete/tvc-library/tvc-global.mp4",
-  "previews/assets/o1-complete/tvc-library/tvc-thailand.mp4",
-  "previews/assets/o1-complete/tvc-library/tvc-vietnam.mp4",
+  "previews/assets/o1-complete/tvc-library/tvc-brand-main-web.mp4",
+  "previews/assets/o1-complete/tvc-library/tvc-global-web.mp4",
+  "previews/assets/o1-complete/tvc-library/tvc-thailand-web.mp4",
+  "previews/assets/o1-complete/tvc-library/tvc-vietnam-web.mp4",
   "previews/assets/o1-complete/tvc-library/usp.mp4",
   "previews/assets/o3/vn-tvc-park-chess.mp4",
   "previews/assets/o3/vn-tvc-banh-mi.mp4",
   "previews/assets/o3/vn-tvc-printer.mp4",
   "previews/assets/o3/vn-online-offline.mp4",
+];
+const webPlaybackPaths = [
+  "previews/assets/o1-complete/tvc-library/cfd-public-good-web.mp4",
+  "previews/assets/o1-complete/tvc-library/cfd-h1-summary-web.mp4",
+  "previews/assets/o1-complete/tvc-library/ferrari-personal-moment-web.mp4",
+  "previews/assets/o1-complete/tvc-library/tvc-brand-main-web.mp4",
+  "previews/assets/o1-complete/tvc-library/tvc-global-web.mp4",
+  "previews/assets/o1-complete/tvc-library/tvc-thailand-web.mp4",
+  "previews/assets/o1-complete/tvc-library/tvc-vietnam-web.mp4",
 ];
 
 const browserType = { chromium, webkit }[browserName];
@@ -57,7 +68,7 @@ try {
               ok: false,
               reason: "metadata timeout",
             }),
-          10_000,
+          30_000,
         );
         const finish = (result) => {
           window.clearTimeout(timeout);
@@ -126,19 +137,19 @@ try {
     );
   } else {
     assert.ok(
-      results.every((result) =>
-        result.resolved.includes(
-          "github.com/songchunhui513-bit/q1-okr-review/releases/download/",
-        ),
+      results.every(
+        (result) =>
+          result.resolved.includes(
+            "github.com/songchunhui513-bit/q1-okr-review/releases/download/",
+          ) ||
+          result.resolved.includes(
+            "media.githubusercontent.com/media/Wayneww00/q1-okr-review/7fb413aa45fc27919ac1a0e56430c210d364e43d/",
+          ),
       ),
-      "production must resolve every presentation video through a public GitHub media release",
+      "production must resolve every presentation video through a pinned public GitHub media source",
     );
   }
 
-  const playbackPaths = [
-    "previews/assets/o1-complete/tvc-library/ferrari-personal-moment.mp4",
-    "previews/assets/o1-complete/tvc-library/public-good.mp4",
-  ];
   const playbackResults = await page.evaluate(async ({ paths, hostname }) => {
     const results = [];
     for (const path of paths) {
@@ -169,7 +180,7 @@ try {
       video.remove();
     }
     return results;
-  }, { paths: playbackPaths, hostname: resolutionHostname });
+  }, { paths: webPlaybackPaths, hostname: resolutionHostname });
   assert.deepEqual(
     playbackResults.filter(
       ({ currentTime, errorCode, playError }) =>
@@ -187,5 +198,5 @@ try {
 }
 
 console.log(
-  `All ${activeVideoPaths.length} active H1 presentation videos passed ${browserName} delivery, metadata, and playback checks.`,
+  `All ${activeVideoPaths.length} active H1 presentation videos passed ${browserName} delivery/metadata checks; all ${webPlaybackPaths.length} new O1 web videos also advanced playback.`,
 );

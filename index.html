@@ -3101,7 +3101,7 @@ function OkrInsightIcon({type}){
   return <img className={`h1-okr-insight-icon is-${type}`} src={src} alt="" aria-hidden="true"/>;
 }
 
-function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY,cover=false}={}){
+function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY}={}){
   const pageRef=useRef(null);
   const canvasRef=useRef(null);
   useEffect(()=>{
@@ -3109,9 +3109,7 @@ function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY,cover=false}={}){
     const canvas=canvasRef.current;
     if(!page || !canvas)return;
     const updateScale=()=>{
-      const scale=cover
-        ? Math.max(page.clientWidth/1920,page.clientHeight/1080)
-        : Math.min(page.clientWidth/1920,page.clientHeight/1080,maxScale);
+      const scale=Math.min(page.clientWidth/1920,page.clientHeight/1080,maxScale);
       canvas.style.setProperty('--h1-okr-scale',String(scale));
       canvas.classList.add('is-scaled');
     };
@@ -3265,53 +3263,21 @@ function O1ChapterPage({index,count}){
 
 function OkrBrandSystemPage({index,count}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
-  const insights=[
-    {
-      tone:'gold',
-      icon:'system',
-      art:'previews/assets/h1-okr-p25-card-gold-340-222.svg',
-      title:'从分散表达,走向统一品牌资产',
-      description:'Build a premium and consistent visual-verbal system across every market.',
-    },
-    {
-      tone:'ivory',
-      icon:'touchpoints',
-      art:'previews/assets/h1-okr-p25-card-ivory-340-236.svg',
-      title:'从单点传播,走向线上线下一体化体验',
-      description:'Connect campaigns, products and touchpoints into one coherent experience.',
-    },
-    {
-      tone:'charcoal',
-      icon:'global',
-      art:'previews/assets/h1-okr-p25-card-charcoal-340-250.svg',
-      title:'从一次性项目,走向全球可复制的品牌经营系统',
-      description:'Turn isolated execution into a scalable brand operating model for global growth.',
-    },
-  ];
   return (
-    <section ref={pageRef} className="h1-okr-page" data-report-page data-page-id="okr-review" aria-labelledby="h1-okr-title">
+    <section ref={pageRef} className="h1-okr-page" data-report-page data-page-id="okr-review" data-objective-index="O1" aria-label="O1 将 Vantage 建设成全球一线品牌">
       <div ref={canvasRef} className="h1-okr-canvas">
-        <div className="h1-okr-title-group" data-editor-ignore>
-          <div className="h1-okr-outline-title" aria-hidden="true">
-            ONE BRAND ONE SYSTEM
-          </div>
-          <h1 id="h1-okr-title" aria-label="将Vantage建设成全球一线品牌">
-            <span>将</span><span className="h1-okr-title-latin">Vantage</span><span>建设成全球一线品牌</span>
-          </h1>
-        </div>
-        <div
-          className="h1-okr-insight-rail"
-          aria-label="品牌经营系统的三项转变"
-          data-editor-ignore
-        >
-          {insights.map((insight,index)=>(
-            <article className={`h1-okr-insight-card is-${insight.tone}`} key={insight.title} style={{'--h1-okr-card-index':index}}>
-              <img className="h1-okr-card-art" src={insight.art} alt="" aria-hidden="true"/>
-              <div className="h1-okr-icon-medallion"><OkrInsightIcon type={insight.icon}/></div>
-              <h2>{insight.title}</h2>
-              <p>{insight.description}</p>
-            </article>
-          ))}
+        <OkrDeferredImage
+          className="h1-okr-figma-foreground-layer"
+          src="previews/assets/o1-complete/figma-untitled/p25-foreground-clean.png"
+          alt=""
+          width="1920"
+          height="1080"
+          decoding="sync"
+          draggable="false"
+          aria-hidden="true"
+        />
+        <div className="h1-okr-objective-marker" aria-label="Objective 1">
+          O1
         </div>
         <div className="h1-okr-page-number" aria-hidden="true">
           {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
@@ -3501,6 +3467,7 @@ const OKR_FIGMA_PAGES=[
     id:'okr-brand-refresh',
     label:'品牌升级',
     src:'previews/assets/o1-complete/figma-untitled/brand-refresh-foreground.png',
+    figmaNodeId:'141:78',
   },
   {
     id:'okr-brand-operating-system',
@@ -3615,7 +3582,12 @@ const OKR_FIGMA_PAGES=[
       },
     ],
   },
-  {id:'okr-elite-endorsement-resources',label:'顶级背书资源',src:'previews/assets/o1-complete/figma-untitled/p45-elite-endorsement-resources-foreground.png'},
+  {
+    id:'okr-elite-endorsement-resources',
+    label:'顶级背书资源',
+    src:'previews/assets/o1-complete/figma-untitled/p45-elite-endorsement-resources-figma-150-1072.png',
+    figmaNodeId:'150:1072',
+  },
   {
     id:'okr-elite-ferrari-experience',
     label:'法拉利',
@@ -3624,8 +3596,10 @@ const OKR_FIGMA_PAGES=[
       {
         id:'ferrari-personal-moment',
         label:'Personal Moment 法拉利定制生日祝福',
-        src:'previews/assets/o1-complete/tvc-library/ferrari-personal-moment.mp4',
+        src:'previews/assets/o1-complete/tvc-library/ferrari-personal-moment-web.mp4',
+        poster:'previews/assets/o1-complete/tvc-library/posters/ferrari-personal-moment.jpg',
         inline:true,
+        playback:'modal',
         left:5.99,
         top:32.59,
         width:31.30,
@@ -3643,6 +3617,8 @@ const OKR_FIGMA_PAGES=[
       {
         id:'vantage-objects',
         label:'打开 Vantage 周边页面',
+        ctaText:'即刻触及',
+        variant:'gold',
         href:'https://vantage-objects-452443727878.asia-southeast1.run.app/',
         unit:'px',
         left:435,
@@ -3660,9 +3636,11 @@ const OKR_FIGMA_PAGES=[
       {
         id:'cfd-public-good-story',
         label:'成为 CFD 行业公益的领军者',
-        src:'previews/assets/o1-complete/tvc-library/cfd-public-good.mp4',
+        src:'previews/assets/o1-complete/tvc-library/cfd-public-good-web.mp4?v=ppt-20260731-1948',
+        poster:'previews/assets/o1-complete/tvc-library/posters/cfd-public-good.jpg',
         fit:'contain',
         inline:true,
+        playback:'modal',
         left:9.01,
         top:26.76,
         width:81.98,
@@ -3691,13 +3669,15 @@ const OKR_FIGMA_PAGES=[
     videoSlot:{
       id:'cfd-h1-summary',
       label:'CFD 公益 H1 回顾',
-      src:'previews/assets/o1-complete/tvc-library/cfd-h1-summary.mp4',
+      src:'previews/assets/o1-complete/tvc-library/cfd-h1-summary-web.mp4?v=ppt-20260731-1907',
+      poster:'previews/assets/o1-complete/tvc-library/posters/cfd-h1-summary.jpg',
       unit:'px',
       left:338,
       top:254,
       width:1245,
       height:698,
       fit:'contain',
+      playback:'modal',
     },
   },
   {
@@ -3708,22 +3688,35 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-ai-recommendation',
     label:'24/7 AI 推荐优势',
-    src:'previews/assets/o1-complete/figma-untitled/p58-foreground.png',
+    src:'previews/assets/o1-complete/figma-untitled/p58-ai-recommendation-figma-152-1299.png',
+    figmaNodeId:'152:1299',
+    imageSlots:[
+      {id:'ai-gpt-best-broker',label:'GPT No.1 · Best broker',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/gpt-best-broker.png',unit:'px',left:184,top:279,width:472,height:184},
+      {id:'ai-gpt-weekend-trading',label:'GPT No.1 · Weekend trading',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/gpt-weekend-trading.png',unit:'px',left:184,top:559,width:472,height:154},
+      {id:'ai-gpt-broker-list',label:'GPT No.1 · Broker list',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/gpt-broker-list.png',unit:'px',left:184,top:809,width:472,height:189},
+      {id:'ai-gemini-best-broker',label:'Gemini No.1 · Best broker',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/gemini-best-broker.png',unit:'px',left:728,top:279,width:472,height:160},
+      {id:'ai-gemini-weekend-trading',label:'Gemini No.1 · Weekend trading',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/gemini-weekend-trading.png',unit:'px',left:728,top:546,width:472,height:173},
+      {id:'ai-gemini-broker-list',label:'Gemini No.1 · Broker list',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/gemini-broker-list.png',unit:'px',left:728,top:826,width:472,height:171},
+      {id:'ai-claude-best-broker',label:'Claude No.1 · Best broker',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/claude-best-broker.png',unit:'px',left:1272,top:279,width:472,height:181},
+      {id:'ai-claude-weekend-trading',label:'Claude No.1 · Weekend trading',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/claude-weekend-trading.png',unit:'px',left:1272,top:561,width:472,height:157},
+      {id:'ai-claude-broker-list',label:'Claude No.1 · Broker list',src:'previews/assets/o1-complete/figma-lightbox/ai-recommendation/claude-broker-list.png',unit:'px',left:1272,top:819,width:472,height:169},
+    ],
   },
   {
     id:'okr-omnichannel-amplification',
     label:'海陆空全面资源实现 7/24 推广',
-    src:'previews/assets/o1-complete/figma-untitled/p59-foreground-safe.png',
+    src:'previews/assets/o1-complete/figma-untitled/omnichannel-amplification-figma-145-716.png',
+    figmaNodeId:'145:716',
   },
   {
     id:'okr-tvc-localization',
     label:'TVC 矩阵：7×24',
-    src:'previews/assets/o1-complete/figma-untitled/p60-foreground.png',
+    figmaNodeId:'146:717',
     videoSlots:[
-      {id:'tvc-brand-main',label:'品牌主 TVC',src:'previews/assets/o1-complete/tvc-library/tvc-brand-main.mp4',inline:true,unit:'px',left:203,top:490,width:600,height:337},
-      {id:'tvc-global',label:'全球版 TVC',src:'previews/assets/o1-complete/tvc-library/tvc-global.mp4',inline:true,unit:'px',left:976,top:470,width:360,height:203},
-      {id:'tvc-vietnam',label:'越南版 TVC',src:'previews/assets/o1-complete/tvc-library/tvc-vietnam.mp4',inline:true,unit:'px',left:1366,top:470,width:360,height:203},
-      {id:'tvc-thailand',label:'泰国版 TVC',src:'previews/assets/o1-complete/tvc-library/tvc-thailand.mp4',inline:true,unit:'px',left:976,top:740,width:360,height:203},
+      {id:'tvc-brand-main',label:'品牌主 TVC',src:'previews/assets/o1-complete/tvc-library/tvc-brand-main-web.mp4',poster:'previews/assets/o1-complete/tvc-library/posters/tvc-brand-main.jpg',inline:true,playback:'modal',unit:'px',left:203,top:481,width:600,height:338},
+      {id:'tvc-global',label:'全球版 TVC',src:'previews/assets/o1-complete/tvc-library/tvc-global-web.mp4',poster:'previews/assets/o1-complete/tvc-library/posters/tvc-global.jpg',inline:true,playback:'modal',unit:'px',left:1170.5,top:462,width:360,height:203},
+      {id:'tvc-vietnam',label:'越南版 TVC',src:'previews/assets/o1-complete/tvc-library/tvc-vietnam-web.mp4',poster:'previews/assets/o1-complete/tvc-library/posters/tvc-vietnam.jpg',inline:true,playback:'modal',unit:'px',left:965.25,top:731,width:360,height:203},
+      {id:'tvc-thailand',label:'泰国版 TVC',src:'previews/assets/o1-complete/tvc-library/tvc-thailand-web.mp4',poster:'previews/assets/o1-complete/tvc-library/posters/tvc-thailand.jpg',inline:true,playback:'modal',unit:'px',left:1375.75,top:731,width:360,height:203},
     ],
   },
   {
@@ -3746,6 +3739,13 @@ const O1_TVC_PRELOAD_PATHS = [
   'previews/assets/o1-complete/tvc-library/special-festival-world-cup.mp4?v=ppt-mapping-verified-20260730',
   'previews/assets/o1-complete/tvc-library/product-24-7.mp4?v=ppt-mapping-verified-20260730',
   'previews/assets/o1-complete/tvc-library/product-copy-trade.mp4?v=ppt-mapping-verified-20260730',
+  'previews/assets/o1-complete/tvc-library/cfd-h1-summary-web.mp4?v=ppt-20260731-1907',
+  'previews/assets/o1-complete/tvc-library/ferrari-personal-moment-web.mp4',
+  'previews/assets/o1-complete/tvc-library/tvc-brand-main-web.mp4',
+  'previews/assets/o1-complete/tvc-library/tvc-global-web.mp4',
+  'previews/assets/o1-complete/tvc-library/tvc-vietnam-web.mp4',
+  'previews/assets/o1-complete/tvc-library/tvc-thailand-web.mp4',
+  'previews/assets/o1-complete/tvc-library/cfd-public-good-web.mp4?v=ppt-20260731-1948',
   'previews/assets/o1-complete/tvc-library/public-good.mp4?v=ppt-mapping-verified-20260730',
 ];
 
@@ -3753,15 +3753,53 @@ const O1_TVC_PRELOAD_PATHS = [
    transparent 1920 × 1080 foreground canvases. They intentionally sit over
    the one sticky p25 trophy background rather than bringing their own backdrop. */
 function OkrInlineVideo({slot}){
+  const [active,setActive]=useState(false);
+  const containerRef=useRef(null);
+  const videoRef=useRef(null);
   const unit=slot.unit || '%';
   const coordinate=(value)=>`${value}${unit}`;
+
+  useEffect(()=>{
+    const handleOtherVideo=(event)=>{
+      if(event.detail!==slot.id)setActive(false);
+    };
+    document.addEventListener('h1-inline-video-activate',handleOtherVideo);
+    return()=>document.removeEventListener('h1-inline-video-activate',handleOtherVideo);
+  },[slot.id]);
+
+  useEffect(()=>{
+    const container=containerRef.current;
+    if(!container)return;
+    const observer=new IntersectionObserver((entries)=>{
+      if(!entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=.08)){
+        setActive(false);
+      }
+    },{threshold:[0,.08]});
+    observer.observe(container);
+    return()=>observer.disconnect();
+  },[]);
+
+  useEffect(()=>{
+    if(!active||!videoRef.current)return;
+    const video=videoRef.current;
+    video.play().catch(()=>{});
+    return()=>{
+      video.pause();
+      video.removeAttribute('src');
+      video.querySelector('source')?.removeAttribute('src');
+      video.load();
+    };
+  },[active]);
+
+  const activate=()=>{
+    document.dispatchEvent(new CustomEvent('h1-inline-video-activate',{detail:slot.id}));
+    setActive(true);
+  };
+
   return (
-    <video
+    <div
+      ref={containerRef}
       className={`h1-okr-inline-video${slot.fit==='contain' ? ' is-contain' : ''}`}
-      controls
-      playsInline
-      preload="metadata"
-      aria-label={`播放：${slot.label}`}
       style={{
         left:coordinate(slot.left),
         top:coordinate(slot.top),
@@ -3769,11 +3807,64 @@ function OkrInlineVideo({slot}){
         height:coordinate(slot.height),
       }}
     >
-      <source
-        src={window.VantageBrowserRuntime.resolveMediaUrl(slot.src)}
-        type="video/mp4"
-      />
-    </video>
+      {active ? (
+        <video
+          ref={videoRef}
+          className="h1-okr-inline-video-player"
+          poster={slot.poster}
+          controls
+          autoPlay
+          playsInline
+          preload="auto"
+          aria-label={`播放：${slot.label}`}
+        >
+          <source
+            src={window.VantageBrowserRuntime.resolveMediaUrl(slot.src)}
+            type="video/mp4"
+          />
+        </video>
+      ) : (
+        <button
+          type="button"
+          className="h1-okr-inline-video-trigger"
+          aria-label={`播放：${slot.label}`}
+          title={`播放：${slot.label}`}
+          onClick={activate}
+        >
+          {slot.poster&&<img src={slot.poster} alt="" draggable="false" aria-hidden="true"/>}
+          <span className="h1-okr-inline-video-play" aria-hidden="true"></span>
+        </button>
+      )}
+    </div>
+  );
+}
+
+/* Keep the authored poster treatment on the page and instantiate remote media
+   only inside the shared player after an explicit click. */
+function OkrModalVideoTrigger({page,slot,onVideoPreview}){
+  const unit=slot.unit || '%';
+  const coordinate=(value)=>`${value}${unit}`;
+  return (
+    <div
+      className={`h1-okr-inline-video h1-okr-modal-video-trigger${slot.fit==='contain' ? ' is-contain' : ''}`}
+      style={{
+        left:coordinate(slot.left),
+        top:coordinate(slot.top),
+        width:coordinate(slot.width),
+        height:coordinate(slot.height),
+      }}
+    >
+      <button
+        type="button"
+        className="h1-okr-inline-video-trigger"
+        aria-label={`播放：${slot.label}`}
+        title={`播放：${slot.label}`}
+        onClick={()=>onVideoPreview?.({page,slot})}
+      >
+        {slot.poster&&<img src={slot.poster} alt="" draggable="false" aria-hidden="true"/>}
+        <span className="h1-okr-inline-video-play" aria-hidden="true"></span>
+      </button>
+    </div>
   );
 }
 
@@ -3784,7 +3875,7 @@ function OkrExternalLinks({page}){
     return (
       <a
         key={link.id}
-        className="h1-okr-external-link"
+        className={`h1-okr-external-link${link.variant ? ` is-${link.variant}` : ''}`}
         href={link.href}
         target="_blank"
         rel="noopener noreferrer"
@@ -3796,7 +3887,9 @@ function OkrExternalLinks({page}){
           width:coordinate(link.width),
           height:coordinate(link.height),
         }}
-      />
+      >
+        {link.ctaText&&<span>{link.ctaText}</span>}
+      </a>
     );
   }) || null;
 }
@@ -3829,6 +3922,83 @@ function OkrImageHotspots({page,onPreview}){
   }) || null;
 }
 
+// Editable copy for the Elite Client chapter. These strings intentionally live
+// in the DOM so later wording changes do not require another image export.
+const ELITE_CLIENT_EDITABLE_COPY={
+  'okr-elite-client-identity':(
+    <div className="h1-elite-copy h1-elite-copy--identity">
+      <div className="h1-elite-copy-mask h1-elite-identity-kicker">成为全球交易行业最令人向往的</div>
+      <div className="h1-elite-copy-mask h1-elite-identity-title">顶级客户身份体系</div>
+      <div className="h1-elite-copy-mask h1-elite-identity-body">以身份感建立向往，以专业增益建立信任，<br/>以稀缺资源形成差异，以专属关系沉淀长期价值</div>
+    </div>
+  ),
+  'okr-client-experience-model':(
+    <div className="h1-elite-copy h1-elite-copy--experience-model">
+      <div className="h1-elite-copy-mask h1-elite-section-title">大多数公司大客户体验怎么做的</div>
+      <div className="h1-elite-copy-mask h1-elite-section-subtitle">所有人都在回答“多给什么”，没有人回答“为什么是这里”</div>
+      <div className="h1-elite-copy-mask h1-elite-model-left"><b>传统互联网</b><span>容易被复制的权益货架</span></div>
+      <div className="h1-elite-copy-mask h1-elite-model-right"><b>WEB3</b><span>卷费率优惠 + Pass 类权益 没有人讲身份</span></div>
+    </div>
+  ),
+  'okr-client-experience-cases':(
+    <div className="h1-elite-copy h1-elite-copy--experience-cases">
+      <div className="h1-elite-copy-mask h1-elite-section-title">顶尖大客户体验怎么做的</div>
+      <div className="h1-elite-copy-mask h1-elite-section-subtitle">他们不卖权益，他们经营关系和稀缺</div>
+      <div className="h1-elite-copy-mask h1-elite-cases-left"><b>私行</b><span>家族战略，关系深度</span></div>
+      <div className="h1-elite-copy-mask h1-elite-cases-right"><b>顶级奢侈品：理查德米勒</b><span>明星资源 + 顶级独家体验 打造“品牌大家庭”，强调圈层归属感</span></div>
+    </div>
+  ),
+  'okr-elite-client-no1-experience':(
+    <div className="h1-elite-copy h1-elite-copy--no1">
+      <div className="h1-elite-copy-mask h1-elite-no1-formula">
+        <b>Vantage 顶级客户<br/>No.1 体验</b><i>=</i><b>顶级私行的<br/>长期托付</b><i>+</i><b>顶奢品牌的<br/>稀缺资源和体验</b><i>+</i><b>用心打造的<br/>圈层</b>
+      </div>
+      <div className="h1-elite-no1-pills">
+        <span className="h1-elite-copy-mask">被认可<br/><em>Recognition</em></span>
+        <span className="h1-elite-copy-mask">有身份<br/><em>Prestige</em></span>
+        <span className="h1-elite-copy-mask">真稀缺<br/><em>Rarity</em></span>
+        <span className="h1-elite-copy-mask">有增益<br/><em>Advantage</em></span>
+        <span className="h1-elite-copy-mask">可托付<br/><em>Trust</em></span>
+      </div>
+    </div>
+  ),
+  'okr-elite-ferrari-experience':(
+    <div className="h1-elite-copy h1-elite-copy--ferrari">
+      <div className="h1-elite-copy-mask h1-elite-section-title">法拉利</div>
+      <div className="h1-elite-copy-mask h1-elite-section-subtitle">不止是一张门票，而是成为法拉利和F1的座上宾，vantage才可以给的极致体验</div>
+    </div>
+  ),
+  'okr-elite-black-label':(
+    <div className="h1-elite-copy h1-elite-copy--black-label">
+      <div className="h1-elite-copy-mask h1-elite-section-title">Black Label 礼遇</div>
+      <div className="h1-elite-black-label-pills">
+        <span className="h1-elite-copy-mask">客户线索</span><i>×</i><span className="h1-elite-copy-mask">人生时刻</span><i>×</i><span className="h1-elite-copy-mask">顶级工艺</span><i>×</i><span className="h1-elite-copy-mask">私人故事</span><i>×</i><span className="h1-elite-copy-mask">交付仪式</span>
+      </div>
+      <div className="h1-elite-black-card h1-elite-copy-mask"><b>One of One</b><span>一人一物的私人定制</span></div>
+      <div className="h1-elite-black-card is-middle h1-elite-copy-mask"><b>Market &amp; Trading</b><span>顶级交易圈层</span></div>
+      <div className="h1-elite-black-card is-right h1-elite-copy-mask"><b>For the Ones You Love</b><span>关心你关心的人</span></div>
+    </div>
+  ),
+  'okr-elite-business-enablement':(
+    <div className="h1-elite-copy h1-elite-copy--enablement">
+      <div className="h1-elite-copy-mask h1-elite-section-title">业务赋能</div>
+      <div className="h1-elite-copy-mask h1-elite-section-subtitle">关心你真的关心的，相互成就，助力放大生意</div>
+      <div className="h1-elite-enablement-labels">
+        <div className="h1-elite-copy-mask"><b>小林说内容团队内容扶持</b><span>个人 IP 打造</span></div>
+        <div className="h1-elite-copy-mask"><b>4A级别 IB 沙龙策划</b><span>全流程支持</span></div>
+        <div className="h1-elite-copy-mask"><b>全球曝光资源</b><span>明星/赛事/身份</span></div>
+        <div className="h1-elite-copy-mask"><b>经营中的专业支持</b><span>税务/法务/合规…</span></div>
+        <div className="h1-elite-copy-mask"><b>Vantage 交易洞察</b><span>市场趋势与展望</span></div>
+        <div className="h1-elite-copy-mask"><b>Vantage AI 赋能</b><span>金融内容生产引擎</span></div>
+      </div>
+    </div>
+  ),
+};
+
+function OkrEliteClientEditableCopy({page}){
+  return ELITE_CLIENT_EDITABLE_COPY[page.id]||null;
+}
+
 function OkrDirectFigmaForegroundPage({page,index,count,src,onPreview,onVideoPreview}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   return (
@@ -3837,6 +4007,7 @@ function OkrDirectFigmaForegroundPage({page,index,count,src,onPreview,onVideoPre
       className="h1-okr-page h1-okr-direct-figma-page"
       data-report-page
       data-page-id={page.id}
+      data-figma-node-id={page.figmaNodeId}
       aria-label={page.label}
     >
       <div ref={canvasRef} className="h1-okr-canvas">
@@ -3851,9 +4022,8 @@ function OkrDirectFigmaForegroundPage({page,index,count,src,onPreview,onVideoPre
           draggable="false"
           aria-hidden="true"
         />
-        {page.videoSlots?.filter(slot=>slot.inline).map(slot=>(
-          <OkrInlineVideo key={slot.id} slot={slot}/>
-        ))}
+        {page.videoSlots?.filter(slot=>slot.inline&&slot.playback!=='modal').map(slot=><OkrInlineVideo key={slot.id} slot={slot}/>)}
+        {page.videoSlots?.filter(slot=>slot.inline&&slot.playback==='modal').map(slot=><OkrModalVideoTrigger key={slot.id} page={page} slot={slot} onVideoPreview={onVideoPreview}/>)}
         {page.videoSlots?.filter(slot=>!slot.inline).map(slot=>(
           <button
             key={slot.id}
@@ -3879,27 +4049,16 @@ function OkrDirectFigmaForegroundPage({page,index,count,src,onPreview,onVideoPre
   );
 }
 
-const H1_OKR_COVER_PAGE_IDS=new Set([
-  'okr-elite-client-identity',
-  'okr-client-experience-model',
-  'okr-client-experience-cases',
-  'okr-elite-client-no1-experience',
-  'okr-elite-endorsement-resources',
-  'okr-elite-ferrari-experience',
-  'okr-elite-black-label',
-  'okr-elite-business-enablement',
-]);
-
 function OkrEliteClientForegroundPage({page,index,count,onPreview,onVideoPreview}){
-  const {pageRef,canvasRef}=useOkrCanvasScale({cover:H1_OKR_COVER_PAGE_IDS.has(page.id)});
+  const {pageRef,canvasRef}=useOkrCanvasScale();
   return (
     <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page h1-okr-elite-client-page" data-report-page data-page-id={page.id} aria-label={page.label}>
       <div ref={canvasRef} className="h1-okr-canvas h1-okr-elite-client-canvas">
         <OkrDeferredImage className="h1-okr-elite-client-background" src="previews/assets/o1-complete/figma-untitled/elite-client-background-38-39-2.png" alt="" width="1920" height="1080" draggable="false" aria-hidden="true" />
         <OkrDeferredImage className="h1-okr-figma-foreground-layer" src={page.src} alt="" width="1920" height="1080" draggable="false" aria-hidden="true" />
-        {page.videoSlots?.filter(slot=>slot.inline).map(slot=>(
-          <OkrInlineVideo key={slot.id} slot={slot}/>
-        ))}
+        <OkrEliteClientEditableCopy page={page}/>
+        {page.videoSlots?.filter(slot=>slot.inline&&slot.playback!=='modal').map(slot=><OkrInlineVideo key={slot.id} slot={slot}/>)}
+        {page.videoSlots?.filter(slot=>slot.inline&&slot.playback==='modal').map(slot=><OkrModalVideoTrigger key={slot.id} page={page} slot={slot} onVideoPreview={onVideoPreview}/>)}
         {page.videoSlots?.filter(slot=>!slot.inline).map(slot=>(
           <button
             key={slot.id}
@@ -3917,9 +4076,50 @@ function OkrEliteClientForegroundPage({page,index,count,onPreview,onVideoPreview
   );
 }
 
+/* Current Figma node 150:1072 is a foreground-only export. Keep the shared
+   Elite Client background as the single stage behind its exact artwork. */
+function OkrEliteEndorsementResourcesPage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  return (
+    <section
+      ref={pageRef}
+      className="h1-okr-page h1-okr-direct-figma-page h1-okr-elite-client-page"
+      data-report-page
+      data-page-id={page.id}
+      data-figma-node-id={page.figmaNodeId}
+      aria-label={page.label}
+    >
+      <div ref={canvasRef} className="h1-okr-canvas h1-okr-elite-client-canvas">
+        <OkrDeferredImage
+          className="h1-okr-elite-client-background"
+          src="previews/assets/o1-complete/figma-untitled/elite-client-background-38-39-2.png"
+          alt=""
+          width="1920"
+          height="1080"
+          draggable="false"
+          aria-hidden="true"
+        />
+        <OkrDeferredImage
+          className="h1-okr-figma-foreground-layer is-positioned h1-okr-elite-endorsement-foreground"
+          src={page.src}
+          alt=""
+          width="1716"
+          height="904"
+          style={{left:'102px',top:'72px',width:'1716px',height:'904px'}}
+          draggable="false"
+          aria-hidden="true"
+        />
+        <div className="h1-okr-page-number" aria-hidden="true">
+          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* Figma's p54-1 video preview is a sibling of its title/panel group. Keep both
    source layers at their original Figma coordinates over the shared trophy. */
-function OkrPublicGoodVideoPage({page,index,count}){
+function OkrPublicGoodVideoPage({page,index,count,onVideoPreview}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   const foregrounds=[
     {src:page.src,left:277,top:75,width:1366,height:931},
@@ -3929,7 +4129,7 @@ function OkrPublicGoodVideoPage({page,index,count}){
     <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page" data-report-page data-page-id={page.id} aria-label={page.label}>
       <div ref={canvasRef} className="h1-okr-canvas">
         {foregrounds.map((foreground)=><OkrDeferredImage key={foreground.src} className="h1-okr-figma-foreground-layer is-positioned" src={foreground.src} alt="" width={foreground.width} height={foreground.height} style={{left:`${foreground.left}px`,top:`${foreground.top}px`,width:`${foreground.width}px`,height:`${foreground.height}px`}} draggable="false" aria-hidden="true" />)}
-        {page.videoSlot && <OkrInlineVideo slot={page.videoSlot}/>}
+        {page.videoSlot&&<OkrModalVideoTrigger page={page} slot={page.videoSlot} onVideoPreview={onVideoPreview}/>}
         <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
       </div>
     </section>
@@ -3938,21 +4138,32 @@ function OkrPublicGoodVideoPage({page,index,count}){
 
 function OkrBrandRefreshForegroundPage({page,index,count}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
+  const foregrounds=[
+    {nodeId:'141:125',src:'previews/assets/o1-complete/figma-untitled/brand-refresh-title-figma-141-125.png',left:643,top:67,width:635,height:106},
+    {nodeId:'141:115',src:'previews/assets/o1-complete/figma-untitled/brand-refresh-summary-figma-141-115.png',left:160,top:190,width:1600,height:120},
+    {nodeId:'141:128',src:'previews/assets/o1-complete/figma-untitled/brand-refresh-left-panel-figma-141-128.png',left:141,top:330,width:1600,height:687},
+    {nodeId:'141:171',src:'previews/assets/o1-complete/figma-untitled/brand-refresh-core-figma-141-171.png',left:682,top:375,width:707,height:631},
+    {nodeId:'141:215',src:'previews/assets/o1-complete/figma-untitled/brand-refresh-subtitle-figma-141-215.png',left:833,top:256,width:251,height:18},
+    {nodeId:'141:217',src:'previews/assets/o1-complete/figma-untitled/brand-refresh-connectors-figma-141-217.png',left:1157,top:540,width:197,height:366},
+    {nodeId:'141:221',src:'previews/assets/o1-complete/figma-untitled/brand-refresh-channels-figma-141-221.png',left:1321,top:375,width:411,height:631},
+  ];
   return (
-    <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page h1-okr-brand-refresh-page" data-report-page data-page-id={page.id} aria-label={page.label}>
+    <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page h1-okr-brand-refresh-page" data-report-page data-page-id={page.id} data-figma-node-id={page.figmaNodeId} aria-label={page.label}>
       <div ref={canvasRef} className="h1-okr-canvas">
-        <OkrDeferredImage
-          className="h1-okr-figma-foreground-layer is-positioned h1-okr-brand-refresh-foreground"
-          src={page.src}
-          alt=""
-          width="1619"
-          height="950"
-          style={{left:'160px',top:'67px',width:'1619px',height:'950px'}}
-          loading="eager"
-          decoding="sync"
-          draggable="false"
-          aria-hidden="true"
-        />
+        {foregrounds.map((foreground)=>(
+          <OkrDeferredImage
+            key={foreground.nodeId}
+            className="h1-okr-figma-foreground-layer is-positioned h1-okr-brand-refresh-foreground"
+            data-figma-node-id={foreground.nodeId}
+            src={foreground.src}
+            alt=""
+            width={foreground.width}
+            height={foreground.height}
+            style={{left:`${foreground.left}px`,top:`${foreground.top}px`,width:`${foreground.width}px`,height:`${foreground.height}px`}}
+            draggable="false"
+            aria-hidden="true"
+          />
+        ))}
         <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
       </div>
     </section>
@@ -3984,6 +4195,7 @@ function OkrPositionedFigmaForegroundPage({page,index,count,src,artwork,onPrevie
       className="h1-okr-page h1-okr-direct-figma-page"
       data-report-page
       data-page-id={page.id}
+      data-figma-node-id={page.figmaNodeId}
       aria-label={page.label}
     >
       <div ref={canvasRef} className="h1-okr-canvas">
@@ -4003,6 +4215,57 @@ function OkrPositionedFigmaForegroundPage({page,index,count,src,artwork,onPrevie
           <OkrInlineVideo key={slot.id} slot={slot}/>
         ))}
         <OkrImageHotspots page={page} onPreview={onPreview}/>
+        <div className="h1-okr-page-number" aria-hidden="true">
+          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function OkrTvcLocalizationPage({page,index,count,onVideoPreview}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  return (
+    <section
+      ref={pageRef}
+      className="h1-okr-page h1-okr-direct-figma-page h1-okr-tvc-localization-page"
+      data-report-page
+      data-page-id={page.id}
+      data-figma-node-id={page.figmaNodeId}
+      aria-label={page.label}
+    >
+      <div ref={canvasRef} className="h1-okr-canvas">
+        <h1 className="h1-okr-tvc-localization-title">TVC 矩阵｜把 7×24 拍成人人看得懂的周末机会</h1>
+
+        <div className="h1-okr-tvc-localization-summary">
+          <img src="previews/assets/figma-racing/checkered-flag.svg" alt="" draggable="false" aria-hidden="true"/>
+          <span aria-hidden="true"></span>
+          <p>一支核心 TVC + 多市场 Viral Video，承接 Phase 2 从认知、讨论到参与的传播链路。</p>
+        </div>
+
+        <section className="h1-okr-tvc-localization-panel is-primary" aria-label="品牌主 TVC">
+          <header>
+            <strong>品牌主 TVC</strong>
+            <h2>168 小时，黄金从不停歇</h2>
+          </header>
+          <div className="h1-okr-tvc-localization-panel-body"></div>
+          <div className="h1-okr-tvc-localization-caption">
+            <strong>24×7 黄金交易 = 周末不缺席</strong>
+            <p>从 “市场关闭” 到 “机会不间断”，<br/>Vantage 让黄金从不休息</p>
+          </div>
+        </section>
+
+        <section className="h1-okr-tvc-localization-panel is-localized" aria-label="本地化版本">
+          <header>
+            <h2>顽梗方式在 social 传播的本地化版本</h2>
+          </header>
+          <div className="h1-okr-tvc-localization-panel-body"></div>
+          <strong className="h1-okr-tvc-localization-video-label is-global">全球版</strong>
+          <strong className="h1-okr-tvc-localization-video-label is-vietnam">越南版</strong>
+          <strong className="h1-okr-tvc-localization-video-label is-thailand">泰国版</strong>
+        </section>
+
+        {page.videoSlots.map(slot=><OkrModalVideoTrigger key={slot.id} page={page} slot={slot} onVideoPreview={onVideoPreview}/>)}
         <div className="h1-okr-page-number" aria-hidden="true">
           {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
         </div>
@@ -4149,6 +4412,9 @@ function OkrVideoModal({preview,onClose}){
     if(video){
       video.pause();
       video.currentTime=0;
+      video.removeAttribute('src');
+      video.querySelector('source')?.removeAttribute('src');
+      video.load();
     }
     onClose();
   },[onClose]);
@@ -4172,7 +4438,12 @@ function OkrVideoModal({preview,onClose}){
     return()=>{
       document.removeEventListener('keydown',onKeyDown);
       const video=videoRef.current;
-      if(video)video.pause();
+      if(video){
+        video.pause();
+        video.removeAttribute('src');
+        video.querySelector('source')?.removeAttribute('src');
+        video.load();
+      }
     };
   },[preview,closeVideo]);
   if(!preview)return null;
@@ -4189,9 +4460,11 @@ function OkrVideoModal({preview,onClose}){
           <video
             ref={videoRef}
             className={`h1-okr-video-player${preview.slot.fit==='cover' ? ' is-cover' : ''}`}
+            poster={preview.slot.poster}
             controls
             autoPlay
             playsInline
+            preload="auto"
           >
             <source
               src={window.VantageBrowserRuntime.resolveMediaUrl(preview.slot.src)}
@@ -4245,22 +4518,22 @@ function OkrReportDeck(){
         page.id==='okr-awards' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} artwork={{left:160,top:40,width:1600,height:1012}} onPreview={setPreview}/> :
         page.id==='okr-offline-event-01' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p33-34-foreground-clean.png" onPreview={setPreview}/> :
         page.id==='okr-offline-event-02' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p36-1-foreground-clean.png" onPreview={setPreview}/> :
-        page.id==='okr-elite-client-identity' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
-        page.id==='okr-client-experience-model' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
-        page.id==='okr-client-experience-cases' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onPreview={setPreview}/> :
-        page.id==='okr-elite-client-no1-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onPreview={setPreview}/> :
-        page.id==='okr-elite-endorsement-resources' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
+        page.id==='okr-elite-client-identity' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-client-experience-model' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-client-experience-cases' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onPreview={setPreview} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-elite-client-no1-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onPreview={setPreview} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-elite-endorsement-resources' ? <OkrEliteEndorsementResourcesPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-elite-ferrari-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
-        page.id==='okr-elite-black-label' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
-        page.id==='okr-elite-business-enablement' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
+        page.id==='okr-elite-black-label' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-elite-business-enablement' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-merchandise' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p52-foreground-clean.png"/> :
         page.id==='okr-cfd-public-good-story' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} onPreview={setPreview}/> :
-        page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
+        page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src}/> :
-        page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p58-foreground.png" artwork={{left:160,top:19,width:1608,height:1042}}/> :
-        page.id==='okr-omnichannel-amplification' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p59-foreground-safe.png" artwork={{left:106,top:51,width:1707,height:992}}/> :
-        page.id==='okr-tvc-localization' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p60-foreground.png" artwork={{left:160,top:92,width:1631,height:920}}/> :
+        page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} artwork={{left:160,top:19,width:1608,height:1042}} onPreview={setPreview}/> :
+        page.id==='okr-omnichannel-amplification' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} artwork={{left:195,top:75,width:1575,height:987}}/> :
+        page.id==='okr-tvc-localization' ? <OkrTvcLocalizationPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-superapp-activation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p61-foreground.png" artwork={{left:46,top:52,width:1850,height:1045}}/> :
         page.id==='okr-premium-unlimited' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p62-foreground.png" artwork={{left:160,top:75,width:1600,height:972}}/> :
         page.id==='okr-brand-experience-audit' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p63-foreground.png" artwork={{left:111,top:90,width:1600,height:839}} onPreview={setPreview}/> :
