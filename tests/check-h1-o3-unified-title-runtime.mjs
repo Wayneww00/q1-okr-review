@@ -8,8 +8,8 @@ const { chromium } = require(
 const baseUrl = process.env.H1_O3_TEST_URL || "http://127.0.0.1:4180";
 const browser = await chromium.launch({ headless: true });
 const expectedCopy = {
-  "o3-retail-ftd": ["RETAIL · 整体表现", "2026 H1 Retail FTD", "Retail 整体 FTD 绝对值同比增长 385%，FTD 越南占比提升 8.1 个百分点。"],
-  "o3-retail-tv": ["RETAIL · 整体表现", "2026 H1 Retail TV", "Retail 整体 TV 绝对值同比增长 283%，TV 越南占比提升 0.7 个百分点。"],
+  "o3-retail-ftd": ["RETAIL · 整体表现", "越南 2026-H1 FTD 较2025 H2增长近三倍", "越南整体 FTD 绝对值较2025 H2增长 197.7%，FTD 越南占比提升 2.8 个百分点。"],
+  "o3-retail-tv": ["RETAIL · 整体表现", "越南 2026-H1 TV 较2025 H2增长超过三倍", "越南整体 TV 绝对值较2025 H2增长 214%，TV 越南占比提升 1.9 个百分点。"],
   "o3-vn-record": ["越南增长", "越南 H1 增长，达到历史新高", "FTD 与 TV 同步突破；相对于区域其他品牌，越南不仅增速领先，PNL 表现也处于高位。"],
   "o3-seo": ["SEO · 搜索引擎优化", "越南SEO自然流量已经成为行业第一", "核心关键词和特色关键词Copytrading均成为行业第一，是Vantage增速最快的国家"],
   "o3-geo": ["GEO · 生成式引擎优化", "Vantage在越南GEO的品牌可见性是行业第一梯队", "7×24黄金交易相关话题在越南AI平台全面领先其它品牌"],
@@ -44,6 +44,10 @@ const runtimeStub = `
         return session;
       },
       resolveMediaUrl: (path) => path,
+      setVideoSource: (video, path) => {
+        video.src = path;
+      },
+      progressivelyWarmPresentationMedia: async () => {},
       createReportController: () => ({
         initialize: async () => true,
         beginEditing() {},
@@ -57,7 +61,7 @@ const runtimeStub = `
 
 try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
-  await page.route("**/vendor/vantage-runtime.js", (route) =>
+  await page.route("**/vendor/vantage-runtime.js*", (route) =>
     route.fulfill({
       status: 200,
       contentType: "application/javascript",
@@ -148,7 +152,7 @@ try {
     assert.deepEqual(
       state.copy,
       expectedCopy[state.pageId],
-      `${state.pageId} must retain its original title copy`,
+      `${state.pageId} must retain its approved title copy`,
     );
     assert.deepEqual(
       {

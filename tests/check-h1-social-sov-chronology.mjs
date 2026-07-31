@@ -7,7 +7,8 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const report = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const shell = fs.readFileSync(path.join(root, "previews", "vantage-h1-immersive.html"), "utf8");
-const revision = "20260731-delivery-ppt88-v1";
+const presentationRevision = "20260731-delivery-ppt88-v1";
+const reportRevision = "20260731-vn-retail-ppt-v1";
 
 const dashboardsStart = report.indexOf("const H1_DASHBOARDS = [");
 const dashboardsEnd = report.indexOf("const REPORT_MODE", dashboardsStart);
@@ -85,14 +86,14 @@ assert.match(
   "page-specific editor revisions should be applied before loading saved text from Supabase",
 );
 assert.ok(
-  report.includes(`previews/h1-figma-racing-theme.css?v=${revision}`),
+  report.includes(`previews/h1-figma-racing-theme.css?v=${presentationRevision}`),
   "the standalone report should use the current presentation revision",
 );
 assert.ok(
-  shell.includes(`h1-figma-racing-theme.css?v=${revision}`) &&
-    shell.includes(`../index.html?report=h1&embedded=1&v=${revision}`) &&
-    shell.includes(`figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=${revision}'`),
-  "the immersive shell should invalidate both report and theme caches for the corrected chart order",
+  shell.includes(`h1-figma-racing-theme.css?v=${presentationRevision}`) &&
+    shell.includes(`../index.html?report=h1&embedded=1&v=${reportRevision}`) &&
+    shell.includes(`figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=${presentationRevision}'`),
+  "the immersive shell should retain the approved presentation theme and independently invalidate the updated report cache",
 );
 
 console.log("H1 social SOV chronological order contract passed.");

@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-delivery-ppt88-v1">
-<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-aso-proof-rank-v1">
+<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-vn-retail-ppt-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
 <style>
@@ -5858,8 +5858,8 @@ function O2ReportDeck(){
 // ═══ O3 Vietnam review — coded from O3.pptx, data-module visual language ═══
 const O3_REPORT_PAGES=[
   {id:"o3-chapter",layout:"chapter",eyebrow:"O3 · 关键区域复盘",title:"关键区域打造 · 越南",description:"从经营增长、搜索与品牌可见性，到本地内容和转化闭环，复盘越南市场的阶段成果。"},
-  {id:"o3-retail-ftd",layout:"retail-ftd",eyebrow:"RETAIL · 整体表现",title:"2026 H1 Retail FTD",description:"Retail 整体 FTD 绝对值同比增长 385%，FTD 越南占比提升 8.1 个百分点。"},
-  {id:"o3-retail-tv",layout:"retail-tv",eyebrow:"RETAIL · 整体表现",title:"2026 H1 Retail TV",description:"Retail 整体 TV 绝对值同比增长 283%，TV 越南占比提升 0.7 个百分点。"},
+  {id:"o3-retail-ftd",layout:"retail-ftd",editorRevision:"vn-retail-h1-ppt-update-v1",eyebrow:"RETAIL · 整体表现",title:"越南 2026-H1 FTD 较2025 H2增长近三倍",description:"越南整体 FTD 绝对值较2025 H2增长 197.7%，FTD 越南占比提升 2.8 个百分点。"},
+  {id:"o3-retail-tv",layout:"retail-tv",editorRevision:"vn-retail-h1-ppt-update-v1",eyebrow:"RETAIL · 整体表现",title:"越南 2026-H1 TV 较2025 H2增长超过三倍",description:"越南整体 TV 绝对值较2025 H2增长 214%，TV 越南占比提升 1.9 个百分点。"},
   {id:"o3-vn-record",layout:"record",eyebrow:"越南增长",title:"越南 H1 增长，达到历史新高",description:"FTD 与 TV 同步突破；相对于区域其他品牌，越南不仅增速领先，PNL 表现也处于高位。"},
   {id:"o3-seo",layout:"seo",eyebrow:"SEO · 搜索引擎优化",title:"越南 SEO 自然流量已经成为行业第一",description:"核心关键词和特色关键词同步提升；Vantage 是自然流量增长最快的国家市场之一。"},
   {id:"o3-geo",layout:"geo",eyebrow:"GEO · 生成式引擎优化",title:"Vantage 在越南 GEO 的品牌可见性处于行业第一梯队",description:"围绕 7×24 黄金交易的相关主题，在越南主流 AI 平台形成稳定领先。"},
@@ -5927,26 +5927,56 @@ function O3Bars({items,unit,shareLabel}){
 
 function O3RetailComparison({kind}){
   const ftd=kind==="ftd";
-  const rows=ftd
-    ?[{period:"2025 H2",raw:992,value:"992",share:"12.9%"},{period:"2026 H1",raw:4808,value:"4,808",share:"21.0%"}]
-    :[{period:"2025 H2",raw:6.38,value:"6.38 Bn",share:"3.0%"},{period:"2026 H1",raw:24.42,value:"24.42 Bn",share:"3.7%"}];
+  const data=ftd?{
+    sectionTitle:"2026 H1 FTD",
+    tableMetric:"越南 FTD",
+    rows:[{period:"2025 H2",raw:7695,value:"7,695",share:"2.7%"},{period:"2026 H1",raw:22910,value:"22,910",share:"5.5%"}],
+    summary:"越南整体 FTD 绝对值较2025 H2增长 197.7%，FTD 越南占比提升 2.8 个百分点。",
+    chartTitle:"2026 H1 越南 FTD 半年表现及整体占比变化",
+    axisLabel:"Retail FTD（绝对值）",
+    shareLabel:"FTD 占 Vantage（占比）",
+    barLegend:"越南 FTD",
+    shareLegend:"FTD Vantage 大盘占比",
+    metricLabel:"越南 FTD 绝对值",
+    growth:"+197.7%",
+    shareGrowth:"+2.8%",
+    shareNote:"2.7% → 5.5%",
+  }:{
+    sectionTitle:"2026 H1 TV",
+    tableMetric:"越南 TV",
+    rows:[{period:"2025 H2",raw:210.3,value:"210.3 Bn",share:"1.5%"},{period:"2026 H1",raw:660.2,value:"660.2 Bn",share:"3.4%"}],
+    summary:"越南整体 TV 绝对值较2025 H2增长 214%，TV 越南占比提升 1.9 个百分点。",
+    chartTitle:"2026 H1 越南 TV 半年表现及整体占比变化",
+    axisLabel:"Trading Volume (Bn)",
+    shareLabel:"TV 占 Vantage（占比）",
+    barLegend:"越南 TV",
+    shareLegend:"TV Vantage 大盘占比",
+    metricLabel:"越南 TV 绝对值",
+    growth:"+214%",
+    shareGrowth:"+1.9%",
+    shareNote:"1.5% → 3.4%",
+  };
   return (
     <div className="h1-o3-retail-layout">
       <article className="h1-o3-card h1-o3-retail-summary">
-        <div className="h1-o3-panel-title"><span>{ftd?"Retail FTD":"Retail TV"}</span><strong>2025 H2 → 2026 H1</strong></div>
+        <div className="h1-o3-panel-title"><span>{data.sectionTitle}</span><strong>2025 H2 → 2026 H1</strong></div>
         <div className="h1-o3-mini-table">
-          <div><b>周期</b><b>{ftd?"Retail FTD":"Retail TV"}</b><b>越南占比</b></div>
-          {rows.map(row=><div key={row.period}><span>{row.period}</span><strong>{row.value}</strong><strong>{row.share}</strong></div>)}
+          <div><b>Year</b><b>{data.tableMetric}</b><b>越南占比</b></div>
+          {data.rows.map(row=><div key={row.period}><span>{row.period}</span><strong>{row.value}</strong><strong>{row.share}</strong></div>)}
         </div>
-        <p>{ftd?"FTD 在规模快速增长的同时，越南贡献占比同步提升。":"TV 规模接近四倍增长，越南占比继续稳步扩大。"}</p>
+        <p>{data.summary}</p>
       </article>
       <article className="h1-o3-card h1-o3-chart-card">
-        <div className="h1-o3-panel-title"><span>{ftd?"FTD 绝对值与占比变化":"TV 绝对值与占比变化"}</span><strong>{ftd?"+385%":"+283%"}</strong></div>
-        <O3Bars items={rows} unit={ftd?"Retail FTD":"Trading Volume"} shareLabel="越南占比"/>
+        <div className="h1-o3-panel-title"><span>{data.chartTitle}</span><strong>{data.growth}</strong></div>
+        <div className="h1-o3-retail-chart-legend" aria-label="图表图例">
+          <span><i className="is-bar"/>{data.barLegend}</span>
+          <span><i className="is-share"/>{data.shareLegend}</span>
+        </div>
+        <O3Bars items={data.rows} unit={data.axisLabel} shareLabel={data.shareLabel}/>
       </article>
       <div className="h1-o3-retail-kpis">
-        <O3Metric label={ftd?"Retail FTD 增长":"Retail TV 增长"} value={ftd?"+385%":"+283%"} note="2026 H1 vs 2025 H2" tone="orange"/>
-        <O3Metric label="越南占比提升" value={ftd?"+8.1%":"+0.7%"} note={ftd?"12.9% → 21.0%":"3.0% → 3.7%"} />
+        <O3Metric label={data.metricLabel} value={data.growth} note="2026 H1 vs 2025 H2" tone="orange"/>
+        <O3Metric label="越南占比提升" value={data.shareGrowth} note={data.shareNote} />
       </div>
     </div>
   );
@@ -6616,7 +6646,7 @@ function O3ReportPage({page,index,count,onVideoPreview}){
       className={`h1-o3-page is-${page.layout}`}
       data-report-page
       data-page-id={page.id}
-      data-editor-revision={page.id==="o3-seo"?"semrush-source-note-v1":undefined}
+      data-editor-revision={page.editorRevision||(page.id==="o3-seo"?"semrush-source-note-v1":undefined)}
     >
       {page.layout==="india-chapter"?<div className="h1-o3-artboard-viewport">{artboard}</div>:artboard}
     </section>
