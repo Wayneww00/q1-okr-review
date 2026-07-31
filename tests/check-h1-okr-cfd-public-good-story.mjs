@@ -16,14 +16,14 @@ const publicGoodVideoPath = path.join(
   "previews",
   "assets",
   "tvc-library",
-  "cfd-public-good.mp4",
+  "cfd-public-good-web.mp4",
 );
 const ferrariVideoPath = path.join(
   root,
   "previews",
   "assets",
   "tvc-library",
-  "ferrari-personal-moment.mp4",
+  "ferrari-personal-moment-web.mp4",
 );
 
 const registry = app.slice(
@@ -57,26 +57,26 @@ assert.equal(
 
 assert.match(
   app,
-  /id:'okr-cfd-public-good-story'[\s\S]*?p73-cfd-public-good-video-foreground\.png[\s\S]*?id:'cfd-public-good-story'[\s\S]*?tvc-library\/cfd-public-good\.mp4[\s\S]*?inline:true/,
+  /id:'okr-cfd-public-good-story'[\s\S]*?p73-cfd-public-good-video-foreground\.png[\s\S]*?id:'cfd-public-good-story'[\s\S]*?tvc-library\/cfd-public-good-web\.mp4[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/cfd-public-good\.jpg'[\s\S]*?inline:true/,
   "the Frame 73 page must use its PPT public-good video as an inline player",
 );
 assert.match(
   app,
-  /id:'okr-elite-ferrari-experience'[\s\S]*?p46-elite-ferrari-foreground\.png[\s\S]*?id:'ferrari-personal-moment'[\s\S]*?tvc-library\/ferrari-personal-moment\.mp4[\s\S]*?inline:true/,
+  /id:'okr-elite-ferrari-experience'[\s\S]*?p46-elite-ferrari-foreground\.png[\s\S]*?id:'ferrari-personal-moment'[\s\S]*?tvc-library\/ferrari-personal-moment-web\.mp4[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/ferrari-personal-moment\.jpg'[\s\S]*?inline:true/,
   "the Ferrari page must use its PPT Personal Moment video as an inline player",
 );
 assert.ok(
-  fs.existsSync(publicGoodVideoPath) && fs.statSync(publicGoodVideoPath).size > 100_000_000,
-  "the converted public-good MP4 must be present",
+  fs.existsSync(publicGoodVideoPath) && fs.statSync(publicGoodVideoPath).size > 10_000_000,
+  "the web-optimized public-good MP4 must be present",
 );
 assert.ok(
-  fs.existsSync(ferrariVideoPath) && fs.statSync(ferrariVideoPath).size > 100_000_000,
-  "the Ferrari PPT MP4 must be present",
+  fs.existsSync(ferrariVideoPath) && fs.statSync(ferrariVideoPath).size > 1_000_000,
+  "the web-optimized Ferrari MP4 must be present",
 );
 assert.match(
   app,
-  /function OkrInlineVideo\(\{slot\}\)[\s\S]*?controls[\s\S]*?playsInline[\s\S]*?preload="metadata"/,
-  "PPT videos must render as native controllable inline video players",
+  /function OkrInlineVideo\(\{slot\}\)[\s\S]*?h1-okr-inline-video-trigger[\s\S]*?onClick=\{activate\}/,
+  "PPT videos must wait for an explicit user click before creating the native player",
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),

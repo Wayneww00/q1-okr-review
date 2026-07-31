@@ -21,8 +21,13 @@ const closingScene = formal.match(
 assert.ok(closingScene, "the formal deck must retain a closing-film scene");
 assert.match(
   closingScene,
-  /<video\b(?=[^>]*class="video-bg")(?=[^>]*playsinline)(?=[^>]*preload="auto")(?=[^>]*src="assets\/vantage-h1-closing-sp-4k\.mp4")[^>]*>/,
-  "the closing scene must use the supplied compatible film",
+  /<video\b(?=[^>]*class="video-bg")(?=[^>]*playsinline)(?=[^>]*preload="none")(?=[^>]*src="assets\/vantage-h1-closing-sp-4k\.mp4")[^>]*>/,
+  "the closing scene must retain the supplied compatible film without downloading it offscreen",
+);
+assert.doesNotMatch(
+  closingScene,
+  /<video\b[^>]*\bautoplay\b/,
+  "the offscreen closing film must wait until its scene becomes active",
 );
 assert.doesNotMatch(
   closingScene,

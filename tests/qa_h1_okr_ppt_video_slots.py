@@ -15,7 +15,23 @@ with sync_playwright() as playwright:
     browser = playwright.chromium.launch(headless=True)
     page = browser.new_page(viewport={"width": 1920, "height": 1080})
     errors = []
+    inline_video_requests = []
     page.on("pageerror", lambda error: errors.append(str(error)))
+    page.on(
+        "request",
+        lambda request: inline_video_requests.append(request.url)
+        if any(
+            name in request.url
+            for name in (
+                "cfd-h1-summary-web.mp4",
+                "tvc-brand-main-web.mp4",
+                "tvc-global-web.mp4",
+                "tvc-vietnam-web.mp4",
+                "tvc-thailand-web.mp4",
+            )
+        )
+        else None,
+    )
     page.goto(
         f"{BASE_URL}/index.html"
         "?report=h1&embedded=1&v=20260731-ai-frame58-lightbox-v1",
@@ -27,14 +43,18 @@ with sync_playwright() as playwright:
     public_video = public_good.locator(".h1-okr-inline-video")
     public_video.wait_for(state="visible")
     assert public_video.count() == 1
-    assert "tvc-library/cfd-h1-summary.mp4" in (public_video.get_attribute("src") or "")
-    public_video.click(position={"x": 24, "y": 24})
+    assert public_video.locator(".h1-okr-inline-video-player").count() == 0
+    assert inline_video_requests == [], inline_video_requests
+    public_video.locator(".h1-okr-inline-video-trigger").click()
+    public_player = public_video.locator(".h1-okr-inline-video-player")
+    public_player.wait_for(state="visible")
+    assert "tvc-library/cfd-h1-summary-web.mp4" in (public_player.get_attribute("src") or "")
     page.wait_for_function(
         "(selector) => { const video = document.querySelector(selector);"
         " return video && video.readyState >= 3 && !video.paused && video.currentTime > 0; }",
-        arg=f'[data-page-id="{PUBLIC_GOOD_PAGE}"] .h1-okr-inline-video',
+        arg=f'[data-page-id="{PUBLIC_GOOD_PAGE}"] .h1-okr-inline-video-player',
     )
-    public_video.evaluate("video => video.pause()")
+    public_player.evaluate("video => video.pause()")
 
     tvc = page.locator(f'[data-page-id="{TVC_PAGE}"]')
     tvc.scroll_into_view_if_needed()
@@ -42,25 +62,45 @@ with sync_playwright() as playwright:
     assert videos.count() == 4
     assert tvc.locator("text=UAE").count() == 0
     assert tvc.locator(".h1-okr-tvc-localization-panel").count() == 2
+    assert not any(
+        any(
+            name in url
+            for name in (
+                "tvc-brand-main-web.mp4",
+                "tvc-global-web.mp4",
+                "tvc-vietnam-web.mp4",
+                "tvc-thailand-web.mp4",
+            )
+        )
+        for url in inline_video_requests
+    ), inline_video_requests
     expected_sources = [
-        "tvc-brand-main.mp4",
-        "tvc-global.mp4",
-        "tvc-vietnam.mp4",
-        "tvc-thailand.mp4",
+        "tvc-brand-main-web.mp4",
+        "tvc-global-web.mp4",
+        "tvc-vietnam-web.mp4",
+        "tvc-thailand-web.mp4",
     ]
     for index, source in enumerate(expected_sources):
-        video = videos.nth(index)
+        wrapper = videos.nth(index)
+        wrapper.wait_for(state="visible")
+        wrapper.locator(".h1-okr-inline-video-trigger").click()
+        video = wrapper.locator(".h1-okr-inline-video-player")
         video.wait_for(state="visible")
         assert source in (video.get_attribute("src") or "")
-        video.click(position={"x": 24, "y": 24})
+        assert tvc.locator(".h1-okr-inline-video-player").count() == 1
         page.wait_for_function(
-            "([selector, index]) => { const video = document.querySelectorAll(selector)[index];"
+            "(selector) => { const video = document.querySelector(selector);"
             " return video && video.readyState >= 3 && !video.paused && video.currentTime > 0; }",
-            arg=[f'[data-page-id="{TVC_PAGE}"] .h1-okr-inline-video', index],
+            arg=f'[data-page-id="{TVC_PAGE}"] .h1-okr-inline-video-player',
         )
         video.evaluate("video => video.pause()")
 
     tvc.screenshot(path=str(SCREENSHOT))
+    next_page = page.locator('[data-page-id="okr-superapp-activation"]')
+    next_page.scroll_into_view_if_needed()
+    page.wait_for_timeout(250)
+    assert tvc.locator(".h1-okr-inline-video-player").count() == 0
+    assert tvc.locator(".h1-okr-inline-video-trigger").count() == 4
 
     shell = browser.new_page(viewport={"width": 1920, "height": 1080})
     shell_errors = []
@@ -82,6 +122,8 @@ with sync_playwright() as playwright:
     )
     shell.wait_for_timeout(500)
     assert shell_tvc.locator(".h1-okr-inline-video").count() == 4
+    assert shell_tvc.locator(".h1-okr-inline-video-trigger").count() == 4
+    assert shell_tvc.locator(".h1-okr-inline-video-player").count() == 0
     assert shell_tvc.locator("text=UAE").count() == 0
     assert (
         shell_tvc.locator(".h1-okr-page-number").inner_text().replace(" ", "").replace("\n", "")

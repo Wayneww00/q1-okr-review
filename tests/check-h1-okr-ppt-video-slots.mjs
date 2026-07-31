@@ -7,26 +7,31 @@ const app = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const assetDirectory = path.join(root, "previews", "assets", "tvc-library");
 
 for (const filename of [
-  "cfd-h1-summary.mp4",
-  "tvc-brand-main.mp4",
-  "tvc-global.mp4",
-  "tvc-vietnam.mp4",
-  "tvc-thailand.mp4",
+  "cfd-h1-summary-web.mp4",
+  "tvc-brand-main-web.mp4",
+  "tvc-global-web.mp4",
+  "tvc-vietnam-web.mp4",
+  "tvc-thailand-web.mp4",
 ]) {
   const asset = path.join(assetDirectory, filename);
   assert.ok(fs.existsSync(asset), `${filename} must be packaged with the report`);
-  assert.ok(fs.statSync(asset).size > 10_000_000, `${filename} must not be a placeholder`);
+  assert.ok(fs.statSync(asset).size > 1_000_000, `${filename} must not be a placeholder`);
 }
 
 assert.match(
   app,
-  /id:'okr-public-good-video'[\s\S]*?id:'cfd-h1-summary'[\s\S]*?tvc-library\/cfd-h1-summary\.mp4[\s\S]*?fit:'contain'/,
+  /id:'okr-public-good-video'[\s\S]*?id:'cfd-h1-summary'[\s\S]*?tvc-library\/cfd-h1-summary-web\.mp4[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/cfd-h1-summary\.png'[\s\S]*?fit:'contain'/,
   "the H1 public-good page must use its supplied PPT video without cropping it",
 );
 assert.match(
   app,
-  /id:'okr-tvc-localization'[\s\S]*?id:'tvc-brand-main'[\s\S]*?tvc-brand-main\.mp4[\s\S]*?id:'tvc-global'[\s\S]*?tvc-global\.mp4[\s\S]*?id:'tvc-vietnam'[\s\S]*?tvc-vietnam\.mp4[\s\S]*?id:'tvc-thailand'[\s\S]*?tvc-thailand\.mp4/,
+  /id:'okr-tvc-localization'[\s\S]*?id:'tvc-brand-main'[\s\S]*?tvc-brand-main-web\.mp4[\s\S]*?id:'tvc-global'[\s\S]*?tvc-global-web\.mp4[\s\S]*?id:'tvc-vietnam'[\s\S]*?tvc-vietnam-web\.mp4[\s\S]*?id:'tvc-thailand'[\s\S]*?tvc-thailand-web\.mp4/,
   "the TVC matrix must map all four videos embedded by the supplied PPT",
+);
+assert.match(
+  app,
+  /function OkrInlineVideo\(\{slot\}\)[\s\S]*?\{active \? \([\s\S]*?<video[\s\S]*?src=\{slot\.src\}[\s\S]*?preload="auto"[\s\S]*?: \([\s\S]*?<button[\s\S]*?h1-okr-inline-video-trigger/,
+  "inline videos must render a lightweight cover first and create the real player only after a click",
 );
 assert.match(
   app,

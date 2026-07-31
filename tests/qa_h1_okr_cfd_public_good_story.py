@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -5,15 +6,23 @@ from playwright.sync_api import sync_playwright
 
 SCREENSHOT = Path("/tmp/h1-okr-cfd-public-good-story.png")
 PAGE_ID = "okr-cfd-public-good-story"
+BASE_URL = os.environ.get("H1_TVC_TEST_URL", "http://127.0.0.1:4182")
 
 
 with sync_playwright() as playwright:
     browser = playwright.chromium.launch(headless=True)
     page = browser.new_page(viewport={"width": 1920, "height": 1080})
     errors = []
+    video_requests = []
     page.on("pageerror", lambda error: errors.append(str(error)))
+    page.on(
+        "request",
+        lambda request: video_requests.append(request.url)
+        if "cfd-public-good-web.mp4" in request.url
+        else None,
+    )
     page.goto(
-        "http://127.0.0.1:4183/index.html"
+        f"{BASE_URL}/index.html"
         "?report=h1&embedded=1&v=20260730-frame73-story",
         wait_until="networkidle",
     )
@@ -59,16 +68,22 @@ with sync_playwright() as playwright:
     }
 
     report_page.screenshot(path=str(SCREENSHOT))
-    video = report_page.locator(".h1-okr-inline-video")
+    wrapper = report_page.locator(".h1-okr-inline-video")
+    wrapper.wait_for(state="visible")
+    assert wrapper.locator(".h1-okr-inline-video-trigger").count() == 1
+    assert wrapper.locator(".h1-okr-inline-video-player").count() == 0
+    assert video_requests == [], video_requests
+    wrapper.locator(".h1-okr-inline-video-trigger").click()
+    video = wrapper.locator(".h1-okr-inline-video-player")
     video.wait_for(state="visible")
-    video.click(position={"x": 24, "y": 24})
     page.wait_for_function(
         "(selector) => { const video = document.querySelector(selector);"
         " return video && video.readyState >= 3 && !video.paused && video.currentTime > 0; }",
-        arg=f'[data-page-id="{PAGE_ID}"] .h1-okr-inline-video',
+        arg=f'[data-page-id="{PAGE_ID}"] .h1-okr-inline-video-player',
     )
     video_src = video.get_attribute("src")
-    assert "tvc-library/cfd-public-good.mp4" in (video_src or ""), video_src
+    assert "tvc-library/cfd-public-good-web.mp4" in (video_src or ""), video_src
+    assert len(video_requests) == 1, video_requests
     assert not errors, f"page errors: {errors}"
     browser.close()
 

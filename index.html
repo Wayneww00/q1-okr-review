@@ -1834,8 +1834,10 @@ function HeroSection({data,editMode,addHeroKpi,delHeroKpi,sectionRef}){
 
   return(
     <section id="hero" ref={function(el){if(sectionRef)sectionRef.current=el;heroRef.current=el;}} style={{position:'relative',height:'90vh',overflow:'hidden',background:'#0a0a0a',willChange:'height',borderRadius:'0 0 24px 24px'}}>
-      <video ref={vidRef} src="hero-bg.mp4" autoPlay muted playsInline
-        style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:1}}/>
+      {REPORT_MODE!=='h1'&&(
+        <video ref={vidRef} src="hero-bg.mp4" autoPlay muted playsInline
+          style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:1}}/>
+      )}
       {/* Ink wash gradient overlay — darker bottom-left for text, lighter center for video */}
       <div style={{position:'absolute',inset:0,zIndex:2,background:'linear-gradient(135deg,rgba(10,6,6,0.85) 0%,rgba(10,6,6,0.3) 40%,rgba(10,6,6,0.15) 60%,rgba(10,6,6,0.6) 100%)'}}/>
 
@@ -2040,8 +2042,10 @@ function FooterVideo(){
 
   return(
     <div ref={containerRef} style={{position:'relative',width:'100%',height:'100vh',overflow:'hidden'}}>
-      <video ref={vidRef} src="footer-bg.mp4" muted playsInline preload="auto"
-        style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:1}}/>
+      {REPORT_MODE!=='h1'&&(
+        <video ref={vidRef} src="footer-bg.mp4" muted playsInline preload="none"
+          style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',zIndex:1}}/>
+      )}
       <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse at center,transparent 40%,rgba(10,6,6,0.6) 70%,rgba(10,6,6,0.95) 100%)',pointerEvents:'none',zIndex:2}}/>
     </div>
   );
@@ -2455,7 +2459,8 @@ const OKR_FIGMA_PAGES=[
       {
         id:'ferrari-personal-moment',
         label:'Personal Moment 法拉利定制生日祝福',
-        src:'previews/assets/tvc-library/ferrari-personal-moment.mp4',
+        src:'previews/assets/tvc-library/ferrari-personal-moment-web.mp4',
+        poster:'previews/assets/tvc-library/posters/ferrari-personal-moment.jpg',
         inline:true,
         left:5.99,
         top:32.59,
@@ -2497,7 +2502,8 @@ const OKR_FIGMA_PAGES=[
       {
         id:'cfd-public-good-story',
         label:'成为 CFD 行业公益的领军者',
-        src:'previews/assets/tvc-library/cfd-public-good.mp4',
+        src:'previews/assets/tvc-library/cfd-public-good-web.mp4',
+        poster:'previews/assets/tvc-library/posters/cfd-public-good.jpg',
         fit:'contain',
         inline:true,
         left:9.01,
@@ -2528,7 +2534,8 @@ const OKR_FIGMA_PAGES=[
     videoSlot:{
       id:'cfd-h1-summary',
       label:'CFD 公益 H1 回顾',
-      src:'previews/assets/tvc-library/cfd-h1-summary.mp4',
+      src:'previews/assets/tvc-library/cfd-h1-summary-web.mp4',
+      poster:'previews/assets/tvc-library/posters/cfd-h1-summary.png',
       unit:'px',
       left:338,
       top:254,
@@ -2570,10 +2577,10 @@ const OKR_FIGMA_PAGES=[
     label:'TVC 矩阵：7×24',
     figmaNodeId:'146:717',
     videoSlots:[
-      {id:'tvc-brand-main',label:'品牌主 TVC',src:'previews/assets/tvc-library/tvc-brand-main.mp4',inline:true,unit:'px',left:203,top:481,width:600,height:338},
-      {id:'tvc-global',label:'全球版 TVC',src:'previews/assets/tvc-library/tvc-global.mp4',inline:true,unit:'px',left:1170.5,top:462,width:360,height:203},
-      {id:'tvc-vietnam',label:'越南版 TVC',src:'previews/assets/tvc-library/tvc-vietnam.mp4',inline:true,unit:'px',left:965.25,top:731,width:360,height:203},
-      {id:'tvc-thailand',label:'泰国版 TVC',src:'previews/assets/tvc-library/tvc-thailand.mp4',inline:true,unit:'px',left:1375.75,top:731,width:360,height:203},
+      {id:'tvc-brand-main',label:'品牌主 TVC',src:'previews/assets/tvc-library/tvc-brand-main-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-brand-main.jpg',inline:true,unit:'px',left:203,top:481,width:600,height:338},
+      {id:'tvc-global',label:'全球版 TVC',src:'previews/assets/tvc-library/tvc-global-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-global.jpg',inline:true,unit:'px',left:1170.5,top:462,width:360,height:203},
+      {id:'tvc-vietnam',label:'越南版 TVC',src:'previews/assets/tvc-library/tvc-vietnam-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-vietnam.jpg',inline:true,unit:'px',left:965.25,top:731,width:360,height:203},
+      {id:'tvc-thailand',label:'泰国版 TVC',src:'previews/assets/tvc-library/tvc-thailand-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-thailand.jpg',inline:true,unit:'px',left:1375.75,top:731,width:360,height:203},
     ],
   },
   {
@@ -2592,23 +2599,84 @@ const OKR_FIGMA_PAGES=[
    transparent 1920 × 1080 foreground canvases. They intentionally sit over
    the one sticky p25 trophy background rather than bringing their own backdrop. */
 function OkrInlineVideo({slot}){
+  const [active,setActive]=useState(false);
+  const containerRef=useRef(null);
+  const videoRef=useRef(null);
   const unit=slot.unit || '%';
   const coordinate=(value)=>`${value}${unit}`;
+
+  useEffect(()=>{
+    const handleOtherVideo=(event)=>{
+      if(event.detail!==slot.id) setActive(false);
+    };
+    document.addEventListener('h1-inline-video-activate',handleOtherVideo);
+    return ()=>document.removeEventListener('h1-inline-video-activate',handleOtherVideo);
+  },[slot.id]);
+
+  useEffect(()=>{
+    const container=containerRef.current;
+    if(!container) return;
+    const observer=new IntersectionObserver((entries)=>{
+      if(!entries.some(entry=>entry.isIntersecting && entry.intersectionRatio>=.08)){
+        setActive(false);
+      }
+    },{threshold:[0,.08]});
+    observer.observe(container);
+    return ()=>observer.disconnect();
+  },[]);
+
+  useEffect(()=>{
+    if(!active || !videoRef.current) return;
+    const video=videoRef.current;
+    video.play().catch(()=>{});
+    return ()=>{
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    };
+  },[active]);
+
+  const activate=()=>{
+    document.dispatchEvent(new CustomEvent('h1-inline-video-activate',{detail:slot.id}));
+    setActive(true);
+  };
+
   return (
-    <video
+    <div
+      ref={containerRef}
       className={`h1-okr-inline-video${slot.fit==='contain' ? ' is-contain' : ''}`}
-      src={slot.src}
-      controls
-      playsInline
-      preload="metadata"
-      aria-label={`播放：${slot.label}`}
       style={{
         left:coordinate(slot.left),
         top:coordinate(slot.top),
         width:coordinate(slot.width),
         height:coordinate(slot.height),
       }}
-    />
+    >
+      {active ? (
+        <video
+          ref={videoRef}
+          className="h1-okr-inline-video-player"
+          src={slot.src}
+          poster={slot.poster}
+          controls
+          autoPlay
+          playsInline
+          preload="auto"
+          aria-label={`播放：${slot.label}`}
+        />
+      ) : (
+        <button
+          type="button"
+          className="h1-okr-inline-video-trigger"
+          aria-label={`播放：${slot.label}`}
+          title={`播放：${slot.label}`}
+          onClick={activate}
+        >
+          {slot.poster && <img src={slot.poster} alt="" draggable="false" aria-hidden="true"/>}
+          <span className="h1-okr-inline-video-play" aria-hidden="true"></span>
+        </button>
+      )}
+    </div>
   );
 }
 
