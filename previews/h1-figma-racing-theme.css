@@ -3864,6 +3864,241 @@ svg.h1-okr-insight-icon circle {
   outline-offset: 4px;
 }
 
+/* Figma 146:717 — four-video TVC matrix foreground. The shared trophy stage
+   remains the only page background; every element below is a foreground layer. */
+.h1-okr-tvc-localization-page {
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  color: #fff;
+}
+
+.h1-okr-tvc-localization-title {
+  position: absolute;
+  z-index: 3;
+  top: 89px;
+  left: 399px;
+  width: 1122px;
+  margin: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.h1-okr-tvc-localization-summary {
+  position: absolute;
+  z-index: 3;
+  top: 184px;
+  left: 160px;
+  width: 1600px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 110px;
+  border-radius: 30px;
+  background:
+    linear-gradient(270deg, rgba(102,102,102,.12), rgba(0,0,0,.2)),
+    linear-gradient(90deg, rgba(164,115,51,.16), rgba(151,112,58,0));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+  backdrop-filter: blur(17.5px);
+}
+
+.h1-okr-tvc-localization-summary img {
+  position: absolute;
+  top: 29px;
+  left: 111px;
+  width: 114px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.h1-okr-tvc-localization-summary > span {
+  position: absolute;
+  top: 31px;
+  left: 270px;
+  width: 8px;
+  height: 36px;
+  background: #a82020;
+}
+
+.h1-okr-tvc-localization-summary p {
+  margin: 0 0 0 180px;
+  color: #fff;
+  font-family: "Gilroy", "Noto Sans SC", sans-serif !important;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 35px;
+  white-space: nowrap;
+}
+
+.h1-okr-tvc-localization-panel {
+  position: absolute;
+  z-index: 1;
+  top: 334px;
+  height: 670px;
+  box-sizing: border-box;
+}
+
+.h1-okr-tvc-localization-panel > header,
+.h1-okr-tvc-localization-panel-body {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.h1-okr-tvc-localization-panel.is-primary {
+  left: 160px;
+  width: 685px;
+}
+
+.h1-okr-tvc-localization-panel.is-primary > header {
+  top: 0;
+  left: 0;
+  width: 685px;
+  height: 113px;
+  overflow: hidden;
+  border-radius: 36px 36px 0 0;
+  color: #513b23;
+  background: linear-gradient(90deg, rgba(236,216,173,.98), rgba(193,148,82,.97));
+}
+
+.h1-okr-tvc-localization-panel.is-primary > header::before {
+  position: absolute;
+  inset: 2px auto 0 2px;
+  width: 177px;
+  content: "";
+  border-radius: 34px 0 34px 0;
+  background: linear-gradient(135deg, #a26924, #8e5520);
+}
+
+.h1-okr-tvc-localization-panel.is-primary header strong {
+  position: absolute;
+  z-index: 1;
+  top: 34px;
+  left: 25px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.h1-okr-tvc-localization-panel.is-primary header h2 {
+  position: absolute;
+  top: 27px;
+  left: 188px;
+  width: 460px;
+  margin: 0;
+  color: #513b23;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.h1-okr-tvc-localization-panel.is-primary .h1-okr-tvc-localization-panel-body {
+  top: 81px;
+  left: 0;
+  width: 685px;
+  height: 589px;
+  border: 2px solid rgba(220,170,95,.86);
+  border-radius: 36px;
+  background: linear-gradient(150deg, rgba(134,76,25,.36), rgba(26,20,16,.88));
+  backdrop-filter: blur(7px);
+}
+
+.h1-okr-tvc-localization-caption {
+  position: absolute;
+  z-index: 3;
+  top: 528px;
+  left: 43px;
+  width: 600px;
+  text-align: center;
+}
+
+.h1-okr-tvc-localization-caption strong {
+  display: block;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.h1-okr-tvc-localization-caption p {
+  margin: 18px 0 0;
+  color: rgba(255,255,255,.93);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.h1-okr-tvc-localization-panel.is-localized {
+  left: 898px;
+  width: 893px;
+}
+
+.h1-okr-tvc-localization-panel.is-localized > header {
+  top: 0;
+  left: 0;
+  width: 893px;
+  height: 99px;
+  border-radius: 36px 36px 0 0;
+  background: linear-gradient(90deg, rgba(237,220,183,.99), rgba(202,156,92,.97));
+}
+
+.h1-okr-tvc-localization-panel.is-localized header h2 {
+  margin: 27px 0 0 84px;
+  color: #513b23;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.h1-okr-tvc-localization-panel.is-localized .h1-okr-tvc-localization-panel-body {
+  top: 70px;
+  left: 0;
+  width: 893px;
+  height: 600px;
+  border: 2px solid rgba(220,170,95,.86);
+  border-radius: 36px;
+  background: linear-gradient(150deg, rgba(92,56,27,.48), rgba(18,15,13,.92));
+  backdrop-filter: blur(7px);
+}
+
+.h1-okr-tvc-localization-video-label {
+  position: absolute;
+  z-index: 3;
+  top: 347px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+}
+
+.h1-okr-tvc-localization-video-label.is-global {
+  top: 347px;
+  left: 58px;
+  width: 789px;
+}
+
+.h1-okr-tvc-localization-video-label.is-vietnam {
+  top: 616px;
+  left: 58px;
+  width: 379px;
+}
+
+.h1-okr-tvc-localization-video-label.is-thailand {
+  top: 616px;
+  left: 468px;
+  width: 379px;
+}
+
+.h1-okr-tvc-localization-page .h1-okr-inline-video {
+  z-index: 2;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.25);
+}
+
 .h1-okr-page-number {
   position: absolute;
   z-index: 5;

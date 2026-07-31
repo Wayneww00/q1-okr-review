@@ -137,7 +137,6 @@ assert.ok(
 for (const [pageId, fileName] of [
   ["okr-ai-recommendation", "p58-foreground.png"],
   ["okr-omnichannel-amplification", "omnichannel-amplification-figma-145-716.png"],
-  ["okr-tvc-localization", "p60-foreground.png"],
   ["okr-superapp-activation", "p61-foreground.png"],
   ["okr-premium-unlimited", "p62-foreground.png"],
   ["okr-brand-experience-audit", "p63-foreground.png"],
@@ -159,6 +158,16 @@ for (const [pageId, fileName] of [
     `${fileName} must exist locally`,
   );
 }
+assert.match(
+  app,
+  /page\.id==='okr-tvc-localization'[\s\S]*?<OkrTvcLocalizationPage/,
+  "the TVC localization page must use the dedicated four-video Figma renderer",
+);
+assert.match(
+  app,
+  /function OkrTvcLocalizationPage\(\{page\}\)[\s\S]*?TVC 矩阵｜把 7×24 拍成人人看得懂的周末机会[\s\S]*?全球版[\s\S]*?越南版[\s\S]*?泰国版/,
+  "the rebuilt page must preserve the requested Figma title and the three localized labels",
+);
 assert.match(
   app,
   /page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage/,

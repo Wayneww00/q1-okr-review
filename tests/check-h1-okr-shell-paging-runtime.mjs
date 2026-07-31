@@ -174,10 +174,6 @@ try {
         source: /previews\/assets\/figma-untitled\/omnichannel-amplification-figma-145-716\.png$/,
         pageNumber: "19/22",
       },
-      "okr-tvc-localization": {
-        source: /previews\/assets\/figma-untitled\/p60-foreground\.png$/,
-        pageNumber: "20/22",
-      },
       "okr-superapp-activation": {
         source: /previews\/assets\/figma-untitled\/p61-foreground\.png$/,
         pageNumber: "21/22",
@@ -206,6 +202,16 @@ try {
         assert.equal(await okrPage.locator(".h1-brand-refresh-summary").count(), 0);
         assert.equal(await okrPage.locator(".h1-brand-refresh-map").count(), 0);
       }
+    } else if (pageId === "okr-tvc-localization") {
+      assert.equal(await okrPage.locator(".h1-okr-figma-foreground-layer").count(), 0);
+      assert.equal(await okrPage.locator(".h1-okr-tvc-localization-panel").count(), 2);
+      assert.equal(await okrPage.locator(".h1-okr-inline-video").count(), 4);
+      assert.equal((await okrPage.textContent()).includes("UAE"), false);
+      assert.equal(
+        (await okrPage.locator(".h1-okr-page-number").textContent()).replace(/\s+/g, ""),
+        "29/31",
+        "the rebuilt TVC localization page must retain its Full Report page number",
+      );
     } else {
       assert.match(
         await okrPage.locator(".h1-okr-exact-frame").getAttribute("src"),

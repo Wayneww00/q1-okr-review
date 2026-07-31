@@ -30,8 +30,18 @@ assert.match(
 );
 assert.match(
   app,
-  /function OkrPositionedFigmaForegroundPage[\s\S]*?page\.videoSlots\?\.filter\(slot=>slot\.inline\)/,
-  "positioned Figma pages must render inline video slots above their foreground artwork",
+  /function OkrTvcLocalizationPage\(\{page\}\)[\s\S]*?page\.videoSlots\.map\(slot=><OkrInlineVideo/,
+  "the dedicated four-video Figma page must render every supplied video inline",
+);
+assert.match(
+  app,
+  /id:'okr-tvc-localization'[\s\S]*?figmaNodeId:'146:717'[\s\S]*?left:203,top:481,width:600,height:338[\s\S]*?left:1170\.5,top:462,width:360,height:203[\s\S]*?left:965\.25,top:731,width:360,height:203[\s\S]*?left:1375\.75,top:731,width:360,height:203/,
+  "the four videos must keep the 60 - 4 Videos Figma coordinates",
+);
+assert.doesNotMatch(
+  app.slice(app.indexOf("function OkrTvcLocalizationPage"), app.indexOf("function OkrExactFigmaPage")),
+  /UAE|p60-foreground/,
+  "the replacement page must not retain the empty UAE slot or the old composite foreground",
 );
 
 console.log("H1 supplied-PPT video slots contract passed");
