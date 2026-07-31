@@ -18,6 +18,13 @@ const publicGoodVideoPath = path.join(
   "tvc-library",
   "cfd-public-good-web.mp4",
 );
+const publicGoodPptSourcePath = path.join(
+  root,
+  "previews",
+  "assets",
+  "tvc-library",
+  "cfd-public-good-ppt.mp4",
+);
 const ferrariVideoPath = path.join(
   root,
   "previews",
@@ -57,7 +64,7 @@ assert.equal(
 
 assert.match(
   app,
-  /id:'okr-cfd-public-good-story'[\s\S]*?p73-cfd-public-good-video-foreground\.png[\s\S]*?id:'cfd-public-good-story'[\s\S]*?tvc-library\/cfd-public-good-web\.mp4[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/cfd-public-good\.jpg'[\s\S]*?inline:true/,
+  /id:'okr-cfd-public-good-story'[\s\S]*?p73-cfd-public-good-video-foreground\.png[\s\S]*?id:'cfd-public-good-story'[\s\S]*?tvc-library\/cfd-public-good-web\.mp4\?v=ppt-20260731-1948'[\s\S]*?pptSource:'previews\/assets\/tvc-library\/cfd-public-good-ppt\.mp4'[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/cfd-public-good\.jpg'[\s\S]*?inline:true/,
   "the Frame 73 page must use its PPT public-good video as an inline player",
 );
 assert.match(
@@ -68,6 +75,11 @@ assert.match(
 assert.ok(
   fs.existsSync(publicGoodVideoPath) && fs.statSync(publicGoodVideoPath).size > 10_000_000,
   "the web-optimized public-good MP4 must be present",
+);
+assert.ok(
+  fs.existsSync(publicGoodPptSourcePath) &&
+    fs.statSync(publicGoodPptSourcePath).size > 300_000_000,
+  "the exact public-good video extracted from the supplied PPT must be retained",
 );
 assert.ok(
   fs.existsSync(ferrariVideoPath) && fs.statSync(ferrariVideoPath).size > 1_000_000,

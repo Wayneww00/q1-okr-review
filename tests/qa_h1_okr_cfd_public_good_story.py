@@ -83,6 +83,16 @@ with sync_playwright() as playwright:
     )
     video_src = video.get_attribute("src")
     assert "tvc-library/cfd-public-good-web.mp4" in (video_src or ""), video_src
+    media_state = video.evaluate(
+        """video => ({
+          duration: video.duration,
+          width: video.videoWidth,
+          height: video.videoHeight,
+        })"""
+    )
+    assert 531.5 < media_state["duration"] < 533, media_state
+    assert media_state["width"] == 1280, media_state
+    assert media_state["height"] == 720, media_state
     assert len(video_requests) == 1, video_requests
     assert not errors, f"page errors: {errors}"
     browser.close()
