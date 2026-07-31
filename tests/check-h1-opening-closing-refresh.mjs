@@ -11,7 +11,8 @@ const openingPath = path.join(
 const manifest = JSON.parse(
   fs.readFileSync(path.join(root, "config/video-manifest.json"), "utf8"),
 );
-const releaseTag = "vantage-h1-media-2026-07-31-v2";
+const openingReleaseTag = "vantage-h1-media-2026-07-31-v2";
+const closingReleaseTag = "vantage-h1-media-2026-07-31-v3";
 const openingKey = "previews/assets/vantage-h1-opening-final-4k.mp4";
 const closingKey = "previews/assets/vantage-h1-closing-ending-4k.mp4";
 const openingManifest = manifest[openingKey];
@@ -22,13 +23,13 @@ const closingPath =
 assert.ok(fs.existsSync(openingPath), "the refreshed opening film must remain local");
 assert.match(
   openingManifest?.url || "",
-  new RegExp(`/${releaseTag}/vantage-h1-opening-final-4k\\.mp4$`),
+  new RegExp(`/${openingReleaseTag}/vantage-h1-opening-final-4k\\.mp4$`),
   "the opening manifest must point at the refreshed immutable release",
 );
 assert.match(
   closingManifest?.url || "",
-  new RegExp(`/${releaseTag}/vantage-h1-closing-ending-4k\\.mp4$`),
-  "the closing manifest must point at the refreshed immutable release",
+  new RegExp(`/${closingReleaseTag}/vantage-h1-closing-ending-4k\\.mp4$`),
+  "the closing manifest must point at the high-quality immutable release",
 );
 assert.ok(closingPath, "the refreshed closing film must be locally testable or remotely available");
 
@@ -50,7 +51,12 @@ function probe(mediaPath) {
   );
 }
 
-function assertCompatibleMp4(probeResult, label, durationRange) {
+function assertCompatibleMp4(
+  probeResult,
+  label,
+  durationRange,
+  minimumVideoBitrate,
+) {
   const video = probeResult.streams.find(
     (stream) => stream.codec_type === "video",
   );
@@ -63,7 +69,10 @@ function assertCompatibleMp4(probeResult, label, durationRange) {
   assert.equal(video?.height, 2160, `${label} must retain the supplied 4K height`);
   assert.equal(video?.pix_fmt, "yuv420p", `${label} must use the broadly compatible pixel format`);
   assert.equal(video?.r_frame_rate, "30/1", `${label} must use the compatibility-focused 30 fps delivery rate`);
-  assert.ok(Number(video?.bit_rate) >= 4_500_000, `${label} must retain a clear 4K bitrate`);
+  assert.ok(
+    Number(video?.bit_rate) >= minimumVideoBitrate,
+    `${label} must retain a clear 4K bitrate`,
+  );
   assert.equal(audio?.codec_name, "aac", `${label} must use AAC audio`);
   assert.equal(audio?.sample_rate, "44100", `${label} must retain the supplied 44.1 kHz audio`);
   assert.equal(audio?.channels, 2, `${label} must retain stereo audio`);
@@ -81,8 +90,8 @@ function assertCompatibleMp4(probeResult, label, durationRange) {
 const openingProbe = probe(openingPath);
 const closingProbe = probe(closingPath);
 
-assertCompatibleMp4(openingProbe, "opening film", [121.7, 122.0]);
-assertCompatibleMp4(closingProbe, "closing film", [21.6, 21.9]);
+assertCompatibleMp4(openingProbe, "opening film", [121.7, 122.0], 4_500_000);
+assertCompatibleMp4(closingProbe, "closing film", [21.6, 21.9], 20_000_000);
 assert.equal(
   openingManifest.bytes,
   Number(openingProbe.format.size),
