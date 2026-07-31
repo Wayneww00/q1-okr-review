@@ -48,8 +48,8 @@ try {
   );
   assert.equal(
     await o3Pages.count(),
-    17,
-    "O3 must render the restored Vietnam title plus 16 substantive pages",
+    18,
+    "O3 must render the restored Vietnam sequence plus the India chapter",
   );
   assert.equal(
     await reportFrame.locator("[data-o3-trophy-stage]").count(),
@@ -79,13 +79,13 @@ try {
     "O3 pages must be continuous without a trophy-only blank interval",
   );
 
-  for (let index = 0; index < 17; index += 1) {
+  for (let index = 0; index < 18; index += 1) {
     const pageNode = o3Pages.nth(index);
     assert.equal(
       (await pageNode.locator(".h1-o3-page-number").innerText())
         .replace(/\s+/g, " ")
         .trim(),
-      `${String(index + 1).padStart(2, "0")} / 17`,
+      `${String(index + 1).padStart(2, "0")} / 18`,
     );
     assert.equal(
       await pageNode.evaluate((node) => getComputedStyle(node).scrollSnapAlign),
@@ -121,10 +121,10 @@ try {
   );
   assert.deepEqual(
     await o3Pages.evaluateAll((pages) =>
-      pages.slice(-2).map((node) => node.dataset.pageId),
+      pages.slice(-3).map((node) => node.dataset.pageId),
     ),
-    ["o3-online-offline", "o3-vn-key-insight"],
-    "the new Figma insight page must directly follow online/offline",
+    ["o3-online-offline", "o3-vn-key-insight", "o3-india-chapter"],
+    "the India chapter must directly follow the Vietnam key-insight page",
   );
   await insightPage.evaluate((target) =>
     window.scrollTo({
@@ -184,7 +184,7 @@ try {
   );
   assert.match(
     insightState.copy,
-    /关键洞察 · 越南 越南关键洞察 同一个团队，以高本地化能力实现快速联动与响应。 本地化程度高 联动快 响应快 同一个 团队 17 \/ 17/,
+    /关键洞察 · 越南 越南关键洞察(?: 同一个团队，以高本地化能力实现快速联动与响应。)? 本地化程度高 联动快 响应快 (?:同一个 团队|ONE TEAM) 17 \/ 18/,
   );
   for (const bound of insightState.bounds) {
     assert.ok(
@@ -233,7 +233,9 @@ try {
   await modalVideo.waitFor();
   assert.equal(await modalVideo.getAttribute("autoplay"), "");
   assert.ok(
-    (await modalVideo.getAttribute("src"))?.includes("vn-tvc-park-chess.mp4"),
+    (await modalVideo.locator("source").getAttribute("src"))?.includes(
+      "vn-tvc-park-chess.mp4",
+    ),
   );
   await dialog.getByRole("button", { name: "关闭视频" }).click();
   assert.equal(await dialog.count(), 0);

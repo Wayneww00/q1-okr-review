@@ -5443,6 +5443,7 @@ const O3_REPORT_PAGES=[
   {id:"o3-local-content",layout:"local-content",eyebrow:"本地化内容",title:"内容本地化：让本地内容真正走进用户心里",description:"本地日常场景 × 本地人物 × Master 绑定 × 真实 App 界面，形成低成本、可复制、可规模化的内容公式。"},
   {id:"o3-online-offline",layout:"online-offline",eyebrow:"线上 × 线下",title:"越南线上线下联动：从传播到转化",description:"以城市内容连接线上传播与线下触点，让品牌势能进入真实用户旅程。"},
   {id:"o3-vn-key-insight",layout:"vn-key-insight",eyebrow:"越南关键洞察",title:"越南关键洞察",description:""},
+  {id:"o3-india-chapter",layout:"india-chapter",eyebrow:"India",title:"印度",description:"2026年H2 SSS级项目"},
 ];
 
 const O3_ASSET_ROOT="previews/assets/o3";
@@ -6120,6 +6121,27 @@ function O3VnKeyInsight(){
   );
 }
 
+function O3IndiaChapter(){
+  return (
+    <div className="h1-o3-india-chapter" aria-label="印度 2026年H2 SSS级项目">
+      <img
+        className="h1-o3-india-background"
+        src="previews/assets/o3/india-h2-sss-desert-racing.png"
+        alt=""
+        aria-hidden="true"
+      />
+      <div className="h1-o3-india-copy">
+        <div className="h1-o3-india-wordmark" aria-label="印度">
+          <span aria-hidden="true">INDIA</span>
+          <strong>印度</strong>
+        </div>
+        <div className="h1-o3-india-rule" aria-hidden="true"><i/><i/></div>
+        <p>2026年H2 SSS级项目</p>
+      </div>
+    </div>
+  );
+}
+
 function O3Chapter({page}){
   return (
     <ObjectiveChapterLayout
@@ -6151,6 +6173,7 @@ function O3ReportPage({page,index,count,onVideoPreview}){
   if(page.layout==="local-content")content=<><O3PageHeader page={page}/><O3LocalContent onVideoPreview={onVideoPreview}/></>;
   if(page.layout==="online-offline")content=<><O3PageHeader page={page}/><O3OnlineOffline onVideoPreview={onVideoPreview}/></>;
   if(page.layout==="vn-key-insight")content=<O3VnKeyInsight/>;
+  if(page.layout==="india-chapter")content=<O3IndiaChapter/>;
   return (
     <section
       className={`h1-o3-page is-${page.layout}`}

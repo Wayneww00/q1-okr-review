@@ -30,13 +30,14 @@ const expectedPages = [
   "o3-local-content",
   "o3-online-offline",
   "o3-vn-key-insight",
+  "o3-india-chapter",
 ];
 
 const registryStart = app.indexOf("const O3_REPORT_PAGES=");
 const registryEnd = app.indexOf("];", registryStart) + 2;
 assert.ok(
   registryStart >= 0 && registryEnd > registryStart,
-  "O3 must expose one explicit 17-page registry",
+  "O3 must expose one explicit 18-page registry",
 );
 const registry = app.slice(registryStart, registryEnd);
 
@@ -48,8 +49,8 @@ for (const pageId of expectedPages) {
 }
 assert.equal(
   [...registry.matchAll(/\bid:"o3-/g)].length,
-  17,
-  "O3 must contain the restored Vietnam chapter plus 16 substantive pages",
+  18,
+  "O3 must contain the restored Vietnam sequence plus the India chapter",
 );
 assert.match(
   registry,
@@ -75,7 +76,7 @@ assert.match(
 assert.match(
   app,
   /className="h1-o3-page-number"[\s\S]*?String\(index\+1\)\.padStart\(2,"0"\)[\s\S]*?String\(count\)\.padStart\(2,"0"\)/,
-  "O3 page numbering must run independently from 01/17",
+  "O3 page numbering must run independently from 01/18",
 );
 
 for (const fact of [

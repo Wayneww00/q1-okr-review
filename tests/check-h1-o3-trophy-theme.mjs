@@ -42,7 +42,7 @@ assert.equal(
 assert.equal(
   (app.match(/data-o3-trophy-stage/g) || []).length,
   1,
-  "all 17 O3 pages must share one fixed trophy background",
+  "all O3 pages must retain one fixed shared stage behind their page artwork",
 );
 assert.doesNotMatch(
   app,
@@ -86,8 +86,8 @@ const registryEnd = app.indexOf("function O3ReportDeck", registryStart);
 const registry = app.slice(registryStart, registryEnd);
 assert.equal(
   [...registry.matchAll(/\bid:"o3-/g)].length,
-  17,
-  "O3 must include the approved Vietnam key-insight page",
+  18,
+  "O3 must include the approved Vietnam key-insight and India chapter pages",
 );
 
 for (const protectedMarker of [

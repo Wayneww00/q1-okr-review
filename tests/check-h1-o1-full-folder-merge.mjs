@@ -114,8 +114,8 @@ assert.deepEqual(
 );
 assert.equal(
   o3Ids.length,
-  17,
-  "the restored Vietnam title plus all 16 retained O3 data pages must remain",
+  18,
+  "the restored Vietnam sequence plus the India chapter must remain",
 );
 assert.deepEqual(
   o3Ids.slice(0, 2),
@@ -124,8 +124,8 @@ assert.deepEqual(
 );
 assert.equal(
   dataIds.length + o1Ids.length + o2Ids.length + o3Ids.length,
-  96,
-  "the unified embedded report must contain 96 pages after removing the India chapter and adding the two O2 chapter pages",
+  97,
+  "the unified embedded report must contain 97 pages after restoring the India chapter",
 );
 assert.doesNotMatch(
   app.slice(

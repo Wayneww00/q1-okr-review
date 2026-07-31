@@ -22,8 +22,8 @@ assert.ok(
 );
 assert.equal(
   [...registry.matchAll(/\bid:"o3-/g)].length,
-  17,
-  "O3 must contain the chapter, 15 existing pages, and the new insight page",
+  18,
+  "O3 must contain the Vietnam sequence plus the following India chapter",
 );
 assert.match(
   registry.slice(onlineOfflineIndex),

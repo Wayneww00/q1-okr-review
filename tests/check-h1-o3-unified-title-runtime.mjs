@@ -82,7 +82,7 @@ try {
   const reportFrame = page.locator("#reportFrame").contentFrame();
   await reportFrame.locator('body[data-h1-prepared="true"]').waitFor();
   const contentPages = reportFrame.locator(
-    '[data-report-section="o3"] [data-report-page]:not([data-page-id="o3-chapter"]):not([data-page-id="o3-vn-key-insight"])',
+    '[data-report-section="o3"] [data-report-page]:not([data-page-id="o3-chapter"]):not([data-page-id="o3-vn-key-insight"]):not([data-page-id="o3-india-chapter"])',
   );
   assert.equal(await contentPages.count(), 15);
 
