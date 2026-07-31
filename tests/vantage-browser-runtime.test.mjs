@@ -427,6 +427,29 @@ assert.deepEqual(listPresentationMedia(), [
 ]);
 
 assert.equal(
+  typeof VantageBrowserRuntime.setVideoSource,
+  "function",
+  "the browser runtime must attach an explicit MP4 source for Safari",
+);
+if (typeof VantageBrowserRuntime.setVideoSource === "function") {
+  const mediaDom = new JSDOM("<!doctype html><body><video></video></body>");
+  const mediaVideo = mediaDom.window.document.querySelector("video");
+  let loadCalls = 0;
+  mediaVideo.load = () => {
+    loadCalls += 1;
+  };
+  VantageBrowserRuntime.setVideoSource(
+    mediaVideo,
+    "https://blob.example/video.mp4",
+  );
+  const mediaSource = mediaVideo.querySelector("source");
+  assert.equal(mediaVideo.hasAttribute("src"), false);
+  assert.equal(mediaSource?.getAttribute("src"), "https://blob.example/video.mp4");
+  assert.equal(mediaSource?.getAttribute("type"), "video/mp4");
+  assert.equal(loadCalls, 1);
+}
+
+assert.equal(
   typeof VantageBrowserRuntime.progressivelyWarmPresentationMedia,
   "function",
   "the browser runtime must expose a progressive media warm-up queue",

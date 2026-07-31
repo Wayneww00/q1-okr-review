@@ -89,6 +89,19 @@ try {
       message,
     );
   };
+  const returnToAiScene = async () => {
+    await aiScene.evaluate((element) =>
+      element.scrollIntoView({ behavior: "instant", block: "start" }),
+    );
+    await page.waitForFunction(
+      () =>
+        Math.abs(
+          document
+            .querySelector('section[data-label="AI Data Products"]')
+            .getBoundingClientRect().top,
+        ) < 2,
+    );
+  };
   const dispatchTouch = ({ startX, startY, endX, endY }) =>
     frame.locator("body").evaluate(
       (body, points) => {
@@ -199,12 +212,12 @@ try {
     () =>
       Math.abs(
         document
-          .querySelector('[data-label="Q3 Outlook"]')
+          .querySelector('section[data-label="Closing Film"]')
           .getBoundingClientRect().top,
       ) < 2,
   );
 
-  await aiScene.evaluate((element) => element.scrollIntoView());
+  await returnToAiScene();
   await dispatchTouch({
     startX: 100,
     startY: 180,
@@ -225,23 +238,23 @@ try {
     () =>
       Math.abs(
         document
-          .querySelector('[data-label="Q3 Outlook"]')
+          .querySelector('section[data-label="Closing Film"]')
           .getBoundingClientRect().top,
       ) < 2,
   );
 
-  await aiScene.evaluate((element) => element.scrollIntoView());
+  await returnToAiScene();
   await dispatchDeckKey("PageDown");
   await page.waitForFunction(
     () =>
       Math.abs(
         document
-          .querySelector('[data-label="Q3 Outlook"]')
+          .querySelector('section[data-label="Closing Film"]')
           .getBoundingClientRect().top,
       ) < 2,
   );
 
-  await aiScene.evaluate((element) => element.scrollIntoView());
+  await returnToAiScene();
   await dispatchDeckKey("PageUp");
   await page.waitForFunction(
     () =>

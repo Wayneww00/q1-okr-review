@@ -29,6 +29,16 @@ assert.match(immersive, /--login-scale:/);
 assert.match(immersive, /class="login-fields"/);
 assert.match(immersive, /vantage-h1-login-figma\.png/);
 assert.match(
+  report,
+  /className="production-login-gate"/,
+  "the production entry point must render the refreshed login instead of the legacy glass card",
+);
+assert.match(
+  report,
+  /background-image:url\("previews\/assets\/vantage-h1-login-figma\.png"\)/,
+  "the production login must use the approved desktop artwork",
+);
+assert.match(
   immersive,
   /<source src="assets\/vantage-h1-opening-final-4k\.mp4" type="video\/mp4"/,
 );

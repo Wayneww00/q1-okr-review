@@ -7,7 +7,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const report = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const shell = fs.readFileSync(path.join(root, "previews", "vantage-h1-immersive.html"), "utf8");
-const revision = "20260731-social-sov-h2-first-v3";
+const revision = "20260731-region-lifecycle-proof-v1";
 
 const dashboardsStart = report.indexOf("const H1_DASHBOARDS = [");
 const dashboardsEnd = report.indexOf("const REPORT_MODE", dashboardsStart);

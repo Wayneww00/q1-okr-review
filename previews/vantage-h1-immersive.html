@@ -6,11 +6,11 @@
   <meta name="theme-color" content="#020202" />
   <title>Vantage H1 Review — Immersive Preview</title>
   <script src="/runtime-config.js"></script>
-  <script src="/vendor/vantage-runtime.js?v=20260731-data-header-fields-v1"></script>
+  <script src="/vendor/vantage-runtime.js?v=20260731-safari-video-v1"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link id="h1-figma-racing-shell" rel="stylesheet" href="h1-figma-racing-theme.css?v=20260731-social-sov-h2-first-v3" />
+  <link id="h1-figma-racing-shell" rel="stylesheet" href="h1-figma-racing-theme.css?v=20260731-region-lifecycle-proof-v1" />
   <style>
     :root {
       --ink: #020202;
@@ -40,30 +40,19 @@
 
     button, input { font: inherit; }
     .login-gate {
+      --login-scale: max(calc(100vw / 1920px), calc(100svh / 1080px));
       position: fixed;
       inset: 0;
       z-index: 1000;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      overflow: auto;
-      background:
-        radial-gradient(ellipse at 50% 38%, rgba(184,31,43,.13) 0%, transparent 58%),
-        radial-gradient(circle, rgba(200,60,60,.035) 1px, transparent 1px),
-        #080606;
-      background-size: auto, 48px 48px, auto;
+      overflow: hidden;
+      background-color: #050505;
+      background-image: url("assets/vantage-h1-login-figma.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
       opacity: 1;
       visibility: visible;
       transition: opacity .48s var(--ease), visibility .48s;
-    }
-    .login-gate::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(115deg, transparent 18%, rgba(211,72,53,.035) 46%, transparent 70%),
-        radial-gradient(ellipse at 50% 120%, rgba(243,107,22,.09), transparent 52%);
     }
     .login-gate.is-hidden {
       opacity: 0;
@@ -71,136 +60,204 @@
       pointer-events: none;
     }
     .login-card {
+      position: absolute;
+      left: calc(
+        (100vw - (1920px * var(--login-scale))) / 2
+        + (1060px * var(--login-scale))
+      );
+      top: 50%;
+      width: 530px;
+      height: 680px;
+      border: 0;
+      background: transparent;
+      transform: translateY(-50%) scale(var(--login-scale));
+      transform-origin: left center;
+      animation: loginCardIn .55s var(--ease) both;
+    }
+    .login-card::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      left: 60px;
+      top: 548px;
+      width: 410px;
+      height: 80px;
+      background: linear-gradient(90deg, #221109 0%, #19110d 50%, #110f0e 100%);
+    }
+    .login-card > * {
       position: relative;
-      width: min(100%, 402px);
-      padding: 48px 46px 42px;
-      border: 1px solid rgba(220,80,66,.18);
-      border-radius: 20px;
-      background: rgba(24,10,11,.68);
-      box-shadow: 0 28px 90px rgba(0,0,0,.56), inset 0 1px 0 rgba(255,255,255,.045);
-      backdrop-filter: blur(26px) saturate(1.2);
-      -webkit-backdrop-filter: blur(26px) saturate(1.2);
-      animation: loginCardIn .8s var(--ease) both;
+      z-index: 1;
     }
     @keyframes loginCardIn {
-      from { opacity: 0; transform: translateY(18px) scale(.985); }
-      to { opacity: 1; transform: none; }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     .login-brand {
-      margin-bottom: 36px;
+      position: absolute;
+      inset: 76px 60px auto;
       text-align: center;
+      opacity: 0;
+      pointer-events: none;
     }
-    .login-brand strong {
+    .login-logo {
       display: block;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 35px;
-      font-weight: 600;
-      letter-spacing: .13em;
-      background: linear-gradient(180deg, #fff1ed 0%, #d34835 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: drop-shadow(0 0 20px rgba(211,72,53,.28));
+      width: 114px;
+      height: 26px;
+      margin: 0 auto;
     }
-    .login-brand i {
-      display: block;
-      width: 96px;
-      height: 1px;
-      margin: 12px auto 15px;
-      background: linear-gradient(90deg, transparent, rgba(211,72,53,.72), transparent);
-    }
-    .login-brand span,
+    .login-brand strong,
     .login-brand small {
       display: block;
-      font-family: "IBM Plex Mono", monospace;
-      text-transform: uppercase;
+      font-family: "Space Grotesk", sans-serif;
     }
-    .login-brand span {
-      color: rgba(255,179,160,.68);
-      font-size: 10px;
-      letter-spacing: .25em;
+    .login-brand strong {
+      margin-top: 28px;
+      color: rgba(255,255,255,.96);
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 36px;
+      letter-spacing: .075em;
     }
     .login-brand small {
       margin-top: 6px;
-      color: rgba(255,255,255,.24);
-      font-size: 8px;
-      letter-spacing: .16em;
+      color: rgba(255,255,255,.46);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: .025em;
     }
     .login-error {
-      min-height: 20px;
-      margin-bottom: 10px;
+      position: absolute;
+      top: 215px;
+      left: 60px;
+      width: 410px;
+      min-height: 18px;
+      margin: 0;
       color: #ff746a;
-      font-size: 12px;
+      font-size: 11px;
+      line-height: 18px;
       text-align: center;
       opacity: 0;
       transition: opacity .2s;
     }
     .login-error.is-visible { opacity: 1; }
-    .login-input {
-      width: 100%;
-      margin: 0 0 12px;
-      padding: 13px 16px;
-      border: 1px solid rgba(220,80,66,.14);
-      border-radius: 10px;
-      outline: none;
-      background: rgba(255,255,255,.035);
-      color: #f7ece8;
-      font-size: 14px;
-      transition: border-color .25s, box-shadow .25s, background .25s;
+    .login-fields {
+      position: absolute;
+      top: 247px;
+      left: 60px;
+      width: 410px;
+      display: grid;
+      gap: 17px;
     }
-    .login-input:focus {
-      border-color: rgba(232,88,90,.5);
-      background: rgba(255,255,255,.05);
-      box-shadow: 0 0 18px rgba(211,72,53,.12);
-    }
-    .login-submit {
+    .login-field {
+      position: relative;
+      display: block;
       width: 100%;
-      margin-top: 15px;
-      padding: 13px 16px;
-      border: 1px solid rgba(242,104,83,.42);
-      border-radius: 10px;
-      background: linear-gradient(135deg, rgba(150,25,29,.92), rgba(211,72,53,.78));
-      color: white;
-      font-size: 14px;
+      height: 60px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 9px;
+      background: #f5f5f5;
+      box-shadow: 0 1px 1px rgba(0,0,0,.12);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .login-field:focus-within {
+      border-color: #f27a58;
+      box-shadow: 0 0 0 2px rgba(238,86,43,.22);
+    }
+    .login-field-label {
+      position: absolute;
+      top: 8px;
+      left: 16px;
+      z-index: 1;
+      color: #e35728;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      pointer-events: none;
+    }
+    .login-field-label em {
+      font-style: normal;
       font-weight: 600;
-      letter-spacing: .05em;
+    }
+    .login-input {
+      position: absolute;
+      inset: 22px 0 0;
+      width: 100%;
+      height: 38px;
+      margin: 0;
+      padding: 0 16px 7px;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: #2c2b2b;
+      font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      caret-color: #ee562b;
+    }
+    #loginUsername { text-transform: capitalize; }
+    .login-submit {
+      position: absolute;
+      top: 432px;
+      left: 60px;
+      width: 410px;
+      height: 56px;
+      margin: 0;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 999px;
+      background: #e35728;
+      color: white;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 56px;
       cursor: pointer;
-      box-shadow: 0 8px 24px rgba(118,12,18,.24);
+      box-shadow: 0 14px 24px rgba(238,86,43,.28);
       transition: transform .25s var(--ease), background .25s, box-shadow .25s;
     }
     .login-submit:hover {
       transform: translateY(-2px);
-      background: linear-gradient(135deg, rgba(189,30,35,.96), rgba(232,88,90,.85));
-      box-shadow: 0 12px 30px rgba(145,19,25,.32);
+      background: #eb643a;
+      box-shadow: 0 17px 29px rgba(238,86,43,.34);
     }
     .login-preload {
+      position: absolute;
+      top: 565px;
+      left: 60px;
+      width: 410px;
       min-height: 18px;
-      margin-top: 17px;
-      color: rgba(255,186,168,.46);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 9px;
-      letter-spacing: .08em;
+      margin: 0;
+      color: rgba(255,255,255,.7);
+      font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 12px;
+      line-height: 18px;
+      letter-spacing: .22em;
       text-align: center;
     }
     .login-preload.is-error { color: rgba(255,116,106,.82); }
     .login-preload-progress {
-      position: relative;
-      width: min(100%, 230px);
+      position: absolute;
+      top: 595px;
+      left: 60px;
+      width: 410px;
       height: 4px;
-      margin: 7px auto 0;
+      margin: 0;
       overflow: hidden;
-      border: 1px solid rgba(232,88,90,.18);
       border-radius: 999px;
-      background: rgba(255,255,255,.045);
-      box-shadow: inset 0 1px 2px rgba(0,0,0,.38);
+      background: rgba(104,42,27,.45);
+      box-shadow: 0 0 9px rgba(238,86,43,.08);
     }
     .login-preload-progress > span {
       display: block;
       width: 0;
       height: 100%;
       border-radius: inherit;
-      background: linear-gradient(90deg, #9f171d 0%, #e7523d 58%, #ff946f 100%);
-      box-shadow: 0 0 12px rgba(232,88,90,.58);
+      background: linear-gradient(90deg, #c71914 0%, #ee562b 100%);
+      box-shadow: 0 0 10px rgba(238,86,43,.58);
       transition: width .42s var(--ease);
     }
     .login-hint {
@@ -211,6 +268,70 @@
       text-align: center;
     }
     .login-hint span { color: rgba(255,186,168,.58); }
+    @media (max-width: 1279px), (max-aspect-ratio: 7 / 6) {
+      .login-gate {
+        overflow: auto;
+        background-image: url("assets/vantage-h1-login-background.png");
+        background-position: 42% center;
+      }
+      .login-gate::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.2);
+        pointer-events: none;
+      }
+      .login-card {
+        position: relative;
+        left: 50%;
+        top: auto;
+        width: min(calc(100vw - 32px), 530px);
+        padding: 75px 60px 48px;
+        border: 1px solid rgba(197,139,53,.34);
+        border-radius: 21px;
+        background: linear-gradient(112deg, rgba(54,22,12,.9) 0%, rgba(13,14,14,.96) 100%);
+        box-shadow: 0 30px 80px rgba(0,0,0,.38);
+        margin: max(16px, calc((100svh - 680px) / 2)) 0;
+        transform: translateX(-50%);
+        transform-origin: center center;
+      }
+      .login-card::after { display: none; }
+      .login-card > .login-brand {
+        position: static;
+        inset: auto;
+        opacity: 1;
+      }
+      .login-card > .login-error {
+        position: static;
+        inset: auto;
+        width: auto;
+        margin: 8px 0 27px;
+      }
+      .login-card > .login-fields {
+        position: static;
+        inset: auto;
+        width: auto;
+        gap: 16px;
+      }
+      .login-card > .login-submit {
+        position: static;
+        inset: auto;
+        width: 100%;
+        margin-top: 44px;
+      }
+      .login-card > .login-preload {
+        position: static;
+        inset: auto;
+        width: auto;
+        margin-top: 84px;
+      }
+      .login-card > .login-preload-progress {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
     body.login-active .top-hud,
     body.login-active .progress,
     body.login-active .rail { opacity: 0; pointer-events: none; }
@@ -893,14 +1014,21 @@
   <div class="login-gate" id="loginGate" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
     <div class="login-card">
       <div class="login-brand">
-        <strong id="loginTitle">VANTAGE</strong>
-        <i></i>
-        <span>H1 2026 REVIEW</span>
-        <small>AUTHORIZED ACCESS ONLY</small>
+        <img class="login-logo" src="../vantage-logo.svg" alt="Vantage" />
+        <strong id="loginTitle">H1 2026 Review</strong>
+        <small>Authorized Access Only</small>
       </div>
       <div class="login-error" id="loginError" aria-live="polite">Invalid credentials. Please try again.</div>
-      <input class="login-input" id="loginUsername" type="text" value="vantage" autocomplete="username" aria-label="Username" />
-      <input class="login-input" id="loginPassword" type="password" value="vantage" autocomplete="current-password" aria-label="Password" placeholder="Password" />
+      <div class="login-fields">
+        <label class="login-field">
+          <span class="login-field-label">Account <em>*</em></span>
+          <input class="login-input" id="loginUsername" type="text" value="vantage" autocomplete="username" aria-label="Username" />
+        </label>
+        <label class="login-field">
+          <span class="login-field-label">Password <em>*</em></span>
+          <input class="login-input" id="loginPassword" type="password" value="vantage" autocomplete="current-password" aria-label="Password" placeholder="Password" />
+        </label>
+      </div>
       <button class="login-submit" id="loginSubmit" type="button">Sign In</button>
       <div class="login-preload" id="loginPreloadStatus" aria-live="polite">正在预加载首两屏视频… 0/2</div>
       <div class="login-preload-progress" id="loginPreloadProgress" role="progressbar" aria-label="首两屏视频资源加载进度" aria-valuemin="0" aria-valuemax="2" aria-valuenow="0" aria-valuetext="0 / 2 个视频已就绪">
@@ -938,18 +1066,22 @@
 
   <main class="deck" id="deck">
     <section class="scene scene-video opening-film" data-label="Opening Film" aria-label="开场视频">
-      <video id="openingVideo" class="video-bg" muted playsinline preload="auto" poster="assets/vantage-h1-opening-final-poster.jpg" src="assets/vantage-h1-opening-final-4k.mp4"></video>
+      <video id="openingVideo" class="video-bg" muted playsinline preload="auto" poster="assets/vantage-h1-opening-final-poster.jpg">
+        <source src="assets/vantage-h1-opening-final-4k.mp4" type="video/mp4" />
+      </video>
     </section>
 
     <section class="scene scene-video hero-visual second-film" data-label="H1 Review" aria-label="第二屏视频">
-          <video id="secondScreenVideo" class="video-bg second-screen-video" muted playsinline preload="metadata" poster="assets/vantage-h1-second-screen-final-poster.jpg" data-src="previews/assets/vantage-h1-second-screen-final-4k.mp4"></video>
+          <video id="secondScreenVideo" class="video-bg second-screen-video" muted playsinline preload="metadata" poster="assets/vantage-h1-second-screen-final-poster.jpg" data-src="previews/assets/vantage-h1-second-screen-final-4k.mp4">
+            <source type="video/mp4" />
+          </video>
       <div class="chapter-no">02 <small>/ 06</small></div>
     </section>
 
     <section class="scene report-scene" data-label="Full Report">
       <div class="report-scene-badge">Complete data &amp; OKR review</div>
       <div class="report-frame-wrap">
-        <iframe id="reportFrame" class="report-frame" src="../index.html?report=h1&embedded=1&v=20260731-social-sov-h2-first-v3" title="完整数据与 OKR 复盘内容"></iframe>
+        <iframe id="reportFrame" class="report-frame" src="../index.html?report=h1&embedded=1&v=20260731-region-lifecycle-proof-v1" title="完整数据与 OKR 复盘内容"></iframe>
       </div>
       <button class="report-next" type="button" hidden aria-hidden="true" data-next-scene>Continue to AI Data Products&nbsp;&nbsp;→</button>
       <div class="chapter-no">03 <small>/ 06</small></div>
@@ -1067,7 +1199,9 @@
     </section>
 
     <section class="scene scene-video closing" data-label="Closing Film">
-      <video class="video-bg" autoplay muted playsinline preload="none" data-src="previews/assets/vantage-h1-closing-ending-4k.mp4"></video>
+      <video class="video-bg" autoplay muted playsinline preload="none" data-src="previews/assets/vantage-h1-closing-ending-4k.mp4">
+        <source type="video/mp4" />
+      </video>
       <div class="chapter-no">06 <small>/ 06</small></div>
     </section>
   </main>
@@ -1116,6 +1250,7 @@
     const aiProductsFrame = document.getElementById('aiProductsFrame');
     let aiProductsNavigationRetryTimer = 0;
     let aiProductsNavigationRetriesRemaining = 0;
+    let resetAiProductsNavigationIntent = () => {};
     let activeIndex = 0;
     let soundOn = true;
     let soundBlocked = false;
@@ -1245,10 +1380,18 @@
         video.addEventListener('canplay', () => settle('ready'), {once:true});
         video.addEventListener('error', () => settle('failed'), {once:true});
         video.preload = 'auto';
-        if (!video.getAttribute('src') && video.dataset.src) {
-          video.src = window.VantageBrowserRuntime.resolveMediaUrl(video.dataset.src);
+        if (
+          !video.getAttribute('src') &&
+          !video.querySelector('source[src]') &&
+          video.dataset.src
+        ) {
+          window.VantageBrowserRuntime.setVideoSource(
+            video,
+            window.VantageBrowserRuntime.resolveMediaUrl(video.dataset.src),
+          );
+        } else {
+          video.load();
         }
-        video.load();
         if (video.error) settle('failed');
         else if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) settle('ready');
       });
@@ -1342,9 +1485,15 @@
     };
 
     const ensureVideoSource = video => {
-      if (video.getAttribute('src') || !video.dataset.src) return;
-      video.src = window.VantageBrowserRuntime.resolveMediaUrl(video.dataset.src);
-      video.load();
+      if (
+        video.getAttribute('src') ||
+        video.querySelector('source[src]') ||
+        !video.dataset.src
+      ) return;
+      window.VantageBrowserRuntime.setVideoSource(
+        video,
+        window.VantageBrowserRuntime.resolveMediaUrl(video.dataset.src),
+      );
     };
 
     const playSceneVideo = (video) => {
@@ -1431,6 +1580,9 @@
         && previousIndex !== 0
         && openingPlaybackCompleted;
       activeIndex = index;
+      if (scenes[index] === aiProductsScene && previousIndex !== index) {
+        resetAiProductsNavigationIntent();
+      }
       if (scenes[index] === aiProductsScene) ensureAiProductsFrameSource();
       document.body.classList.toggle('opening-active', index === 0);
       scenes.forEach((scene, i) => scene.classList.toggle('active', i === index));
@@ -1553,7 +1705,16 @@
       if (direction !== 1 && direction !== -1) return;
       const aiProductsIndex = scenes.indexOf(aiProductsScene);
       const nextSceneIndex = Math.max(0, Math.min(scenes.length - 1, aiProductsIndex + direction));
-      scrollToScene(scenes[nextSceneIndex]);
+      const moveAfterSceneActivation = attemptsRemaining => {
+        if (activeIndex !== aiProductsIndex && attemptsRemaining > 0) {
+          window.requestAnimationFrame(() =>
+            moveAfterSceneActivation(attemptsRemaining - 1),
+          );
+          return;
+        }
+        scrollToScene(scenes[nextSceneIndex]);
+      };
+      window.requestAnimationFrame(() => moveAfterSceneActivation(4));
     };
 
     function prepareAiProductsNavigation() {
@@ -1587,11 +1748,17 @@
       let exitArmTimer = 0;
       let exitArmedDirection = 0;
       let exitWheelDelta = 0;
+      let staticRailWheelDelta = 0;
+      let staticRailGestureConsumed = false;
+
+      const productsRailOverflows = () => {
+        if (!productsRail) return false;
+        return productsRail.scrollWidth - productsRail.clientWidth > 24;
+      };
 
       const canScrollProducts = direction => {
-        if (!productsRail) return false;
+        if (!productsRailOverflows()) return false;
         const maxScrollLeft = productsRail.scrollWidth - productsRail.clientWidth;
-        if (maxScrollLeft <= 2) return false;
         return direction > 0
           ? productsRail.scrollLeft < maxScrollLeft - 4
           : productsRail.scrollLeft > 4;
@@ -1626,10 +1793,44 @@
         }, AI_PRODUCTS_EXIT_ARM_DELAY);
       };
 
+      const resetStaticRailGesture = () => {
+        staticRailWheelDelta = 0;
+        staticRailGestureConsumed = false;
+      };
+
+      const routeStaticRailWheel = deltaY => {
+        if (staticRailGestureConsumed) return;
+        if (
+          staticRailWheelDelta &&
+          Math.sign(staticRailWheelDelta) !== Math.sign(deltaY)
+        ) {
+          staticRailWheelDelta = 0;
+        }
+        staticRailWheelDelta += deltaY;
+        if (Math.abs(staticRailWheelDelta) < AI_PRODUCTS_WHEEL_THRESHOLD) return;
+        const direction = staticRailWheelDelta > 0 ? 1 : -1;
+        staticRailWheelDelta = 0;
+        staticRailGestureConsumed = true;
+        resetExitIntent();
+        moveDeckFromAiProducts(direction);
+      };
+
+      resetAiProductsNavigationIntent = () => {
+        wheelDelta = 0;
+        resetExitIntent();
+        resetStaticRailGesture();
+      };
+
       doc.addEventListener('wheel', event => {
         if (isProductInteraction() || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
         event.preventDefault();
         event.stopPropagation();
+        if (!productsRailOverflows()) {
+          wheelDelta = 0;
+          routeStaticRailWheel(event.deltaY);
+          return;
+        }
+        resetStaticRailGesture();
         wheelDelta += event.deltaY;
         if (Math.abs(wheelDelta) < AI_PRODUCTS_WHEEL_THRESHOLD) return;
         const direction = wheelDelta > 0 ? 1 : -1;
@@ -1648,15 +1849,16 @@
 
       doc.addEventListener('keydown', event => {
         if (!['ArrowDown','PageDown',' ','ArrowUp','PageUp'].includes(event.key)) return;
-        if (isProductInteraction() || event.defaultPrevented) return;
+        if (isProductInteraction()) return;
         if (
           event.key === ' ' &&
           event.target?.closest?.('a,button,input,select,textarea,[role="button"],[contenteditable="true"]')
         ) return;
         event.preventDefault();
+        event.stopImmediatePropagation();
         const direction = ['ArrowDown','PageDown',' '].includes(event.key) ? 1 : -1;
         moveDeckFromAiProducts(direction);
-      });
+      }, {capture:true});
 
       let touchStart = null;
       doc.addEventListener('touchstart', event => {
@@ -1705,7 +1907,7 @@
       const figmaTheme = doc.createElement('link');
       figmaTheme.id = 'h1-figma-racing-report';
       figmaTheme.rel = 'stylesheet';
-      figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=20260731-social-sov-h2-first-v3';
+      figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=20260731-region-lifecycle-proof-v1';
       doc.head.appendChild(figmaTheme);
 
       const children = [...shell.children];

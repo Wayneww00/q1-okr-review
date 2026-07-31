@@ -288,6 +288,20 @@ export function resolveMediaUrl(
   return entry?.url || path;
 }
 
+export function setVideoSource(video, url, { type = "video/mp4" } = {}) {
+  if (!video?.ownerDocument || !url) return "";
+  let source = video.querySelector("source");
+  if (!source) {
+    source = video.ownerDocument.createElement("source");
+    video.append(source);
+  }
+  video.removeAttribute("src");
+  source.type = type;
+  source.src = String(url);
+  video.load();
+  return source.src;
+}
+
 export function listPresentationMedia() {
   const manifest = globalThis.__VANTAGE_VIDEO_MANIFEST__ || {};
   const seenUrls = new Set();
@@ -411,15 +425,16 @@ function preloadMediaIntoBrowserCache(
     const video = documentRef.createElement("video");
     let settled = false;
     let timer;
+    let source;
     const finish = (status) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
-      video.removeEventListener("canplaythrough", onReady);
+      video.removeEventListener("loadedmetadata", onReady);
       video.removeEventListener("error", onError);
       signal?.removeEventListener("abort", onAbort);
       video.pause();
-      video.removeAttribute("src");
+      source?.removeAttribute("src");
       video.load();
       video.remove();
       resolve(status);
@@ -428,22 +443,22 @@ function preloadMediaIntoBrowserCache(
     const onError = () => finish("error");
     const onAbort = () => finish("aborted");
 
-    video.preload = "auto";
+    video.preload = "metadata";
     video.muted = true;
     video.playsInline = true;
     video.setAttribute("aria-hidden", "true");
     video.style.cssText =
       "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px;bottom:0";
-    video.addEventListener("canplaythrough", onReady, { once: true });
+    video.addEventListener("loadedmetadata", onReady, { once: true });
     video.addEventListener("error", onError, { once: true });
     signal?.addEventListener("abort", onAbort, { once: true });
     timer = setTimeout(
       () => finish(video.readyState >= 2 ? "partial" : "timeout"),
       timeoutMs,
     );
-    video.src = entry.url;
     documentRef.body.append(video);
-    video.load();
+    setVideoSource(video, entry.url);
+    source = video.querySelector("source");
   });
 }
 
@@ -1098,6 +1113,7 @@ export const VantageBrowserRuntime = {
   listPresentationMedia,
   progressivelyWarmPresentationMedia,
   resolveMediaUrl,
+  setVideoSource,
   signIn: signInWithSharedCredentials,
   warmPresentationMedia,
 };
