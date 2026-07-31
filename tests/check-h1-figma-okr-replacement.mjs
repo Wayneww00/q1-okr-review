@@ -234,7 +234,7 @@ assert.match(
 );
 assert.match(
   app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══")),
-  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground-clean\.png[\s\S]*?page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?OkrBrandContentMatrixForegroundPage[\s\S]*?page\.id==='okr-tvc-framework'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground-clean\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground-clean\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground-clean\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground-clean\.png[\s\S]*?page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground-clean\.png[\s\S]*?page\.id==='okr-cfd-public-good'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-public-good-video'[\s\S]*?OkrPublicGoodVideoPage[\s\S]*?page\.id==='okr-un-ngo-engagement'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-ai-recommendation'[\s\S]*?figma-untitled\/p58-foreground\.png[\s\S]*?page\.id==='okr-omnichannel-amplification'[\s\S]*?figma-untitled\/p59-foreground-safe\.png[\s\S]*?page\.id==='okr-tvc-localization'[\s\S]*?figma-untitled\/p60-foreground\.png[\s\S]*?page\.id==='okr-superapp-activation'[\s\S]*?figma-untitled\/p61-foreground\.png[\s\S]*?page\.id==='okr-premium-unlimited'[\s\S]*?figma-untitled\/p62-foreground\.png[\s\S]*?page\.id==='okr-brand-experience-audit'[\s\S]*?figma-untitled\/p63-foreground\.png/,
+  /page\.id==='okr-brand-results'[\s\S]*?figma-untitled\/p26-foreground-clean\.png[\s\S]*?page\.id==='okr-brand-refresh'[\s\S]*?OkrBrandRefreshForegroundPage[\s\S]*?page\.id==='okr-brand-operating-system'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-matrix'[\s\S]*?OkrBrandContentMatrixForegroundPage[\s\S]*?page\.id==='okr-tvc-framework'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-tvc-library'[\s\S]*?figma-untitled\/p28-2-foreground-clean\.png[\s\S]*?page\.id==='okr-application-roadmap'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-high-value-actions'[\s\S]*?figma-untitled\/p31-foreground-clean\.png[\s\S]*?page\.id==='okr-awards'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-offline-event-01'[\s\S]*?figma-untitled\/p33-34-foreground-clean\.png[\s\S]*?page\.id==='okr-offline-event-02'[\s\S]*?figma-untitled\/p36-1-foreground-clean\.png[\s\S]*?page\.id==='okr-merchandise'[\s\S]*?figma-untitled\/p52-foreground-clean\.png[\s\S]*?page\.id==='okr-cfd-public-good'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-public-good-video'[\s\S]*?OkrPublicGoodVideoPage[\s\S]*?page\.id==='okr-un-ngo-engagement'[\s\S]*?src=\{page\.src\}[\s\S]*?page\.id==='okr-ai-recommendation'[\s\S]*?figma-untitled\/p58-foreground\.png[\s\S]*?page\.id==='okr-omnichannel-amplification'[\s\S]*?src=\{page\.src\}[\s\S]*?left:195,top:75,width:1575,height:987[\s\S]*?page\.id==='okr-tvc-localization'[\s\S]*?figma-untitled\/p60-foreground\.png[\s\S]*?page\.id==='okr-superapp-activation'[\s\S]*?figma-untitled\/p61-foreground\.png[\s\S]*?page\.id==='okr-premium-unlimited'[\s\S]*?figma-untitled\/p62-foreground\.png[\s\S]*?page\.id==='okr-brand-experience-audit'[\s\S]*?figma-untitled\/p63-foreground\.png/,
   "the remaining Figma foreground exports must be assigned to their matching report pages",
 );
 assert.ok(
@@ -259,20 +259,41 @@ assert.match(
   /function OkrPublicGoodVideoPage[\s\S]*?src:page\.src,left:277,top:75,width:1366,height:931[\s\S]*?src:page\.videoSrc,left:338,top:254,width:1245,height:698/,
   "p54-1 must preserve its separately exported Figma panel and video-preview layers",
 );
-for (const fileName of ["p58-foreground.png", "p59-foreground-safe.png", "p60-foreground.png", "p61-foreground.png", "p62-foreground.png", "p63-foreground.png"]) {
+for (const fileName of ["p58-foreground.png", "omnichannel-amplification-figma-145-716.png", "p60-foreground.png", "p61-foreground.png", "p62-foreground.png", "p63-foreground.png"]) {
+  assert.ok(
+    fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", fileName)),
+    `${fileName} must exist locally`,
+  );
+}
+const brandRefreshLayers = [
+  ["141:125", "brand-refresh-title-figma-141-125.png", 643, 67, 635, 106],
+  ["141:115", "brand-refresh-summary-figma-141-115.png", 160, 190, 1600, 120],
+  ["141:128", "brand-refresh-left-panel-figma-141-128.png", 141, 330, 1600, 687],
+  ["141:171", "brand-refresh-core-figma-141-171.png", 682, 375, 707, 631],
+  ["141:215", "brand-refresh-subtitle-figma-141-215.png", 833, 256, 251, 18],
+  ["141:217", "brand-refresh-connectors-figma-141-217.png", 1157, 540, 197, 366],
+  ["141:221", "brand-refresh-channels-figma-141-221.png", 1321, 375, 411, 631],
+];
+const brandRefreshRenderer = app.slice(
+  app.indexOf("function OkrBrandRefreshForegroundPage"),
+  app.indexOf("function OkrBrandContentMatrixForegroundPage"),
+);
+for (const [nodeId, fileName, left, top, width, height] of brandRefreshLayers) {
+  assert.ok(
+    brandRefreshRenderer.includes(
+      `{nodeId:'${nodeId}',src:'previews/assets/figma-untitled/${fileName}',left:${left},top:${top},width:${width},height:${height}}`,
+    ),
+    `${nodeId} must retain its Figma position in the Brand Refresh composition`,
+  );
   assert.ok(
     fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", fileName)),
     `${fileName} must exist locally`,
   );
 }
 assert.match(
-  app,
-  /function OkrBrandRefreshForegroundPage[\s\S]*?h1-okr-brand-refresh-foreground[\s\S]*?src=\{page\.src\}[\s\S]*?left:'160px',top:'67px',width:'1619px',height:'950px'/,
-  "Brand Refresh must render its Figma foreground at the original composition position over the shared trophy",
-);
-assert.ok(
-  fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", "brand-refresh-foreground.png")),
-  "the transparent Brand Refresh Figma foreground export must exist locally",
+  brandRefreshRenderer,
+  /className="h1-okr-figma-foreground-layer is-positioned h1-okr-brand-refresh-foreground"[\s\S]*?data-figma-node-id=\{foreground\.nodeId\}/,
+  "Brand Refresh must render the current Figma foreground nodes over the shared trophy",
 );
 assert.ok(
   app.includes("previews/assets/figma-untitled/brand-operating-system-foreground.svg"),
@@ -351,7 +372,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-black-label-v28"',
+    'src="../index.html?report=h1&embedded=1&v=20260731-figma-145-716"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

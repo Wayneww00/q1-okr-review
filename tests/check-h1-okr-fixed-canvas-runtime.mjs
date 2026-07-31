@@ -88,7 +88,7 @@ try {
     await laterPage.scrollIntoViewIfNeeded();
     const laterPageState = await laterPage.evaluate((root) => {
       const stage = document.querySelector(".h1-okr-fixed-trophy-stage");
-      const foreground = root.querySelector(".h1-okr-brand-refresh-foreground");
+      const foreground = root.querySelector('[data-figma-node-id="141:125"]');
       return {
         stageTop: stage.getBoundingClientRect().top,
         foregroundImages: [...root.querySelectorAll(".h1-okr-figma-foreground-layer")].map((layer) => layer.getAttribute("src")),
@@ -103,8 +103,16 @@ try {
       };
     });
     assert.ok(Math.abs(laterPageState.stageTop) < 1, "the same trophy stage must remain pinned after a page turn");
-    assert.deepEqual(laterPageState.foregroundImages, ["previews/assets/figma-untitled/brand-refresh-foreground.png"]);
-    assert.deepEqual(laterPageState.foregroundPosition, { left: "160px", top: "67px", width: "1619", height: "950" });
+    assert.deepEqual(laterPageState.foregroundImages, [
+      "previews/assets/figma-untitled/brand-refresh-title-figma-141-125.png",
+      "previews/assets/figma-untitled/brand-refresh-summary-figma-141-115.png",
+      "previews/assets/figma-untitled/brand-refresh-left-panel-figma-141-128.png",
+      "previews/assets/figma-untitled/brand-refresh-core-figma-141-171.png",
+      "previews/assets/figma-untitled/brand-refresh-subtitle-figma-141-215.png",
+      "previews/assets/figma-untitled/brand-refresh-connectors-figma-141-217.png",
+      "previews/assets/figma-untitled/brand-refresh-channels-figma-141-221.png",
+    ]);
+    assert.deepEqual(laterPageState.foregroundPosition, { left: "643px", top: "67px", width: "635", height: "106" });
     assert.equal(laterPageState.brandRefreshModuleCount, 0);
     assert.equal(laterPageState.exactFrameCount, 0, "the Brand Refresh foreground must not stack a full Figma screenshot over the shared trophy");
     await page.close();

@@ -2002,6 +2002,232 @@
   -webkit-user-drag: none;
 }
 
+/* Editable Elite Client copy -------------------------------------------------
+   The exported Figma foreground remains responsible for images, borders and
+   decoration.  These tightly scoped panels cover only the selected copy before
+   rendering live text above it.  Coordinates are in the original 1920 × 1080
+   Figma canvas; `.h1-okr-canvas` scales the whole group as one unit. */
+.h1-elite-copy {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  pointer-events: none;
+  text-rendering: geometricPrecision;
+}
+
+.h1-elite-copy-mask {
+  box-sizing: border-box;
+  position: absolute;
+  display: block;
+  isolation: isolate;
+}
+
+.h1-elite-copy--identity .h1-elite-copy-mask {
+  left: 162px;
+  background: #020203;
+}
+
+.h1-elite-identity-kicker {
+  top: 424px;
+  width: 710px;
+  height: 64px;
+  color: #fff;
+  font-size: 47px;
+  font-weight: 900;
+  line-height: 64px;
+  letter-spacing: -.035em;
+}
+
+.h1-elite-identity-title {
+  top: 505px;
+  width: 720px;
+  height: 94px;
+  color: #e4bd7f;
+  font-size: 70px;
+  font-weight: 900;
+  line-height: 94px;
+  letter-spacing: -.055em;
+}
+
+.h1-elite-identity-body {
+  top: 635px;
+  width: 780px;
+  height: 105px;
+  color: #f2f2f2;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: -.025em;
+}
+
+.h1-elite-copy--experience-model .h1-elite-section-title,
+.h1-elite-copy--experience-cases .h1-elite-section-title,
+.h1-elite-copy--endorsement .h1-elite-section-title,
+.h1-elite-copy--ferrari .h1-elite-section-title,
+.h1-elite-copy--black-label .h1-elite-section-title,
+.h1-elite-copy--enablement .h1-elite-section-title {
+  top: 58px;
+  left: 460px;
+  width: 1000px;
+  height: 72px;
+  background: #020203;
+  color: #e6bd7e;
+  font-size: 53px;
+  font-weight: 900;
+  line-height: 72px;
+  letter-spacing: -.055em;
+  text-align: center;
+}
+
+.h1-elite-copy--experience-model .h1-elite-section-title { left: 555px; width: 820px; }
+.h1-elite-copy--experience-cases .h1-elite-section-title { left: 640px; width: 670px; }
+.h1-elite-copy--endorsement .h1-elite-section-title { left: 690px; width: 560px; }
+.h1-elite-copy--ferrari .h1-elite-section-title { left: 785px; width: 350px; height: 90px; top: 72px; line-height: 82px; }
+.h1-elite-copy--black-label .h1-elite-section-title { left: 635px; width: 680px; height: 86px; top: 82px; line-height: 80px; }
+.h1-elite-copy--enablement .h1-elite-section-title { left: 735px; width: 450px; top: 59px; }
+
+.h1-elite-section-subtitle {
+  color: #fff;
+  font-size: 31px;
+  font-weight: 500;
+  letter-spacing: -.025em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.h1-elite-copy--experience-model .h1-elite-section-subtitle,
+.h1-elite-copy--experience-cases .h1-elite-section-subtitle {
+  top: 130px;
+  left: 440px;
+  width: 1040px;
+  height: 52px;
+  background: #020203;
+  line-height: 52px;
+}
+
+.h1-elite-copy--endorsement .h1-elite-section-subtitle,
+.h1-elite-copy--ferrari .h1-elite-section-subtitle,
+.h1-elite-copy--enablement .h1-elite-section-subtitle {
+  top: 146px;
+  left: 100px;
+  width: 1720px;
+  height: 96px;
+  border-radius: 48px;
+  background: linear-gradient(90deg, #202020 0%, #27231f 54%, #442b0e 100%);
+  line-height: 96px;
+}
+
+.h1-elite-copy--ferrari .h1-elite-section-subtitle { top: 182px; left: 160px; width: 1600px; }
+.h1-elite-copy--enablement .h1-elite-section-subtitle { top: 140px; left: 160px; width: 1600px; }
+
+.h1-elite-model-left,
+.h1-elite-model-right,
+.h1-elite-cases-left,
+.h1-elite-cases-right,
+.h1-elite-black-card {
+  background: linear-gradient(100deg, #eed1a1 0%, #e9c790 54%, #d8ad6e 100%);
+  color: #4d3828;
+}
+
+.h1-elite-model-left,
+.h1-elite-model-right {
+  top: 221px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  padding: 0 26px;
+  white-space: nowrap;
+}
+
+.h1-elite-model-left { left: 228px; width: 740px; }
+.h1-elite-model-right { left: 1177px; width: 630px; gap: 25px; }
+.h1-elite-model-left b, .h1-elite-model-right b { font-size: 30px; font-weight: 900; }
+.h1-elite-model-left span, .h1-elite-model-right span { font-size: 20px; font-weight: 600; }
+.h1-elite-model-right span { font-size: 18px; }
+
+.h1-elite-cases-left,
+.h1-elite-cases-right {
+  top: 236px;
+  height: 124px;
+  padding: 20px 30px;
+}
+
+.h1-elite-cases-left { left: 157px; width: 778px; }
+.h1-elite-cases-right { left: 985px; width: 778px; }
+.h1-elite-cases-left b, .h1-elite-cases-right b { display:block; font-size: 29px; line-height: 34px; font-weight: 900; }
+.h1-elite-cases-left span, .h1-elite-cases-right span { display:block; margin-top: 8px; font-size: 19px; line-height: 24px; font-weight: 500; white-space: nowrap; }
+.h1-elite-cases-right span { font-size: 17px; }
+
+.h1-elite-no1-formula {
+  top: 99px;
+  left: 140px;
+  width: 1300px;
+  height: 121px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 12px 28px;
+  border: 1px solid #805e29;
+  border-radius: 9px;
+  background: linear-gradient(100deg, #191715, #2d2418 70%, #39240b);
+  color: #efd6aa;
+}
+
+.h1-elite-no1-formula b { font-size: 34px; font-weight: 900; line-height: 1.25; letter-spacing: -.04em; white-space: nowrap; }
+.h1-elite-no1-formula i { flex: 0 0 58px; width: 58px; height: 58px; border: 1px solid #bd8b3e; border-radius: 50%; color: #e5bb73; font-size: 45px; font-style: normal; font-weight: 700; line-height: 54px; text-align: center; }
+.h1-elite-no1-pills { position:absolute; top:100px; left:1540px; width:280px; height:890px; display:flex; flex-direction:column; gap:8px; padding-left:35px; background-image:url("assets/figma-untitled/elite-client-background-38-39-2.png"); background-position:-1540px -100px; background-size:1920px 1080px; -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 18px, #000 262px, transparent 100%); mask-image:linear-gradient(90deg, transparent 0, #000 18px, #000 262px, transparent 100%); }
+.h1-elite-no1-pills span { position:relative; display:grid; width:145px; height:145px; place-content:center; border-radius:50%; background: radial-gradient(circle at 45% 42%, #6c5130, #2c241d 75%); color:#fff; font-size:20px; font-weight:700; line-height:1.45; text-align:center; }
+.h1-elite-no1-pills span::before { content:""; position:absolute; top:21px; left:67px; border-left:8px solid transparent; border-right:8px solid transparent; border-top:12px solid #e7c27e; }
+.h1-elite-no1-pills em { font-size:18px; font-style:normal; font-weight:500; }
+
+.h1-elite-endorsement-left,
+.h1-elite-endorsement-right {
+  top: 273px;
+  height: 57px;
+  background: linear-gradient(100deg, #2a2621, #33281a 77%, #4a2f0b);
+  color:#fff;
+  font-size:28px;
+  font-weight:900;
+  line-height:57px;
+  letter-spacing:-.035em;
+}
+
+.h1-elite-endorsement-left { left:100px; width:310px; padding-left:36px; }
+.h1-elite-endorsement-right { left:1005px; width:620px; padding-left:34px; }
+
+.h1-elite-black-label-pills { position:absolute; top:181px; left:0; width:100%; height:172px; color:#fff; }
+.h1-elite-black-label-pills span { position:absolute; top:0; display:grid; width:172px; height:172px; place-content:center; border-radius:50%; background: radial-gradient(circle at 50% 48%, #71552f, #35291e 76%); font-size:24px; font-weight:500; white-space:nowrap; }
+.h1-elite-black-label-pills span:nth-of-type(1) { left:480px; }
+.h1-elite-black-label-pills span:nth-of-type(2) { left:678px; }
+.h1-elite-black-label-pills span:nth-of-type(3) { left:876px; }
+.h1-elite-black-label-pills span:nth-of-type(4) { left:1074px; }
+.h1-elite-black-label-pills span:nth-of-type(5) { left:1272px; }
+.h1-elite-black-label-pills i { position:absolute; top:69px; width:36px; height:36px; border-radius:50%; background:#caa66e; color:#241d16; font-size:31px; font-style:normal; font-weight:400; line-height:34px; text-align:center; }
+.h1-elite-black-label-pills i:nth-of-type(1) { left:646px; }
+.h1-elite-black-label-pills i:nth-of-type(2) { left:844px; }
+.h1-elite-black-label-pills i:nth-of-type(3) { left:1042px; }
+.h1-elite-black-label-pills i:nth-of-type(4) { left:1240px; }
+
+.h1-elite-black-card { top:391px; left:318px; width:360px; height:88px; padding:17px 32px; }
+.h1-elite-black-card.is-middle { left:861px; width:360px; }
+.h1-elite-black-card.is-right { left:1282px; width:480px; }
+.h1-elite-black-card b { display:block; font-size:27px; font-weight:900; line-height:29px; }
+.h1-elite-black-card span { display:block; margin-top:5px; font-size:16px; font-weight:500; }
+
+.h1-elite-enablement-labels { position:absolute; inset:0; }
+.h1-elite-enablement-labels > div { height:58px; padding:11px 30px; background:linear-gradient(100deg, #ecd2a1, #d9ae6d); color:#5a422e; }
+.h1-elite-enablement-labels > div:nth-child(1) { top:595px; left:170px; width:550px; }
+.h1-elite-enablement-labels > div:nth-child(2) { top:595px; left:745px; width:478px; }
+.h1-elite-enablement-labels > div:nth-child(3) { top:595px; left:1245px; width:500px; }
+.h1-elite-enablement-labels > div:nth-child(4) { top:930px; left:170px; width:488px; }
+.h1-elite-enablement-labels > div:nth-child(5) { top:930px; left:682px; width:500px; }
+.h1-elite-enablement-labels > div:nth-child(6) { top:930px; left:1206px; width:539px; }
+.h1-elite-enablement-labels b { display:inline-block; font-size:25px; font-weight:900; line-height:32px; letter-spacing:-.035em; }
+.h1-elite-enablement-labels span { float:right; margin-top:7px; font-size:16px; font-weight:500; line-height:23px; }
+
 .h1-okr-visual {
   position: absolute;
   z-index: 0;

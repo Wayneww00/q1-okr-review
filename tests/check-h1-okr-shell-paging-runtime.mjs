@@ -108,8 +108,9 @@ try {
         pageNumber: "03/22",
       },
       "okr-brand-refresh": {
-        source: /previews\/assets\/figma-untitled\/brand-refresh-foreground\.png$/,
+        source: /previews\/assets\/figma-untitled\/brand-refresh-title-figma-141-125\.png$/,
         pageNumber: "04/22",
+        foregroundCount: 7,
       },
       "okr-brand-operating-system": {
         source: /previews\/assets\/figma-untitled\/brand-operating-system-foreground\.svg$/,
@@ -170,7 +171,7 @@ try {
         pageNumber: "18/22",
       },
       "okr-omnichannel-amplification": {
-        source: /previews\/assets\/figma-untitled\/p59-foreground-safe\.png$/,
+        source: /previews\/assets\/figma-untitled\/omnichannel-amplification-figma-145-716\.png$/,
         pageNumber: "19/22",
       },
       "okr-tvc-localization": {

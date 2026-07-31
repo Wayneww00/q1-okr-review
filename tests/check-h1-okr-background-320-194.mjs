@@ -66,7 +66,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260730-black-label-v28"',
+    'src="../index.html?report=h1&embedded=1&v=20260731-figma-145-716"',
   ),
   "the formal shell must load the exact Figma background revision",
 );

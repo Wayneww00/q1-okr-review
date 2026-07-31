@@ -19,7 +19,7 @@ assert.deepEqual(ids, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], "H1 should contain 
 assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','15 MODULES'\)\)/, "shell should advertise 15 modules");
 assert.doesNotMatch(shell, /'14 MODULES'/, "stale 14-module label should be removed");
 assert.ok(
-  shell.includes('src="../index.html?report=h1&embedded=1&v=20260730-black-label-v28"'),
+  shell.includes('src="../index.html?report=h1&embedded=1&v=20260731-figma-145-716"'),
   "the formal shell should invalidate the stale embedded-report cache after the follower-chart correction",
 );
 assert.doesNotMatch(

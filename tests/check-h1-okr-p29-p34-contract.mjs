@@ -136,16 +136,23 @@ assert.ok(
 );
 for (const [pageId, fileName] of [
   ["okr-ai-recommendation", "p58-foreground.png"],
-  ["okr-omnichannel-amplification", "p59-foreground-safe.png"],
+  ["okr-omnichannel-amplification", "omnichannel-amplification-figma-145-716.png"],
   ["okr-tvc-localization", "p60-foreground.png"],
   ["okr-superapp-activation", "p61-foreground.png"],
   ["okr-premium-unlimited", "p62-foreground.png"],
   ["okr-brand-experience-audit", "p63-foreground.png"],
 ]) {
+  const rendererPattern = pageId === "okr-omnichannel-amplification"
+    ? /page\.id==='okr-omnichannel-amplification'[\s\S]*?src=\{page\.src\}[\s\S]*?left:195,top:75,width:1575,height:987/
+    : new RegExp(`page\\.id==='${pageId}'[\\s\\S]*?figma-untitled\\/${fileName.replace('.', '\\.')}`);
   assert.match(
     app,
-    new RegExp(`page\\.id==='${pageId}'[\\s\\S]*?figma-untitled\\/${fileName.replace('.', '\\.')}`),
+    rendererPattern,
     `${pageId} must use its Figma foreground`,
+  );
+  assert.ok(
+    registry.includes(`id:'${pageId}'`) && registry.includes(`src:'previews/assets/figma-untitled/${fileName}'`),
+    `${pageId} must register its Figma foreground source`,
   );
   assert.ok(
     fs.existsSync(path.join(root, "previews", "assets", "figma-untitled", fileName)),
@@ -159,13 +166,13 @@ assert.match(
 );
 assert.match(
   registry,
-  /id:'okr-brand-refresh'[\s\S]*?src:'previews\/assets\/figma-untitled\/brand-refresh-foreground\.png'/,
-  "the Brand Refresh page must use the exported Figma foreground rather than a full background screenshot",
+  /id:'okr-brand-refresh'[\s\S]*?figmaNodeId:'141:78'/,
+  "the Brand Refresh page must point at the requested Figma frame",
 );
 assert.match(
   app,
-  /function OkrBrandRefreshForegroundPage\([\s\S]*?className="h1-okr-figma-foreground-layer is-positioned h1-okr-brand-refresh-foreground"[\s\S]*?src=\{page\.src\}[\s\S]*?left:'160px',top:'67px',width:'1619px',height:'950px'/,
-  "the Brand Refresh foreground must preserve its Figma position over the shared trophy stage",
+  /function OkrBrandRefreshForegroundPage\([\s\S]*?nodeId:'141:125'[\s\S]*?nodeId:'141:221'[\s\S]*?data-figma-node-id=\{foreground\.nodeId\}/,
+  "the Brand Refresh foreground must be composed from the current Figma nodes over the shared trophy stage",
 );
 assert.doesNotMatch(
   app,
