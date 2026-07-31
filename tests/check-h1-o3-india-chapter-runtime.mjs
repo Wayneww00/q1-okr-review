@@ -54,8 +54,14 @@ try {
     const artboard = node.querySelector(".h1-o3-artboard").getBoundingClientRect();
     const image = node.querySelector(".h1-o3-india-background");
     const wait = node.querySelector(".h1-o3-india-wait").getBoundingClientRect();
+    const ghost = node.querySelector(".h1-o3-india-wait-ghost");
+    const number = node.querySelector(".h1-o3-india-wait p strong");
+    const label = node.querySelector(".h1-o3-india-wait p span");
     const imageBounds = image.getBoundingClientRect();
     const imageStyle = getComputedStyle(image);
+    const ghostStyle = getComputedStyle(ghost);
+    const numberStyle = getComputedStyle(number);
+    const labelStyle = getComputedStyle(label);
     return {
       pageTop: node.getBoundingClientRect().top,
       overflowX: node.scrollWidth - node.clientWidth,
@@ -64,6 +70,8 @@ try {
       wait: { left: wait.left, top: wait.top, right: wait.right, bottom: wait.bottom },
       imageBounds: { left: imageBounds.left, top: imageBounds.top, right: imageBounds.right, bottom: imageBounds.bottom },
       objectFit: imageStyle.objectFit,
+      ghostStroke: ghostStyle.webkitTextStrokeWidth,
+      fontSizes: { number: parseFloat(numberStyle.fontSize), label: parseFloat(labelStyle.fontSize) },
       image: { naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight },
       text: node.innerText.replace(/\s+/g, " ").trim(),
     };
@@ -78,9 +86,14 @@ try {
   assert.ok(Math.abs(state.imageBounds.bottom - state.artboard.bottom) <= 1);
   assert.ok(state.wait.left >= state.artboard.left + 900);
   assert.ok(state.wait.right <= state.artboard.right + 1);
-  assert.ok(state.wait.top >= state.artboard.top + 700);
+  assert.ok(
+    state.wait.top >= state.artboard.top + (state.artboard.bottom - state.artboard.top) * 0.64,
+    JSON.stringify(state),
+  );
   assert.ok(state.wait.bottom <= state.artboard.bottom + 1);
-  assert.match(state.text, /45天的等待 18 \/ 18/);
+  assert.notEqual(state.ghostStroke, "0px");
+  assert.ok(state.fontSizes.number >= state.fontSizes.label * 2);
+  assert.match(state.text, /PROJECT COUNTDOWN 145\s*天的等待 18 \/ 18/);
 
   const screenshotDir = path.join(root, ".tmp");
   fs.mkdirSync(screenshotDir, { recursive: true });

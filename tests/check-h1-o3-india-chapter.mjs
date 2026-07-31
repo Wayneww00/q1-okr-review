@@ -19,9 +19,13 @@ assert.equal([...registry.matchAll(/\bid:"o3-/g)].length, 18);
 const componentStart = app.indexOf("function O3IndiaChapter()");
 const componentEnd = app.indexOf("\nfunction O3Chapter", componentStart);
 const component = app.slice(componentStart, componentEnd);
-assert.match(component, /aria-label="印度 2026年H2 SSS级项目 45天的等待"/);
+assert.match(component, /aria-label="印度 2026年H2 SSS级项目 145天的等待"/);
 assert.match(component, /className="h1-o3-india-wait"/);
-assert.match(component, /<p className="h1-o3-india-wait">45天的等待<\/p>/);
+assert.match(component, /className="h1-o3-india-wait-ghost"[^>]*>145<\/span>/);
+assert.match(component, /className="h1-o3-india-wait-kicker"/);
+assert.match(component, /PROJECT COUNTDOWN/);
+assert.match(component, /<strong>145<\/strong><span>天的等待<\/span>/);
+assert.doesNotMatch(component, /[">]45天的等待/);
 assert.match(component, /previews\/assets\/o3\/india-h2-sss-figma\.png/);
 assert.doesNotMatch(component, /h1-o3-india-wordmark|india-h2-sss-desert-racing/);
 
@@ -29,6 +33,9 @@ for (const selector of [
   ".h1-o3-india-chapter",
   ".h1-o3-india-background",
   ".h1-o3-india-wait",
+  ".h1-o3-india-wait-ghost",
+  ".h1-o3-india-wait-kicker",
+  ".h1-o3-india-wait-mark",
 ]) assert.ok(theme.includes(selector), `${selector} must be styled`);
 
 assert.match(theme, /\.h1-o3-india-background\{[^}]*width:100%[^}]*height:100%[^}]*object-fit:cover/s);
