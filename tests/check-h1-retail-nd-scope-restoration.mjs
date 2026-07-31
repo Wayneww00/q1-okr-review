@@ -82,6 +82,18 @@ assert.ok(currentCardStart >= 0 && comparisonStart > currentCardStart && connect
 
 assert.match(theme, /\.h1-retail-growth-vietnam-scope-grid\s*\{[^}]*height:\s*100%;[^}]*grid-template-columns:\s*minmax\(0,\.9fr\)\s+68px\s+minmax\(0,1\.18fr\);/s);
 assert.match(theme, /\.is-vietnam-retail-nd \.h1-retail-growth-comparison\s*\{[^}]*position:\s*relative;[^}]*grid-template-columns:\s*100px\s+minmax\(0,1fr\);/s);
+assert.match(vietnamChartBlock, /const leftPlot = \{left:50,right:490,top:24,bottom:342\};/);
+assert.match(vietnamChartBlock, /const restoredPlot = \{left:68,right:520,top:24,bottom:346\};/);
+assert.match(vietnamChartBlock, /width="112"/);
+assert.match(vietnamChartBlock, /width="116"/);
+
+const restorationChartStart = app.indexOf("function H1RetailNdScopeRestorationChart");
+const restorationChartEnd = app.indexOf("function H1MibAttributionChart", restorationChartStart);
+const restorationChartBlock = app.slice(restorationChartStart, restorationChartEnd);
+assert.match(restorationChartBlock, /const plot = \{left:64,right:526,top:34,bottom:374\};/);
+assert.match(restorationChartBlock, /viewBox="0 0 590 420"/);
+assert.match(restorationChartBlock, /width="128"/);
+assert.match(theme, /\.h1-retail-growth-restoration-panel\s*\{[^}]*grid-template-rows:\s*32px\s+26px\s+minmax\(0,1fr\);/s);
 
 const paletteStart = theme.indexOf(".h1-retail-growth-scope-panel.is-restored");
 const paletteEnd = theme.indexOf(".h1-retail-growth-transition", paletteStart);

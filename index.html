@@ -1847,7 +1847,7 @@ function H1ApacNdBreakdownChart({data}) {
 function H1VietnamRetailNdChart({data}) {
   const first = data.periods[0];
   const second = data.periods[1];
-  const leftPlot = {left:58,right:482,top:48,bottom:312};
+  const leftPlot = {left:50,right:490,top:24,bottom:342};
   const leftMoneyY = (value)=>leftPlot.bottom-((value+.4)/1.6)*(leftPlot.bottom-leftPlot.top);
   const leftShareY = (value)=>leftPlot.bottom-((value+5)/35)*(leftPlot.bottom-leftPlot.top);
   const leftAxisValues = [-.4,0,.4,.8,1.2];
@@ -1859,7 +1859,7 @@ function H1VietnamRetailNdChart({data}) {
     {dx:-20,dy:-28,textAnchor:"end"},
     {dx:20,dy:42,textAnchor:"start"},
   ];
-  const restoredPlot = {left:74,right:514,top:48,bottom:312};
+  const restoredPlot = {left:68,right:520,top:24,bottom:346};
   const restoredMoneyY = (value)=>restoredPlot.bottom-((value+1)/4)*(restoredPlot.bottom-restoredPlot.top);
   const restoredShareY = (value)=>restoredMoneyY(0)-(value/30)*(restoredMoneyY(0)-restoredPlot.top);
   const restoredXs = [184,404];
@@ -1881,8 +1881,8 @@ function H1VietnamRetailNdChart({data}) {
               const y=leftMoneyY(value);
               return <g key={`left-axis-${value}`}><line x1={leftPlot.left} x2={leftPlot.right} y1={y} y2={y} className={value===0?"h1-retail-growth-zero":"h1-retail-growth-grid"}/><text x={leftPlot.left-10} y={y+5} className="h1-retail-growth-axis-tick" textAnchor="end">{data.leftAxisTicks[index]}</text><text x={leftPlot.right+10} y={y+5} className="h1-retail-growth-axis-tick" textAnchor="start">{data.rightAxisTicks[index]}</text></g>;
             })}
-            <rect className="h1-retail-growth-bar is-muted" x="121" y={leftMoneyY(0)} width="90" height={leftMoneyY(first.nd)-leftMoneyY(0)} rx="6"/>
-            <rect className="h1-retail-growth-bar is-green" x="345" y={leftMoneyY(second.nd)} width="90" height={leftMoneyY(0)-leftMoneyY(second.nd)} rx="7"/>
+            <rect className="h1-retail-growth-bar is-muted" x="110" y={leftMoneyY(0)} width="112" height={leftMoneyY(first.nd)-leftMoneyY(0)} rx="6"/>
+            <rect className="h1-retail-growth-bar is-green" x="334" y={leftMoneyY(second.nd)} width="112" height={leftMoneyY(0)-leftMoneyY(second.nd)} rx="7"/>
             <text x="166" y={leftMoneyY(first.nd)+23} className="h1-retail-growth-value is-negative" textAnchor="middle">{first.ndText}</text>
             <text x="390" y={leftMoneyY(second.nd)+32} className="h1-retail-growth-value is-inside" textAnchor="middle">{second.ndText}</text>
             <path d={`M ${sharePoints[0].x} ${sharePoints[0].y} C 242 ${sharePoints[0].y-5} 318 ${sharePoints[1].y+22} ${sharePoints[1].x} ${sharePoints[1].y}`} className="h1-retail-growth-share-line is-dotted" markerEnd="url(#retail-vietnam-scope-arrow-up)"/>
@@ -1892,8 +1892,8 @@ function H1VietnamRetailNdChart({data}) {
               return <g key={`${period.label}-share`}><circle data-vietnam-share-point={period.label} cx={point.x} cy={point.y} r="6" className="h1-retail-growth-share-dot"/><text data-vietnam-share-label={period.label} x={point.x+labelOffset.dx} y={point.y+labelOffset.dy} className="h1-retail-growth-share-label is-saffron is-endpoint" textAnchor={labelOffset.textAnchor}>{period.shareText}</text></g>;
             })}
             <g className="h1-retail-growth-delta-chip"><rect x="216" y="142" width="108" height="54" rx="12"/><text x="270" y="176" textAnchor="middle">{data.delta}</text></g>
-            <text x="166" y="360" className="h1-retail-growth-x-label" textAnchor="middle">{first.label}</text>
-            <text x="390" y="360" className="h1-retail-growth-x-label" textAnchor="middle">{second.label}</text>
+            <text x="166" y="378" className="h1-retail-growth-x-label" textAnchor="middle">{first.label}</text>
+            <text x="390" y="378" className="h1-retail-growth-x-label" textAnchor="middle">{second.label}</text>
           </svg>
           <div className="h1-retail-growth-comparison" data-vietnam-comparison-placement="left-panel">
             <strong>H1口径对照</strong><span>{data.comparisonLeft}</span><span>{data.comparisonRight}</span>
@@ -1922,13 +1922,13 @@ function H1VietnamRetailNdChart({data}) {
               const dynamicBase=period.current>0?currentY:zero;
               const dynamicTop=restoredMoneyY(period.dynamic);
               return <g key={period.label}>
-                <rect x={x-47} y={Math.min(zero,currentY)} width="94" height={Math.abs(currentY-zero)} className="h1-retail-growth-restored-current" rx="3"/>
-                <rect x={x-47} y={dynamicTop} width="94" height={Math.max(0,dynamicBase-dynamicTop)} className="h1-retail-growth-restored-dynamic" rx="3"/>
-                <rect x={x-47} y={Math.min(mibTop,mibBottom)} width="94" height={Math.abs(mibBottom-mibTop)} className="h1-retail-growth-restored-mib" rx="3"/>
+                <rect x={x-58} y={Math.min(zero,currentY)} width="116" height={Math.abs(currentY-zero)} className="h1-retail-growth-restored-current" rx="3"/>
+                <rect x={x-58} y={dynamicTop} width="116" height={Math.max(0,dynamicBase-dynamicTop)} className="h1-retail-growth-restored-dynamic" rx="3"/>
+                <rect x={x-58} y={Math.min(mibTop,mibBottom)} width="116" height={Math.abs(mibBottom-mibTop)} className="h1-retail-growth-restored-mib" rx="3"/>
                 <text x={x} y={(dynamicTop+dynamicBase)/2+5} className="h1-retail-growth-stack-label" textAnchor="middle">{period.dynamicText}</text>
                 <text x={x} y={(zero+currentY)/2+5} className="h1-retail-growth-stack-label" textAnchor="middle">{period.currentText}</text>
                 <text x={x} y={(mibTop+mibBottom)/2+5} className="h1-retail-growth-stack-label" textAnchor="middle">{period.mibText}</text>
-                <text x={x} y="350" className="h1-retail-growth-x-label" textAnchor="middle">{period.label}</text>
+                <text x={x} y="378" className="h1-retail-growth-x-label" textAnchor="middle">{period.label}</text>
               </g>;
             })}
             <path d={`M ${restoredSharePoints[0].x} ${restoredSharePoints[0].y} L ${restoredSharePoints[1].x} ${restoredSharePoints[1].y}`} className="h1-retail-growth-restored-share-line"/>
@@ -1944,8 +1944,8 @@ function H1VietnamRetailNdChart({data}) {
 }
 
 function H1RetailNdScopeRestorationChart({data}) {
-  const plot = {left:82,right:512,top:74,bottom:350};
-  const xs = [220,414];
+  const plot = {left:64,right:526,top:34,bottom:374};
+  const xs = [206,430];
   return (
     <div className="h1-retail-growth-chart h1-editorial-chart-surface is-scope-restoration" data-editor-ignore>
       <div className="h1-retail-growth-scope-restoration-grid">
@@ -1960,7 +1960,7 @@ function H1RetailNdScopeRestorationChart({data}) {
                 <span><i className="is-bar"/>{panel.legends[0]}</span>
                 <span><i className="is-share"/>{panel.legends[1]}</span>
               </div>
-              <svg viewBox="0 0 590 410" role="img" aria-label={panel.title}>
+              <svg viewBox="0 0 590 420" role="img" aria-label={panel.title}>
                 {panel.leftAxisTicks.map((tick,index)=>{
                   const y=plot.bottom-(index/(panel.leftAxisTicks.length-1))*(plot.bottom-plot.top);
                   return <g key={`${panel.key}-money-${tick}`}><line x1={plot.left} x2={plot.right} y1={y} y2={y} className={index===0?"h1-retail-growth-zero":"h1-retail-growth-grid"}/><text x={plot.left-12} y={y+5} className="h1-retail-growth-restoration-tick" textAnchor="end">{tick}</text></g>;
@@ -1971,7 +1971,7 @@ function H1RetailNdScopeRestorationChart({data}) {
                 })}
                 {panel.points.map((point,index)=>{
                   const y=valueY(point.value);
-                  return <g key={`${panel.key}-${point.label}`}><rect x={xs[index]-52} y={y} width="104" height={plot.bottom-y} rx="6" className="h1-retail-growth-restoration-bar"/><text x={xs[index]} y={y+(plot.bottom-y)/2+7} className="h1-retail-growth-restoration-value" textAnchor="middle">{point.valueText}</text><text x={xs[index]} y="383" className="h1-retail-growth-x-label" textAnchor="middle">{point.label}</text></g>;
+                  return <g key={`${panel.key}-${point.label}`}><rect x={xs[index]-64} y={y} width="128" height={plot.bottom-y} rx="6" className="h1-retail-growth-restoration-bar"/><text x={xs[index]} y={y+(plot.bottom-y)/2+7} className="h1-retail-growth-restoration-value" textAnchor="middle">{point.valueText}</text><text x={xs[index]} y="408" className="h1-retail-growth-x-label" textAnchor="middle">{point.label}</text></g>;
                 })}
                 <path d={`M ${sharePoints[0].x} ${sharePoints[0].y} L ${sharePoints[1].x} ${sharePoints[1].y}`} className="h1-retail-growth-restoration-share-line"/>
                 {sharePoints.map((point,index)=><g key={`${panel.key}-share-point-${index}`}><circle cx={point.x} cy={point.y} r="5" className="h1-retail-growth-restoration-share-dot"/><text x={point.x} y={point.y-15} className="h1-retail-growth-restoration-share-label" textAnchor="middle">{panel.points[index].shareText}</text></g>)}
