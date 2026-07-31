@@ -10,7 +10,46 @@ Draft PR：<https://github.com/songchunhui513-bit/q1-okr-review/pull/1>
 
 原始开发机路径：`/Users/julian/Q1汇报`。该绝对路径只用于定位原始工作区，不是运行要求。
 
-正式预览：
+## 正式线上发布目标（必须遵守）
+
+唯一正式线上入口：
+
+```text
+https://vantage-h1.vercel.app/
+```
+
+所有后续生产发布都必须让这个精确域名指向新部署。`https://vantage-h1-review-2026.vercel.app/` 和 Vercel 自动生成的唯一部署 URL 只能用于排查，不得作为最终交付链接。
+
+发布完成后必须同时验证：
+
+```text
+vantage-h1.vercel.app 的部署状态为 READY
+该域名对应的 Git commit SHA 与计划发布的提交一致
+根路径可访问并跳转到 /previews/vantage-h1-immersive.html
+```
+
+仅仅生成一个状态为 `READY` 的部署并不代表发布完成；如果 `vantage-h1.vercel.app` 仍指向旧提交，必须先修正该域名指向。
+
+截至 2026-07-31，本次线上修复快照：
+
+```text
+Production URL: https://vantage-h1.vercel.app/
+Deployment ID: dpl_9kqSHzWF4ftQKhHGAS6QT86DR3xH
+Source commit: 1370aefd4a9b30298da5966bad258a1dae35fe28
+Status: READY
+```
+
+Vercel 项目当前的默认生产别名可能只更新 `vantage-h1-review-2026.vercel.app`，因此每次生产发布后都要显式设置正式域名：
+
+```bash
+vercel deploy --prod --force --yes
+vercel alias set <本次唯一部署域名> vantage-h1.vercel.app
+vercel inspect vantage-h1.vercel.app
+```
+
+最后再访问正式域名的 `/index.html`，确认页面内容和计划发布的提交一致。不要只依据 `vercel deploy` 输出中的 `Aliased` 行判断正式域名已经更新。
+
+本地正式预览：
 
 ```text
 http://127.0.0.1:4180/previews/vantage-h1-immersive.html
@@ -40,16 +79,36 @@ python3 -m http.server 4180 --bind 127.0.0.1
 - 图片进入对应章节目录；大型视频不要直接 `git add -f`，按“视频资源交付”一节处理。
 - Commit 使用 `feat:`、`fix:`、`test:`、`docs:` 等简短前缀，PR 正文写清影响页面和实际执行的测试。
 
-## 本次交接增量
+## 近期更新摘要（2026-07-30 至 2026-07-31）
 
-- 登录页同时预加载开场和第二屏视频，并展示真实的成功/失败进度；历史 session 不再绕过手动登录。
+### 报告内容与视觉
+
+- 完整报告统一为 95 页：数据 22 页、O1 31 页、O2 25 页、O3 17 页。
+- 合入 ND Retail 8 页、完整 O1 内容和独立 AI Data Products 外层场景。
+- O3 越南复盘卡片、ASO 证据、品牌情绪和奖杯主题完成高密度重排。
+- O2“SEO 技术基础”页按 PPT 重做截图裁切、品牌标识、VS 徽章和四列指标区；ASO 第 18–19 页恢复可持久化正文编辑。
+
+### O2 第 21/25 页错位修复
+
+- 第 21 页恢复三列 LTV/CAC 固定文本槽：印度 `+485%`、阿联酋 `+220%`、印度再营销 `+157%`。
+- 第 25 页恢复“荷兰市场验证”标签、`21%` 证明卡、四个 KPI 和 H2 行动项的正确顺序。
+- 根因是 Supabase 正文编辑器使用 `sectionId:pageId:index` 保存文本。页面 DOM 曾删除或新增文本节点，历史内容仍按旧索引回填，导致后续文本整体移位并溢出。
+- 修复原则是恢复与上一版一致的静态文本节点数量和顺序，而不是只调整 CSS。`tests/check-h1-o2-editor-layout-regression.mjs` 现在固定这两个页面的 DOM 槽位和样式契约。
+- 正式主题缓存版本已更新为 `20260731-o2-editor-layout-fix-v1`，并已在 1920×1080 线上环境验证两页均无越界元素。
+
+### 登录、媒体与构建
+
+- 登录页同时预加载开场和第二屏视频，并展示真实成功/失败进度；历史 session 不再绕过手动登录。
 - 点击 Sign In 时在用户手势内申请开场有声播放，认证失败会停止并复位视频。
 - 登录后按固定顺序、单文件串行预热 8 个 O1 TVC；节省流量模式和 2G 网络自动跳过，退出时可中止。
-- O2“SEO 技术基础”页按 PPT 重做截图裁切、品牌标识、VS 徽章和四列指标区，页面被排除在 Supabase 文本编辑之外。
-- O2 ASO 第 18–19 页恢复为可持久化正文编辑，PPT 构图和四列证据结构保持不变。
-- O2 第 21 页保留三列 LTV/CAC 文本槽，第 25 页保留“荷兰市场验证”标签，避免编辑器槽位因生成式数组或独立证明卡发生漂移。
-- 生产构建现在会复制完整 `previews/ai-data-products/` 模块。
+- 生产构建会复制完整 `previews/ai-data-products/` 模块。
 - 媒体清单解析会忽略 URL 查询参数，带缓存版本的本地路径仍能命中 CDN manifest。
+
+### 发布与路由
+
+- Vercel 根路径优先重定向到 `/previews/vantage-h1-immersive.html`，避免静态文件系统规则抢先命中。
+- 正式域名已从旧部署切换到修复提交 `1370aef`；生产发布必须显式绑定 `vantage-h1.vercel.app`，不能把 review 别名当成正式交付。
+- `AGENTS.md` 已固化正式域名、提交 SHA 和 READY 状态的发布验收规则。
 
 ## 当前版本
 
@@ -309,9 +368,22 @@ O1 09 / 31（TVC）
 O1 31 / 31
 O2 01 / 25（O2 以全面增长为核心）
 O2 02 / 25（2026 H1 SEO）
+O2 21 / 25（区域增长引擎，确认三列 LTV/CAC）
+O2 25 / 25（IB 闭环，确认“荷兰市场验证”和四个 KPI）
 AI Data Products 04 / 06（3 个主产品 + 工具百宝箱）
 Q3 Outlook 05 / 06
 Closing Film 06 / 06
+```
+
+生产发布后的最低验收：
+
+```text
+1. vercel inspect vantage-h1.vercel.app 显示 READY。
+2. 该域名解析到的 githubCommitSha 等于计划发布提交。
+3. 根路径 307 跳转到 /previews/vantage-h1-immersive.html。
+4. /index.html 包含“生命周期运营验证”“印度再营销”“荷兰市场验证”。
+5. O2 第 21/25 页在 1920×1080 下无文本错位、裁切或越界。
+6. Vercel 最近 30 分钟没有新的 runtime error。
 ```
 
 O1 兼容测试中，旧版 11 页专属测试文件保留原文件名，但转接到新的 30 页静态或浏览器契约，避免继续断言已经删除的旧结构。合入前版本可从下述备份恢复。
@@ -396,4 +468,13 @@ tar -xzf backups/confirmed-scope-before-20260730-184516.tar.gz \
 - 登录页必须保留手动登录；不要恢复用历史 session 自动跳过登录遮罩的逻辑。
 - 预热队列必须保持串行，并继续尊重 `saveData`、`slow-2g` 和 `2g`；`public-good.mp4` 体积最大，应放在队列最后。
 - O2 SEO 技术页的 PPT 文案、品牌 logo、截图裁切和指标网格由专项测试保护，修改前先确认原稿。
+- O2 可编辑页面不能随意改变文本节点的数量或顺序。确需调整 DOM 时，必须同步设计 Supabase 历史内容迁移，不能只改 JSX/CSS。
+- 每次 Vercel 生产发布后都要显式核对 `vantage-h1.vercel.app`，因为项目默认别名可能仍只更新 review 域名。
 - 任何新视频都必须同时更新页面引用、CDN manifest、缓存策略和对应媒体测试。
+
+当前已知边界：
+
+- O1 `tvc-library/*.mp4` 不随普通 Git clone 分发，缺少共享素材包时相关视频页只能验证结构，不能验证完整播放。
+- 本地 `npm run build` 默认要求三项 Vercel 环境变量；无生产配置时使用 `VANTAGE_ALLOW_EMPTY_CONFIG=1 npm run build`。
+- 页面仍使用浏览器内 Babel 转换器，控制台会出现 Babel production warning；当前不影响运行，但后续若做性能治理，建议改成预编译产物。
+- 线上发布提交与 GitHub 最新提交可能因“仅文档更新”短暂不同。只有页面、运行时或构建产物变化时才需要重新部署；不要为纯交接文档更新擅自发布生产。
