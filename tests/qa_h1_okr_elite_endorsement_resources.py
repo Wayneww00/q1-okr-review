@@ -18,7 +18,7 @@ with sync_playwright() as playwright:
     page.on("pageerror", lambda error: errors.append(str(error)))
     page.goto(
         f"{BASE_URL}/index.html"
-        "?report=h1&embedded=1&v=20260731-ai-frame58-v1",
+        "?report=h1&embedded=1&v=20260731-ai-frame58-lightbox-v1",
         wait_until="networkidle",
     )
 
@@ -55,7 +55,7 @@ with sync_playwright() as playwright:
     shell.on("pageerror", lambda error: shell_errors.append(str(error)))
     shell.goto(
         f"{BASE_URL}/previews/vantage-h1-immersive.html"
-        "?v=20260731-ai-frame58-v1",
+        "?v=20260731-ai-frame58-lightbox-v1",
         wait_until="domcontentloaded",
     )
     if shell.locator("#loginGate").is_visible():

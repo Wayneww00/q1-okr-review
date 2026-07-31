@@ -386,7 +386,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260731-ai-frame58-v1"',
+    'src="../index.html?report=h1&embedded=1&v=20260731-ai-frame58-lightbox-v1"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-ai-frame58-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-ai-frame58-lightbox-v1">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2560,6 +2560,17 @@ const OKR_FIGMA_PAGES=[
     label:'24/7 AI 推荐优势',
     src:'previews/assets/figma-untitled/p58-ai-recommendation-figma-152-1299.png',
     figmaNodeId:'152:1299',
+    imageSlots:[
+      {id:'ai-gpt-best-broker',label:'GPT No.1 · Best broker',src:'previews/assets/figma-lightbox/ai-recommendation/gpt-best-broker.png',unit:'px',left:184,top:279,width:472,height:184},
+      {id:'ai-gpt-weekend-trading',label:'GPT No.1 · Weekend trading',src:'previews/assets/figma-lightbox/ai-recommendation/gpt-weekend-trading.png',unit:'px',left:184,top:559,width:472,height:154},
+      {id:'ai-gpt-broker-list',label:'GPT No.1 · Broker list',src:'previews/assets/figma-lightbox/ai-recommendation/gpt-broker-list.png',unit:'px',left:184,top:809,width:472,height:189},
+      {id:'ai-gemini-best-broker',label:'Gemini No.1 · Best broker',src:'previews/assets/figma-lightbox/ai-recommendation/gemini-best-broker.png',unit:'px',left:728,top:279,width:472,height:160},
+      {id:'ai-gemini-weekend-trading',label:'Gemini No.1 · Weekend trading',src:'previews/assets/figma-lightbox/ai-recommendation/gemini-weekend-trading.png',unit:'px',left:728,top:546,width:472,height:173},
+      {id:'ai-gemini-broker-list',label:'Gemini No.1 · Broker list',src:'previews/assets/figma-lightbox/ai-recommendation/gemini-broker-list.png',unit:'px',left:728,top:826,width:472,height:171},
+      {id:'ai-claude-best-broker',label:'Claude No.1 · Best broker',src:'previews/assets/figma-lightbox/ai-recommendation/claude-best-broker.png',unit:'px',left:1272,top:279,width:472,height:181},
+      {id:'ai-claude-weekend-trading',label:'Claude No.1 · Weekend trading',src:'previews/assets/figma-lightbox/ai-recommendation/claude-weekend-trading.png',unit:'px',left:1272,top:561,width:472,height:157},
+      {id:'ai-claude-broker-list',label:'Claude No.1 · Broker list',src:'previews/assets/figma-lightbox/ai-recommendation/claude-broker-list.png',unit:'px',left:1272,top:819,width:472,height:169},
+    ],
   },
   {
     id:'okr-omnichannel-amplification',
@@ -3223,7 +3234,7 @@ function OkrReportDeck(){
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} onPreview={setPreview}/> :
         page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
-        page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:19,width:1608,height:1042}}/> :
+        page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:19,width:1608,height:1042}} onPreview={setPreview}/> :
         page.id==='okr-omnichannel-amplification' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:195,top:75,width:1575,height:987}}/> :
         page.id==='okr-tvc-localization' ? <OkrTvcLocalizationPage key={page.id} page={page}/> :
         page.id==='okr-superapp-activation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p61-foreground.png" artwork={{left:46,top:52,width:1850,height:1045}}/> :
