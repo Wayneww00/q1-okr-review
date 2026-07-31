@@ -287,6 +287,57 @@ try {
     () => !document.body.classList.contains("deck-wheel-transitioning"),
   );
 
+  // Several stable sub-threshold pulses may form one deliberate low-amplitude
+  // gesture. Route their accumulated delta instead of only the final pulse.
+  await page.mouse.wheel(0, -1000);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForTimeout(400);
+  for (const deltaY of [-70, -70, -70]) {
+    await page.mouse.wheel(0, deltaY);
+    await page.waitForTimeout(70);
+  }
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+  await aiScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.mouse.wheel(0, 320);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Closing Film"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+
   // A delayed, low-energy tail must remain absorbed, while a later strong
   // impulse after the shorter fresh-intent gap must count as a new gesture.
   await page.mouse.wheel(0, -1000);

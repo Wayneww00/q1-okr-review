@@ -1436,6 +1436,14 @@
           outerWheelFreshCandidateLastMagnitude = 0;
           outerWheelFreshCandidateEventCount = 0;
         }
+      } else if (
+        outerWheelFreshCandidateEventCount > 0 &&
+        (!isVerticalWheel || direction !== outerWheelFreshCandidateDirection)
+      ) {
+        outerWheelFreshCandidateDirection = 0;
+        outerWheelFreshCandidateDelta = 0;
+        outerWheelFreshCandidateLastMagnitude = 0;
+        outerWheelFreshCandidateEventCount = 0;
       }
       const isFreshIntent = isVerticalWheel
         && (
@@ -1452,10 +1460,13 @@
       event.preventDefault();
       event.stopImmediatePropagation();
       if (isFreshIntent) {
-        const freshDeltaY = event.deltaY;
+        const freshDeltaY = isStableFreshSequence
+          ? outerWheelFreshCandidateDelta
+          : event.deltaY;
+        const freshDirection = freshDeltaY > 0 ? 1 : -1;
         clearOuterWheelTransition();
         outerWheelPendingDeltaY = freshDeltaY;
-        routeFreshOuterWheelIntent(direction, freshDeltaY);
+        routeFreshOuterWheelIntent(freshDirection, freshDeltaY);
         return true;
       }
       outerWheelLastEventAt = now;
