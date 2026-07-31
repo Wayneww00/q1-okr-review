@@ -78,6 +78,12 @@ await cp(
   },
 );
 
+await cp(
+  resolve(root, "previews/ai-data-products"),
+  resolve(distDir, "previews/ai-data-products"),
+  { recursive: true },
+);
+
 await Promise.all([
   copyFile(
     resolve(root, "node_modules/react/umd/react.production.min.js"),

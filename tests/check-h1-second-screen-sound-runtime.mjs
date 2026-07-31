@@ -16,6 +16,7 @@ try {
     { waitUntil: "domcontentloaded" },
   );
   await page.locator("#loginSubmit").click();
+  await page.locator("#loginGate").waitFor({ state: "hidden" });
 
   const secondScene = page.locator(".scene.second-film");
   const secondVideo = page.locator("#secondScreenVideo");

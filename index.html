@@ -11,11 +11,11 @@
 <script src="/vendor/babel.min.js"></script>
 <script src="/vendor/prop-types.min.js"></script>
 <script src="/vendor/recharts.js"></script>
-<script src="/vendor/vantage-runtime.js?v=20260731-editor-hud-v5"></script>
+<script src="/vendor/vantage-runtime.js?v=20260731-progressive-video-cache-v1"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-retail-nd-ppt-v6">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-seo-technical-ppt-v3">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-aso-density-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -3493,6 +3493,17 @@ const OKR_FIGMA_PAGES=[
   },
 ];
 
+const O1_TVC_PRELOAD_PATHS = [
+  'previews/assets/o1-complete/tvc-library/ferrari-co-brand.mp4?v=ppt-mapping-verified-20260730',
+  'previews/assets/o1-complete/tvc-library/brand-chapter-think-ahead.mp4?v=ppt-mapping-verified-20260730',
+  'previews/assets/o1-complete/tvc-library/brand-chapter-perform-ahead.mp4?v=ppt-mapping-verified-20260730',
+  'previews/assets/o1-complete/tvc-library/usp.mp4?v=ppt-mapping-verified-20260730',
+  'previews/assets/o1-complete/tvc-library/special-festival-world-cup.mp4?v=ppt-mapping-verified-20260730',
+  'previews/assets/o1-complete/tvc-library/product-24-7.mp4?v=ppt-mapping-verified-20260730',
+  'previews/assets/o1-complete/tvc-library/product-copy-trade.mp4?v=ppt-mapping-verified-20260730',
+  'previews/assets/o1-complete/tvc-library/public-good.mp4?v=ppt-mapping-verified-20260730',
+];
+
 /* The later report pages are exported from the same Figma source as p25 as
    transparent 1920 × 1080 foreground canvases. They intentionally sit over
    the one sticky p25 trophy background rather than bringing their own backdrop. */
@@ -4093,8 +4104,8 @@ const O2_REPORT_PAGES=[
     id:"o2-seo-technical",
     layout:"seo-technical",
     eyebrow:"TECHNICAL FOUNDATION",
-    title:"SEO 技术基础全面提升，达到行业顶级水平",
-    description:"Google Lighthouse 评分各项指标接近满分，较 Exness 高出 27 分。",
+    title:"SEO技术基础全面提升，达到行业顶级水平",
+    description:"Google Lighthouse评分各项指标接近满分，较Exness高出27分。",
   },
   {
     id:"o2-seo-engines",
@@ -4494,14 +4505,16 @@ function O2SeoCountry({country}){
 
 function O2SeoTechnical(){
   return (
-    <div className="h1-o2-seo-technical">
+    <div className="h1-o2-seo-technical" data-editor-ignore>
       <div className="h1-o2-seo-tech-evidence">
-        <figure className="h1-o2-card">
+        <figure className="h1-o2-card is-vantage">
           <H1SourceImage src="./previews/assets/o2/seo-tech-vantage.jpeg" alt="Vantage Lighthouse 技术测试报告"/>
+          <img className="h1-o2-seo-tech-brand" src="./previews/assets/o2/seo-tech-vantage-logo.png" alt="Vantage"/>
         </figure>
         <div className="h1-o2-seo-tech-vs" aria-label="Vantage 对比 Exness">VS</div>
-        <figure className="h1-o2-card">
+        <figure className="h1-o2-card is-exness">
           <H1SourceImage src="./previews/assets/o2/seo-tech-exness.jpeg" alt="Exness Lighthouse 技术测试报告"/>
+          <img className="h1-o2-seo-tech-brand" src="./previews/assets/o2/seo-tech-exness-logo.png" alt="Exness"/>
         </figure>
       </div>
       <div className="h1-o2-card h1-o2-seo-tech-metrics">
@@ -4680,7 +4693,7 @@ function O2BrandLogo({name}){
 
 function O2PageHeader({page}){
   return (
-    <header className="h1-o2-page-header">
+    <header className="h1-o2-page-header" data-editor-ignore={page.layout==="seo-technical"||undefined}>
       <div className="h1-o2-eyebrow"><O2RacingMark/><span>{page.eyebrow}</span></div>
       <h2>{page.title}</h2>
       {page.description&&<p>{page.description}</p>}
@@ -4735,7 +4748,7 @@ function O2AsoAward({label,value,children}){
 
 function O2AsoAwardSummary(){
   return (
-    <div className="h1-o2-aso-ppt h1-o2-aso-award-stage" data-editor-ignore>
+    <div className="h1-o2-aso-ppt h1-o2-aso-award-stage">
       <header className="h1-o2-aso-ppt-header">
         <span>VANTAGE MARKETS · 2026 H1 ASO 复盘</span>
         <h2>Vantage ASO 实现全维度领先</h2>
@@ -4777,7 +4790,7 @@ function O2AsoEvidence(){
   ];
   const countries=["阿联酋 #1","澳大利亚 #1","荷兰 #1","韩国 #1","卡塔尔 #1","以色列 #1","沙特 #1","香港 #1","德国 #1","法国 #1","巴西 #1"];
   return (
-    <div className="h1-o2-aso-ppt h1-o2-aso-evidence-stage" data-editor-ignore>
+    <div className="h1-o2-aso-ppt h1-o2-aso-evidence-stage">
       <header className="h1-o2-aso-ppt-header is-evidence">
         <span>VANTAGE MARKETS · 2026 H1 ASO 复盘</span>
         <h2>20 国核心词登顶 · 突破4.5高分口碑门槛 · 流量增长182% · 非品牌自然下载增长741%</h2>
@@ -5987,6 +6000,29 @@ function App(){
       window.removeEventListener('vantage-editor-status',onStatus);
       controller.destroy();
       if(editorRef.current===controller)editorRef.current=null;
+    };
+  },[authed]);
+
+  useEffect(()=>{
+    if(!authed)return;
+    const controller=new AbortController();
+    const startWarmup=()=>{
+      window.VantageBrowserRuntime
+        .progressivelyWarmPresentationMedia({
+          paths:O1_TVC_PRELOAD_PATHS,
+          signal:controller.signal,
+          onProgress:detail=>{
+            window.dispatchEvent(new CustomEvent('vantage-media-warmup-progress',{detail}));
+          },
+        })
+        .catch(error=>{
+          if(error?.name!=='AbortError')console.warn('Progressive video warm-up failed',error);
+        });
+    };
+    const timer=window.setTimeout(startWarmup,6000);
+    return()=>{
+      window.clearTimeout(timer);
+      controller.abort();
     };
   },[authed]);
 

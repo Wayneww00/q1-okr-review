@@ -10,9 +10,9 @@ const theme = fs.readFileSync(
 );
 
 const expectedVideos = new Map([
-  ["co-brand", "co-brand-ferrari.mp4"],
-  ["chapter-01", "chapter-think-ahead.mp4"],
-  ["chapter-02", "chapter-perform-ahead.mp4"],
+  ["co-brand", "ferrari-co-brand.mp4"],
+  ["chapter-01", "brand-chapter-think-ahead.mp4"],
+  ["chapter-02", "brand-chapter-perform-ahead.mp4"],
   ["public-good", "public-good.mp4"],
   ["usp", "usp.mp4"],
   ["special-festival", "special-festival-world-cup.mp4"],
@@ -29,19 +29,20 @@ for (const [slotId, fileName] of expectedVideos) {
   assert.match(
     library,
     new RegExp(
-      `id:'${slotId}'[^\\n]*src:'previews/assets/okr-videos/${fileName.replaceAll(
+      `id:'${slotId}'[^\\n]*src:'previews/assets/o1-complete/tvc-library/${fileName.replaceAll(
         ".",
         "\\.",
-      )}'`,
+      )}(?:\\?[^']+)?'`,
     ),
-    `${slotId} must use the video embedded in 视频.pptx`,
+    `${slotId} must use the video supplied by the merged O1 package`,
   );
 
   const videoPath = path.join(
     root,
     "previews",
     "assets",
-    "okr-videos",
+    "o1-complete",
+    "tvc-library",
     fileName,
   );
   assert.ok(fs.existsSync(videoPath), `${fileName} must exist locally`);
@@ -52,7 +53,7 @@ const matrixStart = app.indexOf("id:'okr-tvc-matrix'");
 const matrixEnd = app.indexOf("id:'okr-tvc-library'", matrixStart);
 assert.doesNotMatch(
   app.slice(matrixStart, matrixEnd),
-  /src:'previews\/assets\/okr-videos\//,
+  /src:'previews\/assets\/o1-complete\/tvc-library\//,
   "the PPT does not contain HERO matrix videos, so those slots must stay unbound",
 );
 

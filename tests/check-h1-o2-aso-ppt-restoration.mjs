@@ -39,13 +39,18 @@ for (const exactCopy of [
 
 assert.match(
   app,
-  /function O2AsoAwardSummary\(\)[\s\S]*?h1-o2-aso-award-stage" data-editor-ignore[\s\S]*?h1-o2-aso-award-grid[\s\S]*?核心关键词[\s\S]*?品牌曝光[\s\S]*?GOOGLE PLAY 全球评分[\s\S]*?ORGANIC 下载量/,
-  "page 18 must be one four-award PPT composition",
+  /function O2AsoAwardSummary\(\)[\s\S]*?h1-o2-aso-award-stage"[\s\S]*?h1-o2-aso-award-grid[\s\S]*?核心关键词[\s\S]*?品牌曝光[\s\S]*?GOOGLE PLAY 全球评分[\s\S]*?ORGANIC 下载量/,
+  "page 18 must be one editable four-award PPT composition",
 );
 assert.match(
   app,
-  /function O2AsoEvidence\(\)[\s\S]*?h1-o2-aso-evidence-stage" data-editor-ignore[\s\S]*?h1-o2-aso-evidence-columns[\s\S]*?01[\s\S]*?02[\s\S]*?03[\s\S]*?04/,
-  "page 19 must remain one four-column PPT evidence composition",
+  /function O2AsoEvidence\(\)[\s\S]*?h1-o2-aso-evidence-stage"[\s\S]*?h1-o2-aso-evidence-columns[\s\S]*?01[\s\S]*?02[\s\S]*?03[\s\S]*?04/,
+  "page 19 must remain one editable four-column PPT evidence composition",
+);
+assert.doesNotMatch(
+  app,
+  /h1-o2-aso-(?:award|evidence)-stage" data-editor-ignore/,
+  "ASO pages 18–19 must be discoverable by the persisted text editor",
 );
 assert.match(
   app,

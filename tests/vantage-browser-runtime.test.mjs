@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
 
-import {
+import * as VantageBrowserRuntime from "../src/vantage-browser-runtime.mjs";
+
+const {
   applyTextRevision,
   collectTextEntries,
   createLocalDevelopmentClient,
@@ -12,7 +14,7 @@ import {
   resolveMediaUrl,
   setEntriesEditing,
   warmPresentationMedia,
-} from "../src/vantage-browser-runtime.mjs";
+} = VantageBrowserRuntime;
 
 assert.equal(isLocalDevelopmentHost("127.0.0.1"), true);
 assert.equal(isLocalDevelopmentHost("localhost"), true);
@@ -131,6 +133,13 @@ assert.equal(
   "video paths must resolve through the public Vercel Blob manifest",
 );
 assert.equal(
+  resolveMediaUrl(
+    "/previews/assets/video.mp4?v=ppt-mapping-verified-20260730#opening",
+  ),
+  "https://blob.example/video.mp4",
+  "cache-busting query strings and fragments must not prevent production video manifest lookup",
+);
+assert.equal(
   resolveMediaUrl("previews/assets/video.mp4", {
     hostname: "127.0.0.1",
   }),
@@ -162,6 +171,77 @@ assert.deepEqual(listPresentationMedia(), [
     bytes: 4,
   },
 ]);
+
+assert.equal(
+  typeof VantageBrowserRuntime.progressivelyWarmPresentationMedia,
+  "function",
+  "the browser runtime must expose a progressive media warm-up queue",
+);
+if (
+  typeof VantageBrowserRuntime.progressivelyWarmPresentationMedia ===
+  "function"
+) {
+  const progressiveLoads = [];
+  const progressiveEvents = [];
+  let activeProgressiveLoads = 0;
+  let peakProgressiveLoads = 0;
+  const progressiveResult =
+    await VantageBrowserRuntime.progressivelyWarmPresentationMedia({
+      paths: [
+        "previews/assets/video-2.mp4?v=warmup",
+        "/previews/assets/video.mp4#modal",
+        "previews/assets/video-2.mp4",
+      ],
+      connection: { effectiveType: "4g", saveData: false },
+      loadMedia: async (entry) => {
+        activeProgressiveLoads += 1;
+        peakProgressiveLoads = Math.max(
+          peakProgressiveLoads,
+          activeProgressiveLoads,
+        );
+        progressiveLoads.push(entry.path);
+        await Promise.resolve();
+        activeProgressiveLoads -= 1;
+        return "ready";
+      },
+      onProgress: (progress) => progressiveEvents.push(progress),
+    });
+  assert.deepEqual(progressiveLoads, [
+    "previews/assets/video-2.mp4",
+    "previews/assets/video.mp4",
+  ]);
+  assert.equal(
+    peakProgressiveLoads,
+    1,
+    "background video warming must stay sequential to protect playback bandwidth",
+  );
+  assert.deepEqual(progressiveResult, {
+    completed: 2,
+    failed: 0,
+    skipped: false,
+    total: 2,
+  });
+  assert.equal(progressiveEvents.at(-1)?.status, "complete");
+
+  let saveDataLoadCount = 0;
+  const saveDataResult =
+    await VantageBrowserRuntime.progressivelyWarmPresentationMedia({
+      paths: ["previews/assets/video.mp4"],
+      connection: { effectiveType: "4g", saveData: true },
+      loadMedia: async () => {
+        saveDataLoadCount += 1;
+        return "ready";
+      },
+    });
+  assert.equal(saveDataLoadCount, 0);
+  assert.deepEqual(saveDataResult, {
+    completed: 0,
+    failed: 0,
+    reason: "save-data",
+    skipped: true,
+    total: 1,
+  });
+}
 
 const fetchedUrls = [];
 const progressEvents = [];

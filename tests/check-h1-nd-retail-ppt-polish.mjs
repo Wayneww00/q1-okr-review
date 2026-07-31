@@ -120,14 +120,14 @@ assert.match(
   "the transition lines must animate in a deliberate sequence",
 );
 
-const expectedCacheKey = "20260731-retail-nd-ppt-v6";
+const expectedCacheKey = "20260731-seo-technical-ppt-v3";
 assert.ok(app.includes(`h1-figma-racing-theme.css?v=${expectedCacheKey}`));
 const shellCacheKeys = [
   ...shell.matchAll(
-    /(?:h1-figma-racing-theme\.css\?v=|index\.html\?report=h1&embedded=1&v=)([^'"\s]+)/g,
+    /h1-figma-racing-theme\.css\?v=([^'"\s]+)/g,
   ),
 ].map((match) => match[1]);
-assert.ok(shellCacheKeys.length >= 3);
+assert.ok(shellCacheKeys.length >= 2);
 assert.deepEqual(new Set(shellCacheKeys), new Set([expectedCacheKey]));
 
 console.log("H1 ND Retail PPT polish contract passed.");

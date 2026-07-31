@@ -50,5 +50,10 @@ assert.ok(
   buildScript.includes('"previews/assets"'),
   "the production artifact must still include report images and posters",
 );
+assert.match(
+  buildScript,
+  /cp\(\s*resolve\(root,\s*"previews\/ai-data-products"\),\s*resolve\(distDir,\s*"previews\/ai-data-products"\)/s,
+  "the production artifact must include the complete AI Data Products iframe module",
+);
 
 console.log("Vantage production artifact contract passed.");

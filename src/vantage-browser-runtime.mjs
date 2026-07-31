@@ -282,7 +282,8 @@ export function resolveMediaUrl(
   const normalizedPath = String(path || "").replace(/^\/+/, "");
   if (isLocalDevelopmentHost(hostname)) return `/${normalizedPath}`;
   const manifest = globalThis.__VANTAGE_VIDEO_MANIFEST__ || {};
-  const entry = manifest[normalizedPath];
+  const manifestPath = normalizedPath.split(/[?#]/, 1)[0];
+  const entry = manifest[manifestPath];
   if (typeof entry === "string") return entry;
   return entry?.url || path;
 }
@@ -391,6 +392,137 @@ export async function warmPresentationMedia({
     loadedBytes,
     totalBytes,
   };
+}
+
+function preloadMediaIntoBrowserCache(
+  entry,
+  {
+    documentRef = globalThis.document,
+    signal,
+    timeoutMs = 45_000,
+  } = {},
+) {
+  return new Promise((resolve) => {
+    if (!documentRef?.body || signal?.aborted) {
+      resolve(signal?.aborted ? "aborted" : "unavailable");
+      return;
+    }
+
+    const video = documentRef.createElement("video");
+    let settled = false;
+    let timer;
+    const finish = (status) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      video.removeEventListener("canplaythrough", onReady);
+      video.removeEventListener("error", onError);
+      signal?.removeEventListener("abort", onAbort);
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+      video.remove();
+      resolve(status);
+    };
+    const onReady = () => finish("ready");
+    const onError = () => finish("error");
+    const onAbort = () => finish("aborted");
+
+    video.preload = "auto";
+    video.muted = true;
+    video.playsInline = true;
+    video.setAttribute("aria-hidden", "true");
+    video.style.cssText =
+      "position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px;bottom:0";
+    video.addEventListener("canplaythrough", onReady, { once: true });
+    video.addEventListener("error", onError, { once: true });
+    signal?.addEventListener("abort", onAbort, { once: true });
+    timer = setTimeout(
+      () => finish(video.readyState >= 2 ? "partial" : "timeout"),
+      timeoutMs,
+    );
+    video.src = entry.url;
+    documentRef.body.append(video);
+    video.load();
+  });
+}
+
+export async function progressivelyWarmPresentationMedia({
+  paths = [],
+  connection =
+    globalThis.navigator?.connection ||
+    globalThis.navigator?.mozConnection ||
+    globalThis.navigator?.webkitConnection,
+  loadMedia = preloadMediaIntoBrowserCache,
+  onProgress = () => {},
+  signal,
+} = {}) {
+  const mediaByPath = new Map(
+    listPresentationMedia().map((entry) => [entry.path, entry]),
+  );
+  const seenPaths = new Set();
+  const media = [];
+
+  for (const path of paths) {
+    const manifestPath = String(path || "")
+      .replace(/^\/+/, "")
+      .split(/[?#]/, 1)[0];
+    const entry = mediaByPath.get(manifestPath);
+    if (!entry || seenPaths.has(entry.path)) continue;
+    seenPaths.add(entry.path);
+    media.push(entry);
+  }
+
+  const total = media.length;
+  const skipReason = connection?.saveData
+    ? "save-data"
+    : ["slow-2g", "2g"].includes(connection?.effectiveType)
+      ? "slow-network"
+      : "";
+  if (skipReason) {
+    return {
+      completed: 0,
+      failed: 0,
+      reason: skipReason,
+      skipped: true,
+      total,
+    };
+  }
+
+  let completed = 0;
+  let failed = 0;
+  onProgress({ completed, failed, status: "starting", total });
+
+  for (const entry of media) {
+    if (signal?.aborted) break;
+    onProgress({
+      completed,
+      failed,
+      path: entry.path,
+      status: "downloading",
+      total,
+    });
+    let status = "error";
+    try {
+      status = await loadMedia(entry, { signal });
+    } catch (error) {
+      if (signal?.aborted || error?.name === "AbortError") break;
+    }
+    if (status === "aborted") break;
+    if (status === "error" || status === "timeout") failed += 1;
+    else completed += 1;
+    onProgress({
+      completed,
+      failed,
+      path: entry.path,
+      status,
+      total,
+    });
+  }
+
+  const result = { completed, failed, skipped: false, total };
+  onProgress({ ...result, status: signal?.aborted ? "aborted" : "complete" });
+  return result;
 }
 
 function elementHasOnlyTextAndBreaks(element) {
@@ -719,6 +851,7 @@ export const VantageBrowserRuntime = {
   getClient: getSupabaseClient,
   getSession: getCurrentSession,
   listPresentationMedia,
+  progressivelyWarmPresentationMedia,
   resolveMediaUrl,
   signIn: signInWithSharedCredentials,
   warmPresentationMedia,

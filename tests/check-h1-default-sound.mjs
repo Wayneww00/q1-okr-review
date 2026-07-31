@@ -16,7 +16,7 @@ assert.match(
 
 assert.match(
   shell,
-  /const applySoundState = \(\) => \{[\s\S]*?const isCurrent = video\.closest\('\.scene'\) === scenes\[activeIndex\];[\s\S]*?video\.muted = !soundOn \|\| !isCurrent;[\s\S]*?sound-wave[\s\S]*?soundOn \? '' : 'none'/,
+  /const applySoundState = \(\) => \{[\s\S]*?const audible = isSoundAudible\(\);[\s\S]*?const isCurrent = video\.closest\('\.scene'\) === scenes\[activeIndex\];[\s\S]*?video\.muted = !audible \|\| !isCurrent;[\s\S]*?sound-wave[\s\S]*?audible \? '' : 'none'/,
   "Only the active scene video may be audible while the sound button remains globally enabled."
 );
 
@@ -28,7 +28,7 @@ assert.match(
 
 assert.match(
   shell,
-  /const unlockSoundOnInteraction = \(\) => \{[\s\S]*?videos\.forEach\(video => \{ video\.muted = true; \}\);[\s\S]*?currentVideo\.muted = false;[\s\S]*?currentVideo\?\.play\(\)/,
+  /const unlockSoundOnInteraction = event => \{[\s\S]*?videos\.forEach\(video => \{ video\.muted = true; \}\);[\s\S]*?currentVideo\.muted = false;[\s\S]*?currentVideo\?\.play\(\)/,
   "A user interaction fallback must restore sound when autoplay-with-audio is browser-blocked."
 );
 
@@ -46,7 +46,7 @@ assert.match(
 
 assert.match(
   shell,
-  /video\.play\(\)\.catch\(\(\) => \{\s*if \(!soundOn\) return;\s*video\.muted = true;\s*video\.play\(\)\.catch\(\(\) => \{\}\);\s*\}\)/,
+  /video\.play\(\)\.then\([\s\S]*?\.catch\(\(\) => \{[\s\S]*?if \(!soundOn\) return;[\s\S]*?video\.muted = true;[\s\S]*?video\.play\(\)\.catch\(\(\) => \{\}\);/,
   "If audible autoplay is blocked, the active film must continue muted until normal user interaction unlocks sound."
 );
 

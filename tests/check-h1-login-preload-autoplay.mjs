@@ -28,25 +28,25 @@ assert.match(
 assert.match(
   formal,
   /class="login-preload-progress"[\s\S]*?id="loginPreloadProgress"[\s\S]*?role="progressbar"[\s\S]*?aria-valuemin="0"[\s\S]*?aria-valuemax="2"[\s\S]*?id="loginPreloadProgressFill"/,
-  "the login must expose a visible and accessible video preload progress bar",
+  "the login must expose a visible and accessible two-video preload progress bar",
 );
 
 assert.match(
   formal,
-  /const updateLoginPreloadState = \(\) => \{[\s\S]*?readyCount[\s\S]*?loginPreloadProgress\.setAttribute\('aria-valuenow', String\(readyCount\)\)[\s\S]*?loginPreloadProgressFill\.style\.width = `\$\{\(readyCount \/ targets\.length\) \* 100\}%`/,
-  "the preload bar must be driven by the real number of videos ready to play",
+  /const LOGIN_PRELOAD_TARGETS = \[[\s\S]*?openingVideo[\s\S]*?secondScreenVideo[\s\S]*?\];[\s\S]*?const updateLoginPreloadState = \(\) => \{[\s\S]*?readyCount[\s\S]*?failedCount[\s\S]*?settledCount[\s\S]*?loginPreloadProgress\.setAttribute\('aria-valuenow', String\(settledCount\)\)[\s\S]*?loginPreloadProgressFill\.style\.width = `\$\{\(settledCount \/ totalCount\) \* 100\}%`/,
+  "the preload bar must be driven by the real ready, failed, and settled state of both videos",
 );
 
 assert.match(
   formal,
-  /const preloadLoginVideos = \(\) => \{[\s\S]*?openingVideo\.load\(\)[\s\S]*?secondScreenVideo\.load\(\)/,
-  "opening and second-screen films must begin preloading while the login is visible",
+  /const preloadLoginVideos = \(\) => \{[\s\S]*?addEventListener\('canplay'[\s\S]*?addEventListener\('error'[\s\S]*?video\.preload = 'auto'[\s\S]*?video\.load\(\)/,
+  "preload listeners must be attached before both videos are explicitly loaded",
 );
 
 assert.match(
   formal,
-  /const completeLogin = \(\) => \{[\s\S]*?openingVideo\.currentTime = 0[\s\S]*?openingVideo\.muted = false[\s\S]*?openingVideo\.play\(\)[\s\S]*?loginGate\.classList\.add\('is-hidden'\)/,
-  "the sign-in gesture must start the opening film from the beginning with sound before hiding the login",
+  /const beginAudibleOpeningPlayback = \(\) => \{[\s\S]*?openingVideo\.currentTime = 0[\s\S]*?openingVideo\.muted = false[\s\S]*?openingVideo\.play\(\)[\s\S]*?const submitLogin = async \(\) => \{[\s\S]*?beginAudibleOpeningPlayback\(\)[\s\S]*?await window\.VantageBrowserRuntime\.signIn/,
+  "the sign-in gesture must request audible opening playback before awaiting authentication",
 );
 
 assert.match(
@@ -57,8 +57,14 @@ assert.match(
 
 assert.match(
   formal,
-  /username === 'vantage' && password === 'vantage'/,
-  "the confirmed credentials must be validated before entry",
+  /await window\.VantageBrowserRuntime\.signIn\(\{username,password\}\)/,
+  "the confirmed credentials must be validated by the shared authentication runtime before entry",
+);
+
+assert.doesNotMatch(
+  formal,
+  /window\.VantageBrowserRuntime\.getSession\(\)[\s\S]{0,240}?completeLogin\(\)/,
+  "a stored session must never bypass the manual login gate",
 );
 
 console.log("H1 login preload and audible-entry contract passed.");

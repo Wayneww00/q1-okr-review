@@ -17,12 +17,13 @@ try {
   );
   await page.waitForFunction(
     () =>
-      document.querySelector("#openingVideo")?.readyState >=
-      HTMLMediaElement.HAVE_FUTURE_DATA,
+      document
+        .querySelector("#loginPreloadProgress")
+        ?.getAttribute("aria-valuenow") === "2",
   );
   assert.equal(
     await page.locator("#loginPreloadStatus").innerText(),
-    "开场视频已就绪，其余资源按需加载",
+    "首两屏视频已就绪 2/2",
   );
   await page.locator("#loginSubmit").click();
 
@@ -131,9 +132,12 @@ try {
   const closing = deferredVideos.find(
     (video) => video.id === "closingVideo",
   );
-  assert.equal(second?.preload, "metadata");
+  assert.equal(second?.preload, "auto");
   assert.equal(closing?.preload, "none");
-  assert.ok((second?.readyState || 0) <= 1);
+  assert.ok(
+    (second?.readyState || 0) >= 3,
+    "the second-screen film must be ready before the login preload completes",
+  );
   assert.ok((closing?.readyState || 0) <= 1);
 } finally {
   await browser.close();

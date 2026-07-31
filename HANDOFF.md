@@ -2,15 +2,53 @@
 
 最后更新：2026-07-31
 
-本机正式项目：`/Users/julian/Q1汇报`
+GitHub 仓库：<https://github.com/songchunhui513-bit/q1-okr-review>
 
-当前分支：`codex/h1-review-handoff`
+协作分支：`codex/h1-review-handoff`
+
+Draft PR：<https://github.com/songchunhui513-bit/q1-okr-review/pull/1>
+
+原始开发机路径：`/Users/julian/Q1汇报`。该绝对路径只用于定位原始工作区，不是运行要求。
 
 正式预览：
 
 ```text
 http://127.0.0.1:4180/previews/vantage-h1-immersive.html
 ```
+
+## 新协作者快速开始
+
+```bash
+git clone https://github.com/songchunhui513-bit/q1-okr-review.git
+cd q1-okr-review
+git switch codex/h1-review-handoff
+git lfs install
+git lfs pull
+npm ci
+VANTAGE_ALLOW_EMPTY_CONFIG=1 npm run build
+python3 -m http.server 4180 --bind 127.0.0.1
+```
+
+浏览器打开上面的正式预览地址。本地环境固定用户名和密码均为 `vantage`；localhost 会使用浏览器本地存储模拟登录与正文编辑，不会写入 Supabase。
+
+协作约定：
+
+- 不直接在 `main` 上开发；从最新协作分支创建 `codex/<主题>` 分支，通过 PR 合并。
+- 开工前执行 `git pull --ff-only`，提交前至少执行 `npm test` 和与改动页面对应的专项测试。
+- `index.html` 同时承担页面注册、内容和渲染，是最容易冲突的文件；多人修改时按 O1、O2、O3 或运行时拆分负责人。
+- 不提交 `runtime-config.js`、真实 Supabase 配置、`.env*.local`、`config/video-manifest.json` 或 `dist/`。
+- 图片进入对应章节目录；大型视频不要直接 `git add -f`，按“视频资源交付”一节处理。
+- Commit 使用 `feat:`、`fix:`、`test:`、`docs:` 等简短前缀，PR 正文写清影响页面和实际执行的测试。
+
+## 本次交接增量
+
+- 登录页同时预加载开场和第二屏视频，并展示真实的成功/失败进度；历史 session 不再绕过手动登录。
+- 点击 Sign In 时在用户手势内申请开场有声播放，认证失败会停止并复位视频。
+- 登录后按固定顺序、单文件串行预热 8 个 O1 TVC；节省流量模式和 2G 网络自动跳过，退出时可中止。
+- O2“SEO 技术基础”页按 PPT 重做截图裁切、品牌标识、VS 徽章和四列指标区，页面被排除在 Supabase 文本编辑之外。
+- O2 ASO 第 18–19 页恢复为可持久化正文编辑，PPT 构图和四列证据结构保持不变。
+- 生产构建现在会复制完整 `previews/ai-data-products/` 模块。
+- 媒体清单解析会忽略 URL 查询参数，带缓存版本的本地路径仍能命中 CDN manifest。
 
 ## 当前版本
 
@@ -70,10 +108,13 @@ Opening Film（01 / 06，开场不显示页码）
 
 AI 模块通过同源 iframe 隔离，不增加或改写 Full Report 的 95 页，也不接入 Supabase 文本编辑。iframe 在进入 `AI Data Products` 场景前不加载，避免开场阶段提前请求约 15.5 MB 的 AI 图片。垂直滚轮、PageUp/PageDown 和上下方向键负责离开 AI 场景；横向滚轮与横向触摸继续由模块内部产品卡片使用。卡片聚焦时的空格键仍只负责翻转卡片，工具百宝箱弹窗打开时外层翻页会暂停。
 
-当前缓存版本统一为：
+当前关键缓存版本：
 
 ```text
-20260731-nd-retail-v1
+报告运行时：20260731-progressive-video-cache-v1
+沉浸式壳运行时：20260731-editor-hud-v6-media
+正式主题：20260731-seo-technical-ppt-v3
+报告 iframe：20260731-o1-new-merge-v1
 ```
 
 ### ND Retail 8 页
@@ -100,9 +141,9 @@ AI 模块通过同源 iframe 隔离，不增加或改写 Full Report 的 95 页�
 当前修复：
 
 - O1 大图只在当前页及相邻页保留 `src`，离开较远页面后释放；
-- 第二屏视频进入第二屏时才加载；
+- 登录页只预加载开场和第二屏视频，且不在登录遮罩后静默播放；
 - 片尾视频进入片尾时才加载；
-- 登录页只预加载开场视频；
+- 登录成功 6 秒后串行预热 8 个 O1 TVC，不会并行抢占开场和第二屏带宽；
 - O1 初始解码图片由约 299.5 MiB 降到 15.8 MiB；
 - O1 第 26 页激活时，O1 解码图片约 36.5 MiB。
 
@@ -166,13 +207,35 @@ previews/assets/o1-complete/figma-exact/
 
 共 117 个文件，约 142 MB。资源使用独立目录，没有覆盖当前数据、O2 或 O3 资源。
 
-下载目录中的 8 个 TVC 没有重复复制约 435 MB；页面映射到当前项目已经验证可播放的：
+O1 页面当前引用 15 个本地 TVC，路径为：
 
 ```text
-previews/assets/okr-videos/
+previews/assets/o1-complete/tvc-library/
 ```
 
-映射覆盖合作背书、两个品牌章节、公益、USP、特殊节庆和两个产品视频。弹窗保留自动播放、原生控制、关闭清理与全屏能力。
+其中 8 个视频用于 TVC 弹窗，另外 7 个用于独立内容页和本地化矩阵。弹窗保留自动播放、原生控制、关闭清理与全屏能力。该目录约 1.5 GB，不随普通 Git 提交分发，具体交付方式见下一节。
+
+## 视频资源交付
+
+GitHub 只通过 Git LFS 保存沉浸式壳的 3 个主视频：
+
+```text
+previews/assets/vantage-h1-opening-final-4k.mp4
+previews/assets/vantage-h1-second-screen-july28-sound-4k.mp4
+previews/assets/vantage-h1-closing-sp-4k.mp4
+```
+
+O1 的 `tvc-library/*.mp4` 默认受 `.gitignore` 排除。新协作者若要完整本地播放，需要从项目共享素材包取得该目录，并保持文件名和相对路径不变。生产环境建议通过被忽略的 `config/video-manifest.json` 将相对路径映射到 CDN，例如：
+
+```json
+{
+  "previews/assets/o1-complete/tvc-library/usp.mp4": {
+    "url": "https://cdn.example.com/vantage/usp.mp4"
+  }
+}
+```
+
+Manifest 的 key 不带查询参数；运行时会自动去掉 `?v=...` 后匹配。不要把真实 CDN 地址、签名参数或内部凭据提交到仓库。生产 CDN 必须支持 Range 请求并返回正确的 `video/mp4` MIME。
 
 ## 文件职责
 
@@ -181,11 +244,17 @@ previews/assets/okr-videos/
 | `previews/vantage-h1-immersive.html` | 正式入口、登录、开场/第二屏/片尾视频、整页导航、报告 iframe。 |
 | `previews/ai-data-products/` | 独立 AI 数据产品场景、28 个本地图片资源及模块内部交互。 |
 | `index.html` | 数据、O1、O2、O3 的注册表与页面渲染。 |
+| `src/vantage-browser-runtime.mjs` | 登录、Supabase/本地适配、媒体 URL 解析、媒体预热和正文编辑运行时。 |
+| `scripts/build-production.mjs` | 生成 `vendor/`、`runtime-config.js` 和 `dist/`，复制生产所需静态资源。 |
 | `previews/h1-figma-racing-theme.css` | 当前报告基础主题。 |
 | `previews/h1-o1-complete-theme.css` | 本轮完整 O1 的隔离样式。 |
 | `previews/h1-o3-theme.css` | O3 样式。 |
 | `previews/assets/o1-complete/` | 本轮完整 O1 的隔离图片资源。 |
-| `previews/assets/okr-videos/` | O1 TVC 实际播放文件。 |
+| `previews/assets/o1-complete/tvc-library/` | O1 实际播放视频；本地素材，不随普通 Git 提交分发。 |
+| `config/video-manifest.json` | 可选的生产 CDN 映射；被 Git 忽略，不得包含密钥。 |
+| `tests/check-h1-o2-seo-technical-ppt.mjs` | O2 SEO 技术页文案、结构、品牌图和 PPT 几何契约。 |
+| `tests/check-h1-o2-aso-ppt-restoration.mjs` | O2 ASO 18–19 页 PPT 构图和正文可编辑契约。 |
+| `tests/check-h1-video-loading-policy.mjs` | 登录预载、O1 串行预热和全量 manifest 禁用契约。 |
 | `tests/check-h1-nd-retail-eight-pages.mjs` | ND Retail 8 页、原稿数据、原生图表、样式、缓存和编辑器排除静态契约。 |
 | `tests/check-h1-nd-retail-eight-pages-runtime.mjs` | 22/31/25/17、95 页、Supabase 编辑态、无重叠与 data-22 → O1 边界运行时契约。 |
 | `tests/check-h1-o1-full-folder-merge.mjs` | 22/31/25/17、95 页、顺序和资源静态契约。 |
@@ -194,10 +263,9 @@ previews/assets/okr-videos/
 | `tests/check-h1-ai-data-products-integration.mjs` | AI 模块精确资源清单、延迟加载、场景顺序、页码、外链和导航桥静态契约。 |
 | `tests/check-h1-ai-data-products-runtime.mjs` | AI 模块延迟加载、3+8 卡片、聚焦空格翻转、弹窗、横向手势归属与外层前后翻页运行时契约。 |
 
-项目是静态 HTML，不需要 `npm install`。若 4180 未启动：
+页面本身是静态 HTML，但全新 clone 需要 `npm ci` 并运行一次构建来生成被忽略的 `vendor/` 和 `runtime-config.js`。若 4180 未启动：
 
 ```bash
-cd "/Users/julian/Q1汇报"
 python3 -m http.server 4180 --bind 127.0.0.1
 ```
 
@@ -217,13 +285,18 @@ node tests/check-h1-objective-chapters-runtime.mjs
 H1_OKR_TEST_URL=http://127.0.0.1:4180 node tests/check-h1-okr-shell-paging-runtime.mjs
 node tests/check-h1-media-memory-budget-runtime.mjs
 node tests/check-h1-okr-tvc-video-playback.mjs
+node tests/check-h1-o2-seo-technical-ppt.mjs
+node tests/check-h1-o2-aso-ppt-restoration.mjs
+node tests/check-h1-video-loading-policy.mjs
 node tests/check-h1-okr-native-card-opacity.mjs
 node tests/check-h1-ai-data-products-integration.mjs
 node tests/check-h1-ai-data-products-runtime.mjs
 npm test
 ```
 
-`npm run build` 需要注入 `VANTAGE_SUPABASE_URL`、`VANTAGE_SUPABASE_PUBLISHABLE_KEY` 和 `VANTAGE_LOGIN_EMAIL`；本地未提供生产变量时会按设计停止。
+正式 `npm run build` 需要注入 `VANTAGE_SUPABASE_URL`、`VANTAGE_SUPABASE_PUBLISHABLE_KEY` 和 `VANTAGE_LOGIN_EMAIL`；本地仅生成依赖和空配置时可使用 `VANTAGE_ALLOW_EMPTY_CONFIG=1 npm run build`。
+
+涉及沉浸式壳的浏览器测试要求 4180 端口已有本地服务；涉及 O1 TVC 的测试还要求本地 `tvc-library/` 素材完整。
 
 浏览器抽检页面：
 
@@ -317,3 +390,7 @@ tar -xzf backups/confirmed-scope-before-20260730-184516.tar.gz \
 - 原稿显示数据不可在维护时自动重算，尤其是第 22 页瀑布图。
 - 修改 Supabase 文本发现逻辑时，必须继续排除 SVG、图表内部标签和 `.h1-retail-growth-page-number`。
 - AI 数据产品仍是独立外层场景，不属于 Full Report 页数。
+- 登录页必须保留手动登录；不要恢复用历史 session 自动跳过登录遮罩的逻辑。
+- 预热队列必须保持串行，并继续尊重 `saveData`、`slow-2g` 和 `2g`；`public-good.mp4` 体积最大，应放在队列最后。
+- O2 SEO 技术页的 PPT 文案、品牌 logo、截图裁切和指标网格由专项测试保护，修改前先确认原稿。
+- 任何新视频都必须同时更新页面引用、CDN manifest、缓存策略和对应媒体测试。

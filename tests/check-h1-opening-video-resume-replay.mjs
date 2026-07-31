@@ -28,7 +28,7 @@ assert.match(
 );
 assert.match(
   page,
-  /const unlockSoundOnInteraction = \(\) => \{[\s\S]*?if \(currentVideo === openingVideo && openingPlaybackCompleted\) return;/,
+  /const unlockSoundOnInteraction = event => \{[\s\S]*?if \(currentVideo === openingVideo && openingPlaybackCompleted\) return;/,
   "a sound interaction must not restart a completed opening before the user leaves",
 );
 assert.match(

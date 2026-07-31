@@ -14,15 +14,26 @@ try {
 
   await page.addInitScript(() => {
     let runtimeValue;
+    window.__H1_LOGIN_AUDIT__ = {
+      getSessionCalls: 0,
+      signInCalls: 0,
+    };
     Object.defineProperty(window, "VantageBrowserRuntime", {
       configurable: true,
       get() {
         return runtimeValue;
       },
       set(value) {
-        value.getSession = async () => ({
-          user: { id: "opening-autoplay-sound-runtime" },
-        });
+        const session = { user: { id: "opening-autoplay-sound-runtime" } };
+        value.getSession = async () => {
+          window.__H1_LOGIN_AUDIT__.getSessionCalls += 1;
+          return session;
+        };
+        value.signIn = async () => {
+          window.__H1_LOGIN_AUDIT__.signInCalls += 1;
+          await new Promise((resolve) => setTimeout(resolve, 240));
+          return session;
+        };
         runtimeValue = value;
       },
     });
@@ -35,8 +46,16 @@ try {
 
   const openingVideo = page.locator("#openingVideo");
 
-  await page.waitForFunction(
-    () => document.querySelector("#openingVideo")?.paused === false,
+  await page.waitForTimeout(400);
+  assert.equal(
+    await page.locator("#loginGate").isVisible(),
+    true,
+    "a stored session must not automatically dismiss the login gate",
+  );
+  assert.equal(
+    await page.evaluate(() => window.__H1_LOGIN_AUDIT__.getSessionCalls),
+    0,
+    "the shell must not query a stored session to bypass manual login",
   );
   assert.equal(
     await page.locator("#openingStartGate, #openingStartButton").count(),
@@ -44,22 +63,23 @@ try {
     "the opening film must not add a sound-enable button or blocking gate",
   );
 
-  const blockedState = await openingVideo.evaluate((video) => ({
+  const waitingState = await openingVideo.evaluate((video) => ({
     muted: video.muted,
     paused: video.paused,
   }));
   assert.equal(
-    blockedState.muted,
+    waitingState.muted,
     true,
-    "blocked audible autoplay must fall back to muted playback",
+    "the opening film must stay muted until the user clicks Sign In",
   );
   assert.equal(
-    blockedState.paused,
-    false,
-    "the opening film must keep playing while sound permission is pending",
+    waitingState.paused,
+    true,
+    "preloading must not start playback behind the login gate",
   );
 
-  await page.mouse.click(24, 120);
+  await page.locator("#loginSubmit").click();
+  await page.locator("#loginGate").waitFor({ state: "hidden" });
   await page.waitForFunction(() => {
     const video = document.querySelector("#openingVideo");
     return video && !video.paused && !video.muted && video.currentTime > 0;
@@ -76,7 +96,12 @@ try {
   assert.equal(audibleState.volume, 1);
   assert.ok(
     audibleState.currentTime < 2.5,
-    "the audible opening film must restart near the beginning",
+    "the audible opening film must enter near the beginning after authentication",
+  );
+  assert.equal(
+    await page.evaluate(() => window.__H1_LOGIN_AUDIT__.signInCalls),
+    1,
+    "manual entry must perform exactly one credential sign-in",
   );
 
   assert.equal(
@@ -88,4 +113,4 @@ try {
   await browser.close();
 }
 
-console.log("H1 opening autoplay sound fallback lifecycle passed.");
+console.log("H1 manual login and audible opening lifecycle passed.");
