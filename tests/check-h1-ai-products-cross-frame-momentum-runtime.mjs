@@ -105,7 +105,7 @@ try {
   // Model one fast upward trackpad gesture: the leading impulse enters the AI
   // scene and the smaller values are inertia from that same physical gesture.
   await page.mouse.move(960, 540);
-  const entryGestureDeltas = [-1000, -260, -160, -100, -60, -30];
+  const entryGestureDeltas = [-1000, -260, -240, -160, -100, -60, -30];
   for (const [index, deltaY] of entryGestureDeltas.entries()) {
     await page.mouse.wheel(0, deltaY);
     if (index < entryGestureDeltas.length - 1) {
@@ -202,6 +202,56 @@ try {
   );
   await page.waitForTimeout(250);
   await page.mouse.wheel(0, -320);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+  await aiScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.mouse.wheel(0, 320);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Closing Film"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+
+  // Once pointer hit testing has recovered, two stable low-amplitude pulses
+  // after a clear idle gap are a new mouse-wheel gesture, not stale momentum.
+  await page.mouse.wheel(0, -1000);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForTimeout(400);
+  await page.mouse.wheel(0, -120);
+  await page.waitForTimeout(100);
+  await page.mouse.wheel(0, -120);
   await page.waitForFunction(
     () =>
       Math.abs(
