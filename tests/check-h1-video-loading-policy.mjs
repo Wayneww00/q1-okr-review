@@ -5,7 +5,7 @@ const shell = await readFile("previews/vantage-h1-immersive.html", "utf8");
 
 assert.match(
   shell,
-  /\/vendor\/vantage-runtime\.js\?v=20260731-editor-keyboard-v1/,
+  /\/vendor\/vantage-runtime\.js\?v=20260731-data-header-fields-v1/,
   "the shell media runtime must keep its current cache key",
 );
 assert.doesNotMatch(
@@ -16,7 +16,7 @@ assert.doesNotMatch(
 const report = await readFile("index.html", "utf8");
 assert.match(
   report,
-  /\/vendor\/vantage-runtime\.js\?v=20260731-editor-keyboard-v1/,
+  /\/vendor\/vantage-runtime\.js\?v=20260731-data-header-fields-v1/,
   "the report must load the progressive media runtime with a fresh cache key",
 );
 assert.match(

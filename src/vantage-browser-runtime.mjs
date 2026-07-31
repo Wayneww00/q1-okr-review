@@ -573,6 +573,14 @@ function elementPlainText(element) {
   return normalizePlainText(result);
 }
 
+function singleLinePlainText(value) {
+  return normalizePlainText(value)
+    .replace(/\u00a0/g, " ")
+    .replace(/[ \t]*\n+[ \t]*/g, " ")
+    .replace(/\n/g, " ")
+    .trim();
+}
+
 function isTitleTextElement(element) {
   return Boolean(
     element.matches("h1,h2,h3,h4,h5,h6") ||
@@ -605,6 +613,11 @@ function renderReadOnlyTitle(element, text) {
 }
 
 function setElementPlainText(element, text) {
+  if (element.hasAttribute("data-vantage-single-line")) {
+    element.textContent = singleLinePlainText(text);
+    element.classList.remove("vantage-title-with-subtitle");
+    return;
+  }
   if (
     element.classList.contains("vantage-title-text") &&
     !element.hasAttribute("contenteditable")
@@ -639,22 +652,45 @@ export function discoverEditableText(document) {
       for (const element of scope.querySelectorAll(EDITABLE_TEXT_SELECTOR)) {
         if (element.parentElement?.closest("[data-vantage-text-id]")) continue;
         const isManaged = element.hasAttribute("data-vantage-text-id");
+        const textKey = element.dataset.vantageTextKey?.trim();
+        const acceptsEmpty = element.hasAttribute(
+          "data-vantage-empty-editable",
+        );
         if (!elementHasOnlyTextAndBreaks(element)) continue;
         if (isExcludedElement(element)) continue;
-        if (!isManaged && !elementPlainText(element).trim()) continue;
+        if (
+          !isManaged &&
+          !acceptsEmpty &&
+          !elementPlainText(element).trim()
+        ) {
+          continue;
+        }
 
         const id = buildTextId({
           sectionId,
           pageId: versionedPageId,
-          index: textIndex,
+          index: textKey || textIndex,
         });
-        textIndex += 1;
+        let legacyId = null;
+        if (
+          textKey &&
+          element.hasAttribute("data-vantage-legacy-indexed")
+        ) {
+          legacyId = buildTextId({
+            sectionId,
+            pageId: versionedPageId,
+            index: textIndex,
+          });
+          textIndex += 1;
+        } else if (!textKey) {
+          textIndex += 1;
+        }
         element.dataset.vantageTextId = id;
         element.classList.add("vantage-managed-text");
         if (isTitleTextElement(element)) {
           element.classList.add("vantage-title-text");
         }
-        entries.push({ id, element });
+        entries.push({ id, legacyId, element });
       }
     });
   }
@@ -665,10 +701,14 @@ export function discoverEditableText(document) {
 export function setEntriesEditing(entries, editing) {
   for (const { element } of entries) {
     const isTitle = element.classList.contains("vantage-title-text");
-    const currentText = isTitle ? elementPlainText(element) : "";
+    const isSingleLine = element.hasAttribute("data-vantage-single-line");
+    const currentText =
+      isTitle || isSingleLine ? elementPlainText(element) : "";
     if (editing) {
-      if (isTitle) {
-        element.textContent = currentText;
+      if (isTitle || isSingleLine) {
+        element.textContent = isSingleLine
+          ? singleLinePlainText(currentText)
+          : currentText;
         element.classList.remove("vantage-title-with-subtitle");
       }
       element.setAttribute("contenteditable", "plaintext-only");
@@ -678,7 +718,11 @@ export function setEntriesEditing(entries, editing) {
       element.removeAttribute("contenteditable");
       element.removeAttribute("spellcheck");
       element.classList.remove("vantage-editable-text");
-      if (isTitle) renderReadOnlyTitle(element, currentText);
+      if (isSingleLine) {
+        setElementPlainText(element, currentText);
+      } else if (isTitle) {
+        renderReadOnlyTitle(element, currentText);
+      }
     }
   }
 }
@@ -686,7 +730,9 @@ export function setEntriesEditing(entries, editing) {
 export function collectTextEntries(entries) {
   return entries.map(({ id, element }) => {
     let text = elementPlainText(element);
-    if (element.classList.contains("vantage-title-text")) {
+    if (element.hasAttribute("data-vantage-single-line")) {
+      text = singleLinePlainText(text);
+    } else if (element.classList.contains("vantage-title-text")) {
       text = text.replace(/\u00a0/g, " ").replace(/\n+$/g, "");
     }
     return { id, text };
@@ -695,9 +741,60 @@ export function collectTextEntries(entries) {
 
 export function applyTextRevision(entries, content) {
   const texts = content?.texts || {};
+  const resolvedTexts = new Map();
+
+  for (const entry of entries) {
+    if (Object.hasOwn(texts, entry.id)) {
+      resolvedTexts.set(entry.id, texts[entry.id]);
+    } else if (entry.legacyId && Object.hasOwn(texts, entry.legacyId)) {
+      resolvedTexts.set(entry.id, texts[entry.legacyId]);
+    }
+  }
+
+  for (const titleEntry of entries) {
+    if (
+      titleEntry.element.dataset.vantageHeaderField !== "title" ||
+      !Object.hasOwn(texts, titleEntry.id)
+    ) {
+      continue;
+    }
+
+    const lines = normalizePlainText(texts[titleEntry.id])
+      .replace(/\u00a0/g, " ")
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean);
+    if (lines.length < 2) continue;
+
+    const header = titleEntry.element.closest(
+      ".h1-extended-editorial-header",
+    );
+    const subtitleEntry = entries.find(
+      ({ element }) =>
+        element.dataset.vantageHeaderField === "subtitle" &&
+        element.closest(".h1-extended-editorial-header") === header,
+    );
+    resolvedTexts.set(titleEntry.id, lines[0]);
+    if (subtitleEntry && !Object.hasOwn(texts, subtitleEntry.id)) {
+      const continuation = lines.slice(1).join(" ");
+      const existingSubtitle = singleLinePlainText(
+        resolvedTexts.has(subtitleEntry.id)
+          ? resolvedTexts.get(subtitleEntry.id)
+          : elementPlainText(subtitleEntry.element),
+      );
+      resolvedTexts.set(
+        subtitleEntry.id,
+        existingSubtitle && existingSubtitle !== continuation
+          ? `${continuation} · ${existingSubtitle}`
+          : continuation,
+      );
+    }
+  }
+
   for (const { id, element } of entries) {
-    if (!Object.hasOwn(texts, id)) continue;
-    setElementPlainText(element, texts[id]);
+    if (resolvedTexts.has(id)) {
+      setElementPlainText(element, resolvedTexts.get(id));
+    }
   }
 }
 
@@ -729,7 +826,20 @@ export class ReportContentController {
     this.inputHandler = (event) => {
       const element = event.target?.closest?.("[data-vantage-text-id]");
       if (!element) return;
-      if (element.classList.contains("vantage-title-text")) {
+      if (element.hasAttribute("data-vantage-single-line")) {
+        const currentText = elementPlainText(element);
+        const normalizedText = singleLinePlainText(currentText);
+        if (normalizedText !== currentText) {
+          element.textContent = normalizedText;
+          const selection = element.ownerDocument.defaultView?.getSelection();
+          const range = element.ownerDocument.createRange();
+          range.selectNodeContents(element);
+          range.collapse(false);
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+        }
+        element.classList.remove("vantage-title-with-subtitle");
+      } else if (element.classList.contains("vantage-title-text")) {
         element.classList.toggle(
           "vantage-title-with-subtitle",
           elementPlainText(element).includes("\n"),
@@ -737,6 +847,23 @@ export class ReportContentController {
       }
       this.dirty = true;
       this.emit("editing", { dirty: true });
+    };
+    this.beforeInputHandler = (event) => {
+      const element = event.target?.closest?.(
+        "[data-vantage-text-id][data-vantage-single-line]",
+      );
+      if (
+        element &&
+        ["insertParagraph", "insertLineBreak"].includes(event.inputType)
+      ) {
+        event.preventDefault();
+      }
+    };
+    this.keydownHandler = (event) => {
+      const element = event.target?.closest?.(
+        "[data-vantage-text-id][data-vantage-single-line]",
+      );
+      if (element && event.key === "Enter") event.preventDefault();
     };
   }
 
@@ -851,6 +978,12 @@ export class ReportContentController {
     );
     setEntriesEditing(entries, true);
     this.document.addEventListener("input", this.inputHandler, true);
+    this.document.addEventListener(
+      "beforeinput",
+      this.beforeInputHandler,
+      true,
+    );
+    this.document.addEventListener("keydown", this.keydownHandler, true);
     this.emit("editing");
   }
 
@@ -897,12 +1030,41 @@ export class ReportContentController {
       this.revision = this.pendingRevision;
       this.pendingRevision = null;
     }
+    const restoredTexts = {
+      ...editingSnapshot,
+      ...this.revision.texts,
+    };
+    const entries = this.refreshEntries();
+    for (const entry of entries) {
+      if (
+        !entry.element.dataset.vantageTextKey ||
+        Object.hasOwn(this.revision.texts, entry.id)
+      ) {
+        continue;
+      }
+      const header = entry.element.closest(
+        ".h1-extended-editorial-header",
+      );
+      const titleEntry = entries.find(
+        ({ element }) =>
+          element.dataset.vantageHeaderField === "title" &&
+          element.closest(".h1-extended-editorial-header") === header,
+      );
+      const remoteTitleLines = titleEntry
+        ? normalizePlainText(this.revision.texts[titleEntry.id])
+            .split("\n")
+            .filter((line) => line.trim())
+        : [];
+      const hasLegacyValue =
+        entry.legacyId &&
+        Object.hasOwn(this.revision.texts, entry.legacyId);
+      if (hasLegacyValue || remoteTitleLines.length > 1) {
+        delete restoredTexts[entry.id];
+      }
+    }
     this.finishEditing();
     applyTextRevision(this.refreshEntries(), {
-      texts: {
-        ...editingSnapshot,
-        ...this.revision.texts,
-      },
+      texts: restoredTexts,
     });
     this.emit("discarded");
   }
@@ -911,6 +1073,12 @@ export class ReportContentController {
     this.editing = false;
     this.editingSnapshot = null;
     this.document.removeEventListener("input", this.inputHandler, true);
+    this.document.removeEventListener(
+      "beforeinput",
+      this.beforeInputHandler,
+      true,
+    );
+    this.document.removeEventListener("keydown", this.keydownHandler, true);
     setEntriesEditing(this.refreshEntries(), false);
   }
 

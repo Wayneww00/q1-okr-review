@@ -11,7 +11,7 @@
 <script src="/vendor/babel.min.js"></script>
 <script src="/vendor/prop-types.min.js"></script>
 <script src="/vendor/recharts.js"></script>
-<script src="/vendor/vantage-runtime.js?v=20260731-editor-keyboard-v1"></script>
+<script src="/vendor/vantage-runtime.js?v=20260731-data-header-fields-v1"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -68,6 +68,21 @@
     white-space:pre-line
   }
   .vantage-title-with-subtitle[contenteditable]{white-space:pre-line!important}
+  .h1-extended-editorial-header [data-vantage-header-field]:empty:not([contenteditable]){
+    visibility:hidden
+  }
+  .h1-extended-editorial-header [data-vantage-header-field][contenteditable]{
+    min-width:10rem;
+    min-height:1em;
+    visibility:visible
+  }
+  .h1-extended-editorial-header [data-vantage-header-field][contenteditable]:empty::before{
+    content:attr(data-vantage-placeholder);
+    color:rgba(255,255,255,.34);
+    font:inherit;
+    letter-spacing:inherit;
+    pointer-events:none
+  }
 
   /* ═══ All animations: compositor-only (transform + opacity) ═══ */
 
@@ -1804,9 +1819,27 @@ function H1DataModulePageShell({
       <div className={canvasClasses}>
         {showHeader && (
           <header className="h1-extended-editorial-header">
-            <div className="h1-extended-editorial-section"><span></span><b>{sectionLabel}</b></div>
-            <h1>{pageTitle}</h1>
-            {contextLine && <p>{contextLine}</p>}
+            <div className="h1-extended-editorial-section">
+              <span></span>
+              <b
+                data-vantage-header-field="eyebrow"
+                data-vantage-single-line
+                data-vantage-placeholder="点击添加上方小标题"
+              >{sectionLabel}</b>
+            </div>
+            <h1
+              data-vantage-header-field="title"
+              data-vantage-single-line
+              data-vantage-placeholder="点击添加大标题"
+            >{pageTitle}</h1>
+            <p
+              data-vantage-header-field="subtitle"
+              data-vantage-text-key="header-subtitle"
+              data-vantage-empty-editable
+              data-vantage-legacy-indexed={contextLine ? "true" : undefined}
+              data-vantage-single-line
+              data-vantage-placeholder="点击添加下方小标题"
+            >{contextLine || ""}</p>
             {sourceLine && <small>{sourceLine}</small>}
           </header>
         )}
