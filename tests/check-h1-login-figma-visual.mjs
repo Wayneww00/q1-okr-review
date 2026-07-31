@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { access, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -9,8 +10,8 @@ const loginPage = await readFile(
 
 assert.match(
   loginPage,
-  /\.login-gate\s*\{[\s\S]*?background-image:\s*url\(["']?assets\/vantage-h1-login-figma\.png["']?\)/,
-  "the login gate must use the complete 1920×1080 frame copied from Figma",
+  /\.login-gate\s*\{[\s\S]*?background-image:\s*url\(["']?assets\/vantage-h1-login-figma\.png\?v=20260731-dark-fields-v1["']?\)/,
+  "the login gate must use the cache-busted 1920×1080 dark-field frame copied from Figma",
 );
 
 assert.match(
@@ -33,8 +34,14 @@ assert.match(
 
 assert.match(
   loginPage,
-  /\.login-field\s*\{[\s\S]*?border-radius:\s*9px;[\s\S]*?background:\s*#f5f5f5;/,
-  "the credential fields must retain the light Figma surface",
+  /\.login-field\s*\{[\s\S]*?border:\s*1px solid rgba\(227,87,40,\.18\);[\s\S]*?border-radius:\s*9px;[\s\S]*?background:\s*linear-gradient\(100deg,\s*#1c0e09 0%,\s*#15100c 56%,\s*#0b0b0a 100%\);/,
+  "the credential fields must use the dark orange-tinted surface from the updated Figma frame",
+);
+
+assert.match(
+  loginPage,
+  /\.login-input\s*\{[\s\S]*?background:\s*transparent;[\s\S]*?color:\s*rgba\(255,255,255,\.88\);/,
+  "the live credential text must remain legible on the updated dark fields",
 );
 
 assert.match(
@@ -46,6 +53,15 @@ assert.match(
 await assert.doesNotReject(
   access(resolve("previews/assets/vantage-h1-login-figma.png")),
   "the complete Figma login frame must be committed with the page",
+);
+
+const loginFrame = await readFile(
+  resolve("previews/assets/vantage-h1-login-figma.png"),
+);
+assert.equal(
+  createHash("sha256").update(loginFrame).digest("hex"),
+  "b5257195d951a8b9ac43f780fc37fdd69e9468fd5e3aa6310c4eb2388e0c87e6",
+  "the committed login frame must be the latest exact Figma export",
 );
 
 console.log("H1 Figma login visual contract passed.");
