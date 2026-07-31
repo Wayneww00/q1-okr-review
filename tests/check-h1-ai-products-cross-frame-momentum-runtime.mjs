@@ -109,7 +109,9 @@ try {
   for (const [index, deltaY] of entryGestureDeltas.entries()) {
     await page.mouse.wheel(0, deltaY);
     if (index < entryGestureDeltas.length - 1) {
-      await page.waitForTimeout(90);
+      // Production asset work can delay delivery of the first inertial tail.
+      // Its decaying magnitude must still distinguish it from a new gesture.
+      await page.waitForTimeout(index === 0 ? 250 : 90);
     }
   }
   await page.waitForFunction(
@@ -170,6 +172,54 @@ try {
     () => !document.body.classList.contains("deck-wheel-transitioning"),
   );
 
+  // With no intermediate tail events, a standalone strong second impulse is
+  // still a deliberate new gesture and must work before the idle gate expires.
+  await page.mouse.wheel(0, -1000);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForTimeout(250);
+  await page.mouse.wheel(0, -320);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+  await aiScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.mouse.wheel(0, 320);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Closing Film"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+
   // A delayed, low-energy tail must remain absorbed, while a later strong
   // impulse after the shorter fresh-intent gap must count as a new gesture.
   await page.mouse.wheel(0, -1000);
@@ -181,16 +231,17 @@ try {
           .getBoundingClientRect().top,
       ) < 2,
   );
-  await page.waitForTimeout(220);
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
   await page.mouse.wheel(0, -24);
   await page.waitForTimeout(80);
   assert.ok(
     await aiScene.evaluate(
       (element) => Math.abs(element.getBoundingClientRect().top) < 2,
     ),
-    "a delayed small inertia tail must remain on the newly entered AI scene",
+    "a small inertia tail arriving after the outer gate releases must remain on AI",
   );
-  await page.waitForTimeout(140);
   await page.mouse.wheel(0, -320);
   await page.waitForFunction(
     () =>
@@ -318,7 +369,9 @@ try {
   );
   await page.waitForTimeout(250);
   await page.mouse.wheel(0, -320);
-  await page.waitForTimeout(90);
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
   await page.mouse.wheel(0, -60);
   await page.waitForTimeout(2200);
   const reportIndexAfterFreshGesture = await reportFrame

@@ -208,6 +208,11 @@ try {
     "a primarily horizontal wheel gesture must stay inside the AI scene",
   );
   await dispatchWheel({ deltaX: 0, deltaY: 60 });
+  await page.waitForTimeout(120);
+  await assertAiSceneIsCurrent(
+    "one sub-threshold vertical wheel event must not leave the AI scene",
+  );
+  await dispatchWheel({ deltaX: 0, deltaY: 60 });
   await page.waitForFunction(
     () =>
       Math.abs(
