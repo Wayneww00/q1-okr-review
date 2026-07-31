@@ -36,7 +36,7 @@ for (const fact of [
   "+197.7%",
   "+2.8%",
   "2026 H1 越南 FTD 半年表现及整体占比变化",
-  "Retail FTD（绝对值）",
+  "FTD（绝对值）",
   "FTD 占 Vantage（占比）",
   "2026 H1 TV",
   "210.3 Bn",
@@ -63,5 +63,6 @@ for (const staleFact of ["992", "4,808", "12.9%", "21.0%", "6.38 Bn", "24.42 Bn"
 
 assert.doesNotMatch(registry, /o3-retail-(?:ftd|tv)[^\n]+同比增长/);
 assert.doesNotMatch(retail, /Julian Song|2026年7月31日 22:02/);
+assert.doesNotMatch(retail, /axisLabel:"Retail FTD（绝对值）"/);
 
 console.log("H1 O3 retail FTD/TV PPT content update contract passed.");

@@ -53,7 +53,7 @@ const expected = {
     "5.5%",
     "+197.7%",
     "+2.8%",
-    "Retail FTD（绝对值）",
+    "FTD（绝对值）",
     "FTD 占 Vantage（占比）",
     "越南 FTD",
     "FTD Vantage 大盘占比",
