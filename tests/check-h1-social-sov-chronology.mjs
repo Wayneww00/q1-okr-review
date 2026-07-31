@@ -7,8 +7,8 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "..");
 const report = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const shell = fs.readFileSync(path.join(root, "previews", "vantage-h1-immersive.html"), "utf8");
-const presentationRevision = "20260731-retail-nd-ppt-v3";
-const reportRevision = "20260731-retail-nd-ppt-v3";
+const presentationRevision = "20260801-vietnam-share-labels-v1";
+const reportRevision = "20260801-vietnam-share-labels-v1";
 
 const dashboardsStart = report.indexOf("const H1_DASHBOARDS = [");
 const dashboardsEnd = report.indexOf("const REPORT_MODE", dashboardsStart);

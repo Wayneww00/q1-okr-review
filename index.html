@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-retail-nd-ppt-v3">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-vietnam-share-labels-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-vn-retail-ppt-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -1798,6 +1798,11 @@ function H1VietnamRetailNdChart({data}) {
   const first = data.periods[0];
   const second = data.periods[1];
   const axisYs = [412,330,248,166,82];
+  const sharePoints = [{x:370,y:358},{x:830,y:254}];
+  const shareLabelOffsets = [
+    {dx:-20,dy:-28,textAnchor:"end"},
+    {dx:20,dy:42,textAnchor:"start"},
+  ];
   return (
     <div className="h1-retail-growth-chart h1-editorial-chart-surface" data-editor-ignore>
       <div className="h1-retail-growth-chart-heading"><h2>{data.chartTitle}</h2></div>
@@ -1813,12 +1818,18 @@ function H1VietnamRetailNdChart({data}) {
         <rect className="h1-retail-growth-bar is-muted" x="280" y={zeroY} width="180" height="66" rx="6"/>
         <rect className="h1-retail-growth-bar is-green" x="740" y="92" width="180" height={zeroY-92} rx="7"/>
         <text x="370" y="382" className="h1-retail-growth-value is-negative" textAnchor="middle">{first.ndText}</text>
-        <text x="370" y="352" className="h1-retail-growth-share-label is-saffron" textAnchor="middle">{first.shareText}</text>
         <text x="830" y="220" className="h1-retail-growth-value is-inside" textAnchor="middle">{second.ndText}</text>
-        <text x="830" y="276" className="h1-retail-growth-share-label is-saffron" textAnchor="middle">{second.shareText}</text>
-        <path d="M 370 358 C 494 348 650 282 830 254" className="h1-retail-growth-share-line is-dotted" markerEnd="url(#retail-vietnam-arrow-up)"/>
-        <circle cx="370" cy="358" r="7" className="h1-retail-growth-share-dot"/>
-        <circle cx="830" cy="254" r="7" className="h1-retail-growth-share-dot"/>
+        <path d={`M ${sharePoints[0].x} ${sharePoints[0].y} C 494 348 650 282 ${sharePoints[1].x} ${sharePoints[1].y}`} className="h1-retail-growth-share-line is-dotted" markerEnd="url(#retail-vietnam-arrow-up)"/>
+        {sharePoints.map((point,index)=>{
+          const period = data.periods[index];
+          const labelOffset = shareLabelOffsets[index];
+          return (
+            <g key={`${period.label}-share`}>
+              <circle data-vietnam-share-point={period.label} cx={point.x} cy={point.y} r="7" className="h1-retail-growth-share-dot"/>
+              <text data-vietnam-share-label={period.label} x={point.x+labelOffset.dx} y={point.y+labelOffset.dy} className="h1-retail-growth-share-label is-saffron is-endpoint" textAnchor={labelOffset.textAnchor}>{period.shareText}</text>
+            </g>
+          );
+        })}
         <g className="h1-retail-growth-delta-chip"><rect x="504" y="186" width="194" height="62" rx="14"/><text x="601" y="226" textAnchor="middle">{data.delta}</text></g>
         <text x="370" y="448" className="h1-retail-growth-x-label" textAnchor="middle">{first.label}</text>
         <text x="830" y="448" className="h1-retail-growth-x-label" textAnchor="middle">{second.label}</text>

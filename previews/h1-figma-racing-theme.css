@@ -8241,6 +8241,13 @@ svg.h1-okr-insight-icon circle {
   fill: #e7b25b;
 }
 
+.is-vietnam-retail-nd .h1-retail-growth-share-label.is-endpoint {
+  paint-order: stroke fill;
+  stroke: rgba(0,0,0,.72);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
 .is-vietnam-retail-nd .h1-retail-growth-comparison {
   min-height: 76px;
   padding: 0 28px;
