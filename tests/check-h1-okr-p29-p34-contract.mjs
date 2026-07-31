@@ -172,7 +172,7 @@ assert.match(
 );
 assert.match(
   app,
-  /function OkrTvcLocalizationPage\(\{page\}\)[\s\S]*?TVC 矩阵｜把 7×24 拍成人人看得懂的周末机会[\s\S]*?全球版[\s\S]*?越南版[\s\S]*?泰国版/,
+  /function OkrTvcLocalizationPage\(\{page,onVideoPreview\}\)[\s\S]*?TVC 矩阵｜把 7×24 拍成人人看得懂的周末机会[\s\S]*?全球版[\s\S]*?越南版[\s\S]*?泰国版/,
   "the rebuilt page must preserve the requested Figma title and the three localized labels",
 );
 assert.match(

@@ -40,8 +40,13 @@ assert.match(
 );
 assert.match(
   app,
-  /function OkrTvcLocalizationPage\(\{page\}\)[\s\S]*?page\.videoSlots\.map\(slot=><OkrInlineVideo/,
-  "the dedicated four-video Figma page must render every supplied video inline",
+  /function OkrModalVideoTrigger\(\{page,slot,onVideoPreview\}\)[\s\S]*?h1-okr-inline-video-trigger[\s\S]*?onClick=\{\(\)=>onVideoPreview\?\.\(\{page,slot\}\)\}/,
+  "modal videos must keep a lightweight poster trigger and defer creating the player until a click",
+);
+assert.match(
+  app,
+  /function OkrTvcLocalizationPage\(\{page,onVideoPreview\}\)[\s\S]*?page\.videoSlots\.map\(slot=><OkrModalVideoTrigger[\s\S]*?onVideoPreview=\{onVideoPreview\}/,
+  "the dedicated four-video Figma page must open every supplied video in the shared modal player",
 );
 assert.match(
   app,

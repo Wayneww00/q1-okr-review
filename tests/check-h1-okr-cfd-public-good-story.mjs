@@ -69,8 +69,8 @@ assert.match(
 );
 assert.match(
   app,
-  /id:'okr-elite-ferrari-experience'[\s\S]*?p46-elite-ferrari-foreground\.png[\s\S]*?id:'ferrari-personal-moment'[\s\S]*?tvc-library\/ferrari-personal-moment-web\.mp4[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/ferrari-personal-moment\.jpg'[\s\S]*?inline:true/,
-  "the Ferrari page must use its PPT Personal Moment video as an inline player",
+  /id:'okr-elite-ferrari-experience'[\s\S]*?p46-elite-ferrari-foreground\.png[\s\S]*?id:'ferrari-personal-moment'[\s\S]*?tvc-library\/ferrari-personal-moment-web\.mp4[\s\S]*?poster:'previews\/assets\/tvc-library\/posters\/ferrari-personal-moment\.jpg'[\s\S]*?inline:true[\s\S]*?playback:'modal'/,
+  "the Ferrari page must use its PPT Personal Moment video in the shared modal player",
 );
 assert.ok(
   fs.existsSync(publicGoodVideoPath) && fs.statSync(publicGoodVideoPath).size > 10_000_000,

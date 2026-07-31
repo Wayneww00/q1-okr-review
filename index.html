@@ -2462,6 +2462,7 @@ const OKR_FIGMA_PAGES=[
         src:'previews/assets/tvc-library/ferrari-personal-moment-web.mp4',
         poster:'previews/assets/tvc-library/posters/ferrari-personal-moment.jpg',
         inline:true,
+        playback:'modal',
         left:5.99,
         top:32.59,
         width:31.30,
@@ -2579,10 +2580,10 @@ const OKR_FIGMA_PAGES=[
     label:'TVC 矩阵：7×24',
     figmaNodeId:'146:717',
     videoSlots:[
-      {id:'tvc-brand-main',label:'品牌主 TVC',src:'previews/assets/tvc-library/tvc-brand-main-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-brand-main.jpg',inline:true,unit:'px',left:203,top:481,width:600,height:338},
-      {id:'tvc-global',label:'全球版 TVC',src:'previews/assets/tvc-library/tvc-global-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-global.jpg',inline:true,unit:'px',left:1170.5,top:462,width:360,height:203},
-      {id:'tvc-vietnam',label:'越南版 TVC',src:'previews/assets/tvc-library/tvc-vietnam-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-vietnam.jpg',inline:true,unit:'px',left:965.25,top:731,width:360,height:203},
-      {id:'tvc-thailand',label:'泰国版 TVC',src:'previews/assets/tvc-library/tvc-thailand-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-thailand.jpg',inline:true,unit:'px',left:1375.75,top:731,width:360,height:203},
+      {id:'tvc-brand-main',label:'品牌主 TVC',src:'previews/assets/tvc-library/tvc-brand-main-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-brand-main.jpg',inline:true,playback:'modal',unit:'px',left:203,top:481,width:600,height:338},
+      {id:'tvc-global',label:'全球版 TVC',src:'previews/assets/tvc-library/tvc-global-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-global.jpg',inline:true,playback:'modal',unit:'px',left:1170.5,top:462,width:360,height:203},
+      {id:'tvc-vietnam',label:'越南版 TVC',src:'previews/assets/tvc-library/tvc-vietnam-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-vietnam.jpg',inline:true,playback:'modal',unit:'px',left:965.25,top:731,width:360,height:203},
+      {id:'tvc-thailand',label:'泰国版 TVC',src:'previews/assets/tvc-library/tvc-thailand-web.mp4',poster:'previews/assets/tvc-library/posters/tvc-thailand.jpg',inline:true,playback:'modal',unit:'px',left:1375.75,top:731,width:360,height:203},
     ],
   },
   {
@@ -2678,6 +2679,35 @@ function OkrInlineVideo({slot}){
           <span className="h1-okr-inline-video-play" aria-hidden="true"></span>
         </button>
       )}
+    </div>
+  );
+}
+
+/* The page keeps the same lightweight poster treatment as an inline video,
+   but the actual media element is created only inside the shared lightbox. */
+function OkrModalVideoTrigger({page,slot,onVideoPreview}){
+  const unit=slot.unit || '%';
+  const coordinate=(value)=>`${value}${unit}`;
+  return (
+    <div
+      className={`h1-okr-inline-video h1-okr-modal-video-trigger${slot.fit==='contain' ? ' is-contain' : ''}`}
+      style={{
+        left:coordinate(slot.left),
+        top:coordinate(slot.top),
+        width:coordinate(slot.width),
+        height:coordinate(slot.height),
+      }}
+    >
+      <button
+        type="button"
+        className="h1-okr-inline-video-trigger"
+        aria-label={`播放：${slot.label}`}
+        title={`播放：${slot.label}`}
+        onClick={()=>onVideoPreview?.({page,slot})}
+      >
+        {slot.poster && <img src={slot.poster} alt="" draggable="false" aria-hidden="true"/>}
+        <span className="h1-okr-inline-video-play" aria-hidden="true"></span>
+      </button>
     </div>
   );
 }
@@ -2838,7 +2868,8 @@ function OkrDirectFigmaForegroundPage({page,index,count,src,onPreview,onVideoPre
           draggable="false"
           aria-hidden="true"
         />
-        {page.videoSlots?.filter(slot=>slot.inline).map(slot=><OkrInlineVideo key={slot.id} slot={slot}/>) }
+        {page.videoSlots?.filter(slot=>slot.inline && slot.playback!=='modal').map(slot=><OkrInlineVideo key={slot.id} slot={slot}/>)}
+        {page.videoSlots?.filter(slot=>slot.inline && slot.playback==='modal').map(slot=><OkrModalVideoTrigger key={slot.id} page={page} slot={slot} onVideoPreview={onVideoPreview}/>)}
         {page.videoSlots?.filter(slot=>!slot.inline).map(slot=>(
           <button
             key={slot.id}
@@ -2872,7 +2903,8 @@ function OkrEliteClientForegroundPage({page,index,count,onPreview,onVideoPreview
         <img className="h1-okr-elite-client-background" src="previews/assets/figma-untitled/elite-client-background-38-39-2.png" alt="" width="1920" height="1080" loading="eager" decoding="sync" draggable="false" aria-hidden="true" />
         <img className="h1-okr-figma-foreground-layer" src={page.src} alt="" width="1920" height="1080" loading="eager" decoding="sync" draggable="false" aria-hidden="true" />
         <OkrEliteClientEditableCopy page={page}/>
-        {page.videoSlots?.filter(slot=>slot.inline).map(slot=><OkrInlineVideo key={slot.id} slot={slot}/>) }
+        {page.videoSlots?.filter(slot=>slot.inline && slot.playback!=='modal').map(slot=><OkrInlineVideo key={slot.id} slot={slot}/>)}
+        {page.videoSlots?.filter(slot=>slot.inline && slot.playback==='modal').map(slot=><OkrModalVideoTrigger key={slot.id} page={page} slot={slot} onVideoPreview={onVideoPreview}/>)}
         {page.videoSlots?.filter(slot=>!slot.inline).map(slot=>(
           <button key={slot.id} type="button" className="h1-okr-video-hotspot" style={{left:`${slot.left}%`,top:`${slot.top}%`,width:`${slot.width}%`,height:`${slot.height}%`}} aria-label={`播放：${slot.label}`} onClick={()=>onVideoPreview?.({page,slot})}/>
         ))}
@@ -3035,7 +3067,7 @@ function OkrPositionedFigmaForegroundPage({page,index,count,src,artwork,onPrevie
   );
 }
 
-function OkrTvcLocalizationPage({page}){
+function OkrTvcLocalizationPage({page,onVideoPreview}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   return (
     <section
@@ -3077,7 +3109,7 @@ function OkrTvcLocalizationPage({page}){
           <strong className="h1-okr-tvc-localization-video-label is-thailand">泰国版</strong>
         </section>
 
-        {page.videoSlots.map(slot=><OkrInlineVideo key={slot.id} slot={slot}/>)}
+        {page.videoSlots.map(slot=><OkrModalVideoTrigger key={slot.id} page={page} slot={slot} onVideoPreview={onVideoPreview}/>)}
         <div className="h1-okr-page-number" aria-hidden="true">29 <span>/ 31</span></div>
       </div>
     </section>
@@ -3216,12 +3248,22 @@ function OkrExactModal({preview,onClose}){
 }
 
 function OkrVideoModal({preview,onClose}){
+  const videoRef=useRef(null);
   useEffect(()=>{
     if(!preview)return;
     const onKeyDown=(event)=>{if(event.key==='Escape')onClose();};
     document.addEventListener('keydown',onKeyDown);
     return()=>document.removeEventListener('keydown',onKeyDown);
   },[preview,onClose]);
+  useEffect(()=>{
+    if(!preview || !videoRef.current)return;
+    const video=videoRef.current;
+    return()=>{
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    };
+  },[preview]);
   if(!preview)return null;
   return (
     <div
@@ -3234,11 +3276,14 @@ function OkrVideoModal({preview,onClose}){
       <div className="h1-okr-video-modal-panel" onClick={event=>event.stopPropagation()}>
         {preview.slot.src ? (
           <video
+            ref={videoRef}
             className={`h1-okr-video-player${preview.slot.fit==='cover' ? ' is-cover' : ''}`}
             src={preview.slot.src}
+            poster={preview.slot.poster}
             controls
             autoPlay
             playsInline
+            preload="auto"
           />
         ) : (
           <div className="h1-okr-video-placeholder">
@@ -3293,7 +3338,7 @@ function OkrReportDeck(){
         page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src}/> :
         page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:160,top:19,width:1608,height:1042}} onPreview={setPreview}/> :
         page.id==='okr-omnichannel-amplification' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src={page.src} artwork={{left:195,top:75,width:1575,height:987}}/> :
-        page.id==='okr-tvc-localization' ? <OkrTvcLocalizationPage key={page.id} page={page}/> :
+        page.id==='okr-tvc-localization' ? <OkrTvcLocalizationPage key={page.id} page={page} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-superapp-activation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p61-foreground.png" artwork={{left:46,top:52,width:1850,height:1045}}/> :
         page.id==='okr-premium-unlimited' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p62-foreground.png" artwork={{left:160,top:75,width:1600,height:972}}/> :
         page.id==='okr-brand-experience-audit' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} src="previews/assets/figma-untitled/p63-foreground.png" artwork={{left:111,top:90,width:1600,height:839}}/> :
