@@ -1914,6 +1914,330 @@
   margin-top: 6px;
 }
 
+/* Followers-share comparison: CSS-only ranking dashboard, aligned to the data-module system. */
+.h1-followers-share-surface {
+  --h1-follower-exness: #8f1620;
+  --h1-follower-vantage: #ff5b11;
+  --h1-follower-xm: #c06b49;
+  --h1-follower-pepperstone: #8b6f69;
+  --h1-follower-saxo: #56444a;
+  --h1-follower-xtb: #a74735;
+  --h1-follower-other: #2b2225;
+}
+
+.h1-followers-share-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 21% 32%, rgba(143,22,32,.11), transparent 24%),
+    radial-gradient(circle at 79% 32%, rgba(255,91,17,.07), transparent 25%);
+}
+
+.h1-followers-share-heading {
+  flex: 0 0 48px;
+  min-height: 48px;
+}
+
+.h1-followers-share-heading > small {
+  margin-top: 3px;
+  padding: 5px 9px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  color: rgba(255,255,255,.48);
+  font: 700 9px/1 "Barlow Condensed", sans-serif;
+  letter-spacing: .13em;
+}
+
+.h1-followers-share-grid {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.h1-follower-share-card {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  padding: 12px 14px 10px;
+  display: grid;
+  grid-template-rows: 49px minmax(0, 1fr) 64px;
+  gap: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,241,227,.14);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(143,22,32,.11), transparent 42%),
+    rgba(7,6,7,.76);
+  box-shadow: inset 0 1px rgba(255,255,255,.025), 0 12px 30px rgba(0,0,0,.16);
+}
+
+.h1-follower-share-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, #ff5b11, #8f1620 58%, transparent);
+}
+
+.h1-follower-card-header {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,.09);
+}
+
+.h1-follower-card-index {
+  color: rgba(255,91,17,.78);
+  font: 800 25px/1 "Barlow Condensed", sans-serif;
+  letter-spacing: -.02em;
+}
+
+.h1-follower-card-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 17px;
+  line-height: 1.05;
+  font-weight: 800;
+}
+
+.h1-follower-card-header p {
+  margin: 4px 0 0;
+  color: rgba(255,255,255,.48);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.h1-follower-rank-badge {
+  padding: 6px 9px;
+  border: 1px solid rgba(255,91,17,.38);
+  border-radius: 6px;
+  background: rgba(255,91,17,.08);
+  color: #ff8b4d;
+  font: 800 10px/1 "Barlow Condensed", sans-serif;
+  letter-spacing: .08em;
+}
+
+.h1-follower-card-body {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 212px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.h1-follower-pie-wrap {
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  gap: 4px;
+}
+
+.h1-follower-pie {
+  position: relative;
+  width: 198px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 50%;
+  background: var(--follower-pie);
+  box-shadow:
+    0 0 0 5px rgba(255,255,255,.025),
+    0 18px 36px rgba(0,0,0,.28),
+    0 0 28px rgba(255,91,17,.07);
+}
+
+.h1-follower-pie::after {
+  content: "";
+  position: absolute;
+  inset: 39px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255,255,255,.055), transparent 32%),
+    #100b0c;
+  box-shadow: 0 0 0 8px rgba(0,0,0,.16), inset 0 10px 24px rgba(0,0,0,.32);
+}
+
+.h1-follower-pie-core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+}
+
+.h1-follower-pie-core small {
+  color: rgba(255,255,255,.54);
+  font: 750 8px/1 "Barlow Condensed", sans-serif;
+  letter-spacing: .12em;
+}
+
+.h1-follower-pie-core strong {
+  margin-top: 5px;
+  color: #ff762e;
+  font: 850 32px/.95 "Barlow Condensed", sans-serif;
+  letter-spacing: -.02em;
+  text-shadow: 0 0 18px rgba(255,91,17,.24);
+}
+
+.h1-follower-pie-core span {
+  margin-top: 7px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(255,91,17,.12);
+  color: rgba(255,255,255,.82);
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.h1-follower-pie-wrap > p {
+  margin: 0;
+  color: rgba(255,255,255,.42);
+  font-size: 9px;
+  letter-spacing: .14em;
+}
+
+.h1-follower-rank-list {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 3px;
+  list-style: none;
+}
+
+.h1-follower-rank-list li {
+  min-width: 0;
+  min-height: 31px;
+  padding: 4px 7px;
+  display: grid;
+  grid-template-columns: 22px 8px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: rgba(255,255,255,.025);
+}
+
+.h1-follower-rank-list li.is-vantage {
+  border-color: rgba(255,91,17,.34);
+  background: linear-gradient(90deg, rgba(255,91,17,.16), rgba(255,91,17,.035));
+  box-shadow: inset 2px 0 #ff5b11;
+}
+
+.h1-follower-rank-number {
+  color: rgba(255,255,255,.32);
+  font: 750 10px/1 "Barlow Condensed", sans-serif;
+}
+
+.h1-follower-rank-list li.is-vantage .h1-follower-rank-number {
+  color: #ff8b4d;
+}
+
+.h1-follower-rank-list li > i {
+  width: 7px;
+  height: 18px;
+  border-radius: 2px;
+  background: rgba(255,255,255,.2);
+}
+
+.h1-follower-rank-list li > i.is-exness { background: var(--h1-follower-exness); }
+.h1-follower-rank-list li > i.is-vantage { background: var(--h1-follower-vantage); }
+.h1-follower-rank-list li > i.is-xm { background: var(--h1-follower-xm); }
+.h1-follower-rank-list li > i.is-pepperstone { background: var(--h1-follower-pepperstone); }
+.h1-follower-rank-list li > i.is-saxo { background: var(--h1-follower-saxo); }
+.h1-follower-rank-list li > i.is-xtb { background: var(--h1-follower-xtb); }
+.h1-follower-rank-list li > i.is-other { background: var(--h1-follower-other); }
+
+.h1-follower-brand {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.h1-follower-brand b {
+  overflow: hidden;
+  color: rgba(255,255,255,.88);
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.h1-follower-brand small {
+  color: rgba(255,255,255,.42);
+  font-size: 8.5px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.h1-follower-rank-list li > strong {
+  color: rgba(255,255,255,.72);
+  font: 780 13px/1 "Barlow Condensed", sans-serif;
+  text-align: right;
+}
+
+.h1-follower-rank-list li.is-vantage > strong {
+  color: #ff762e;
+  font-size: 15px;
+}
+
+.h1-follower-card-metrics {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 1.08fr .92fr;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 8px;
+  background: rgba(255,255,255,.025);
+  overflow: hidden;
+}
+
+.h1-follower-card-metrics > div {
+  min-width: 0;
+  padding: 8px 12px 7px;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+}
+
+.h1-follower-card-metrics > div + div {
+  border-left: 1px solid rgba(255,255,255,.1);
+}
+
+.h1-follower-card-metrics small {
+  overflow: hidden;
+  color: rgba(255,255,255,.45);
+  font-size: 8.5px;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.h1-follower-card-metrics strong {
+  color: #fff;
+  font: 800 22px/1 "Barlow Condensed", sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .01em;
+}
+
+.h1-follower-card-metrics .is-vantage-share {
+  background: linear-gradient(90deg, rgba(255,91,17,.07), transparent);
+}
+
+.h1-follower-card-metrics .is-vantage-share strong {
+  color: #ff762e;
+  font-size: 25px;
+}
+
 .h1-extended-share-label {
   font-size: 12px;
 }

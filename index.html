@@ -882,10 +882,52 @@ const H1_DASHBOARDS = [
   {
     id:13, layoutType:"followers_share", title:"整体数据 GM Social Media",
     subtitle:"VANTAGE MARKETS’ SHARE OF CFD INDUSTRY FOLLOWERS",
-    description:"Vantage 在全球官方 CFD 经纪商账号中占据 21.3% 的关注者份额。随着统计范围扩大至区域账号及子账号，行业整体受众规模增长超过 50%，而 Vantage 在更广泛的竞争格局中仍保持 16.2% 的份额。",
+    description:"Vantage整体排第二，且离第一越来越近了。虽然算上区域号后，咱们的单独占比看起来变小了，但这其实是把“盘子”做大了。接下来我们要把全球号和区域号拧成一股绳，通过协同运营，一起做大整个行业占比。",
     followerScopes:[
       {scope:"Global Accounts Only",industry:10783372,industryText:"10,783,372",vantage:2291951,vantageText:"2,291,951",share:21.3,shareText:"21.3%"},
       {scope:"Global + Regional/Sub-Accounts",industry:16420972,industryText:"16,420,972",vantage:2653508,vantageText:"2,653,508",share:16.2,shareText:"16.2%"}
+    ],
+    followerSharePanels:[
+      {
+        key:"global",
+        index:"01",
+        title:"仅全球官方账号",
+        date:"数据截至 2026 年 7 月 24 日",
+        totalLabel:"全球官方 CFD 经纪商账号总关注者数",
+        total:10783372,
+        totalText:"10,783,372",
+        vantageShareLabel:"Vantage Markets 在全球官方 CFD 行业中的份额",
+        sourceShareText:"21.26%",
+        vantageDisplayShare:"21.3%",
+        segments:[
+          {brand:"Exness",followers:4089190,followersText:"4,089,190",share:37.9,shareText:"37.9%",tone:"exness"},
+          {brand:"Vantage Markets",followers:2291951,followersText:"2,291,951",share:21.3,shareText:"21.3%",tone:"vantage"},
+          {brand:"XM",followers:1579238,followersText:"1,579,238",share:14.6,shareText:"14.6%",tone:"xm"},
+          {brand:"Pepperstone",followers:733430,followersText:"733,430",share:6.8,shareText:"6.8%",tone:"pepperstone"},
+          {brand:"Saxo Bank",followers:371182,followersText:"371,182",share:3.4,shareText:"3.4%",tone:"saxo"},
+          {brand:"其他 CFD 经纪商",followers:1718381,followersText:"1,718,381",share:15.9,shareText:"15.9%",tone:"other"}
+        ]
+      },
+      {
+        key:"expanded",
+        index:"02",
+        title:"全球 + 区域/子账号",
+        date:"数据截至 2026 年 7 月 24 日",
+        totalLabel:"全球 + 区域/子账号 CFD 经纪商账号总关注者数",
+        total:16420972,
+        totalText:"16,420,972",
+        vantageShareLabel:"Vantage Markets 在全球 + 区域/子账号 CFD 行业中的份额",
+        sourceShareText:"16.16%",
+        vantageDisplayShare:"16.2%",
+        segments:[
+          {brand:"Exness",followers:5733774,followersText:"5,733,774",share:34.9,shareText:"34.9%",tone:"exness"},
+          {brand:"Vantage Markets",followers:2653508,followersText:"2,653,508",share:16.2,shareText:"16.2%",tone:"vantage"},
+          {brand:"XTB",followers:2415867,followersText:"2,415,867",share:14.7,shareText:"14.7%",tone:"xtb"},
+          {brand:"XM",followers:1670549,followersText:"1,670,549",share:10.2,shareText:"10.2%",tone:"xm"},
+          {brand:"Pepperstone",followers:818685,followersText:"818,685",share:5.0,shareText:"5.0%",tone:"pepperstone"},
+          {brand:"其他 CFD 经纪商",followers:3128589,followersText:"3,128,589",share:19.1,shareText:"19.1%",tone:"other"}
+        ]
+      }
     ],
     chart:{
       title:"VANTAGE MARKETS’ SHARE OF CFD INDUSTRY FOLLOWERS",
@@ -1487,38 +1529,88 @@ function H1SocialSovTrendChart({data}) {
   );
 }
 
+const H1_FOLLOWER_TONE_VARS = {
+  exness:"var(--h1-follower-exness)",
+  vantage:"var(--h1-follower-vantage)",
+  xm:"var(--h1-follower-xm)",
+  pepperstone:"var(--h1-follower-pepperstone)",
+  saxo:"var(--h1-follower-saxo)",
+  xtb:"var(--h1-follower-xtb)",
+  other:"var(--h1-follower-other)"
+};
+
+function buildFollowerShareGradient(segments) {
+  const totalFollowers = segments.reduce((sum,segment) => sum+segment.followers,0);
+  let cursor = 0;
+  const stops = segments.map((segment,index) => {
+    const start = cursor;
+    const end = index === segments.length-1 ? 100 : Math.min(100,cursor+(segment.followers/totalFollowers*100));
+    cursor = end;
+    return `${H1_FOLLOWER_TONE_VARS[segment.tone]} ${start}% ${end}%`;
+  });
+  return `conic-gradient(from -90deg, ${stops.join(", ")})`;
+}
+
 function H1FollowersShareChart({data}) {
-  const chartData = data.followerScopes;
   return (
     <section className="h1-editorial-chart-surface h1-followers-share-surface">
-      <div className="h1-editorial-chart-title">
+      <div className="h1-editorial-chart-title h1-followers-share-heading">
         <div><span>{data.chart.title}</span><h2>{data.chart.subtitle}</h2></div>
+        <small>FOLLOWER MIX · RANKING VIEW</small>
       </div>
-      <H1EditorialLegend items={[
-        {kind:"vantage",label:data.chart.legends[0]},
-        {kind:"industry",label:data.chart.legends[1]},
-        {kind:"sov-line",label:data.chart.legends[2]}
-      ]}/>
-      <div className="h1-editorial-axis-label is-left">{data.chart.leftAxisLabel}</div>
-      <div className="h1-editorial-axis-label is-right">{data.chart.rightAxisLabel}</div>
-      <div className="h1-followers-share-plot">
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={chartData} barGap={8} margin={{top:48,right:56,left:16,bottom:28}}>
-            <CartesianGrid stroke="rgba(255,255,255,.16)" vertical={false} strokeDasharray="4 7"/>
-            <XAxis dataKey="scope" axisLine={{stroke:"rgba(255,255,255,.34)"}} tickLine={false} tick={{fill:"#fff",fontSize:14,fontWeight:700}} dy={14}/>
-            <YAxis yAxisId="followers" domain={[0,20000000]} ticks={data.chart.leftTicks} axisLine={false} tickLine={false} width={86} tick={{fill:"rgba(255,255,255,.72)",fontSize:11}} tickFormatter={(value)=>value.toLocaleString()}/>
-            <YAxis yAxisId="share" orientation="right" domain={[0,40]} ticks={data.chart.rightTicks} axisLine={false} tickLine={false} width={46} tick={{fill:"rgba(255,255,255,.72)",fontSize:11}} tickFormatter={(value)=>value+"%"}/>
-            <Bar yAxisId="followers" dataKey="industry" barSize={116} fill="#8f1620" radius={[7,7,0,0]}>
-              <LabelList dataKey="industryText" content={(props)=><H1ExactBarLabel {...props} value={chartData[props.index].industryText} className="h1-editorial-bar-label" dy={-14}/>}/>
-            </Bar>
-            <Bar yAxisId="followers" dataKey="vantage" barSize={116} fill="#ff5b11" radius={[7,7,0,0]}>
-              <LabelList dataKey="vantageText" content={(props)=><H1ExactBarLabel {...props} value={chartData[props.index].vantageText} className="h1-editorial-bar-label is-orange" dy={-14}/>}/>
-            </Bar>
-            <Line yAxisId="share" type="linear" dataKey="share" stroke="#fff" strokeWidth={2.4} strokeDasharray="6 6" dot={{r:7,fill:"#8f1620",stroke:"#fff",strokeWidth:2}}>
-              <LabelList dataKey="shareText" content={(props)=><text x={props.x} y={props.y-18} className="h1-extended-share-label" textAnchor="middle">{chartData[props.index].shareText}</text>}/>
-            </Line>
-          </ComposedChart>
-        </ResponsiveContainer>
+      <div className="h1-followers-share-grid">
+        {data.followerSharePanels.map(panel => (
+          <article className={`h1-follower-share-card is-${panel.key}`} key={panel.key}>
+            <header className="h1-follower-card-header">
+              <div className="h1-follower-card-index">{panel.index}</div>
+              <div>
+                <h3>{panel.title}</h3>
+                <p>{panel.date}</p>
+              </div>
+              <span className="h1-follower-rank-badge">VANTAGE&nbsp; #2</span>
+            </header>
+            <div className="h1-follower-card-body">
+              <div className="h1-follower-pie-wrap">
+                <div
+                  className="h1-follower-pie"
+                  style={{"--follower-pie":buildFollowerShareGradient(panel.segments)}}
+                  role="img"
+                  aria-label={`${panel.title}，Vantage Markets 关注者份额 ${panel.vantageDisplayShare}，行业排名第二`}
+                >
+                  <div className="h1-follower-pie-core">
+                    <small>VANTAGE SHARE</small>
+                    <strong>{panel.vantageDisplayShare}</strong>
+                    <span>行业第 2</span>
+                  </div>
+                </div>
+                <p>关注者结构</p>
+              </div>
+              <ol className="h1-follower-rank-list">
+                {panel.segments.map((segment,rank) => (
+                  <li className={segment.tone === "vantage" ? "is-vantage" : ""} key={segment.brand}>
+                    <span className="h1-follower-rank-number">{String(rank+1).padStart(2,"0")}</span>
+                    <i className={`is-${segment.tone}`}></i>
+                    <span className="h1-follower-brand">
+                      <b>{segment.brand}</b>
+                      <small>{segment.followersText} 关注者</small>
+                    </span>
+                    <strong>{segment.shareText}</strong>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <footer className="h1-follower-card-metrics">
+              <div>
+                <small>{panel.totalLabel}</small>
+                <strong>{panel.totalText}</strong>
+              </div>
+              <div className="is-vantage-share">
+                <small>{panel.vantageShareLabel}</small>
+                <strong>{panel.sourceShareText}</strong>
+              </div>
+            </footer>
+          </article>
+        ))}
       </div>
     </section>
   );

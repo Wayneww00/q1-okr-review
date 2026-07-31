@@ -254,9 +254,9 @@ for (const token of [
   "2,653,508",
   "16.2%",
   "全球官方 CFD 经纪商账号",
-  "区域账号及子账号",
-  "行业整体受众规模增长超过 50%",
-  "在更广泛的竞争格局中仍保持 16.2% 的份额"
+  "全球 + 区域/子账号 CFD 经纪商账号",
+  "Vantage整体排第二，且离第一越来越近了",
+  "把全球号和区域号拧成一股绳"
 ]) {
   assert.ok(page13.includes(token), `page 13 should preserve PPT token: ${token}`);
 }
@@ -313,7 +313,6 @@ for (const componentName of [
   "H1BrandVoiceChart",
   "H1BrandSearchReputationChart",
   "H1SocialSovTrendChart",
-  "H1FollowersShareChart",
   "H1FollowersTrendChart"
 ]) {
   const start = index.indexOf(`function ${componentName}`);
@@ -323,6 +322,12 @@ for (const componentName of [
   assert.match(source, /<(?:ResponsiveContainer|svg|H1SearchTrendGlyph)\b/, `${componentName} should render a native chart`);
   assert.doesNotMatch(source, /<(?:img|image)\b|data:image\/|pptImage|chartImage|(?:src|href|background-image)[^\\n]*(?:\.png|\.jpe?g|\.webp)/i, `${componentName} should not embed a PPT chart image`);
 }
+
+const followersShareComponentStart = index.indexOf("function H1FollowersShareChart");
+const followersShareComponentEnd = index.indexOf("\nfunction ", followersShareComponentStart + 10);
+const followersShareComponentSource = index.slice(followersShareComponentStart, followersShareComponentEnd);
+assert.match(followersShareComponentSource, /h1-follower-pie/, "H1FollowersShareChart should render its comparison with HTML and CSS");
+assert.doesNotMatch(followersShareComponentSource, /<(?:img|image)\b|data:image\/|pptImage|chartImage|(?:src|href|background-image)[^\\n]*(?:\.png|\.jpe?g|\.webp)/i, "H1FollowersShareChart should not embed a PPT chart image");
 
 const socialChartStart = index.indexOf("function H1SocialSovTrendChart");
 const socialChartEnd = index.indexOf("\nfunction ", socialChartStart + 10);
@@ -338,28 +343,28 @@ const followersShareEnd = index.indexOf("\nfunction ", followersShareStart + 10)
 const followersShareSource = index.slice(followersShareStart, followersShareEnd);
 assert.match(
   followersShareSource,
-  /\{kind:"vantage",label:data\.chart\.legends\[0\]\}/,
-  "page 14 total-industry legend should use the shared deep-red chart baseline",
+  /style=\{\{"--follower-pie":buildFollowerShareGradient\(panel\.segments\)\}\}/,
+  "page 13 should build the share comparison from CSS data segments",
+);
+assert.match(
+  css,
+  /--h1-follower-exness:\s*#8f1620/,
+  "page 13 should retain the shared deep-red chart baseline",
+);
+assert.match(
+  css,
+  /--h1-follower-vantage:\s*#ff5b11/,
+  "page 13 Vantage share should retain the shared orange highlight",
 );
 assert.match(
   followersShareSource,
-  /<Bar yAxisId="followers" dataKey="industry"[^>]*fill="#8f1620"/,
-  "page 14 total-industry bars should use the same deep red as the other H1 charts",
-);
-assert.match(
-  followersShareSource,
-  /<Bar yAxisId="followers" dataKey="vantage"[^>]*fill="#ff5b11"/,
-  "page 14 Vantage bars should retain the shared orange highlight",
-);
-assert.match(
-  followersShareSource,
-  /<Line yAxisId="share"[^>]*stroke="#fff"/,
-  "page 14 share line should retain the shared white trend treatment",
+  /className=\{segment\.tone === "vantage" \? "is-vantage" : ""\}/,
+  "page 13 should visibly prioritize Vantage inside both rankings",
 );
 assert.doesNotMatch(
   followersShareSource,
-  /fill="rgba\(255,255,255,\.32\)"/,
-  "page 14 should not fall back to a disconnected gray bar palette",
+  /<(?:ResponsiveContainer|ComposedChart|Bar|Line)\b/,
+  "page 13 should not retain the superseded chart-library rendering",
 );
 
 const followersTrendStart = index.indexOf("function H1FollowersTrendChart");
