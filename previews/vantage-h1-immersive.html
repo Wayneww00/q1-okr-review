@@ -346,7 +346,7 @@
       background: var(--ink);
     }
     .deck::-webkit-scrollbar { display: none; }
-    body.deck-wheel-transitioning iframe { pointer-events: none; }
+    body.deck-wheel-pointer-lock iframe { pointer-events: none; }
 
     .scene {
       position: relative;
@@ -1254,7 +1254,8 @@
     const OUTER_WHEEL_FRESH_INTENT_MIN_DELTA = 96;
     const OUTER_WHEEL_STANDALONE_FRESH_MIN_DELTA = 300;
     const OUTER_WHEEL_FRESH_SPIKE_RATIO = 1.5;
-    const OUTER_WHEEL_GESTURE_IDLE_MS = 320;
+    const OUTER_WHEEL_POINTER_LOCK_IDLE_MS = 320;
+    const OUTER_WHEEL_GESTURE_IDLE_MS = 700;
     const OUTER_WHEEL_TRANSITION_TIMEOUT_MS = 1400;
     let aiProductsNavigationRetryTimer = 0;
     let aiProductsNavigationRetriesRemaining = 0;
@@ -1307,6 +1308,7 @@
       outerWheelLastDirection = 0;
       outerWheelAbsorbedEventCount = 0;
       document.body.classList.remove('deck-wheel-transitioning');
+      document.body.classList.remove('deck-wheel-pointer-lock');
     };
 
     const scheduleOuterWheelRelease = () => {
@@ -1322,6 +1324,9 @@
           clearOuterWheelTransition();
           return;
         }
+        if (targetAligned && idleFor >= OUTER_WHEEL_POINTER_LOCK_IDLE_MS) {
+          document.body.classList.remove('deck-wheel-pointer-lock');
+        }
         if (
           transitionAge >= OUTER_WHEEL_TRANSITION_TIMEOUT_MS
           && idleFor >= OUTER_WHEEL_GESTURE_IDLE_MS
@@ -1330,7 +1335,10 @@
           clearOuterWheelTransition();
           return;
         }
-        const idleWait = Math.max(16, OUTER_WHEEL_GESTURE_IDLE_MS - idleFor);
+        const nextIdleBoundary = document.body.classList.contains('deck-wheel-pointer-lock')
+          ? OUTER_WHEEL_POINTER_LOCK_IDLE_MS
+          : OUTER_WHEEL_GESTURE_IDLE_MS;
+        const idleWait = Math.max(16, nextIdleBoundary - idleFor);
         outerWheelReleaseTimer = window.setTimeout(
           checkTransition,
           Math.min(48, idleWait),
@@ -1338,7 +1346,7 @@
       };
       outerWheelReleaseTimer = window.setTimeout(
         checkTransition,
-        OUTER_WHEEL_GESTURE_IDLE_MS,
+        OUTER_WHEEL_POINTER_LOCK_IDLE_MS,
       );
     };
 
@@ -1352,6 +1360,7 @@
         : 0;
       outerWheelAbsorbedEventCount = 0;
       document.body.classList.add('deck-wheel-transitioning');
+      document.body.classList.add('deck-wheel-pointer-lock');
       scheduleOuterWheelRelease();
     };
 

@@ -143,6 +143,23 @@ try {
           .getBoundingClientRect().top,
       ) < 2,
   );
+  assert.equal(
+    await page.locator("body").evaluate((body) =>
+      body.classList.contains("deck-wheel-pointer-lock"),
+    ),
+    true,
+    "outer entry must briefly protect iframe hit testing",
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-pointer-lock"),
+  );
+  assert.equal(
+    await page.locator("body").evaluate((body) =>
+      body.classList.contains("deck-wheel-transitioning"),
+    ),
+    true,
+    "iframe hit testing must recover before delayed wheel-tail protection ends",
+  );
   await page.waitForFunction(
     () => !document.body.classList.contains("deck-wheel-transitioning"),
   );
