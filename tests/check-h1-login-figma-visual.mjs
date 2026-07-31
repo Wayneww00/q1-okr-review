@@ -15,8 +15,8 @@ assert.match(
 
 assert.match(
   loginPage,
-  /\.login-card\s*\{[\s\S]*?left:\s*calc\(50% \+ 100px\);[\s\S]*?top:\s*50%;[\s\S]*?width:\s*530px;[\s\S]*?height:\s*680px;[\s\S]*?transform:\s*translateY\(-50%\)/,
-  "the desktop login card must preserve the Figma frame position and 530×680 dimensions",
+  /\.login-card\s*\{[\s\S]*?left:\s*calc\([\s\S]*?1060px\s*\*\s*var\(--login-scale\)[\s\S]*?top:\s*50%;[\s\S]*?width:\s*530px;[\s\S]*?height:\s*680px;[\s\S]*?transform:\s*translateY\(-50%\)\s*scale\(var\(--login-scale\)\)/,
+  "the desktop login card must preserve and responsively scale the Figma frame position and 530×680 source dimensions",
 );
 
 assert.match(
