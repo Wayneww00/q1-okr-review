@@ -2,12 +2,15 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { chromium } = require(
+const { chromium, webkit } = require(
   "/Users/julian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
 );
 
 const baseUrl = process.env.H1_AI_TEST_URL || "http://127.0.0.1:4180";
-const browser = await chromium.launch({ headless: true });
+const browserName = process.env.H1_AI_BROWSER || "chromium";
+const browserType = { chromium, webkit }[browserName];
+assert.ok(browserType, `unsupported H1 AI browser: ${browserName}`);
+const browser = await browserType.launch({ headless: true });
 
 try {
   const page = await browser.newPage({
@@ -132,6 +135,21 @@ try {
     (await firstProduct.getAttribute("class")) || "",
     /\bis-flipped\b/,
   );
+  await page.waitForTimeout(800);
+  assert.equal(
+    await firstProduct
+      .locator(".cockpit-front")
+      .evaluate((element) => getComputedStyle(element).visibility),
+    "hidden",
+    "the front face must stop painting after the product card flips",
+  );
+  assert.equal(
+    await firstProduct
+      .locator(".cockpit-back")
+      .evaluate((element) => getComputedStyle(element).visibility),
+    "visible",
+    "the back face must be the only visible face after the product card flips",
+  );
   await assertAiSceneIsCurrent(
     "Space on a focused product card must flip it without leaving the AI scene",
   );
@@ -141,6 +159,21 @@ try {
   assert.doesNotMatch(
     (await firstProduct.getAttribute("class")) || "",
     /\bis-flipped\b/,
+  );
+  await page.waitForTimeout(800);
+  assert.equal(
+    await firstProduct
+      .locator(".cockpit-front")
+      .evaluate((element) => getComputedStyle(element).visibility),
+    "visible",
+    "the front face must be visible again after flipping back",
+  );
+  assert.equal(
+    await firstProduct
+      .locator(".cockpit-back")
+      .evaluate((element) => getComputedStyle(element).visibility),
+    "hidden",
+    "the back face must stop painting after flipping back",
   );
 
   await frame.locator("#toolbox-launcher").click();
@@ -231,4 +264,6 @@ try {
   await browser.close();
 }
 
-console.log("H1 AI data products runtime interaction contract passed.");
+console.log(
+  `H1 AI data products runtime interaction contract passed in ${browserName}.`,
+);
