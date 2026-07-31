@@ -64,6 +64,7 @@ try {
     const numberStyle = getComputedStyle(number);
     const labelStyle = getComputedStyle(label);
     return {
+      viewport: { width: window.innerWidth, height: window.innerHeight },
       pageTop: node.getBoundingClientRect().top,
       overflowX: node.scrollWidth - node.clientWidth,
       overflowY: node.scrollHeight - node.clientHeight,
@@ -79,7 +80,7 @@ try {
     };
   });
   assert.ok(Math.abs(state.pageTop) <= 2);
-  assert.ok(state.overflowX <= 1 && state.overflowY <= 1);
+  assert.ok(state.overflowX <= 1 && state.overflowY <= 1, JSON.stringify(state));
   assert.deepEqual(state.image, { naturalWidth: 2280, naturalHeight: 1346 });
   assert.equal(state.objectFit, "cover");
   assert.deepEqual(state.pointerEvents, { image: "none", wait: "none" });
@@ -87,6 +88,10 @@ try {
   assert.ok(Math.abs(state.imageBounds.top - state.artboard.top) <= 1);
   assert.ok(Math.abs(state.imageBounds.right - state.artboard.right) <= 1);
   assert.ok(Math.abs(state.imageBounds.bottom - state.artboard.bottom) <= 1);
+  assert.ok(state.artboard.left <= 1, JSON.stringify(state));
+  assert.ok(state.artboard.top <= 1, JSON.stringify(state));
+  assert.ok(state.artboard.right >= state.viewport.width - 1, JSON.stringify(state));
+  assert.ok(state.artboard.bottom >= state.viewport.height - 1, JSON.stringify(state));
   assert.ok(state.wait.left >= state.artboard.left + 900);
   assert.ok(state.wait.right <= state.artboard.right + 1);
   assert.ok(
@@ -125,7 +130,7 @@ try {
 
   const screenshotDir = path.join(root, ".tmp");
   fs.mkdirSync(screenshotDir, { recursive: true });
-  await indiaPage.locator(".h1-o3-artboard").screenshot({ path: path.join(screenshotDir, "o3-india-chapter-final.png") });
+  await indiaPage.screenshot({ path: path.join(screenshotDir, "o3-india-chapter-final.png") });
 
   for (const viewport of [
     { width: 1366, height: 768 },
@@ -133,11 +138,17 @@ try {
     { width: 2560, height: 1440 },
   ]) {
     await page.setViewportSize(viewport);
+    await indiaPage.evaluate((target) => window.scrollTo({
+      top: target.getBoundingClientRect().top + window.scrollY,
+      behavior: "instant",
+    }));
+    await waitForReportPage("o3-india-chapter");
     const responsive = await indiaPage.evaluate((node) => {
       const artboard = node.querySelector(".h1-o3-artboard").getBoundingClientRect();
       const image = node.querySelector(".h1-o3-india-background").getBoundingClientRect();
       const wait = node.querySelector(".h1-o3-india-wait").getBoundingClientRect();
       return {
+        viewport: { width: window.innerWidth, height: window.innerHeight },
         artboard: { left: artboard.left, top: artboard.top, right: artboard.right, bottom: artboard.bottom },
         image: { left: image.left, top: image.top, right: image.right, bottom: image.bottom },
         wait: { left: wait.left, top: wait.top, right: wait.right, bottom: wait.bottom },
@@ -147,11 +158,15 @@ try {
     assert.ok(Math.abs(responsive.image.top - responsive.artboard.top) <= 1);
     assert.ok(Math.abs(responsive.image.right - responsive.artboard.right) <= 1);
     assert.ok(Math.abs(responsive.image.bottom - responsive.artboard.bottom) <= 1);
+    assert.ok(responsive.artboard.left <= 1, JSON.stringify(responsive));
+    assert.ok(responsive.artboard.top <= 1, JSON.stringify(responsive));
+    assert.ok(responsive.artboard.right >= responsive.viewport.width - 1, JSON.stringify(responsive));
+    assert.ok(responsive.artboard.bottom >= responsive.viewport.height - 1, JSON.stringify(responsive));
     assert.ok(responsive.wait.left >= responsive.artboard.left);
     assert.ok(responsive.wait.right <= responsive.artboard.right + 1);
     assert.ok(responsive.wait.top >= responsive.artboard.top);
     assert.ok(responsive.wait.bottom <= responsive.artboard.bottom + 1);
-    await indiaPage.locator(".h1-o3-artboard").screenshot({
+    await indiaPage.screenshot({
       path: path.join(screenshotDir, `o3-india-${viewport.width}x${viewport.height}.png`),
     });
   }

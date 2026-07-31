@@ -6332,6 +6332,12 @@ function O3ReportPage({page,index,count,onVideoPreview}){
   if(page.layout==="online-offline")content=<><O3PageHeader page={page}/><O3OnlineOffline onVideoPreview={onVideoPreview}/></>;
   if(page.layout==="vn-key-insight")content=<O3VnKeyInsight/>;
   if(page.layout==="india-chapter")content=<O3IndiaChapter/>;
+  const artboard=(
+    <div className="h1-o3-artboard">
+      {content}
+      <div className="h1-o3-page-number">{String(index+1).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span></div>
+    </div>
+  );
   return (
     <section
       className={`h1-o3-page is-${page.layout}`}
@@ -6339,10 +6345,7 @@ function O3ReportPage({page,index,count,onVideoPreview}){
       data-page-id={page.id}
       data-editor-revision={page.id==="o3-seo"?"semrush-source-note-v1":undefined}
     >
-      <div className="h1-o3-artboard">
-        {content}
-        <div className="h1-o3-page-number">{String(index+1).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span></div>
-      </div>
+      {page.layout==="india-chapter"?<div className="h1-o3-artboard-viewport">{artboard}</div>:artboard}
     </section>
   );
 }

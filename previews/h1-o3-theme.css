@@ -6,6 +6,7 @@
 .h1-o3-pages{position:relative;z-index:1}
 .h1-o3-page{position:relative;width:100%;height:100vh;min-height:100vh;overflow:hidden;scroll-snap-align:start;scroll-snap-stop:always;background:transparent}
 .h1-embedded-report main.h1-o3-report section.h1-o3-page{margin-bottom:0!important;padding-top:0!important}
+.h1-o3-artboard-viewport{position:absolute;inset:0;overflow:hidden}
 .h1-o3-artboard{position:absolute;top:50%;left:50%;width:1920px;height:1080px;overflow:hidden;transform:translate(-50%,-50%) scale(var(--h1-o3-scale));transform-origin:50% 50%;font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif!important}
 .h1-o3-page-header{position:absolute;z-index:5;top:62px;left:130px;width:1660px;min-height:150px;padding-left:26px;border-left:7px solid var(--h1-o3-red)}
 .h1-o3-eyebrow,.h1-o3-chapter-kicker{display:flex;align-items:center;gap:17px;color:#ff8756;font:700 17px/1.1 "Barlow Condensed","Noto Sans SC",sans-serif!important;letter-spacing:.15em!important}
@@ -133,6 +134,7 @@
 .h1-o3-vn-insight-center span,.h1-o3-vn-insight-center strong{display:block;font-size:48px;font-weight:900;line-height:.98}
 
 /* Figma 861:1172 — India H2 SSS chapter */
+.h1-o3-page[data-page-id="o3-india-chapter"]{--h1-o3-scale:var(--h1-artboard-cover-scale,var(--h1-figma-scale,1))}
 .h1-o3-india-chapter{position:absolute;inset:0;overflow:hidden;background:#2a0c06;color:#fff}
 .h1-o3-india-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
 .h1-o3-india-wait{position:absolute;z-index:2;top:724px;left:1050px;width:760px;height:238px;color:#fff7ec;text-align:left;isolation:isolate;pointer-events:none}
