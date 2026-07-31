@@ -188,7 +188,7 @@ assert.ok(
 );
 const eliteClientInsertions = [
   ["okr-elite-client-no1-experience", "p70-elite-client-foreground.png"],
-  ["okr-elite-endorsement-resources", "p45-elite-endorsement-resources-foreground.png"],
+  ["okr-elite-endorsement-resources", "p45-elite-endorsement-resources-figma-150-1072.png"],
   ["okr-elite-ferrari-experience", "p46-elite-ferrari-foreground.png"],
   ["okr-elite-black-label", "p71-black-label-foreground.png"],
   ["okr-elite-business-enablement", "p48-elite-business-enablement-foreground.png"],
@@ -221,12 +221,26 @@ for (const [pageId, fileName] of eliteClientInsertions) {
   );
 }
 const okrRenderer = app.slice(app.indexOf("function OkrReportDeck()"), app.indexOf("// ═══ App ═══"));
-for (const [pageId] of eliteClientInsertions) {
+for (const [pageId] of eliteClientInsertions.filter(([pageId])=>pageId!=='okr-elite-endorsement-resources')) {
   assert.ok(
     okrRenderer.includes(`page.id==='${pageId}' ? <OkrEliteClientForegroundPage`),
     `${pageId} must reuse the Elite Client full-bleed background component`,
   );
 }
+assert.match(
+  app,
+  /id:'okr-elite-endorsement-resources'[\s\S]*?p45-elite-endorsement-resources-figma-150-1072\.png[\s\S]*?figmaNodeId:'150:1072'/,
+  "顶级背书资源 must use the current foreground-only Figma node 150:1072",
+);
+assert.match(
+  app,
+  /function OkrEliteEndorsementResourcesPage[\s\S]*?elite-client-background-38-39-2\.png[\s\S]*?h1-okr-elite-endorsement-foreground[\s\S]*?width="1716"[\s\S]*?height="904"[\s\S]*?left:'102px',top:'72px',width:'1716px',height:'904px'/,
+  "顶级背书资源 must preserve the authored 1716 × 904 foreground placement over the shared Elite Client background",
+);
+assert.ok(
+  okrRenderer.includes("page.id==='okr-elite-endorsement-resources' ? <OkrEliteEndorsementResourcesPage"),
+  "顶级背书资源 must use its exact current-Figma renderer without a stale editable mask",
+);
 assert.match(
   app,
   /function OkrBrandSystemPage\(\)[\s\S]*?className="h1-okr-figma-foreground-layer"[\s\S]*?figma-untitled\/p25-foreground-clean\.png/,
@@ -372,7 +386,7 @@ assert.match(
 );
 assert.ok(
   shell.includes(
-    'src="../index.html?report=h1&embedded=1&v=20260731-tvc-four-videos-v1"',
+    'src="../index.html?report=h1&embedded=1&v=20260731-endorsement-frame45-v1"',
   ),
   "the formal shell must load the exact Figma revision without stale cache",
 );

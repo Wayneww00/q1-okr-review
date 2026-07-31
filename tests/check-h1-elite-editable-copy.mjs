@@ -8,7 +8,6 @@ const targets = [
   ['okr-client-experience-model', '大多数公司大客户体验怎么做的'],
   ['okr-client-experience-cases', '顶尖大客户体验怎么做的'],
   ['okr-elite-client-no1-experience', 'Vantage 顶级客户'],
-  ['okr-elite-endorsement-resources', '顶级背书资源'],
   ['okr-elite-ferrari-experience', '法拉利'],
   ['okr-elite-black-label', 'Black Label 礼遇'],
   ['okr-elite-business-enablement', '业务赋能'],
@@ -24,6 +23,13 @@ if (!html.includes('<OkrEliteClientEditableCopy page={page}/>')) {
 for (const [pageId, expectedCopy] of targets) {
   if (!html.includes(`'${pageId}'`)) throw new Error(`Missing editable copy entry for ${pageId}.`);
   if (!html.includes(expectedCopy)) throw new Error(`Missing expected editable copy for ${pageId}.`);
+}
+
+if (!html.includes('function OkrEliteEndorsementResourcesPage')) {
+  throw new Error('Missing the exact current-Figma endorsement-resources renderer.');
+}
+if (html.includes("'okr-elite-endorsement-resources': (")) {
+  throw new Error('The current Figma endorsement page must not be covered by a stale editable-copy mask.');
 }
 
 for (const selector of ['.h1-elite-copy', '.h1-elite-copy-mask', '.h1-elite-no1-pills', '.h1-elite-black-label-pills']) {

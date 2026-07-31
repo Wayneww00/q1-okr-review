@@ -3839,6 +3839,67 @@ svg.h1-okr-insight-icon circle {
   outline-offset: 4px;
 }
 
+.h1-okr-external-link.is-gold {
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+  isolation: isolate;
+  text-decoration: none !important;
+}
+
+.h1-okr-external-link.is-gold::before {
+  position: absolute;
+  z-index: -1;
+  width: 170px;
+  height: 56px;
+  box-sizing: border-box;
+  content: "";
+  border: 0;
+  border-radius: 999px;
+  background: #c9963f;
+  box-shadow: 0 4px 10px rgba(83,47,10,.22);
+  transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+.h1-okr-external-link.is-gold span {
+  position: relative;
+  z-index: 1;
+  color: #2b1907;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .04em;
+  text-decoration: none !important;
+  text-shadow: none;
+}
+
+.h1-okr-external-link.is-gold:hover,
+.h1-okr-external-link.is-gold:focus-visible {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.h1-okr-external-link.is-gold:hover::before,
+.h1-okr-external-link.is-gold:focus-visible::before {
+  background: #d2a44f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(83,47,10,.25);
+}
+
+.h1-okr-external-link.is-gold:active::before {
+  background: #bd8732;
+  transform: translateY(0);
+}
+
+.h1-okr-external-link.is-gold:focus-visible {
+  outline: 0;
+}
+
 /* Embedded PPT videos replace only their matching Figma preview areas. The
    surrounding foreground artwork remains in place, so their page layout and
    the shared trophy stage are not affected. */

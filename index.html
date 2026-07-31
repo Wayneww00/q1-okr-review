@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-tvc-four-videos-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-endorsement-frame45-v1">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -2457,7 +2457,8 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-elite-endorsement-resources',
     label:'顶级背书资源',
-    src:'previews/assets/figma-untitled/p45-elite-endorsement-resources-foreground.png',
+    src:'previews/assets/figma-untitled/p45-elite-endorsement-resources-figma-150-1072.png',
+    figmaNodeId:'150:1072',
   },
   {
     id:'okr-elite-ferrari-experience',
@@ -2490,6 +2491,8 @@ const OKR_FIGMA_PAGES=[
       {
         id:'vantage-objects',
         label:'打开 Vantage 周边页面',
+        ctaText:'即刻触及',
+        variant:'gold',
         href:'https://vantage-objects-452443727878.asia-southeast1.run.app/',
         unit:'px',
         left:435,
@@ -2617,7 +2620,7 @@ function OkrExternalLinks({page}){
     return (
       <a
         key={link.id}
-        className="h1-okr-external-link"
+        className={`h1-okr-external-link${link.variant ? ` is-${link.variant}` : ''}`}
         href={link.href}
         target="_blank"
         rel="noopener noreferrer"
@@ -2629,7 +2632,9 @@ function OkrExternalLinks({page}){
           width:coordinate(link.width),
           height:coordinate(link.height),
         }}
-      />
+      >
+        {link.ctaText && <span>{link.ctaText}</span>}
+      </a>
     );
   }) || null;
 }
@@ -2702,14 +2707,6 @@ const ELITE_CLIENT_EDITABLE_COPY = {
         <span className="h1-elite-copy-mask">有增益<br/><em>Advantage</em></span>
         <span className="h1-elite-copy-mask">可托付<br/><em>Trust</em></span>
       </div>
-    </div>
-  ),
-  'okr-elite-endorsement-resources': (
-    <div className="h1-elite-copy h1-elite-copy--endorsement">
-      <div className="h1-elite-copy-mask h1-elite-section-title">顶级背书资源</div>
-      <div className="h1-elite-copy-mask h1-elite-section-subtitle">不止是参访和拍照，而是把世界级机构/顶尖人物介绍给他</div>
-      <div className="h1-elite-copy-mask h1-elite-endorsement-left">QS50 高校</div>
-      <div className="h1-elite-copy-mask h1-elite-endorsement-right">联合国 / 顶级 NGO / 会议资源</div>
     </div>
   ),
   'okr-elite-ferrari-experience': (
@@ -2811,6 +2808,52 @@ function OkrEliteClientForegroundPage({page,index,count,onPreview,onVideoPreview
         ))}
         <OkrImageHotspots page={page} onPreview={onPreview}/>
         <div className="h1-okr-page-number" aria-hidden="true">{String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span></div>
+      </div>
+    </section>
+  );
+}
+
+/* Current Figma node 150:1072 is a foreground-only export. Keep the shared
+   Elite Client doorway background as the single background layer and place
+   the exact 1716 × 904 artwork at its authored Frame 45 coordinates. */
+function OkrEliteEndorsementResourcesPage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  return (
+    <section
+      ref={pageRef}
+      className="h1-okr-page h1-okr-direct-figma-page h1-okr-elite-client-page"
+      data-report-page
+      data-page-id={page.id}
+      data-figma-node-id={page.figmaNodeId}
+      aria-label={page.label}
+    >
+      <div ref={canvasRef} className="h1-okr-canvas h1-okr-elite-client-canvas">
+        <img
+          className="h1-okr-elite-client-background"
+          src="previews/assets/figma-untitled/elite-client-background-38-39-2.png"
+          alt=""
+          width="1920"
+          height="1080"
+          loading="eager"
+          decoding="sync"
+          draggable="false"
+          aria-hidden="true"
+        />
+        <img
+          className="h1-okr-figma-foreground-layer is-positioned h1-okr-elite-endorsement-foreground"
+          src={page.src}
+          alt=""
+          width="1716"
+          height="904"
+          style={{left:'102px',top:'72px',width:'1716px',height:'904px'}}
+          loading="eager"
+          decoding="sync"
+          draggable="false"
+          aria-hidden="true"
+        />
+        <div className="h1-okr-page-number" aria-hidden="true">
+          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
+        </div>
       </div>
     </section>
   );
@@ -3168,7 +3211,7 @@ function OkrReportDeck(){
         page.id==='okr-client-experience-model' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-client-experience-cases' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onPreview={setPreview} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-elite-client-no1-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onPreview={setPreview} onVideoPreview={setVideoPreview}/> :
-        page.id==='okr-elite-endorsement-resources' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
+        page.id==='okr-elite-endorsement-resources' ? <OkrEliteEndorsementResourcesPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length}/> :
         page.id==='okr-elite-ferrari-experience' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-elite-black-label' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-elite-business-enablement' ? <OkrEliteClientForegroundPage key={page.id} page={page} index={index+1} count={OKR_FIGMA_PAGES.length} onVideoPreview={setVideoPreview}/> :
