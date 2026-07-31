@@ -59,6 +59,7 @@ try {
   }
 
   const aiScene = page.locator('section[data-label="AI Data Products"]');
+  const reportScene = page.locator('section[data-label="Full Report"]');
   const closingScene = page.locator('section[data-label="Closing Film"]');
 
   // Load and prepare the deferred iframe before exercising the scene boundary.
@@ -125,6 +126,34 @@ try {
     `one continuous wheel gesture must stop on the newly entered AI scene; got top ${aiSceneTop}`,
   );
 
+  // After the first gesture has gone idle, a deliberate second gesture in the
+  // same direction must not be mistaken for more entry momentum.
+  await page.waitForTimeout(260);
+  await page.mouse.wheel(0, -320);
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+
+  await aiScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="AI Data Products"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+
   await page.mouse.wheel(0, 320);
   await page.waitForFunction(
     () =>
@@ -135,11 +164,25 @@ try {
       ) < 2,
   );
 
-  const reportScene = page.locator('section[data-label="Full Report"]');
   const reportFrame = page.frameLocator("#reportFrame");
   await reportFrame
     .locator('body[data-h1-prepared="true"]')
     .waitFor({ state: "attached", timeout: 30_000 });
+  await page.waitForFunction(() => {
+    const doc = document.querySelector("#reportFrame")?.contentDocument;
+    if (!doc) return false;
+    const injectedThemes = [
+      ...doc.querySelectorAll('link[rel="stylesheet"]'),
+    ];
+    const middleTheme = injectedThemes.find((link) =>
+      /h1-middle-theme\.css/.test(link.href),
+    );
+    const racingTheme = doc.querySelector("#h1-figma-racing-report");
+    return Boolean(middleTheme?.sheet && racingTheme?.sheet);
+  });
+  await reportFrame.locator("body").evaluate(async (element) => {
+    await element.ownerDocument.fonts?.ready;
+  });
   await reportScene.evaluate((element) =>
     element.scrollIntoView({ behavior: "instant", block: "start" }),
   );
@@ -185,7 +228,13 @@ try {
     `one continuous forward wheel gesture must stop on the newly entered AI scene; got top ${aiSceneTopAfterForwardGesture}`,
   );
 
-  await page.mouse.wheel(0, -320);
+  // A single upward gesture may cross from AI back to Full Report, but its
+  // inertial tail must not continue paging inside the newly exposed iframe.
+  await page.waitForTimeout(260);
+  for (const deltaY of [-320, -180, -100, -60, -30]) {
+    await page.mouse.wheel(0, deltaY);
+    await page.waitForTimeout(90);
+  }
   await page.waitForFunction(
     () =>
       Math.abs(
@@ -193,6 +242,15 @@ try {
           .querySelector('section[data-label="Full Report"]')
           .getBoundingClientRect().top,
       ) < 2,
+  );
+  await page.waitForFunction(
+    () => !document.body.classList.contains("deck-wheel-transitioning"),
+  );
+  assert.ok(
+    await reportFrame.locator("[data-report-page]").last().evaluate(
+      (element) => Math.abs(element.getBoundingClientRect().top) < 2,
+    ),
+    "the inertial tail from leaving AI must not page backward inside Full Report",
   );
 
   await aiScene.evaluate((element) =>

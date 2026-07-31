@@ -346,6 +346,7 @@
       background: var(--ink);
     }
     .deck::-webkit-scrollbar { display: none; }
+    body.deck-wheel-transitioning iframe { pointer-events: none; }
 
     .scene {
       position: relative;
@@ -1249,11 +1250,14 @@
     const videos = [...document.querySelectorAll('video')];
     const aiProductsScene = scenes.find(scene => scene.dataset.label === 'AI Data Products');
     const aiProductsFrame = document.getElementById('aiProductsFrame');
-    const AI_PRODUCTS_ENTRY_WHEEL_GUARD_MS = 1500;
-    const AI_PRODUCTS_ENTRY_WHEEL_IDLE_MS = 500;
+    const OUTER_WHEEL_GESTURE_IDLE_MS = 180;
+    const OUTER_WHEEL_TRANSITION_TIMEOUT_MS = 1400;
     let aiProductsNavigationRetryTimer = 0;
     let aiProductsNavigationRetriesRemaining = 0;
-    let aiProductsEntryWheelResetTimer = 0;
+    let outerWheelTransitionTarget = null;
+    let outerWheelTransitionStartedAt = 0;
+    let outerWheelLastEventAt = 0;
+    let outerWheelReleaseTimer = 0;
     let resetAiProductsNavigationIntent = () => {};
     let activeIndex = 0;
     let soundOn = true;
@@ -1282,24 +1286,60 @@
       prepareAiProductsNavigation();
     };
 
-    const clearAiProductsEntryMomentum = () => {
-      window.clearTimeout(aiProductsEntryWheelResetTimer);
-      aiProductsEntryWheelResetTimer = 0;
-      delete aiProductsFrame.dataset.wheelBlockedUntil;
-      delete aiProductsFrame.dataset.wheelBlockedDirection;
+    const clearOuterWheelTransition = () => {
+      window.clearTimeout(outerWheelReleaseTimer);
+      outerWheelReleaseTimer = 0;
+      outerWheelTransitionTarget = null;
+      outerWheelTransitionStartedAt = 0;
+      outerWheelLastEventAt = 0;
+      document.body.classList.remove('deck-wheel-transitioning');
     };
 
-    const guardAiProductsEntryMomentum = direction => {
-      window.clearTimeout(aiProductsEntryWheelResetTimer);
-      aiProductsFrame.dataset.wheelBlockedDirection = String(direction);
-      aiProductsFrame.dataset.wheelBlockedUntil = String(
-        window.performance.now() + AI_PRODUCTS_ENTRY_WHEEL_GUARD_MS,
-      );
-      aiProductsEntryWheelResetTimer = window.setTimeout(
-        clearAiProductsEntryMomentum,
-        AI_PRODUCTS_ENTRY_WHEEL_GUARD_MS,
+    const scheduleOuterWheelRelease = () => {
+      window.clearTimeout(outerWheelReleaseTimer);
+      const checkTransition = () => {
+        if (!outerWheelTransitionTarget) return;
+        const now = window.performance.now();
+        const idleFor = now - outerWheelLastEventAt;
+        const transitionAge = now - outerWheelTransitionStartedAt;
+        const targetTop = outerWheelTransitionTarget.getBoundingClientRect().top;
+        const targetAligned = Math.abs(targetTop) < 2;
+        if (targetAligned && idleFor >= OUTER_WHEEL_GESTURE_IDLE_MS) {
+          clearOuterWheelTransition();
+          return;
+        }
+        if (transitionAge >= OUTER_WHEEL_TRANSITION_TIMEOUT_MS) {
+          outerWheelTransitionTarget.scrollIntoView({behavior:'instant', block:'start'});
+          clearOuterWheelTransition();
+          return;
+        }
+        const idleWait = Math.max(16, OUTER_WHEEL_GESTURE_IDLE_MS - idleFor);
+        outerWheelReleaseTimer = window.setTimeout(
+          checkTransition,
+          Math.min(48, idleWait),
+        );
+      };
+      outerWheelReleaseTimer = window.setTimeout(
+        checkTransition,
+        OUTER_WHEEL_GESTURE_IDLE_MS,
       );
     };
+
+    const beginOuterWheelTransition = scene => {
+      outerWheelTransitionTarget = scene;
+      outerWheelTransitionStartedAt = window.performance.now();
+      outerWheelLastEventAt = outerWheelTransitionStartedAt;
+      document.body.classList.add('deck-wheel-transitioning');
+      scheduleOuterWheelRelease();
+    };
+
+    document.addEventListener('wheel', event => {
+      if (!outerWheelTransitionTarget) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      outerWheelLastEventAt = window.performance.now();
+      scheduleOuterWheelRelease();
+    }, {capture:true, passive:false});
 
     closingScene.addEventListener('wheel', event => {
       if (event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) {
@@ -1308,13 +1348,14 @@
       }
       if (event.deltaY >= 0) return;
       event.preventDefault();
-      guardAiProductsEntryMomentum(-1);
-      scrollToScene(aiProductsScene);
+      scrollToScene(aiProductsScene, 'wheel');
     }, {capture:true, passive:false});
 
-    const scrollToScene = scene => {
+    const scrollToScene = (scene, source = 'programmatic') => {
       if (!scene) return;
       if (scene === aiProductsScene) ensureAiProductsFrameSource();
+      if (source === 'wheel') beginOuterWheelTransition(scene);
+      else if (outerWheelTransitionTarget) clearOuterWheelTransition();
       scene.scrollIntoView({behavior:'smooth'});
     };
     const isKeyboardInteractionTarget = target => Boolean(
@@ -1322,6 +1363,27 @@
         'a[href],button,input,select,textarea,[role="button"],[contenteditable]:not([contenteditable="false"])',
       ),
     );
+    const focusFrameNavigationSurface = frame => {
+      const doc = frame?.contentDocument;
+      if (!doc?.body || doc.URL === 'about:blank') return false;
+      doc.body.tabIndex = -1;
+      frame.contentWindow?.focus();
+      doc.body.focus({preventScroll:true});
+      return doc.activeElement === doc.body;
+    };
+    const focusSceneNavigationSurface = scene => {
+      if (!scene || reportEditorState.editing) return;
+      if (scene === aiProductsScene) {
+        focusFrameNavigationSurface(aiProductsFrame);
+        return;
+      }
+      if (scene === reportScene) {
+        focusFrameNavigationSurface(reportFrame);
+        return;
+      }
+      deck.tabIndex = -1;
+      deck.focus({preventScroll:true});
+    };
 
     const reportScene = scenes.find(scene => scene.dataset.label === 'Full Report');
     const REPORT_RAIL_ITEMS = [
@@ -1618,6 +1680,13 @@
         resetAiProductsNavigationIntent();
       }
       if (scenes[index] === aiProductsScene) ensureAiProductsFrameSource();
+      if (previousIndex !== index) {
+        window.requestAnimationFrame(() => {
+          if (scenes[activeIndex] === scenes[index]) {
+            focusSceneNavigationSurface(scenes[index]);
+          }
+        });
+      }
       document.body.classList.toggle('opening-active', index === 0);
       scenes.forEach((scene, i) => scene.classList.toggle('active', i === index));
       const sceneLabel = scenes[index].dataset.label;
@@ -1655,6 +1724,16 @@
     activate(0);
     preloadLoginVideos();
 
+    const sceneIndexNearestViewport = () => scenes.reduce(
+      (nearestIndex, scene, index) => (
+        Math.abs(scene.getBoundingClientRect().top)
+          < Math.abs(scenes[nearestIndex].getBoundingClientRect().top)
+          ? index
+          : nearestIndex
+      ),
+      0,
+    );
+
     document.addEventListener('keydown', event => {
       if (
         reportEditorState.editing &&
@@ -1672,18 +1751,27 @@
         sendReportEditorCommand(reportEditorState.confirming ? 'cancel-confirm' : 'request-exit');
         return;
       }
-      if (isKeyboardInteractionTarget(event.target)) return;
-      if (activeIndex === 2 && ['ArrowDown','PageDown',' ','ArrowUp','PageUp'].includes(event.key)) {
+      if (isKeyboardInteractionTarget(event.target)) {
+        const isTextEntry = Boolean(event.target?.closest?.(
+          'input,select,textarea,[contenteditable]:not([contenteditable="false"])',
+        ));
+        const isVerticalNavigationKey = [
+          'ArrowDown','PageDown','ArrowUp','PageUp',
+        ].includes(event.key);
+        if (isTextEntry || !isVerticalNavigationKey) return;
+      }
+      const keyboardSceneIndex = sceneIndexNearestViewport();
+      if (scenes[keyboardSceneIndex] === reportScene && ['ArrowDown','PageDown',' ','ArrowUp','PageUp'].includes(event.key)) {
         event.preventDefault();
         const direction = ['ArrowDown','PageDown',' '].includes(event.key) ? 1 : -1;
         reportFrame.contentWindow?.postMessage({type:'vantage-report-nav',direction}, location.origin);
         return;
       }
       if (['ArrowDown','ArrowRight','PageDown',' '].includes(event.key)) {
-        event.preventDefault(); scrollToScene(scenes[Math.min(activeIndex + 1, scenes.length - 1)]);
+        event.preventDefault(); scrollToScene(scenes[Math.min(keyboardSceneIndex + 1, scenes.length - 1)]);
       }
       if (['ArrowUp','ArrowLeft','PageUp'].includes(event.key)) {
-        event.preventDefault(); scrollToScene(scenes[Math.max(activeIndex - 1, 0)]);
+        event.preventDefault(); scrollToScene(scenes[Math.max(keyboardSceneIndex - 1, 0)]);
       }
       if (event.key === 'Home') scrollToScene(scenes[0]);
       if (event.key === 'End') scrollToScene(scenes.at(-1));
@@ -1727,10 +1815,7 @@
         0,
         Math.min(scenes.length - 1, reportSceneIndex + direction),
       );
-      if (source === 'wheel' && scenes[nextSceneIndex] === aiProductsScene) {
-        guardAiProductsEntryMomentum(direction);
-      }
-      scrollToScene(scenes[nextSceneIndex]);
+      scrollToScene(scenes[nextSceneIndex], source);
     };
 
     document.querySelector('[data-next-scene]').addEventListener('click', () => {
@@ -1738,7 +1823,7 @@
       aiProductsScene?.scrollIntoView({behavior:'smooth'});
     });
 
-    const moveDeckFromAiProducts = direction => {
+    const moveDeckFromAiProducts = (direction, source = 'keyboard') => {
       if (direction !== 1 && direction !== -1) return;
       const aiProductsIndex = scenes.indexOf(aiProductsScene);
       const nextSceneIndex = Math.max(0, Math.min(scenes.length - 1, aiProductsIndex + direction));
@@ -1749,7 +1834,7 @@
           );
           return;
         }
-        scrollToScene(scenes[nextSceneIndex]);
+        scrollToScene(scenes[nextSceneIndex], source);
       };
       window.requestAnimationFrame(() => moveAfterSceneActivation(4));
     };
@@ -1775,6 +1860,9 @@
       window.clearTimeout(aiProductsNavigationRetryTimer);
       aiProductsNavigationRetriesRemaining = 0;
       doc.body.dataset.deckNavigationPrepared = 'true';
+      if (scenes[activeIndex] === aiProductsScene) {
+        focusSceneNavigationSurface(aiProductsScene);
+      }
 
       const isProductInteraction = () => !doc.getElementById('tool-modal')?.hidden;
       const AI_PRODUCTS_WHEEL_THRESHOLD = 12;
@@ -1849,7 +1937,7 @@
         staticRailWheelDelta = 0;
         staticRailGestureConsumed = true;
         resetExitIntent();
-        moveDeckFromAiProducts(direction);
+        moveDeckFromAiProducts(direction, 'wheel');
       };
 
       resetAiProductsNavigationIntent = () => {
@@ -1862,36 +1950,6 @@
         if (isProductInteraction() || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
         event.preventDefault();
         event.stopPropagation();
-        const wheelDirection = event.deltaY > 0 ? 1 : -1;
-        const blockedDirection = Number(
-          aiProductsFrame.dataset.wheelBlockedDirection || 0,
-        );
-        const blockedUntil = Number(
-          aiProductsFrame.dataset.wheelBlockedUntil || 0,
-        );
-        if (
-          window.performance.now() < blockedUntil
-          && (
-            blockedDirection === 0
-            || wheelDirection === blockedDirection
-          )
-        ) {
-          window.clearTimeout(aiProductsEntryWheelResetTimer);
-          aiProductsFrame.dataset.wheelBlockedUntil = String(
-            window.performance.now() + AI_PRODUCTS_ENTRY_WHEEL_IDLE_MS,
-          );
-          aiProductsEntryWheelResetTimer = window.setTimeout(
-            clearAiProductsEntryMomentum,
-            AI_PRODUCTS_ENTRY_WHEEL_IDLE_MS,
-          );
-          return;
-        }
-        if (
-          blockedDirection !== 0
-          && wheelDirection !== blockedDirection
-        ) {
-          clearAiProductsEntryMomentum();
-        }
         if (!productsRailOverflows()) {
           wheelDelta = 0;
           routeStaticRailWheel(event.deltaY);
@@ -1908,7 +1966,7 @@
           exitWheelDelta += distance;
           if (Math.abs(exitWheelDelta) < AI_PRODUCTS_EXIT_GESTURE_THRESHOLD) return;
           resetExitIntent();
-          moveDeckFromAiProducts(direction);
+          moveDeckFromAiProducts(direction, 'wheel');
           return;
         }
         armOuterDeckExit(direction);
@@ -1924,6 +1982,15 @@
         event.preventDefault();
         event.stopImmediatePropagation();
         const direction = ['ArrowDown','PageDown',' '].includes(event.key) ? 1 : -1;
+        const visibleSceneIndex = sceneIndexNearestViewport();
+        if (scenes[visibleSceneIndex] !== aiProductsScene) {
+          const nextSceneIndex = Math.max(
+            0,
+            Math.min(scenes.length - 1, visibleSceneIndex + direction),
+          );
+          scrollToScene(scenes[nextSceneIndex], 'keyboard');
+          return;
+        }
         moveDeckFromAiProducts(direction);
       }, {capture:true});
 
@@ -2142,7 +2209,17 @@
         if (!['ArrowDown','PageDown',' ','ArrowUp','PageUp'].includes(event.key)) return;
         if (isKeyboardInteractionTarget(event.target)) return;
         event.preventDefault();
+        event.stopImmediatePropagation();
         const direction = ['ArrowDown','PageDown',' '].includes(event.key) ? 1 : -1;
+        const visibleSceneIndex = sceneIndexNearestViewport();
+        if (scenes[visibleSceneIndex] !== reportScene) {
+          const nextSceneIndex = Math.max(
+            0,
+            Math.min(scenes.length - 1, visibleSceneIndex + direction),
+          );
+          scrollToScene(scenes[nextSceneIndex], 'keyboard');
+          return;
+        }
         moveInsideReport(direction);
       });
       const REPORT_WHEEL_THRESHOLD = 12;

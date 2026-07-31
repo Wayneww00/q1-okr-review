@@ -150,8 +150,8 @@ assert.match(
 );
 assert.match(
   immersive,
-  /document\.addEventListener\('keydown', event => \{[\s\S]*?if \(isKeyboardInteractionTarget\(event\.target\)\) return;[\s\S]*?activeIndex === 2/,
-  "outer scene shortcuts must yield to focused editor fields and controls before paging",
+  /document\.addEventListener\('keydown', event => \{[\s\S]*?if \(isKeyboardInteractionTarget\(event\.target\)\) \{[\s\S]*?const isTextEntry =[\s\S]*?if \(isTextEntry \|\| !isVerticalNavigationKey\) return;[\s\S]*?scenes\[keyboardSceneIndex\] === reportScene/,
+  "outer scene shortcuts must preserve text editing while allowing vertical paging from toolbar controls",
 );
 assert.match(
   immersive,

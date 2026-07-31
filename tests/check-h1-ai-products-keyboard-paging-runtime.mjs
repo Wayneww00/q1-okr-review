@@ -10,6 +10,33 @@ const baseUrl = process.env.H1_AI_TEST_URL || "http://127.0.0.1:4180";
 const browserName = process.env.H1_AI_BROWSER || "chromium";
 const browserType = { chromium, webkit }[browserName];
 assert.ok(browserType, `unsupported H1 AI browser: ${browserName}`);
+const runtimeStub = `
+  (() => {
+    const session = { user: { id: "ai-keyboard-paging-test" } };
+    const client = {
+      auth: {
+        getSession: async () => ({ data: { session }, error: null }),
+        onAuthStateChange: () => ({
+          data: { subscription: { unsubscribe() {} } },
+        }),
+      },
+    };
+    window.VantageBrowserRuntime = {
+      signIn: async () => session,
+      getClient: () => client,
+      getSession: async () => session,
+      resolveMediaUrl: (path) => path,
+      setVideoSource: (video, path) => { video.src = path; },
+      createReportController: () => ({
+        initialize: async () => true,
+        beginEditing() {},
+        save: async () => {},
+        discard() {},
+        destroy() {},
+      }),
+    };
+  })();
+`;
 const browser = await browserType.launch({ headless: true });
 
 try {
@@ -17,6 +44,13 @@ try {
     viewport: { width: 1114, height: 973 },
   });
   page.setDefaultTimeout(5_000);
+  await page.route("**/vendor/vantage-runtime.js*", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/javascript",
+      body: runtimeStub,
+    }),
+  );
 
   await page.goto(`${baseUrl}/previews/vantage-h1-immersive.html`, {
     waitUntil: "domcontentloaded",
@@ -29,6 +63,7 @@ try {
   const reportScene = page.locator('section[data-label="Full Report"]');
   const closingScene = page.locator('section[data-label="Closing Film"]');
   const frame = page.frameLocator("#aiProductsFrame");
+  const reportFrame = page.frameLocator("#reportFrame");
   const productsRail = frame.locator("#products");
   const eyeBrainHandTrigger = frame.getByRole("button", {
     name: "翻转以查看 The Matrix 产品进展与上线计划",
@@ -56,6 +91,61 @@ try {
       .locator('body[data-deck-navigation-prepared="true"]')
       .waitFor();
   };
+
+  // Reproduce the real transition path: keyboard focus can remain in the
+  // report iframe after the outer deck has scrolled to AI Data Products.
+  await reportFrame
+    .locator('body[data-h1-prepared="true"]')
+    .waitFor({ state: "attached", timeout: 30_000 });
+  await reportScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await reportFrame.locator("body").evaluate((element) => {
+    element.tabIndex = -1;
+    element.focus();
+  });
+  await scrollToAiScene();
+  await page.keyboard.press("PageDown");
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Closing Film"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+
+  await reportScene.evaluate((element) =>
+    element.scrollIntoView({ behavior: "instant", block: "start" }),
+  );
+  await reportFrame.locator("body").evaluate((element) => {
+    element.tabIndex = -1;
+    element.focus();
+  });
+  await scrollToAiScene();
+  await page.keyboard.press("PageUp");
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Full Report"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
+
+  // Toolbar buttons can retain focus after sound/fullscreen interactions. The
+  // vertical arrow keys must still navigate the presentation from the AI scene.
+  await scrollToAiScene();
+  await page.locator("#soundButton").focus();
+  await page.keyboard.press("ArrowDown");
+  await page.waitForFunction(
+    () =>
+      Math.abs(
+        document
+          .querySelector('section[data-label="Closing Film"]')
+          .getBoundingClientRect().top,
+      ) < 2,
+  );
 
   await scrollToAiScene();
   await productsRail.evaluate((element) => {

@@ -43,15 +43,15 @@ try {
 
   const frame = page.frameLocator("#aiProductsFrame");
   const productsRail = frame.locator("#products");
-  const waitForEntryMomentumToClear = () =>
+  const waitForOuterWheelTransitionToClear = () =>
     page.waitForFunction(
-      () => !document.querySelector("#aiProductsFrame")?.dataset.wheelBlockedUntil,
+      () => !document.body.classList.contains("deck-wheel-transitioning"),
     );
   await productsRail.waitFor();
   await frame
     .locator('body[data-deck-navigation-prepared="true"]')
     .waitFor();
-  await waitForEntryMomentumToClear();
+  await waitForOuterWheelTransitionToClear();
   const railMetrics = await productsRail.evaluate((element) => ({
     clientWidth: element.clientWidth,
     scrollWidth: element.scrollWidth,
@@ -122,6 +122,7 @@ try {
           .getBoundingClientRect().top,
       ) < 2,
   );
+  await waitForOuterWheelTransitionToClear();
   await aiScene.evaluate((element) =>
     element.scrollIntoView({ behavior: "instant", block: "start" }),
   );
@@ -133,7 +134,7 @@ try {
           .getBoundingClientRect().top,
       ) < 2,
   );
-  await waitForEntryMomentumToClear();
+  await waitForOuterWheelTransitionToClear();
   await productsRail.evaluate((element) => {
     element.style.scrollSnapType = "";
   });
@@ -226,7 +227,7 @@ try {
           .getBoundingClientRect().top,
       ) < 2,
   );
-  await waitForEntryMomentumToClear();
+  await waitForOuterWheelTransitionToClear();
   const wideRailMetrics = await productsRail.evaluate((element) => ({
     clientWidth: element.clientWidth,
     scrollWidth: element.scrollWidth,
@@ -290,7 +291,7 @@ try {
           .getBoundingClientRect().top,
       ) < 2,
   );
-  await waitForEntryMomentumToClear();
+  await waitForOuterWheelTransitionToClear();
   await page.evaluate(() => {
     window.__aiBoundaryScrollCalls = [];
   });
