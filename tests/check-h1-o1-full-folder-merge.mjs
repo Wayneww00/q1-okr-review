@@ -90,7 +90,7 @@ const o3Ids = topLevelStringIds(constantBlock(app, "const O3_REPORT_PAGES=["));
 
 assert.deepEqual(
   dataIds,
-  Array.from({ length: 21 }, (_, index) => index + 1),
+  Array.from({ length: 20 }, (_, index) => index + 1),
   "the current 21 data pages must remain in order",
 );
 assert.deepEqual(

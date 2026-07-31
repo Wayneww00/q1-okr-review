@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-delivery-ppt88-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-retail-nd-ppt-v3">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-vn-retail-ppt-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -960,23 +960,33 @@ const H1_DASHBOARDS = [
   {
     id:15,
     layoutType:"retail_nd_share_shift",
+    editorRevision:"retail-nd-ppt-v5",
     title:"H1 Retail ND 占比整体表现：APAC -2.0%  GS +0.5%",
     chartTitle:"2026 Q1 vs Q2 Retail ND区域占比变化",
     groups:[
       {label:"GS",q1:27.6,q1Text:"27.6%",q2:28.1,q2Text:"28.1%",delta:"+0.5%"},
       {label:"APAC",q1:22.6,q1Text:"22.6%",q2:20.6,q2Text:"20.6%",delta:"-2.0%"}
     ],
-    legends:["26-Q1","26-Q2"]
+    legends:["26-Q1","26-Q2"],
+    notes:[
+      "GS Retail ND Q2 较 Q1 占比上涨: +0.5%",
+      "APAC Retail ND Q2 较 Q1 占比下降: -2.0%"
+    ]
   },
   {
     id:16,
-    layoutType:"non_retail_nd_rise",
-    title:"Sales端IB数据表现亮眼，逆势上扬",
-    chartTitle:"2026 Q1 vs Q2 Non-Retail ND表现及整体占比变化",
-    legends:["Non-Retail ND","Non-Retail ND 占Vantage %"],
-    periods:[
-      {label:"26-Q1",nd:334.2,ndText:"$334.2M",share:74.5,shareText:"74.5%"},
-      {label:"26-Q2",nd:322.8,ndText:"$322.8M",share:75.1,shareText:"75.1%"}
+    layoutType:"apac_nd_breakdown",
+    editorRevision:"retail-nd-ppt-v5",
+    title:"APAC数据拆解：为何 ND 占比下降？",
+    subtitle:"Sales端Non-Retail数据表现亮眼，逆势上扬",
+    chartTitle:"2026 Q1 vs Q2 ND 地区整体表现趋势以及绝对值变化",
+    axisTitle:"Net Deposit",
+    axisTicks:[0,20,40,60,80,100,120,140,160,180,200],
+    regionGroups:[
+      {label:"APAC-Non-Retail",year:"2026",q1:133.1,q1Text:"133.1M",q2:143.1,q2Text:"143.1M",absoluteText:"10.0M",deltaText:"7.5%",trend:"up",highlight:true},
+      {label:"APAC-Retail",year:"2026",q1:38.8,q1Text:"38.8M",q2:37.2,q2Text:"37.2M",absoluteText:"-1.6M",deltaText:"-4.0%",trend:"down"},
+      {label:"GS-Non-Retail",year:"2026",q1:195.6,q1Text:"195.6M",q2:177.4,q2Text:"177.4M",absoluteText:"-18.2M",deltaText:"-9.3%",trend:"down"},
+      {label:"GS-Retail",year:"2026",q1:74.7,q1Text:"74.7M",q2:69.3,q2Text:"69.3M",absoluteText:"-5.4M",deltaText:"-7.3%",trend:"down"}
     ]
   },
   {
@@ -1010,9 +1020,11 @@ const H1_DASHBOARDS = [
   {
     id:20,
     layoutType:"mib_attribution",
-    title:"MIB口径变化导致数据影响",
-    subtitle:"Retail 转 IB导致下降（长期）",
-    leftInsight:"40.0%的Q2 MIB用户不符合IB的显著特征，",
+    editorRevision:"retail-nd-ppt-v5",
+    title:"可能对Retail ND占比有影响的因素",
+    leftFactorTitle:"1.MIB口径变化导致数据影响",
+    rightFactorTitle:"2.Retail 转 IB导致下降（长期）",
+    leftInsight:"40%的Q2 MIB用户不符合IB的显著特征，",
     leftImpact:"Q2 ND 5.9M (占比大盘1.4%)",
     rightInsight:"超过一半转入IB的用户在注册两个月后才发生归属迁移，",
     rightImpact:"Q2 ND 9.1M (占比大盘2.1%)",
@@ -1036,20 +1048,6 @@ const H1_DASHBOARDS = [
       {label:"31-60",share:"10.4%",nd:"3.9M",usersValue:3},
       {label:"3-30天",share:"26.6%",nd:"6.2M",usersValue:7.4},
       {label:"0-2天",share:"12.0%",nd:"2.3M",usersValue:3.4}
-    ]
-  },
-  {
-    id:21,
-    layoutType:"h2_retail_nd_target",
-    editorRevision:"retail-nd-target-no-india-chapter-v1",
-    headline:"让Marketing真正驱动增长",
-    title:"H2 Retail ND占比迈向32.0%！",
-    subtitle:"（印度新增大盘占比3.6%）",
-    steps:[
-      {label:"当前公司口径",share:"24.9%",value:"$107.2M",height:62},
-      {label:"口径归因",share:"3.5%",value:"$15M",height:18},
-      {label:"印度增长",share:"3.6%",value:"$15.5M",height:20},
-      {label:"H2目标",share:"32.0%",value:"$137.6M",height:88}
     ]
   }
 ];
@@ -1679,20 +1677,18 @@ function H1FollowersTrendChart({data}) {
 
 const H1_RETAIL_GROWTH_LAYOUTS = new Set([
   "retail_nd_share_shift",
-  "non_retail_nd_rise",
+  "apac_nd_breakdown",
   "apac_question",
   "vietnam_retail_nd",
   "attribution_question",
   "mib_attribution",
-  "h2_retail_nd_target",
 ]);
 
 const H1_RETAIL_GROWTH_SECTION_LABELS = {
   retail_nd_share_shift:"整体数据 · RETAIL ND｜区域占比",
-  non_retail_nd_rise:"整体数据 · RETAIL ND｜SALES 端 IB",
+  apac_nd_breakdown:"整体数据 · RETAIL ND｜APAC 数据拆解",
   vietnam_retail_nd:"整体数据 · RETAIL ND｜越南市场",
   mib_attribution:"整体数据 · RETAIL ND｜归因诊断",
-  h2_retail_nd_target:"整体数据 · RETAIL ND｜H2 增长目标",
 };
 
 function H1RetailShareShiftChart({data}) {
@@ -1750,51 +1746,62 @@ function H1RetailShareShiftChart({data}) {
           );
         })}
       </svg>
+      <div className="h1-retail-growth-chart-notes">
+        {data.notes.map((note)=><p key={note}>{note}</p>)}
+      </div>
     </div>
   );
 }
 
-function H1NonRetailRiseChart({data}) {
-  const plotTop = 58;
-  const plotHeight = 350;
-  const maxNd = 400;
-  const maxShare = 80;
-  const xs = [390,810];
-  const sharePoints = data.periods.map((period,index)=>({
-    x:xs[index],
-    y:plotTop+plotHeight-(period.share/maxShare)*plotHeight
-  }));
+function H1ApacNdBreakdownChart({data}) {
+  const plot = {left:108,right:1120,top:96,bottom:416};
+  const plotHeight = plot.bottom-plot.top;
+  const maxNd = 210;
+  const centers = [236,486,748,998];
+  const barWidth = 60;
+  const barGap = 8;
+  const valueY = (value)=>plot.bottom-(value/maxNd)*plotHeight;
   return (
-    <div className="h1-retail-growth-chart h1-editorial-chart-surface" data-editor-ignore>
+    <div className="h1-retail-growth-chart h1-editorial-chart-surface is-apac-breakdown" data-editor-ignore>
       <div className="h1-retail-growth-chart-heading">
         <h2>{data.chartTitle}</h2>
-        <div className="h1-retail-growth-legend">
-          <span><i className="is-orange"/>Non-Retail ND</span>
-          <span><i className="is-teal"/>Non-Retail ND 占Vantage %</span>
-        </div>
       </div>
       <svg viewBox="0 0 1200 500" role="img" aria-label={data.chartTitle}>
-        {[0,100,200,300,400].map(value=>{
-          const y=plotTop+plotHeight-(value/maxNd)*plotHeight;
-          return <g key={value}><line x1="140" x2="1070" y1={y} y2={y} className="h1-retail-growth-grid"/><text x="108" y={y+6} className="h1-retail-growth-axis" textAnchor="end">${value.toFixed(1)}M</text></g>;
+        {data.axisTicks.map(value=>{
+          const y=valueY(value);
+          return <g key={value}><line x1={plot.left} x2={plot.right} y1={y} y2={y} className="h1-retail-growth-grid"/><text x={plot.left-16} y={y+5} className="h1-retail-growth-axis" textAnchor="end">{value}M</text></g>;
         })}
-        {[0,20,40,60,80].map(value=>{
-          const y=plotTop+plotHeight-(value/maxShare)*plotHeight;
-          return <text key={value} x="1092" y={y+6} className="h1-retail-growth-axis">{value.toFixed(1)}%</text>;
-        })}
-        {data.periods.map((period,index)=>{
-          const height=(period.nd/maxNd)*plotHeight;
-          const y=plotTop+plotHeight-height;
+        <text x="34" y="270" className="h1-retail-growth-axis-title" textAnchor="middle" transform="rotate(-90 34 270)">{data.axisTitle}</text>
+        {data.regionGroups.map((group,index)=>{
+          const center=centers[index];
+          const q1X=center-barWidth-barGap/2;
+          const q2X=center+barGap/2;
+          const q1Y=valueY(group.q1);
+          const q2Y=valueY(group.q2);
+          const q1Height=plot.bottom-q1Y;
+          const q2Height=plot.bottom-q2Y;
+          const labelY=Math.max(112,Math.min(q1Y,q2Y)-16);
           return (
-            <g key={period.label} className="h1-retail-growth-bar-group" style={{"--bar-delay":`${.18+index*.16}s`}}>
-              <rect className="h1-retail-growth-bar is-orange" x={xs[index]-104} y={y} width="208" height={height} rx="6"/>
-              <text x={xs[index]} y={y+height/2+8} className="h1-retail-growth-value is-inside" textAnchor="middle">{period.ndText}</text>
-              <text x={xs[index]} y="452" className="h1-retail-growth-x-label" textAnchor="middle">{period.label}</text>
+            <g key={group.label} className={`h1-retail-growth-region-group is-${group.trend}${group.highlight?" is-highlighted":""}`} style={{"--bar-delay":`${.16+index*.11}s`}}>
+              {group.highlight&&<rect x={center-112} y="38" width="224" height="414" rx="8" className="h1-retail-growth-region-highlight"/>}
+              <text x={center} y="52" className="h1-retail-growth-region-title" textAnchor="middle">{group.label}</text>
+              <text x={center} y="74" className="h1-retail-growth-region-year" textAnchor="middle">{group.year}</text>
+              <rect className="h1-retail-growth-bar is-region-q1" x={q1X} y={q1Y} width={barWidth} height={q1Height} rx="4"/>
+              <rect className="h1-retail-growth-bar is-region-q2" x={q2X} y={q2Y} width={barWidth} height={q2Height} rx="4"/>
+              <text x={q1X+barWidth/2} y={q1Y+q1Height*.58} className="h1-retail-growth-region-value" textAnchor="middle">{group.q1Text}</text>
+              <text x={q2X+barWidth/2} y={q2Y+q2Height*.58} className="h1-retail-growth-region-value" textAnchor="middle">{group.q2Text}</text>
+              <path d={`M ${q1X+barWidth/2} ${q1Y} L ${q2X+barWidth/2} ${q2Y}`} className={`h1-retail-growth-region-trend is-${group.trend}`}/>
+              <circle cx={q1X+barWidth/2} cy={q1Y} r="4" className={`h1-retail-growth-region-dot is-${group.trend}`}/>
+              <circle cx={q2X+barWidth/2} cy={q2Y} r="4" className={`h1-retail-growth-region-dot is-${group.trend}`}/>
+              <text x={center+66} y={labelY} className="h1-retail-growth-region-annotation" textAnchor="middle">
+                <tspan x={center+66}>绝对值：{group.absoluteText}</tspan>
+                <tspan x={center+66} dy="20">涨幅：{group.deltaText}</tspan>
+              </text>
+              <text x={q1X+barWidth/2} y="444" className="h1-retail-growth-region-quarter" textAnchor="middle">Q1</text>
+              <text x={q2X+barWidth/2} y="444" className="h1-retail-growth-region-quarter" textAnchor="middle">Q2</text>
             </g>
           );
         })}
-        <path d={`M ${sharePoints[0].x} ${sharePoints[0].y} L ${sharePoints[1].x} ${sharePoints[1].y}`} className="h1-retail-growth-share-line"/>
-        {sharePoints.map((point,index)=><g key={data.periods[index].label+"-share"}><circle cx={point.x} cy={point.y} r="7" className="h1-retail-growth-share-dot"/><text x={point.x} y={point.y-22} className="h1-retail-growth-share-label" textAnchor="middle">{data.periods[index].shareText}</text></g>)}
       </svg>
     </div>
   );
@@ -1853,10 +1860,14 @@ function H1MibAttributionChart({data}) {
   const intervalPoints = data.intervals.map((interval,index)=>({x:rightXs[index],y:intervalNdY(Number.parseFloat(interval.nd))}));
   const intervalLine = intervalPoints.map((point,index)=>`${index?"L":"M"} ${point.x} ${point.y}`).join(" ");
   return (
-    <>
-      <div className="h1-retail-growth-chart h1-editorial-chart-surface is-mib" data-editor-ignore>
-        <section className="h1-retail-growth-mib-panel">
-          <h2>Q2 MIB 用户类型人数及其贡献ND占比</h2>
+    <div className="h1-retail-growth-chart h1-editorial-chart-surface is-mib" data-editor-ignore>
+        <section className="h1-retail-growth-factor-panel h1-retail-growth-mib-panel">
+          <h2>{data.leftFactorTitle}</h2>
+          <div className="h1-retail-growth-factor-summary">
+            <p>{data.leftInsight}</p>
+            <strong>{data.leftImpact}</strong>
+          </div>
+          <h3>Q2 MIB 用户类型人数及其贡献ND占比</h3>
           <svg className="h1-retail-growth-mib-svg" viewBox="0 0 620 390" role="img" aria-label="Q2 MIB 用户类型人数及其贡献ND占比">
             <rect x="86" y="38" width="342" height="338" rx="9" className="h1-retail-growth-evidence-frame is-user-types"/>
             {data.mibUserAxisTicks.map((tick,index)=>{
@@ -1890,8 +1901,13 @@ function H1MibAttributionChart({data}) {
             ))}
           </svg>
         </section>
-        <section className="h1-retail-growth-interval-panel">
-          <h2>{data.intervalTitle}</h2>
+        <section className="h1-retail-growth-factor-panel h1-retail-growth-interval-panel">
+          <h2>{data.rightFactorTitle}</h2>
+          <div className="h1-retail-growth-factor-summary">
+            <p>{data.rightInsight}</p>
+            <strong>{data.rightImpact}</strong>
+          </div>
+          <h3>{data.intervalTitle}</h3>
           <svg className="h1-retail-growth-mib-svg" viewBox="0 0 620 390" role="img" aria-label={data.intervalTitle}>
             <rect x="98" y="38" width="76" height="338" rx="9" className="h1-retail-growth-evidence-frame is-delayed-migration"/>
             {data.intervalUserAxisTicks.map((tick,index)=>{
@@ -1924,12 +1940,7 @@ function H1MibAttributionChart({data}) {
             ))}
           </svg>
         </section>
-      </div>
-      <div className="h1-retail-growth-insights">
-        <p><strong>{data.leftInsight}</strong><span>{data.leftImpact}</span></p>
-        <p><strong>{data.rightInsight}</strong><span>{data.rightImpact}</span></p>
-      </div>
-    </>
+    </div>
   );
 }
 
@@ -2062,10 +2073,9 @@ function H1DataModulePageShell({
 function H1RetailGrowthPage({data,count}) {
   const isTransition = ["apac_question","attribution_question","india_chapter"].includes(data.layoutType);
   const chart = data.layoutType === "retail_nd_share_shift" ? <H1RetailShareShiftChart data={data}/>
-    : data.layoutType === "non_retail_nd_rise" ? <H1NonRetailRiseChart data={data}/>
+    : data.layoutType === "apac_nd_breakdown" ? <H1ApacNdBreakdownChart data={data}/>
     : data.layoutType === "vietnam_retail_nd" ? <H1VietnamRetailNdChart data={data}/>
     : data.layoutType === "mib_attribution" ? <H1MibAttributionChart data={data}/>
-    : data.layoutType === "h2_retail_nd_target" ? <H1RetailNdTargetChart data={data}/>
     : null;
   return (
     <H1DataModulePageShell
@@ -3101,7 +3111,7 @@ function OkrInsightIcon({type}){
   return <img className={`h1-okr-insight-icon is-${type}`} src={src} alt="" aria-hidden="true"/>;
 }
 
-function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY}={}){
+function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY,cover=false}={}){
   const pageRef=useRef(null);
   const canvasRef=useRef(null);
   useEffect(()=>{
@@ -3109,7 +3119,9 @@ function useOkrCanvasScale({maxScale=Number.POSITIVE_INFINITY}={}){
     const canvas=canvasRef.current;
     if(!page || !canvas)return;
     const updateScale=()=>{
-      const scale=Math.min(page.clientWidth/1920,page.clientHeight/1080,maxScale);
+      const scale=cover
+        ? Math.max(page.clientWidth/1920,page.clientHeight/1080)
+        : Math.min(page.clientWidth/1920,page.clientHeight/1080,maxScale);
       canvas.style.setProperty('--h1-okr-scale',String(scale));
       canvas.classList.add('is-scaled');
     };
@@ -4050,7 +4062,7 @@ function OkrDirectFigmaForegroundPage({page,index,count,src,onPreview,onVideoPre
 }
 
 function OkrEliteClientForegroundPage({page,index,count,onPreview,onVideoPreview}){
-  const {pageRef,canvasRef}=useOkrCanvasScale();
+  const {pageRef,canvasRef}=useOkrCanvasScale({cover:true});
   return (
     <section ref={pageRef} className="h1-okr-page h1-okr-direct-figma-page h1-okr-elite-client-page" data-report-page data-page-id={page.id} aria-label={page.label}>
       <div ref={canvasRef} className="h1-okr-canvas h1-okr-elite-client-canvas">
@@ -4079,7 +4091,7 @@ function OkrEliteClientForegroundPage({page,index,count,onPreview,onVideoPreview
 /* Current Figma node 150:1072 is a foreground-only export. Keep the shared
    Elite Client background as the single stage behind its exact artwork. */
 function OkrEliteEndorsementResourcesPage({page,index,count}){
-  const {pageRef,canvasRef}=useOkrCanvasScale();
+  const {pageRef,canvasRef}=useOkrCanvasScale({cover:true});
   return (
     <section
       ref={pageRef}

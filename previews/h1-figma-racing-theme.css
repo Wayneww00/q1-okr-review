@@ -7972,6 +7972,49 @@ svg.h1-okr-insight-icon circle {
   overflow: visible;
 }
 
+.is-retail-nd-share-shift .h1-retail-growth-chart {
+  padding-bottom: 70px;
+}
+
+.is-retail-nd-share-shift .h1-retail-growth-chart > svg {
+  height: calc(100% - 54px);
+}
+
+.h1-retail-growth-chart-notes {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 14px;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 22px;
+}
+
+.h1-retail-growth-chart-notes p {
+  min-width: 0;
+  margin: 0;
+  padding: 12px 18px;
+  color: var(--h1-data-ivory);
+  font-size: 16px;
+  font-weight: 720;
+  line-height: 1.3;
+  background: linear-gradient(90deg,rgba(143,22,32,.46),rgba(50,11,13,.72));
+  border: 1px solid color-mix(in srgb,var(--h1-data-accent) 54%,transparent);
+  border-radius: 9px;
+}
+
+.h1-retail-growth-chart-notes p::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 10px;
+  vertical-align: 2px;
+  background: var(--h1-data-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 14px color-mix(in srgb,var(--h1-data-accent) 72%,transparent);
+}
+
 .h1-retail-growth-grid {
   stroke: rgba(255,255,255,.105);
   stroke-width: 1;
@@ -7986,6 +8029,12 @@ svg.h1-okr-insight-icon circle {
 .h1-retail-growth-axis {
   fill: rgba(255,241,227,.62);
   font: 600 14px/1 "Barlow Condensed",sans-serif;
+}
+
+.h1-retail-growth-axis-title {
+  fill: rgba(255,241,227,.72);
+  font: 720 14px/1 Inter,"Noto Sans SC",sans-serif;
+  letter-spacing: .035em;
 }
 
 .h1-retail-growth-x-label {
@@ -8034,6 +8083,51 @@ svg.h1-okr-insight-icon circle {
 .h1-retail-growth-bar.is-sage { fill:var(--h1-data-primary); }
 .h1-retail-growth-bar.is-blue { fill:var(--h1-data-accent); }
 .h1-retail-growth-bar.is-mib-user-bar { fill:var(--h1-data-secondary); }
+.h1-retail-growth-bar.is-region-q1 { fill:var(--h1-data-secondary); }
+.h1-retail-growth-bar.is-region-q2 { fill:var(--h1-data-accent); }
+
+.h1-retail-growth-region-highlight {
+  fill: rgba(255,91,17,.035);
+  stroke: color-mix(in srgb,var(--h1-data-accent) 78%,#fff);
+  stroke-width: 2.3;
+  vector-effect: non-scaling-stroke;
+}
+
+.h1-retail-growth-region-title {
+  fill: rgba(255,241,227,.86);
+  font: 760 15px/1 Inter,"Noto Sans SC",sans-serif;
+}
+
+.h1-retail-growth-region-year,
+.h1-retail-growth-region-quarter {
+  fill: rgba(255,241,227,.48);
+  font: 650 12px/1 "Barlow Condensed",sans-serif;
+}
+
+.h1-retail-growth-region-value {
+  fill: #fff;
+  font: 820 14px/1 "Barlow Condensed",sans-serif;
+}
+
+.h1-retail-growth-region-trend {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.h1-retail-growth-region-trend.is-up { stroke:#19a36b; }
+.h1-retail-growth-region-trend.is-down { stroke:#e1252d; }
+.h1-retail-growth-region-dot.is-up { fill:#19a36b; }
+.h1-retail-growth-region-dot.is-down { fill:#e1252d; }
+
+.h1-retail-growth-region-annotation {
+  fill: var(--h1-data-ivory);
+  font: 760 13px/1.2 Inter,"Noto Sans SC",sans-serif;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.8);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
 
 .h1-retail-growth-share-line {
   fill: none;
@@ -8313,21 +8407,24 @@ svg.h1-okr-insight-icon circle {
 }
 
 .h1-retail-growth-chart.is-mib {
-  padding: 20px 20px 170px;
+  padding: 16px;
   display: grid;
   grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-  gap: 18px;
+  gap: 20px;
 }
 
 .h1-figma-racing-report .is-retail-data-detail .h1-retail-growth-chart.is-mib {
-  padding: 20px 20px 170px !important;
+  padding: 16px !important;
 }
 
-.h1-retail-growth-mib-panel,
-.h1-retail-growth-interval-panel {
+.h1-retail-growth-factor-panel {
   position: relative;
   min-width: 0;
-  padding: 18px 18px 14px !important;
+  min-height: 0;
+  padding: 16px 16px 12px !important;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0,1fr);
+  gap: 9px;
   overflow: hidden;
   background: color-mix(in srgb, var(--h1-data-surface) 72%, transparent);
   border: 1px solid var(--h1-data-border);
@@ -8337,25 +8434,56 @@ svg.h1-okr-insight-icon circle {
 .h1-embedded-report main .h1-retail-growth-chart.is-mib section.h1-retail-growth-mib-panel,
 .h1-embedded-report main .h1-retail-growth-chart.is-mib section.h1-retail-growth-interval-panel {
   margin-bottom: 0 !important;
-  padding: 18px 18px 14px !important;
+  padding: 16px 16px 12px !important;
 }
 
-.h1-retail-growth-mib-panel h2,
-.h1-retail-growth-interval-panel h2 {
+.h1-retail-growth-factor-panel h2 {
   margin: 0;
-  color: #fff;
-  font: 750 17px/1.35 Inter,"Noto Sans SC",sans-serif;
+  color: rgba(255,241,227,.58);
+  font: 820 24px/1.22 Inter,"Noto Sans SC",sans-serif;
+  letter-spacing: -.02em;
 }
 
-.h1-retail-growth-mib-panel > svg.h1-retail-growth-mib-svg,
-.h1-retail-growth-interval-panel > svg.h1-retail-growth-mib-svg {
-  position: absolute;
+.h1-retail-growth-factor-summary {
+  min-height: 58px;
+  padding: 9px 12px;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  background: linear-gradient(90deg,rgba(143,22,32,.42),rgba(35,8,10,.66));
+  border-left: 3px solid var(--h1-data-accent);
+  border-radius: 0 7px 7px 0;
+}
+
+.h1-retail-growth-factor-summary p,
+.h1-retail-growth-factor-summary strong {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.28;
+}
+
+.h1-retail-growth-factor-summary p {
+  color: rgba(255,241,227,.82);
+  font-weight: 670;
+}
+
+.h1-retail-growth-factor-summary strong {
+  color: var(--h1-data-accent);
+  font-weight: 830;
+}
+
+.h1-retail-growth-factor-panel h3 {
+  margin: 0;
+  color: var(--h1-data-ivory);
+  font: 750 13px/1.3 Inter,"Noto Sans SC",sans-serif;
+}
+
+.h1-retail-growth-factor-panel > svg.h1-retail-growth-mib-svg {
+  position: relative;
   z-index: 2;
-  left: 10px;
-  right: 10px;
-  top: 54px;
-  width: calc(100% - 20px);
-  height: calc(100% - 66px);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   overflow: visible;
   pointer-events: none;
 }
@@ -8512,10 +8640,9 @@ svg.h1-okr-insight-icon circle {
   font-weight: 800 !important;
 }
 
-.h1-embedded-report .dash-page .h1-retail-growth-mib-panel h2,
-.h1-embedded-report .dash-page .h1-retail-growth-interval-panel h2 {
-  font-size: 17px !important;
-  font-weight: 750 !important;
+.h1-embedded-report .dash-page .h1-retail-growth-factor-panel h2 {
+  font-size: 24px !important;
+  font-weight: 820 !important;
 }
 
 .h1-embedded-report .dash-page .h1-retail-growth-transition > h1 {

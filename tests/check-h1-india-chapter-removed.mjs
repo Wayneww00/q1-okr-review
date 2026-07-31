@@ -20,23 +20,23 @@ const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) =>
 
 assert.deepEqual(
   ids,
-  Array.from({ length: 21 }, (_, index) => index + 1),
-  "removing the standalone India chapter must leave 21 consecutive data pages",
+  Array.from({ length: 20 }, (_, index) => index + 1),
+  "removing the India chapter and H2 target must leave 20 consecutive data pages",
 );
 assert.doesNotMatch(
   dataBlock,
   /layoutType:"india_chapter"/,
   "the standalone H2 India chapter page must not remain in the deck",
 );
-assert.match(
+assert.doesNotMatch(
   dataBlock,
-  /id:21,[\s\S]*?layoutType:"h2_retail_nd_target"[\s\S]*?editorRevision:"retail-nd-target-no-india-chapter-v1"/,
-  "the H2 target page must become page 21 with a fresh editor revision",
+  /layoutType:"h2_retail_nd_target"/,
+  "the H2 target page must not remain in the deck",
 );
 assert.match(
   shell,
-  /dashboard\.before\(makeChapter\('Performance Data','\u7ecf\u8425\u6570\u636e','21 MODULES'\)\)/,
-  "the embedded report chapter counter must advertise 21 data modules",
+  /dashboard\.before\(makeChapter\('Performance Data','\u7ecf\u8425\u6570\u636e','20 MODULES'\)\)/,
+  "the embedded report chapter counter must advertise 20 data modules",
 );
 
 console.log("H1 standalone India chapter removal contract passed.");

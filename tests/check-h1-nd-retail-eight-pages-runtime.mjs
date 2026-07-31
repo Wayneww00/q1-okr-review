@@ -38,7 +38,7 @@ try {
   const dataPages = reportFrame.locator(
     '[data-report-section="data"] [data-report-page]',
   );
-  assert.equal(await dataPages.count(), 21);
+  assert.equal(await dataPages.count(), 20);
   assert.equal(await reportPages.count(), 96);
   assert.equal(
     await reportFrame.locator(".h1-figma-fixed-stage").count(),
@@ -75,10 +75,10 @@ try {
       .replace(/\s+/g, " ")
       .trim();
 
-  for (let id = 15; id <= 21; id += 1) {
+  for (let id = 15; id <= 20; id += 1) {
     const pageId = `data-${id}`;
     await scrollFrameToPage(pageId);
-    assert.match(await pageNumberText(pageId), new RegExp(`^${id} / 21$`));
+    assert.match(await pageNumberText(pageId), new RegExp(`^${id} / 20$`));
     assert.equal(
       await reportFrame
         .locator(`[data-page-id="${pageId}"] .h1-extended-editorial-canvas`)
@@ -137,7 +137,7 @@ try {
   assert.deepEqual(sharedVisualSystem.surface15, sharedVisualSystem.surface14);
   assert.deepEqual(sharedVisualSystem.canvas15, sharedVisualSystem.canvas14);
 
-  for (const id of [15, 16, 18, 20, 21]) {
+  for (const id of [15, 16, 18, 20]) {
     assert.ok(
       (await reportFrame.locator(`[data-page-id="data-${id}"] svg`).count()) > 0,
       `data-${id} must render a native SVG chart`,
@@ -153,8 +153,8 @@ try {
     /Marketing价值未充分体现？[\s\S]*or[\s\S]*还有哪些关键原因？/,
   );
   assert.match(
-    await reportFrame.locator('[data-page-id="data-21"]').innerText(),
-    /H2 Retail ND占比迈向32\.0%！[\s\S]*\$137\.6M/,
+    await reportFrame.locator('[data-page-id="data-16"]').innerText(),
+    /APAC数据拆解：为何 ND 占比下降？[\s\S]*133\.1M[\s\S]*143\.1M[\s\S]*195\.6M[\s\S]*177\.4M/,
   );
   assert.match(
     await reportFrame.locator('[data-page-id="data-18"]').innerText(),
@@ -218,14 +218,14 @@ try {
   await editButton.click();
   await page.waitForFunction(() => {
     const doc = document.querySelector("#reportFrame")?.contentDocument;
-    return Array.from({ length: 7 }, (_, index) => index + 15).every(
+    return Array.from({ length: 6 }, (_, index) => index + 15).every(
       (id) =>
         doc
           ?.querySelector(`[data-page-id="data-${id}"] h1`)
           ?.getAttribute("contenteditable") === "plaintext-only",
     );
   });
-  for (let id = 15; id <= 21; id += 1) {
+  for (let id = 15; id <= 20; id += 1) {
     assert.equal(
       await reportFrame
         .locator(
@@ -236,7 +236,7 @@ try {
       `data-${id} page number must not be editable`,
     );
   }
-  for (const id of [15, 16, 18, 20, 21]) {
+  for (const id of [15, 16, 18, 20]) {
     assert.equal(
       await reportFrame
         .locator(`[data-page-id="data-${id}"] .h1-retail-growth-chart`)
@@ -256,15 +256,15 @@ try {
       .querySelector('.scene[data-label="Full Report"]')
       ?.classList.contains("active"),
   );
-  await scrollFrameToPage("data-21");
+  await scrollFrameToPage("data-20");
   await page.locator("body").press("PageDown");
   await waitForActivePage("o1-chapter");
   await page.locator("body").press("PageUp");
-  await waitForActivePage("data-21");
+  await waitForActivePage("data-20");
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   const reducedMotionState = await reportFrame
-    .locator('[data-page-id="data-21"]')
+    .locator('[data-page-id="data-20"]')
     .evaluate((root) => {
       const stage = root.querySelector(".h1-extended-editorial-canvas");
       const stageRect = stage.getBoundingClientRect();
@@ -307,4 +307,4 @@ try {
   await browser.close();
 }
 
-console.log("H1 ND Retail seven-page runtime contract passed.");
+console.log("H1 ND Retail six-page runtime contract passed.");

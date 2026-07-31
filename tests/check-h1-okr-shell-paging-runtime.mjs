@@ -115,7 +115,7 @@ try {
     await waitForActivePage(pageId);
   };
 
-  await scrollFrameToPage("data-21");
+  await scrollFrameToPage("data-20");
   await page.locator("body").press("PageDown");
   await waitForActivePage("okr-review");
   assert.match(
@@ -181,7 +181,7 @@ try {
 
   await scrollFrameToPage("okr-review");
   await page.locator("body").press("PageUp");
-  await waitForActivePage("data-21");
+  await waitForActivePage("data-20");
 } finally {
   await browser.close();
 }

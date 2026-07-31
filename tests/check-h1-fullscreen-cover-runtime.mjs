@@ -43,10 +43,10 @@ try {
       await reportFrame
         .locator('[data-report-section="data"] [data-report-page]')
         .count(),
-      21,
+      20,
     );
     assert.equal(
-      await reportFrame.locator('[data-page-id="data-22"]').count(),
+      await reportFrame.locator('[data-page-id="data-21"]').count(),
       0,
     );
     assert.equal(
@@ -54,8 +54,12 @@ try {
       0,
     );
     assert.match(
-      await reportFrame.locator('[data-page-id="data-21"]').innerText(),
-      /H2 Retail ND占比迈向32\.0%！/,
+      (await reportFrame
+        .locator('[data-page-id="data-20"] .h1-extended-editorial-page-number')
+        .innerText())
+        .replace(/\s+/g, " ")
+        .trim(),
+      /^20 \/ 20$/,
     );
     const scaleState = await reportFrame.locator("html").evaluate((root) => ({
       contain: Number(root.style.getPropertyValue("--h1-figma-scale")),

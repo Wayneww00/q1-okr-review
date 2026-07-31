@@ -27,23 +27,22 @@ const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) =>
 );
 assert.deepEqual(
   ids,
-  Array.from({ length: 21 }, (_, index) => index + 1),
-  "the data section must contain the original 14 pages followed by seven Retail ND pages",
+  Array.from({ length: 20 }, (_, index) => index + 1),
+  "the data section must contain the original 14 pages followed by six Retail ND pages",
 );
 
 const expectedLayouts = [
   "retail_nd_share_shift",
-  "non_retail_nd_rise",
+  "apac_nd_breakdown",
   "apac_question",
   "vietnam_retail_nd",
   "attribution_question",
   "mib_attribution",
-  "h2_retail_nd_target",
 ];
 const appendedLayouts = ids.slice(14).map((id) => {
   const start = dataBlock.search(new RegExp(`^  \\{\\s*id:${id},`, "m"));
   const next =
-    id < 21
+    id < 20
       ? dataBlock.search(new RegExp(`^  \\{\\s*id:${id + 1},`, "m"))
       : dataBlock.length;
   const page = dataBlock.slice(start, next);
@@ -58,12 +57,27 @@ for (const token of [
   "28.1%",
   "22.6%",
   "20.6%",
-  "Sales端IB数据表现亮眼，逆势上扬",
-  "2026 Q1 vs Q2 Non-Retail ND表现及整体占比变化",
-  "$334.2M",
-  "$322.8M",
-  "74.5%",
-  "75.1%",
+  "GS Retail ND Q2 较 Q1 占比上涨: +0.5%",
+  "APAC Retail ND Q2 较 Q1 占比下降: -2.0%",
+  "APAC数据拆解：为何 ND 占比下降？",
+  "Sales端Non-Retail数据表现亮眼，逆势上扬",
+  "2026 Q1 vs Q2 ND 地区整体表现趋势以及绝对值变化",
+  "133.1M",
+  "143.1M",
+  "10.0M",
+  "7.5%",
+  "38.8M",
+  "37.2M",
+  "-1.6M",
+  "-4.0%",
+  "195.6M",
+  "177.4M",
+  "-18.2M",
+  "-9.3%",
+  "74.7M",
+  "69.3M",
+  "-5.4M",
+  "-7.3%",
   "为什么APAC下降？我们做得不够吗？",
   "从越南市场切入",
   "SEO、GEO、SOV 等多指标领先，但ND占比仅4.3%，远低于全球平均值25.2%",
@@ -88,9 +102,10 @@ for (const token of [
   "还有哪些因素导致占比下降，Marketing价值未充分体现？",
   "or",
   "占比下降的背后，还有哪些关键原因？",
-  "MIB口径变化导致数据影响",
-  "Retail 转 IB导致下降（长期）",
-  "40.0%的Q2 MIB用户不符合IB的显著特征",
+  "可能对Retail ND占比有影响的因素",
+  "1.MIB口径变化导致数据影响",
+  "2.Retail 转 IB导致下降（长期）",
+  "40%的Q2 MIB用户不符合IB的显著特征",
   "Q2 ND 5.9M (占比大盘1.4%)",
   "超过一半转入IB的用户在注册两个月后才发生归属迁移",
   "Q2 ND 9.1M (占比大盘2.1%)",
@@ -140,18 +155,6 @@ for (const token of [
   "10.4%",
   "26.6%",
   "12.0%",
-  "印度",
-  "让Marketing真正驱动增长",
-  "H2 Retail ND占比迈向32.0%！",
-  "（印度新增大盘占比3.6%）",
-  "24.9%",
-  "$107.2M",
-  "3.5%",
-  "$15M",
-  "3.6%",
-  "$15.5M",
-  "32.0%",
-  "$137.6M",
 ]) {
   assert.ok(dataBlock.includes(token), `source content must be preserved: ${token}`);
 }
@@ -165,10 +168,9 @@ assert.doesNotMatch(
 for (const component of [
   "H1DataModulePageShell",
   "H1RetailShareShiftChart",
-  "H1NonRetailRiseChart",
+  "H1ApacNdBreakdownChart",
   "H1VietnamRetailNdChart",
   "H1MibAttributionChart",
-  "H1RetailNdTargetChart",
   "H1RetailGrowthTransition",
   "H1RetailGrowthPage",
 ]) {
@@ -209,11 +211,6 @@ assert.doesNotMatch(
   "the imported charts must not retain a private blue/cyan palette",
 );
 assert.match(
-  app,
-  /className="h1-retail-growth-waterfall-link"/,
-  "the revised target page must use reverse-waterfall connectors",
-);
-assert.match(
   runtime,
   /"\.h1-extended-editorial-page-number"/,
   "the shared Supabase editor must exclude the shared data-module page number",
@@ -223,7 +220,7 @@ assert.doesNotMatch(
   /"\.h1-retail-growth-page-number"/,
   "the editor must not retain a duplicate imported-page exclusion",
 );
-assert.match(shell, /'Performance Data','经营数据','21 MODULES'/);
+assert.match(shell, /'Performance Data','经营数据','20 MODULES'/);
 const shellCacheKeys = [
   ...shell.matchAll(
     /(?:h1-figma-racing-theme\.css\?v=|index\.html\?report=h1&embedded=1&v=)([^'"\s]+)/g,

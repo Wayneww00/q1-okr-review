@@ -7,7 +7,7 @@ const immersive = fs.readFileSync(
   "previews/vantage-h1-immersive.html",
   "utf8",
 );
-const centeringRevision = "20260731-delivery-ppt88-v1";
+const centeringRevision = "20260731-retail-nd-ppt-v3";
 
 const imageRule = theme.match(
   /\.h1-figma-kpi\s*>\s*img\s*\{([^}]*)\}/,

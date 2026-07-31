@@ -23,15 +23,16 @@ const dataBlock = app.slice(dataStart, dataEnd);
 
 for (const exactSourceText of [
   "H1 Retail ND 占比整体表现：APAC -2.0%  GS +0.5%",
-  "Sales端IB数据表现亮眼，逆势上扬",
+  "APAC数据拆解：为何 ND 占比下降？",
+  "Sales端Non-Retail数据表现亮眼，逆势上扬",
   "为什么APAC下降？我们做得不够吗？",
   "从越南市场切入",
   "SEO、GEO、SOV 等多指标领先，但ND占比仅4.3%，远低于全球平均值25.2%",
   "还有哪些因素导致占比下降，Marketing价值未充分体现？",
   "占比下降的背后，还有哪些关键原因？",
-  "MIB口径变化导致数据影响",
-  "Retail 转 IB导致下降（长期）",
-  "H2 Retail ND占比迈向32.0%！",
+  "可能对Retail ND占比有影响的因素",
+  "1.MIB口径变化导致数据影响",
+  "2.Retail 转 IB导致下降（长期）",
 ]) {
   assert.ok(
     dataBlock.includes(exactSourceText),
@@ -41,9 +42,7 @@ for (const exactSourceText of [
 
 for (const oneDecimalPercent of [
   'delta:"-2.0%"',
-  'leftInsight:"40.0%的Q2 MIB用户不符合IB的显著特征，"',
-  'title:"H2 Retail ND占比迈向32.0%！"',
-  'share:"32.0%"',
+  'leftInsight:"40%的Q2 MIB用户不符合IB的显著特征，"',
 ]) {
   assert.ok(
     dataBlock.includes(oneDecimalPercent),
@@ -71,10 +70,15 @@ assert.match(
   /H1_RETAIL_GROWTH_SECTION_LABELS/,
   "each content page must expose a Chinese module label",
 );
+assert.equal(
+  [...dataBlock.matchAll(/editorRevision:"retail-nd-ppt-v5"/g)].length,
+  3,
+  "only rebuilt PPT pages 15, 16, and 20 must use the fresh editor-content namespace",
+);
 assert.match(
   app,
   /data-editor-revision=\{board\.editorRevision \|\| \(H1_RETAIL_GROWTH_LAYOUTS\.has\(board\.layoutType\)\s*\?\s*"retail-nd-ppt-v4"/,
-  "the rebuilt PPT pages must use a fresh editor-content namespace",
+  "untouched Retail pages must keep the existing editor-content namespace",
 );
 assert.match(
   runtime,
@@ -120,7 +124,7 @@ assert.match(
   "the transition lines must animate in a deliberate sequence",
 );
 
-const expectedCacheKey = "20260731-delivery-ppt88-v1";
+const expectedCacheKey = "20260731-retail-nd-ppt-v3";
 assert.ok(app.includes(`h1-figma-racing-theme.css?v=${expectedCacheKey}`));
 const shellCacheKeys = [
   ...shell.matchAll(

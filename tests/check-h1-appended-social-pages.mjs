@@ -16,7 +16,7 @@ const end = index.indexOf("const REPORT_MODE", start);
 assert.ok(start >= 0 && end > start, "H1 dashboard data block should exist");
 const h1Block = index.slice(start, end);
 
-for (let id = 1; id <= 21; id += 1) {
+for (let id = 1; id <= 20; id += 1) {
   assert.match(
     h1Block,
     new RegExp(`\\bid:${id}(?:,|\\s)`),
@@ -25,8 +25,8 @@ for (let id = 1; id <= 21; id += 1) {
 }
 assert.equal(
   [...h1Block.matchAll(/\bid:(\d+)(?:,|\s)/g)].length,
-  21,
-  "H1 should contain exactly 21 data pages"
+  20,
+  "H1 should contain exactly 20 data pages"
 );
 
 const orderedNewPages = [
@@ -115,7 +115,7 @@ assert.ok(
   index.includes('String(count).padStart(2,"0")'),
   "visible page numbers should remain dynamic"
 );
-assert.ok(shell.includes("'21 MODULES'"), "outer report chapter should declare 21 modules");
+assert.ok(shell.includes("'20 MODULES'"), "outer report chapter should declare 20 modules");
 assert.ok(
   shell.includes("doc.querySelectorAll('[data-report-page]')") &&
     shell.includes("reportPages.length") &&
