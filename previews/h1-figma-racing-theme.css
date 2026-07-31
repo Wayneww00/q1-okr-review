@@ -1952,14 +1952,14 @@
 .h1-figma-racing-report body.h1-embedded-report .h1-okr-objective-marker {
   position: absolute;
   z-index: 2;
-  top: 165px;
+  top: 160px;
   left: 250px;
   display: flex;
   align-items: center;
-  height: 62px;
+  height: 72px;
   color: #f0a33c;
   font-family: "Gilroy", "Barlow Condensed", sans-serif !important;
-  font-size: 52px;
+  font-size: 68px;
   font-weight: 900;
   line-height: 1;
   letter-spacing: -.055em;
@@ -1974,7 +1974,7 @@
   content: "";
   display: block;
   width: 2px;
-  height: 36px;
+  height: 44px;
   margin-left: 18px;
   background: linear-gradient(180deg, rgba(255, 197, 105, .18), #f0a33c 46%, rgba(255, 91, 17, .7));
   box-shadow: 0 0 12px rgba(240, 163, 60, .22);

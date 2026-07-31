@@ -35,7 +35,7 @@ assert.doesNotMatch(operatingSystemPage, /imageSlots|figma-lightbox|modalSrc/);
 assert.doesNotMatch(theme, /\.h1-okr-static-click-shield/);
 assert.match(
   theme,
-  /\.h1-figma-racing-report body\.h1-embedded-report \.h1-okr-objective-marker\s*\{[\s\S]*?top:\s*165px;[\s\S]*?left:\s*250px;[\s\S]*?color:\s*#f0a33c;[\s\S]*?font-size:\s*52px;/,
+  /\.h1-figma-racing-report body\.h1-embedded-report \.h1-okr-objective-marker\s*\{[\s\S]*?top:\s*160px;[\s\S]*?left:\s*250px;[\s\S]*?height:\s*72px;[\s\S]*?color:\s*#f0a33c;[\s\S]*?font-size:\s*68px;/,
   "O1 must align to the title baseline and use the warm objective-number accent",
 );
 
