@@ -120,7 +120,7 @@ assert.match(
   "the transition lines must animate in a deliberate sequence",
 );
 
-const expectedCacheKey = "20260731-o2-india-proof-below-v3";
+const expectedCacheKey = "20260731-geo-aso-release-v1";
 assert.ok(app.includes(`h1-figma-racing-theme.css?v=${expectedCacheKey}`));
 const shellCacheKeys = [
   ...shell.matchAll(

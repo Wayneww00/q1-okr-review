@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-o2-india-proof-below-v3">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260731-geo-aso-release-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260731-semrush-source-note-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -4746,6 +4746,75 @@ function O2SeoH2Layouts(){
   );
 }
 
+const O2_GEO_EVIDENCE=[
+  {name:"Overall",src:"./previews/assets/o2/geo-evidence-overall.jpg"},
+  {name:"ChatGPT",src:"./previews/assets/o2/geo-evidence-chatgpt.jpg",tone:"risk"},
+  {name:"Gemini",src:"./previews/assets/o2/geo-evidence-gemini.jpg"},
+  {name:"AI Overview",src:"./previews/assets/o2/geo-evidence-ai-overview.jpg"},
+];
+
+function O2GeoEvidenceLightbox({items,index,onSelect,onClose}){
+  useEffect(()=>{
+    if(index===null)return;
+    const onKeyDown=(event)=>{
+      if(event.key==='Escape')onClose();
+      if(event.key==='ArrowLeft'){
+        event.preventDefault();
+        onSelect((index-1+items.length)%items.length);
+      }
+      if(event.key==='ArrowRight'){
+        event.preventDefault();
+        onSelect((index+1)%items.length);
+      }
+    };
+    document.addEventListener('keydown',onKeyDown);
+    return()=>document.removeEventListener('keydown',onKeyDown);
+  },[index,items.length,onSelect,onClose]);
+  if(index===null)return null;
+  const evidence=items[index];
+  return ReactDOM.createPortal(
+    <div
+      className="h1-o2-geo-evidence-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${evidence.name} GEO 数据截图大图`}
+      onClick={onClose}
+    >
+      <div className="h1-o2-geo-evidence-lightbox-panel" onClick={event=>event.stopPropagation()}>
+        <header>
+          <span>GEO PLATFORM EVIDENCE · {String(index+1).padStart(2,"0")} / {String(items.length).padStart(2,"0")}</span>
+          <strong>{evidence.name}</strong>
+        </header>
+        <div
+          className="h1-o2-geo-evidence-image is-modal"
+          role="img"
+          aria-label={`${evidence.name} 平台排名截图`}
+          style={{backgroundImage:`url("${evidence.src}")`}}
+        />
+        <button
+          type="button"
+          className="h1-o2-geo-evidence-nav is-prev"
+          aria-label="查看上一张"
+          onClick={()=>onSelect((index-1+items.length)%items.length)}
+        >‹</button>
+        <button
+          type="button"
+          className="h1-o2-geo-evidence-nav is-next"
+          aria-label="查看下一张"
+          onClick={()=>onSelect((index+1)%items.length)}
+        >›</button>
+        <button
+          type="button"
+          className="h1-o2-geo-evidence-close"
+          aria-label="关闭大图"
+          onClick={onClose}
+        >×</button>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 function O2GeoBaseline(){
   const metrics=[
     ["Overall","10%","#4.4"],
@@ -4754,6 +4823,7 @@ function O2GeoBaseline(){
     ["AI Overview","11%","#3.2"],
   ];
   const questions=["Best CFD brokers","MT5","TradingView","Copy Trading","Leverage","Trading cost","Execution","Compliance","Gold","Newbie","High-frequency","Pro traders"];
+  const [evidenceIndex,setEvidenceIndex]=useState(null);
   return (
     <div className="h1-o2-geo-baseline">
       <div className="h1-o2-geo-metrics">
@@ -4770,7 +4840,27 @@ function O2GeoBaseline(){
           <li>ChatGPT 场景最弱：Visibility 仅 8%，平均位置 #5.7。</li>
           <li>AI Overview 的平均位置相对更好，但覆盖率仍有显著提升空间。</li>
         </ul>
-        <div>{questions.map(item=><span key={item}>{item}</span>)}</div>
+        <div className="h1-o2-geo-questions">{questions.map(item=><span key={item}>{item}</span>)}</div>
+        <div className="h1-o2-geo-evidence-strip" aria-label="四个平台排名截图">
+          {O2_GEO_EVIDENCE.map((evidence,index)=>(
+            <button
+              type="button"
+              className={`h1-o2-geo-evidence-thumb${evidence.tone==="risk"?" is-risk":""}`}
+              key={evidence.name}
+              aria-label={`放大查看 ${evidence.name} 平台排名截图`}
+              aria-haspopup="dialog"
+              onClick={()=>setEvidenceIndex(index)}
+            >
+              <span
+                className="h1-o2-geo-evidence-image"
+                role="img"
+                aria-label={`${evidence.name} 平台排名截图缩略图`}
+                style={{backgroundImage:`url("${evidence.src}")`}}
+              />
+              <i aria-hidden="true">↗</i>
+            </button>
+          ))}
+        </div>
         <footer className="h1-o2-geo-market-source">
           <span>采样市场：</span>
           <O2CountryFlag code="th" name="泰国"/>
@@ -4780,6 +4870,12 @@ function O2GeoBaseline(){
           <O2CountryFlag code="au" name="澳大利亚"/>
           <span>数据来源：Peec.ai · 14 days</span>
         </footer>
+        <O2GeoEvidenceLightbox
+          items={O2_GEO_EVIDENCE}
+          index={evidenceIndex}
+          onSelect={setEvidenceIndex}
+          onClose={()=>setEvidenceIndex(null)}
+        />
       </article>
     </div>
   );

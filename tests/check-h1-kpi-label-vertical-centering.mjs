@@ -7,7 +7,7 @@ const immersive = fs.readFileSync(
   "previews/vantage-h1-immersive.html",
   "utf8",
 );
-const centeringRevision = "20260731-o2-india-proof-below-v3";
+const centeringRevision = "20260731-geo-aso-release-v1";
 
 const imageRule = theme.match(
   /\.h1-figma-kpi\s*>\s*img\s*\{([^}]*)\}/,

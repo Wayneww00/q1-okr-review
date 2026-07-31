@@ -94,5 +94,30 @@ assert.match(
   /\.h1-o2-aso-laurel\s*\{[\s\S]*?object-fit:\s*contain/,
   "the source PPT laurel must be rendered as an image asset without CSS reconstruction",
 );
+assert.match(
+  theme,
+  /\.h1-o2-aso-laurel\s*\{[\s\S]*?width:\s*82%[\s\S]*?height:\s*82%[\s\S]*?transform:\s*translate\(-50%,\s*-50%\)/,
+  "the laurels on both ASO pages must be reduced and centered so the typography leads",
+);
+assert.match(
+  theme,
+  /\.h1-o2-aso-award-copy > strong\s*\{[\s\S]*?font-size:\s*52px/,
+  "page 18 award values must be enlarged for presentation-distance legibility",
+);
+assert.match(
+  theme,
+  /\.h1-o2-aso-award-copy p,[\s\S]*?\.h1-o2-aso-award-copy small\s*\{[\s\S]*?font-size:\s*18px/,
+  "page 18 supporting award copy must be enlarged",
+);
+assert.match(
+  theme,
+  /\.h1-o2-aso-evidence-badges strong\s*\{[\s\S]*?font-size:\s*33px/,
+  "page 19 evidence values must be enlarged inside the reduced laurels",
+);
+assert.match(
+  theme,
+  /\.h1-o2-aso-evidence-badges small\s*\{[\s\S]*?font-size:\s*14px/,
+  "page 19 evidence notes must remain readable inside the badges",
+);
 
 console.log("H1 O2 ASO pages 18–19 PPT restoration contract passed.");
