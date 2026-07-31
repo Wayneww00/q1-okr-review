@@ -19,8 +19,8 @@ assert.deepEqual(ids, Array.from({length:22}, (_,index)=>index+1), "H1 should co
 assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','22 MODULES'\)\)/, "shell should advertise 22 modules");
 assert.doesNotMatch(shell, /'23 MODULES'/, "stale 23-module label should not appear");
 assert.ok(
-  shell.includes('src="../index.html?report=h1&embedded=1&v=20260731-nd-retail-v1"'),
-  "the formal shell should invalidate the embedded report cache after the ND Retail integration",
+  shell.includes('src="../index.html?report=h1&embedded=1&v=20260731-social-sov-order-v1"'),
+  "the formal shell should invalidate the embedded report cache after the SOV chronology correction",
 );
 assert.doesNotMatch(
   shell,
@@ -131,7 +131,7 @@ assert.match(
   "page 12 reputation conclusion must remain legible at presentation scale",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260731-nd-retail-v1/g)].length,
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260731-social-sov-order-v1/g)].length,
   2,
   "the formal shell and embedded report must both load the current cache-busted theme",
 );
@@ -192,7 +192,7 @@ assert.equal(data11.searchMetrics.months.length, 12, "page 11 should retain all 
 for (const token of [
   "2025 H2 vs 2026 年 H1 月度表现及整体占比走势",
   "SHARE OF VOICE (SOV) TREND",
-  "Monthly Vantage Mentions vs. Industry Mentions (2026 H1 vs 2025 H2)",
+  "Monthly Vantage Mentions vs. Industry Mentions (2025 H2 vs 2026 H1)",
   "Vantage Mentions (in thousands)",
   "Total Industry Mentions (in thousands)",
   "Vantage SOV (%)",
@@ -207,37 +207,37 @@ for (const token of [
   assert.ok(page12.includes(token), `page 12 should preserve PPT token: ${token}`);
 }
 for (const row of [
-  '{month:"Jan",period:"2026 H1",vantage:62.3,vantageText:"62.3",industry:1078.9,industryText:"1,078.9",sov:5.79,sovText:"5.79%"}',
-  '{month:"Feb",period:"2026 H1",vantage:59.6,vantageText:"59.6",industry:1072.6,industryText:"1,072.6",sov:5.53,sovText:"5.53%"}',
-  '{month:"Mar",period:"2026 H1",vantage:68.2,vantageText:"68.2",industry:1079.3,industryText:"1,079.3",sov:6.33,sovText:"6.33%"}',
-  '{month:"Apr",period:"2026 H1",vantage:84.0,vantageText:"84.0",industry:1077.6,industryText:"1,077.6",sov:7.80,sovText:"7.80%"}',
-  '{month:"May",period:"2026 H1",vantage:96.9,vantageText:"96.9",industry:1023.7,industryText:"1,023.7",sov:9.43,sovText:"9.43%"}',
-  '{month:"Jun",period:"2026 H1",vantage:104.7,vantageText:"104.7",industry:1023.5,industryText:"1,023.5",sov:10.23,sovText:"10.23%"}',
   '{month:"Jul",period:"2025 H2",vantage:51.8,vantageText:"51.8",industry:1081.7,industryText:"1,081.7",sov:4.79,sovText:"4.79%"}',
   '{month:"Aug",period:"2025 H2",vantage:61.0,vantageText:"61.0",industry:1554.6,industryText:"1,554.6",sov:4.61,sovText:"4.61%"}',
   '{month:"Sep",period:"2025 H2",vantage:76.5,vantageText:"76.5",industry:1721.5,industryText:"1,721.5",sov:5.65,sovText:"5.65%"}',
   '{month:"Oct",period:"2025 H2",vantage:122.1,vantageText:"122.1",industry:2011.5,industryText:"2,011.5",sov:6.06,sovText:"6.06%"}',
   '{month:"Nov",period:"2025 H2",vantage:158.1,vantageText:"158.1",industry:2062.9,industryText:"2,062.9",sov:7.66,sovText:"7.66%"}',
-  '{month:"Dec",period:"2025 H2",vantage:163.7,vantageText:"163.7",industry:2017.1,industryText:"2,017.1",sov:8.10,sovText:"8.10%"}'
+  '{month:"Dec",period:"2025 H2",vantage:163.7,vantageText:"163.7",industry:2017.1,industryText:"2,017.1",sov:8.10,sovText:"8.10%"}',
+  '{month:"Jan",period:"2026 H1",vantage:62.3,vantageText:"62.3",industry:1078.9,industryText:"1,078.9",sov:5.79,sovText:"5.79%"}',
+  '{month:"Feb",period:"2026 H1",vantage:59.6,vantageText:"59.6",industry:1072.6,industryText:"1,072.6",sov:5.53,sovText:"5.53%"}',
+  '{month:"Mar",period:"2026 H1",vantage:68.2,vantageText:"68.2",industry:1079.3,industryText:"1,079.3",sov:6.33,sovText:"6.33%"}',
+  '{month:"Apr",period:"2026 H1",vantage:84.0,vantageText:"84.0",industry:1077.6,industryText:"1,077.6",sov:7.80,sovText:"7.80%"}',
+  '{month:"May",period:"2026 H1",vantage:96.9,vantageText:"96.9",industry:1023.7,industryText:"1,023.7",sov:9.43,sovText:"9.43%"}',
+  '{month:"Jun",period:"2026 H1",vantage:104.7,vantageText:"104.7",industry:1023.5,industryText:"1,023.5",sov:10.23,sovText:"10.23%"}'
 ]) {
   assert.ok(page12.includes(row), `page 12 should preserve exact PPT row: ${row}`);
 }
 // The source PPT directly displays the SOV labels, including Aug and Sep.
 // Per the user's instruction, those visible PPT percentages remain authoritative here.
 assertOrderedTokens(page12, [
-  '{month:"Jan",period:"2026 H1"',
-  '{month:"Feb",period:"2026 H1"',
-  '{month:"Mar",period:"2026 H1"',
-  '{month:"Apr",period:"2026 H1"',
-  '{month:"May",period:"2026 H1"',
-  '{month:"Jun",period:"2026 H1"',
   '{month:"Jul",period:"2025 H2"',
   '{month:"Aug",period:"2025 H2"',
   '{month:"Sep",period:"2025 H2"',
   '{month:"Oct",period:"2025 H2"',
   '{month:"Nov",period:"2025 H2"',
-  '{month:"Dec",period:"2025 H2"'
-], "page 13 monthly groups");
+  '{month:"Dec",period:"2025 H2"',
+  '{month:"Jan",period:"2026 H1"',
+  '{month:"Feb",period:"2026 H1"',
+  '{month:"Mar",period:"2026 H1"',
+  '{month:"Apr",period:"2026 H1"',
+  '{month:"May",period:"2026 H1"',
+  '{month:"Jun",period:"2026 H1"'
+], "page 12 chronological monthly groups");
 
 for (const token of [
   "VANTAGE MARKETS’ SHARE OF CFD INDUSTRY FOLLOWERS",
@@ -329,8 +329,8 @@ const socialChartEnd = index.indexOf("\nfunction ", socialChartStart + 10);
 const socialChartSource = index.slice(socialChartStart, socialChartEnd);
 assert.match(
   socialChartSource,
-  /h1-social-period-bands"><span>2026 H1<\/span><span>2025 H2<\/span>/,
-  "page 13 period bands should follow the PPT's H1 then H2 order"
+  /const periods = \[\.\.\.new Set\(chartData\.map\(row=>row\.period\)\)\];[\s\S]*h1-social-period-bands">\{periods\.map\(period=><span key=\{period\}>\{period\}<\/span>\)\}<\/div>/,
+  "page 12 period bands should follow the chronological order supplied by the data"
 );
 
 const followersShareStart = index.indexOf("function H1FollowersShareChart");

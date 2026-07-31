@@ -73,7 +73,7 @@ assert.match(
 );
 assert.match(
   app,
-  /data-editor-revision=\{H1_RETAIL_GROWTH_LAYOUTS\.has\(board\.layoutType\)\s*\?\s*"retail-nd-ppt-v4"/,
+  /data-editor-revision=\{board\.editorRevision \|\| \(H1_RETAIL_GROWTH_LAYOUTS\.has\(board\.layoutType\)\s*\?\s*"retail-nd-ppt-v4"/,
   "the rebuilt PPT pages must use a fresh editor-content namespace",
 );
 assert.match(
@@ -120,7 +120,7 @@ assert.match(
   "the transition lines must animate in a deliberate sequence",
 );
 
-const expectedCacheKey = "20260731-o2-editor-layout-fix-v1";
+const expectedCacheKey = "20260731-social-sov-order-v1";
 assert.ok(app.includes(`h1-figma-racing-theme.css?v=${expectedCacheKey}`));
 const shellCacheKeys = [
   ...shell.matchAll(

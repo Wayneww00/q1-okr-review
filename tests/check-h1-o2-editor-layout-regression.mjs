@@ -13,7 +13,7 @@ const immersive = fs.readFileSync(
   path.join(repoRoot, "previews/vantage-h1-immersive.html"),
   "utf8",
 );
-const expectedThemeVersion = "20260731-o2-editor-layout-fix-v1";
+const expectedThemeVersion = "20260731-social-sov-order-v1";
 
 const regions = html.match(
   /function O2Regions\(\)\{([\s\S]*?)\n\}\n\nfunction O2Delivery\(\)/,
