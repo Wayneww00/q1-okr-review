@@ -135,7 +135,7 @@ assert.ok(
   "the Frame 73 story and following Figma pages must remain in order after merchandise",
 );
 for (const [pageId, fileName] of [
-  ["okr-ai-recommendation", "p58-foreground.png"],
+  ["okr-ai-recommendation", "p58-ai-recommendation-figma-152-1299.png"],
   ["okr-omnichannel-amplification", "omnichannel-amplification-figma-145-716.png"],
   ["okr-superapp-activation", "p61-foreground.png"],
   ["okr-premium-unlimited", "p62-foreground.png"],
@@ -143,7 +143,9 @@ for (const [pageId, fileName] of [
 ]) {
   const rendererPattern = pageId === "okr-omnichannel-amplification"
     ? /page\.id==='okr-omnichannel-amplification'[\s\S]*?src=\{page\.src\}[\s\S]*?left:195,top:75,width:1575,height:987/
-    : new RegExp(`page\\.id==='${pageId}'[\\s\\S]*?figma-untitled\\/${fileName.replace('.', '\\.')}`);
+    : pageId === "okr-ai-recommendation"
+      ? /page\.id==='okr-ai-recommendation'[\s\S]*?src=\{page\.src\}[\s\S]*?left:160,top:19,width:1608,height:1042/
+      : new RegExp(`page\\.id==='${pageId}'[\\s\\S]*?figma-untitled\\/${fileName.replace('.', '\\.')}`);
   assert.match(
     app,
     rendererPattern,
@@ -158,6 +160,11 @@ for (const [pageId, fileName] of [
     `${fileName} must exist locally`,
   );
 }
+assert.match(
+  registry,
+  /id:'okr-ai-recommendation'[\s\S]*?p58-ai-recommendation-figma-152-1299\.png[\s\S]*?figmaNodeId:'152:1299'/,
+  "the AI recommendation page must retain provenance for the current Figma foreground node 152:1299",
+);
 assert.match(
   app,
   /page\.id==='okr-tvc-localization'[\s\S]*?<OkrTvcLocalizationPage/,

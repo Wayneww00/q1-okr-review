@@ -167,7 +167,7 @@ try {
         pageNumber: "17/22",
       },
       "okr-ai-recommendation": {
-        source: /previews\/assets\/figma-untitled\/p58-foreground\.png$/,
+        source: /previews\/assets\/figma-untitled\/p58-ai-recommendation-figma-152-1299\.png$/,
         pageNumber: "18/22",
       },
       "okr-omnichannel-amplification": {

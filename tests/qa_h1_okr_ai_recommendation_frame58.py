@@ -4,10 +4,10 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 
-PAGE_ID = "okr-elite-endorsement-resources"
-BASE_URL = os.environ.get("H1_ENDORSEMENT_TEST_URL", "http://127.0.0.1:4182")
-SCREENSHOT = Path("/tmp/h1-okr-elite-endorsement-frame45.png")
-SHELL_SCREENSHOT = Path("/tmp/h1-shell-elite-endorsement-frame45.png")
+PAGE_ID = "okr-ai-recommendation"
+BASE_URL = os.environ.get("H1_AI_FRAME58_TEST_URL", "http://127.0.0.1:4182")
+SCREENSHOT = Path("/tmp/h1-okr-ai-recommendation-frame58.png")
+SHELL_SCREENSHOT = Path("/tmp/h1-shell-ai-recommendation-frame58.png")
 
 
 with sync_playwright() as playwright:
@@ -25,28 +25,24 @@ with sync_playwright() as playwright:
     report_page = page.locator(f'[data-page-id="{PAGE_ID}"]')
     report_page.scroll_into_view_if_needed()
     report_page.wait_for(state="visible")
+    assert report_page.get_attribute("data-figma-node-id") == "152:1299"
 
-    assert report_page.get_attribute("data-figma-node-id") == "150:1072"
-    assert report_page.locator(".h1-okr-elite-client-background").count() == 1
-    assert report_page.locator(".h1-elite-copy--endorsement").count() == 0
-
-    foreground = report_page.locator(".h1-okr-elite-endorsement-foreground")
+    foreground = report_page.locator(".h1-okr-figma-foreground-layer")
     assert foreground.count() == 1
     assert foreground.get_attribute("src").endswith(
-        "p45-elite-endorsement-resources-figma-150-1072.png"
+        "p58-ai-recommendation-figma-152-1299.png"
     )
-    assert foreground.get_attribute("width") == "1716"
-    assert foreground.get_attribute("height") == "904"
+    assert foreground.get_attribute("width") == "1608"
+    assert foreground.get_attribute("height") == "1042"
     assert foreground.evaluate(
         "(node) => ({left: node.style.left, top: node.style.top, "
         "width: node.style.width, height: node.style.height})"
     ) == {
-        "left": "102px",
-        "top": "72px",
-        "width": "1716px",
-        "height": "904px",
+        "left": "160px",
+        "top": "19px",
+        "width": "1608px",
+        "height": "1042px",
     }
-
     report_page.screenshot(path=str(SCREENSHOT))
     assert not errors, f"page errors: {errors}"
 
@@ -68,12 +64,14 @@ with sync_playwright() as playwright:
     )
     shell_page.scroll_into_view_if_needed()
     shell_page.wait_for(state="visible")
-    assert shell_page.locator(".h1-okr-elite-endorsement-foreground").count() == 1
+    assert shell_page.locator(
+        'img[src$="p58-ai-recommendation-figma-152-1299.png"]'
+    ).count() == 1
     shell.screenshot(path=str(SHELL_SCREENSHOT))
     assert not shell_errors, f"shell page errors: {shell_errors}"
     browser.close()
 
 print(
-    "Browser QA passed; Frame 45 foreground is aligned over the existing "
-    f"Elite Client background; screenshots: {SCREENSHOT}, {SHELL_SCREENSHOT}"
+    "Browser QA passed; current Figma Frame 58 is aligned over the shared "
+    f"trophy background; screenshots: {SCREENSHOT}, {SHELL_SCREENSHOT}"
 )
