@@ -3,6 +3,7 @@
 Vantage 2026 H1 复盘演示项目。当前协作版本位于 `codex/h1-review-handoff`，通过 Draft PR #1 汇总交付。
 
 - 完整研发交接、启动方式、架构、测试与素材说明：[HANDOFF.md](HANDOFF.md)
+- 双人分支分工、页面认领、提交、测试和合入规则：[COLLABORATION.md](COLLABORATION.md)
 - 正式线上入口：<https://vantage-h1.vercel.app/>
 - 正式入口：`previews/vantage-h1-immersive.html`
 - GitHub PR：<https://github.com/songchunhui513-bit/q1-okr-review/pull/1>
