@@ -10,6 +10,7 @@ const browserName = process.env.H1_O1_TEST_BROWSER || "chromium";
 const expectedO1Ids = [
   "okr-review",
   "okr-brand-results",
+  "okr-brand-build-transition",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
@@ -132,13 +133,13 @@ try {
     );
 
     const o1Pages = o1.locator(":scope > [data-report-page]");
-    assert.equal(await o1Pages.count(), 31);
+    assert.equal(await o1Pages.count(), 32);
     assert.deepEqual(
       await o1Pages.evaluateAll((nodes) =>
         nodes.map((node) => node.getAttribute("data-page-id")),
       ),
       expectedO1Ids,
-      "the package's exact 31-page order must render without an extra chapter",
+      "the package's exact 32-page order must render without an extra chapter",
     );
     assert.equal(
       await o1.locator('[data-page-id="o1-chapter"]').count(),
@@ -158,9 +159,9 @@ try {
         last: read("okr-premium-unlimited"),
       };
     });
-    assert.match(numbers.first || "", /01\s*\/\s*31/);
-    assert.match(numbers.moved || "", /06\s*\/\s*31/);
-    assert.match(numbers.last || "", /31\s*\/\s*31/);
+    assert.match(numbers.first || "", /01\s*\/\s*32/);
+    assert.match(numbers.moved || "", /07\s*\/\s*32/);
+    assert.match(numbers.last || "", /32\s*\/\s*32/);
 
     assert.equal(
       await o1.locator(".h1-okr-image-hotspot").count(),
@@ -283,7 +284,7 @@ try {
     await page.close();
   }
 
-  console.log("H1 O1 New 31-page runtime interaction contract passed.");
+  console.log("H1 O1 New 32-page runtime interaction contract passed.");
 } finally {
   await browser.close();
 }

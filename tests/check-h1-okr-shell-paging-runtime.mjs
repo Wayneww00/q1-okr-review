@@ -66,7 +66,7 @@ try {
   const reportFrame = page.locator("#reportFrame").contentFrame();
   await reportFrame.locator('body[data-h1-prepared="true"]').waitFor();
   const reportPages = reportFrame.locator("[data-report-page]");
-  assert.equal(await reportPages.count(), 96);
+  assert.equal(await reportPages.count(), 97);
 
   assert.equal(
     await reportFrame
@@ -78,7 +78,7 @@ try {
     await reportFrame
       .locator('[data-report-section="okr"] [data-report-page]')
       .count(),
-    31,
+    32,
   );
   assert.equal(
     await reportFrame
@@ -126,7 +126,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    /^01\s*\/\s*31$/,
+    /^01\s*\/\s*32$/,
   );
   await page.locator("body").press("PageDown");
   await waitForActivePage("okr-brand-results");
@@ -140,7 +140,22 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    /^02\s*\/\s*31$/,
+    /^02\s*\/\s*32$/,
+  );
+
+  await page.locator("body").press("PageDown");
+  await waitForActivePage("okr-brand-build-transition");
+  assert.match(
+    (
+      await reportFrame
+        .locator(
+          '[data-page-id="okr-brand-build-transition"] .h1-okr-page-number',
+        )
+        .innerText()
+    )
+      .replace(/\s+/g, " ")
+      .trim(),
+    /^03\s*\/\s*32$/,
   );
 
   await scrollFrameToPage("okr-tvc-matrix");
@@ -156,7 +171,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    /^06\s*\/\s*31$/,
+    /^07\s*\/\s*32$/,
   );
 
   await scrollFrameToPage("okr-premium-unlimited");
@@ -170,7 +185,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    /^31\s*\/\s*31$/,
+    /^32\s*\/\s*32$/,
   );
 
   await page.locator("body").press("PageDown");
@@ -203,5 +218,5 @@ try {
 }
 
 console.log(
-  "H1 immersive paging passed through the 31-page O1 package, O2 and O3.",
+  "H1 immersive paging passed through the 32-page O1 package, O2 and O3.",
 );

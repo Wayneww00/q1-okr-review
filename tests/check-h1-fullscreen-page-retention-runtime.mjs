@@ -135,7 +135,7 @@ try {
   const reportPageIds = await reportFrame
     .locator("[data-report-page]")
     .evaluateAll((pages) => pages.map((reportPage) => reportPage.dataset.pageId));
-  assert.equal(reportPageIds.length, 96, "the complete report must expose 96 pages");
+  assert.equal(reportPageIds.length, 97, "the complete report must expose 97 pages");
   assert.deepEqual(
     await reportFrame.locator("body").evaluate(() =>
       Object.fromEntries(
@@ -145,7 +145,7 @@ try {
         ]),
       ),
     ),
-    { data: 20, okr: 31, o2: 27, o3: 18 },
+    { data: 20, okr: 32, o2: 27, o3: 18 },
     "the fullscreen audit must cover every report section",
   );
 

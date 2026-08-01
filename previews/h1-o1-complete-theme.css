@@ -1851,6 +1851,141 @@ svg.h1-okr-insight-icon circle {
   color: rgba(255,255,255,.5);
 }
 
+/* O1 transition — from brand definition to the operating method */
+.h1-okr-build-transition-canvas {
+  overflow: hidden;
+}
+
+.h1-okr-build-transition-veil {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(3,2,2,.76) 0%,
+      rgba(3,2,2,.52) 35%,
+      rgba(3,2,2,.46) 67%,
+      rgba(3,2,2,.72) 100%),
+    linear-gradient(90deg,
+      rgba(3,2,2,.38) 0%,
+      rgba(3,2,2,.28) 57%,
+      rgba(3,2,2,.84) 100%),
+    radial-gradient(circle at 53% 58%,rgba(174,76,23,.14),transparent 48%);
+  pointer-events: none;
+}
+
+.h1-okr-build-transition-watermark {
+  position: absolute;
+  z-index: 2;
+  top: 92px;
+  left: 62px;
+  color: transparent;
+  font-family: "Barlow Condensed", "Gilroy", sans-serif !important;
+  font-size: 282px;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -.075em;
+  line-height: 1;
+  -webkit-text-stroke: 2px rgba(255,255,255,.075);
+  pointer-events: none;
+}
+
+.h1-okr-build-transition-content {
+  position: absolute;
+  z-index: 3;
+  top: 320px;
+  left: 96px;
+  width: 1700px;
+  color: #fff;
+}
+
+.h1-okr-build-transition-kicker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0;
+  color: #ffc16d;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  line-height: 1;
+}
+
+.h1-okr-build-transition-rule {
+  width: 640px;
+  height: 4px;
+  margin-top: 43px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,#f0a33d,rgba(242,206,151,.56),transparent);
+  box-shadow: 0 0 24px rgba(240,163,61,.28);
+}
+
+.h1-okr-build-transition-heading {
+  display: block;
+  margin: 44px 0 0;
+  color: #fff;
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif !important;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: -.04em;
+  text-shadow: 0 6px 34px rgba(0,0,0,.72);
+}
+
+.h1-okr-build-transition-code {
+  display: block;
+  margin-bottom: 20px;
+  color: #f0a33d;
+  font-family: "Barlow Condensed", "Gilroy", sans-serif !important;
+  font-size: 88px;
+  font-weight: 900;
+  letter-spacing: -.035em;
+  line-height: .86;
+  text-shadow: 0 8px 28px rgba(0,0,0,.6),0 0 24px rgba(240,163,61,.16);
+}
+
+.h1-okr-build-transition-title {
+  display: block;
+  max-width: 1680px;
+  color: #fff;
+  font-family: "Noto Serif SC", "Songti SC", serif !important;
+  font-size: 84px;
+  font-weight: 900;
+  letter-spacing: -.065em;
+  line-height: 1.12;
+  text-wrap: balance;
+  white-space: nowrap;
+}
+
+.h1-okr-build-transition-english {
+  margin: 34px 0 0;
+  color: rgba(255,255,255,.74);
+  font-family: "Gilroy", "Inter", sans-serif !important;
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: .075em;
+  line-height: 1.4;
+  text-shadow: 0 4px 20px rgba(0,0,0,.75);
+}
+
+.h1-okr-build-transition-page.vis .h1-okr-build-transition-content {
+  animation: h1OkrBuildTransitionIn .85s cubic-bezier(.16,1,.3,1) both;
+}
+
+.h1-okr-build-transition-page.vis .h1-okr-build-transition-watermark {
+  animation: h1OkrBuildTransitionWatermarkIn 1.1s cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes h1OkrBuildTransitionIn {
+  from { opacity: 0; transform: translate3d(0,34px,0); }
+  to { opacity: 1; transform: translate3d(0,0,0); }
+}
+
+@keyframes h1OkrBuildTransitionWatermarkIn {
+  from { opacity: 0; transform: translate3d(-24px,0,0); }
+  to { opacity: 1; transform: translate3d(0,0,0); }
+}
+
 .h1-okr-video-modal {
   position: fixed;
   z-index: 10000;

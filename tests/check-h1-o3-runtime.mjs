@@ -35,7 +35,7 @@ try {
   );
   assert.ok(
     await reportFrame.locator('[data-report-section="okr"] [data-report-page]').count() >=
-      31,
+      32,
     "the existing O1 deck must not lose pages",
   );
   assert.ok(

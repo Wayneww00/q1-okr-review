@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-organic-chart-clarity-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260801-vn-retail-dual-axis-v1">
-<link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
+<link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260801-brand-build-transition-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -3619,6 +3619,39 @@ function OkrBrandResultsPage({index,count}){
   );
 }
 
+function OkrBrandBuildTransitionPage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  return (
+    <section
+      ref={pageRef}
+      className="h1-okr-page h1-okr-build-transition-page"
+      data-report-page
+      data-page-id={page.id}
+      aria-labelledby="h1-okr-build-transition-title"
+    >
+      <div ref={canvasRef} className="h1-okr-canvas h1-okr-build-transition-canvas">
+        <div className="h1-okr-build-transition-veil" aria-hidden="true"></div>
+        <div className="h1-okr-build-transition-watermark" aria-hidden="true">1+6</div>
+        <div className="h1-okr-build-transition-content">
+          <div className="h1-okr-build-transition-kicker">
+            <ObjectiveChapterMark/>
+            <span>O1 · BRAND BUILDING SYSTEM</span>
+          </div>
+          <div className="h1-okr-build-transition-rule" aria-hidden="true"></div>
+          <h1 id="h1-okr-build-transition-title" className="h1-okr-build-transition-heading" aria-label="1 个升级加 6 个核心抓手">
+            <span className="h1-okr-build-transition-code" aria-hidden="true">1+6</span>
+            <span className="h1-okr-build-transition-title">1 个升级 + 6 个核心抓手</span>
+          </h1>
+          <p className="h1-okr-build-transition-english">ONE UPGRADE + SIX CORE LEVERS</p>
+        </div>
+        <div className="h1-okr-page-number" aria-hidden="true">
+          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function OkrTvcMatrixPage({index,count,onVideoPreview}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   const matrixSource='previews/assets/o1-complete/figma-exact/okr-p32-matrix-source.jpg';
@@ -3706,6 +3739,10 @@ const OKR_FIGMA_PAGES=[
     id:'okr-brand-results',
     label:'什么是全球一线品牌',
     src:'previews/assets/o1-complete/figma-exact/p27-source.png',
+  },
+  {
+    id:'okr-brand-build-transition',
+    label:'1 个升级 + 6 个核心抓手',
   },
   {
     id:'okr-brand-refresh',
@@ -4768,6 +4805,7 @@ function OkrReportDeck(){
       <OkrBrandSystemPage index={0} count={reportPageCount}/>
       {OKR_FIGMA_PAGES.slice(1).map((page,index)=>(
         page.id==='okr-brand-results' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p26-foreground-clean.png"/> :
+        page.id==='okr-brand-build-transition' ? <OkrBrandBuildTransitionPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-brand-refresh' ? <OkrBrandRefreshForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} onPreview={setPreview}/> :
         page.id==='okr-tvc-matrix' ? <OkrBrandContentMatrixForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :

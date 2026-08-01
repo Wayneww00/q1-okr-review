@@ -49,6 +49,7 @@ function topLevelNumericIds(block) {
 const expectedO1Ids = [
   "okr-review",
   "okr-brand-results",
+  "okr-brand-build-transition",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
@@ -96,7 +97,7 @@ assert.deepEqual(
 assert.deepEqual(
   o1Ids,
   expectedO1Ids,
-  "the O1 section must retain all 31 pages in the approved presentation order",
+  "the O1 section must retain all 32 pages in the approved presentation order",
 );
 assert.doesNotMatch(
   app.slice(
@@ -124,8 +125,8 @@ assert.deepEqual(
 );
 assert.equal(
   dataIds.length + o1Ids.length + o2Ids.length + o3Ids.length,
-  97,
-  "the unified embedded report must contain 97 pages after restoring the India chapter",
+  98,
+  "the unified embedded report must contain 98 pages after adding the O1 transition",
 );
 assert.doesNotMatch(
   app.slice(
@@ -217,5 +218,5 @@ for (const relativePath of new Set(o1AssetReferences)) {
 }
 
 console.log(
-  "H1 complete 31-page O1 replacement, section preservation, and isolated-asset contract passed.",
+  "H1 complete 32-page O1 replacement, section preservation, and isolated-asset contract passed.",
 );

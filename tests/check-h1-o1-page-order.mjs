@@ -13,19 +13,20 @@ const ids = [
   ...app.slice(start, end).matchAll(/^  \{(?:\n    )?id:["']([^"']+)["']/gm),
 ].map((match) => match[1]);
 
-assert.equal(ids.length, 31, "reordering O1 must preserve all 31 pages");
+assert.equal(ids.length, 32, "the O1 transition must extend the deck to 32 pages");
 assert.deepEqual(
-  ids.slice(0, 7),
+  ids.slice(0, 8),
   [
     "okr-review",
     "okr-brand-results",
+    "okr-brand-build-transition",
     "okr-brand-refresh",
     "okr-brand-operating-system",
     "okr-tvc-matrix",
     "okr-brand-experience-audit",
     "okr-tvc-framework",
   ],
-  "the former O1 page 02 must sit immediately after the former page 06",
+  "the brand-building transition must sit between the definition and the upgrade pages",
 );
 
 console.log("H1 O1 requested page order contract passed.");

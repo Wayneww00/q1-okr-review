@@ -146,7 +146,7 @@ try {
   );
   assert.notEqual(visualGeometry.outlineStroke, "0px");
   assert.equal(visualGeometry.outlineBackgroundImage, "none");
-  assert.match(visualGeometry.pageNumber || "", /^02\s*\/\s*31$/);
+  assert.match(visualGeometry.pageNumber || "", /^02\s*\/\s*32$/);
 
   const editorButton = page.locator("#editorButton");
   await page.waitForFunction(

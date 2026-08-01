@@ -33,6 +33,7 @@ function topLevelNumericIds(block) {
 const expectedO1Ids = [
   "okr-review",
   "okr-brand-results",
+  "okr-brand-build-transition",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
@@ -68,7 +69,7 @@ const o1Block = constantBlock(app, "const OKR_FIGMA_PAGES=[");
 assert.deepEqual(
   topLevelStringIds(o1Block),
   expectedO1Ids,
-  "O1 must use the approved 31-page presentation order",
+  "O1 must use the approved 32-page presentation order",
 );
 assert.doesNotMatch(
   app.slice(
@@ -76,12 +77,12 @@ assert.doesNotMatch(
     app.indexOf("// ═══ O2 growth review"),
   ),
   /<O1ChapterPage\b/,
-  "the package's 31 pages already include page 01; no extra O1 chapter may render",
+  "the package's 32 pages already include page 01; no extra O1 chapter may render",
 );
 assert.match(
   app,
   /const reportPageCount=OKR_FIGMA_PAGES\.length;/,
-  "the package page count must remain 31",
+  "the package page count must follow the 32-page registry",
 );
 
 assert.deepEqual(
@@ -227,4 +228,4 @@ for (const [relativePath, expectedHash] of [
   assert.equal(actualHash, expectedHash, `${relativePath} must match the package`);
 }
 
-console.log("H1 O1 New 31-page isolated full-merge contract passed.");
+console.log("H1 O1 New 32-page isolated full-merge contract passed.");

@@ -46,8 +46,8 @@ try {
   );
   assert.equal(
     await okrPages.count(),
-    31,
-    "the complete 31-page O1 package must stay intact",
+    32,
+    "the complete 32-page O1 package must stay intact",
   );
   assert.equal(await o2Pages.count(), 27, "the O2 section must render all 27 pages");
   assert.equal(
