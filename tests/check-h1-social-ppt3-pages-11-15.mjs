@@ -15,8 +15,8 @@ assert.ok(h1Start >= 0 && h1End > h1Start, "H1 dashboard data block should exist
 const h1 = index.slice(h1Start, h1End);
 
 const ids = [...h1.matchAll(/\bid:(\d+)(?:,|\s)/g)].map(([, id]) => Number(id));
-assert.deepEqual(ids, Array.from({length:21}, (_,index)=>index+1), "H1 should contain 21 ordered data pages after appending the Retail ND scope-restoration page");
-assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','21 MODULES'\)\)/, "shell should advertise 21 modules");
+assert.deepEqual(ids, Array.from({length:20}, (_,index)=>index+1), "H1 should contain 20 ordered data pages after removing the attribution question page");
+assert.match(shell, /dashboard\.before\(makeChapter\('Performance Data','经营数据','20 MODULES'\)\)/, "shell should advertise 20 modules");
 assert.doesNotMatch(shell, /'23 MODULES'/, "stale 23-module label should not appear");
 assert.ok(
   shell.includes('src="../index.html?report=h1&embedded=1&v=20260801-o1-static-images-v1"'),
@@ -31,7 +31,7 @@ assert.doesNotMatch(
 function pageBlock(id) {
   const start = h1.search(new RegExp(`\\{\\s*id:${id}(?:,|\\s)`));
   assert.ok(start >= 0, `H1 page ${id} should exist`);
-  const next = id < 21 ? h1.search(new RegExp(`\\{\\s*id:${id + 1}(?:,|\\s)`)) : h1.length;
+  const next = id < 20 ? h1.search(new RegExp(`\\{\\s*id:${id + 1}(?:,|\\s)`)) : h1.length;
   assert.ok(next > start, `H1 page ${id} should have an isolated data block`);
   return h1.slice(start, next);
 }

@@ -37,7 +37,7 @@ try {
     await reportFrame.locator('[data-report-section="data"] [data-report-page]').count(),
     20,
   );
-  assert.equal(await reportFrame.locator("[data-report-page]").count(), 96);
+  assert.equal(await reportFrame.locator("[data-report-page]").count(), 95);
   assert.equal(await reportFrame.locator('[data-page-id="data-21"]').count(), 0);
 
   const waitForActivePage = (pageId) =>
@@ -112,17 +112,17 @@ try {
   );
   await assertContained("data-16");
 
-  await scrollToPage("data-20");
+  await scrollToPage("data-19");
   assert.match(
-    await reportFrame.locator('[data-page-id="data-20"]').innerText(),
+    await reportFrame.locator('[data-page-id="data-19"]').innerText(),
     /可能对Retail ND占比有影响的因素[\s\S]*1\.MIB口径变化导致数据影响[\s\S]*40%的Q2 MIB用户不符合IB的显著特征[\s\S]*Q2 ND 5\.9M \(占比大盘1\.4%\)[\s\S]*2\.Retail 转 IB导致下降（长期）[\s\S]*超过一半转入IB的用户在注册两个月后才发生归属迁移[\s\S]*Q2 ND 9\.1M \(占比大盘2\.1%\)/,
   );
   assert.equal(
-    await reportFrame.locator('[data-page-id="data-20"] .h1-retail-growth-factor-panel').count(),
+    await reportFrame.locator('[data-page-id="data-19"] .h1-retail-growth-factor-panel').count(),
     2,
   );
   const factorOrder = await reportFrame
-    .locator('[data-page-id="data-20"] .h1-retail-growth-factor-panel')
+    .locator('[data-page-id="data-19"] .h1-retail-growth-factor-panel')
     .evaluateAll((panels) =>
       panels.map((panel) => {
         const title = panel.querySelector("h2").getBoundingClientRect();
@@ -140,15 +140,15 @@ try {
     assert.equal(order.titleBeforeSummary, true);
     assert.equal(order.summaryBeforeChart, true);
   }
-  await assertContained("data-20");
+  await assertContained("data-19");
 
   assert.match(
     (await reportFrame
-      .locator('[data-page-id="data-20"] .h1-extended-editorial-page-number')
+      .locator('[data-page-id="data-19"] .h1-extended-editorial-page-number')
       .innerText())
       .replace(/\s+/g, " ")
       .trim(),
-    /^20 \/ 20$/,
+    /^19 \/ 20$/,
   );
   assert.deepEqual(pageErrors, []);
   console.log("Retail ND PPT v3 runtime contract passes.");

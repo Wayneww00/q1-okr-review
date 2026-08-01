@@ -17,7 +17,7 @@ const dataBlock = app.slice(dataStart, dataEnd);
 assert.equal(
   [...dataBlock.matchAll(/editorRevision:"retail-nd-ppt-v5"/g)].length,
   3,
-  "only pages 15, 16, and 20 should invalidate persisted editor copy",
+  "only pages 15, 16, and 19 should invalidate persisted editor copy",
 );
 assert.match(
   app,
@@ -30,8 +30,8 @@ const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) =>
 );
 assert.deepEqual(
   ids,
-  Array.from({ length: 21 }, (_, index) => index + 1),
-  "the restored-scope comparison must append a 21st data page",
+  Array.from({ length: 20 }, (_, index) => index + 1),
+  "the data section must contain 20 continuously numbered pages",
 );
 
 for (const note of [
@@ -78,7 +78,7 @@ for (const token of [
   'rightInsight:"超过一半转入IB的用户在注册两个月后才发生归属迁移，"',
   'intervalTitle:"2026-Q2 Retail 转IB 用户 注册到IB转化日间隔和 ND 影响分布"',
 ]) {
-  assert.ok(dataBlock.includes(token), `page 20 must preserve PPT slide 8 content: ${token}`);
+  assert.ok(dataBlock.includes(token), `page 19 must preserve PPT slide 8 content: ${token}`);
 }
 
 for (const removed of [
@@ -99,7 +99,7 @@ for (const component of [
 assert.match(
   app,
   /<h3>2026-Q2 MIB 用户类型人数及其贡献ND占比<\/h3>[\s\S]*?aria-label="2026-Q2 MIB 用户类型人数及其贡献ND占比"/,
-  "page 20 must show the full 2026-Q2 period on the highlighted MIB chart label",
+  "page 19 must show the full 2026-Q2 period on the highlighted MIB chart label",
 );
 
 for (const selector of [

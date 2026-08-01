@@ -13,13 +13,13 @@ assert.ok(dataStart >= 0 && dataEnd > dataStart, "H1 dashboard data must exist")
 const dataBlock = app.slice(dataStart, dataEnd);
 
 const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) => Number(match[1]));
-assert.deepEqual(ids, Array.from({ length: 21 }, (_, index) => index + 1));
-assert.match(shell, /'Performance Data','经营数据','21 MODULES'/);
+assert.deepEqual(ids, Array.from({ length: 20 }, (_, index) => index + 1));
+assert.match(shell, /'Performance Data','经营数据','20 MODULES'/);
 
 function pageBlock(id) {
   const start = dataBlock.search(new RegExp(`^  \\{\\s*id:${id},`, "m"));
   assert.ok(start >= 0, `page ${id} must exist`);
-  const next = id < 21
+  const next = id < 20
     ? dataBlock.search(new RegExp(`^  \\{\\s*id:${id + 1},`, "m"))
     : dataBlock.length;
   assert.ok(next > start, `page ${id} must be isolated`);
@@ -27,7 +27,7 @@ function pageBlock(id) {
 }
 
 const page18 = pageBlock(18);
-const page21 = pageBlock(21);
+const page20 = pageBlock(20);
 
 for (const token of [
   'editorRevision:"retail-nd-scope-restoration-v1"',
@@ -60,7 +60,7 @@ for (const token of [
   '{label:"2025 H2",value:159.3,valueText:"$159.30M",share:30,shareText:"30.0%"}',
   '{label:"2026 H1",value:269.1,valueText:"$269.10M",share:30.6,shareText:"30.6%"}',
 ]) {
-  assert.ok(page21.includes(token), `page 21 must preserve PPT slide 2 token: ${token}`);
+  assert.ok(page20.includes(token), `page 20 must preserve PPT slide 2 token: ${token}`);
 }
 
 assert.match(app, /"retail_nd_scope_restoration"/);
@@ -84,7 +84,7 @@ assert.match(theme, /\.h1-retail-growth-vietnam-scope-grid\s*\{[^}]*height:\s*10
 assert.match(
   theme,
   /\.h1-retail-growth-page\.is-vietnam-retail-nd\s*>\s*\.h1-extended-editorial-canvas\.is-retail-data-detail,\s*\.h1-retail-growth-page\.is-retail-nd-scope-restoration\s*>\s*\.h1-extended-editorial-canvas\.is-retail-data-detail\s*\{[^}]*padding:\s*30px\s+40px\s+24px;[^}]*grid-template-rows:\s*136px\s+minmax\(0,1fr\);[^}]*gap:\s*14px;[^}]*scale\(1\.14\);/s,
-  "pages 18 and 21 must share the compact, viewport-filling data layout",
+  "pages 18 and 20 must share the compact, viewport-filling data layout",
 );
 assert.match(theme, /\.is-vietnam-retail-nd \.h1-retail-growth-comparison\s*\{[^}]*position:\s*relative;[^}]*grid-template-columns:\s*100px\s+minmax\(0,1fr\);/s);
 assert.match(vietnamChartBlock, /const leftPlot = \{left:50,right:490,top:24,bottom:342\};/);

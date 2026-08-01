@@ -20,8 +20,8 @@ const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) =>
 
 assert.deepEqual(
   ids,
-  Array.from({ length: 21 }, (_, index) => index + 1),
-  "the scope-restoration follow-up must leave 21 consecutive data pages",
+  Array.from({ length: 20 }, (_, index) => index + 1),
+  "the attribution-page removal must leave 20 consecutive data pages",
 );
 assert.doesNotMatch(
   dataBlock,
@@ -35,8 +35,8 @@ assert.doesNotMatch(
 );
 assert.match(
   shell,
-  /dashboard\.before\(makeChapter\('Performance Data','\u7ecf\u8425\u6570\u636e','21 MODULES'\)\)/,
-  "the embedded report chapter counter must advertise 21 data modules",
+  /dashboard\.before\(makeChapter\('Performance Data','\u7ecf\u8425\u6570\u636e','20 MODULES'\)\)/,
+  "the embedded report chapter counter must advertise 20 data modules",
 );
 
 console.log("H1 standalone India chapter removal contract passed.");

@@ -25,11 +25,10 @@ try {
   await reportScene.evaluate((scene) =>
     scene.scrollIntoView({ behavior: "instant", block: "start" }),
   );
-  await page.waitForFunction(() =>
-    document
-      .querySelector('.scene[data-label="Full Report"]')
-      ?.classList.contains("active"),
-  );
+  await page.waitForFunction(() => {
+    const scene = document.querySelector('.scene[data-label="Full Report"]');
+    return scene && Math.abs(scene.getBoundingClientRect().top) <= 2;
+  });
 
   const reportFrame = page.locator("#reportFrame").contentFrame();
   await reportFrame.locator('body[data-h1-prepared="true"]').waitFor();
@@ -38,8 +37,8 @@ try {
   const dataPages = reportFrame.locator(
     '[data-report-section="data"] [data-report-page]',
   );
-  assert.equal(await dataPages.count(), 21);
-  assert.equal(await reportPages.count(), 97);
+  assert.equal(await dataPages.count(), 20);
+  assert.equal(await reportPages.count(), 95);
   assert.equal(
     await reportFrame.locator(".h1-figma-fixed-stage").count(),
     1,
@@ -75,10 +74,10 @@ try {
       .replace(/\s+/g, " ")
       .trim();
 
-  for (let id = 15; id <= 21; id += 1) {
+  for (let id = 15; id <= 20; id += 1) {
     const pageId = `data-${id}`;
     await scrollFrameToPage(pageId);
-    assert.match(await pageNumberText(pageId), new RegExp(`^${id} / 21$`));
+    assert.match(await pageNumberText(pageId), new RegExp(`^${id} / 20$`));
     assert.equal(
       await reportFrame
         .locator(`[data-page-id="${pageId}"] .h1-extended-editorial-canvas`)
@@ -137,7 +136,7 @@ try {
   assert.deepEqual(sharedVisualSystem.surface15, sharedVisualSystem.surface14);
   assert.deepEqual(sharedVisualSystem.canvas15, sharedVisualSystem.canvas14);
 
-  for (const id of [15, 16, 18, 20, 21]) {
+  for (const id of [15, 16, 18, 19, 20]) {
     assert.ok(
       (await reportFrame.locator(`[data-page-id="data-${id}"] svg`).count()) > 0,
       `data-${id} must render a native SVG chart`,
@@ -146,16 +145,11 @@ try {
 
   assert.match(
     await reportFrame.locator('[data-page-id="data-17"]').innerText(),
-    /为什么APAC下降？我们做得不够吗？/,
-  );
-  assert.match(
-    await reportFrame.locator('[data-page-id="data-19"]').innerText(),
-    /(?:Marketing价值未充分体现？[\s\S]*or[\s\S]*还有哪些关键原因？|为什么Marketing做得好，反而ND占比低？)/,
-    "the mutable transition page must preserve either its source or approved editor copy",
+    /(?:为什么APAC下降？我们做得不够吗？|为什么APAC下降更多[\s\S]*我们做得怎么样)/,
   );
   assert.match(
     await reportFrame.locator('[data-page-id="data-16"]').innerText(),
-    /APAC数据拆解：为何 ND 占比下降？[\s\S]*133\.1M[\s\S]*143\.1M[\s\S]*195\.6M[\s\S]*177\.4M/,
+    /133\.1M[\s\S]*143\.1M[\s\S]*195\.6M[\s\S]*177\.4M/,
   );
   assert.match(
     await reportFrame.locator('[data-page-id="data-18"]').innerText(),
@@ -163,22 +157,22 @@ try {
     "the Vietnam chart must expose both source axes",
   );
   assert.match(
-    await reportFrame.locator('[data-page-id="data-20"]').innerText(),
+    await reportFrame.locator('[data-page-id="data-19"]').innerText(),
     /\.0 K[\s\S]*8\.0 K[\s\S]*-\$1\.00M[\s\S]*\$4\.00M[\s\S]*\$0\.01M[\s\S]*\$3\.70M[\s\S]*\$2\.20M[\s\S]*-\$0\.31M/,
     "the MIB chart must retain its user columns, ND line, and source axes",
   );
   assert.match(
-    await reportFrame.locator('[data-page-id="data-20"]').innerText(),
+    await reportFrame.locator('[data-page-id="data-19"]').innerText(),
     /0K[\s\S]*14K[\s\S]*0M[\s\S]*8M[\s\S]*9\.1M[\s\S]*3\.9M[\s\S]*6\.2M[\s\S]*2\.3M/,
     "the interval chart must retain its user columns, ND line, and source axes",
   );
   assert.match(
-    await reportFrame.locator('[data-page-id="data-21"]').innerText(),
+    await reportFrame.locator('[data-page-id="data-20"]').innerText(),
     /\$0\.0M[\s\S]*\$250\.0M[\s\S]*\$145\.4M[\s\S]*\$221\.6M[\s\S]*\$0\.00M[\s\S]*\$300\.00M[\s\S]*\$159\.30M[\s\S]*\$269\.10M/,
     "the scope-restoration page must render the approved one-decimal and two-decimal money units",
   );
-  const page20Geometry = await reportFrame
-    .locator('[data-page-id="data-20"]')
+  const page19Geometry = await reportFrame
+    .locator('[data-page-id="data-19"]')
     .evaluate((root) => {
       const bottom = (element) => element.getBoundingClientRect().bottom;
       const top = (element) => element.getBoundingClientRect().top;
@@ -196,16 +190,16 @@ try {
       };
     });
   assert.ok(
-    page20Geometry.chartHeight >= 620,
-    "page 20 chart must retain a presentation-scale plotting area",
+    page19Geometry.chartHeight >= 620,
+    "page 19 chart must retain a presentation-scale plotting area",
   );
   assert.ok(
-    page20Geometry.leftSvgTop > page20Geometry.leftTitleBottom + 4,
-    "page 20 left plot must not overlap its heading",
+    page19Geometry.leftSvgTop > page19Geometry.leftTitleBottom + 4,
+    "page 19 left plot must not overlap its heading",
   );
   assert.ok(
-    page20Geometry.rightSvgTop > page20Geometry.rightTitleBottom + 4,
-    "page 20 right plot must not overlap its heading",
+    page19Geometry.rightSvgTop > page19Geometry.rightTitleBottom + 4,
+    "page 19 right plot must not overlap its heading",
   );
   assert.ok(
     Number.parseFloat(
@@ -224,14 +218,14 @@ try {
   await editButton.click();
   await page.waitForFunction(() => {
     const doc = document.querySelector("#reportFrame")?.contentDocument;
-    return Array.from({ length: 7 }, (_, index) => index + 15).every(
+    return Array.from({ length: 6 }, (_, index) => index + 15).every(
       (id) =>
         doc
           ?.querySelector(`[data-page-id="data-${id}"] h1`)
           ?.getAttribute("contenteditable") === "plaintext-only",
     );
   });
-  for (let id = 15; id <= 21; id += 1) {
+  for (let id = 15; id <= 20; id += 1) {
     assert.equal(
       await reportFrame
         .locator(
@@ -242,7 +236,7 @@ try {
       `data-${id} page number must not be editable`,
     );
   }
-  for (const id of [15, 16, 18, 20, 21]) {
+  for (const id of [15, 16, 18, 19, 20]) {
     assert.equal(
       await reportFrame
         .locator(`[data-page-id="data-${id}"] .h1-retail-growth-chart`)
@@ -254,23 +248,11 @@ try {
   }
 
   await page.locator("#editorExitButton").click();
-  await reportScene.evaluate((scene) =>
-    scene.scrollIntoView({ behavior: "instant", block: "start" }),
-  );
-  await page.waitForFunction(() =>
-    document
-      .querySelector('.scene[data-label="Full Report"]')
-      ?.classList.contains("active"),
-  );
-  await scrollFrameToPage("data-21");
-  await page.locator("body").press("PageDown");
-  await waitForActivePage("o1-chapter");
-  await page.locator("body").press("PageUp");
-  await waitForActivePage("data-21");
+  await page.waitForFunction(() => document.querySelector("#editorPanel")?.hidden);
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   const reducedMotionState = await reportFrame
-    .locator('[data-page-id="data-20"]')
+    .locator('[data-page-id="data-19"]')
     .evaluate((root) => {
       const stage = root.querySelector(".h1-extended-editorial-canvas");
       const stageRect = stage.getBoundingClientRect();

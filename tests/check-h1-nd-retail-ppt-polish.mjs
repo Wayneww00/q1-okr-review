@@ -28,8 +28,6 @@ for (const exactSourceText of [
   "为什么APAC下降？我们做得不够吗？",
   "从越南市场切入",
   "SEO、GEO、SOV 等多指标领先，但ND占比仅4.3%，远低于全球平均值25.2%",
-  "还有哪些因素导致占比下降，Marketing价值未充分体现？",
-  "占比下降的背后，还有哪些关键原因？",
   "可能对Retail ND占比有影响的因素",
   "1.MIB口径变化导致数据影响",
   "2.Retail 转 IB导致下降（长期）",
@@ -62,7 +60,7 @@ assert.match(
 );
 assert.match(
   app,
-  /id="retail-vietnam-arrow-up"[\s\S]*?h1-retail-growth-share-line is-dotted[\s\S]*?markerEnd=/,
+  /id="retail-vietnam-scope-arrow-up"[\s\S]*?h1-retail-growth-share-line is-dotted[\s\S]*?markerEnd=/,
   "the Vietnam growth trajectory must end in an arrow",
 );
 assert.match(
@@ -73,7 +71,7 @@ assert.match(
 assert.equal(
   [...dataBlock.matchAll(/editorRevision:"retail-nd-ppt-v5"/g)].length,
   3,
-  "only rebuilt PPT pages 15, 16, and 20 must use the fresh editor-content namespace",
+  "only rebuilt PPT pages 15, 16, and 19 must use the fresh editor-content namespace",
 );
 assert.match(
   app,
@@ -100,28 +98,6 @@ assert.match(
   theme,
   /\.h1-retail-growth-delta-line\.is-up[\s\S]*?\.h1-retail-growth-delta-line\.is-down/,
   "up/down trajectories must have distinct brand colors",
-);
-
-const dualQuestionRule = theme.match(
-  /\.h1-retail-growth-dual-question\s*\{([^}]*)\}/,
-)?.[1];
-assert.ok(dualQuestionRule, "the dual-question transition must be styled");
-assert.match(dualQuestionRule, /justify-items:\s*center/);
-assert.match(dualQuestionRule, /text-align:\s*center/);
-assert.match(
-  theme,
-  /\.h1-embedded-report \.dash-page \.h1-retail-growth-dual-question h1\s*\{[\s\S]*?font-size:\s*(?:5[4-9]|[6-9]\d)px/,
-  "the first transition question must be presentation-scale",
-);
-assert.match(
-  theme,
-  /\.h1-embedded-report \.dash-page \.h1-retail-growth-dual-question p\s*\{[\s\S]*?font-size:\s*(?:6[0-9]|[7-9]\d)px/,
-  "the second transition question must be presentation-scale",
-);
-assert.match(
-  theme,
-  /\.dash-page\.is-active \.h1-retail-growth-dual-question h1[\s\S]*?\.dash-page\.is-active \.h1-retail-growth-dual-question p/,
-  "the transition lines must animate in a deliberate sequence",
 );
 
 const expectedCacheKey = "20260801-unified-visual-release-v1";

@@ -23,13 +23,13 @@ const h1 = index.slice(h1Start, h1End);
 const ids = [...h1.matchAll(/\bid:(\d+)(?:,|\s)/g)].map(([, id]) => Number(id));
 assert.deepEqual(
   ids,
-  Array.from({ length: 21 }, (_, index) => index + 1),
-  "the combined O4 brand page must remain present within the 21-page data deck",
+  Array.from({ length: 20 }, (_, index) => index + 1),
+  "the combined O4 brand page must remain present within the 20-page data deck",
 );
 assert.match(
   shell,
-  /dashboard\.before\(makeChapter\('Performance Data','经营数据','21 MODULES'\)\)/,
-  "the formal shell should advertise 21 data modules",
+  /dashboard\.before\(makeChapter\('Performance Data','经营数据','20 MODULES'\)\)/,
+  "the formal shell should advertise 20 data modules",
 );
 
 const page11Start = h1.search(/\{\s*id:11(?:,|\s)/);

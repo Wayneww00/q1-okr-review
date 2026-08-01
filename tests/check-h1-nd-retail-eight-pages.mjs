@@ -27,8 +27,8 @@ const ids = [...dataBlock.matchAll(/^  \{\s*id:(\d+),/gm)].map((match) =>
 );
 assert.deepEqual(
   ids,
-  Array.from({ length: 21 }, (_, index) => index + 1),
-  "the data section must contain the original 14 pages followed by seven Retail ND pages",
+  Array.from({ length: 20 }, (_, index) => index + 1),
+  "the data section must contain the original 14 pages followed by six Retail ND pages",
 );
 
 const expectedLayouts = [
@@ -36,14 +36,13 @@ const expectedLayouts = [
   "apac_nd_breakdown",
   "apac_question",
   "vietnam_retail_nd",
-  "attribution_question",
   "mib_attribution",
   "retail_nd_scope_restoration",
 ];
 const appendedLayouts = ids.slice(14).map((id) => {
   const start = dataBlock.search(new RegExp(`^  \\{\\s*id:${id},`, "m"));
   const next =
-    id < 21
+    id < 20
       ? dataBlock.search(new RegExp(`^  \\{\\s*id:${id + 1},`, "m"))
       : dataBlock.length;
   const page = dataBlock.slice(start, next);
@@ -100,9 +99,6 @@ for (const token of [
   "30.0%",
   "越南 Retail ND $0.9M｜国家内部占比 4.3%",
   "集团 Retail ND $221.6M｜大盘占比 25.2%",
-  "还有哪些因素导致占比下降，Marketing价值未充分体现？",
-  "or",
-  "占比下降的背后，还有哪些关键原因？",
   "可能对Retail ND占比有影响的因素",
   "1.MIB口径变化导致数据影响",
   "2.Retail 转 IB导致下降（长期）",
@@ -163,7 +159,7 @@ for (const token of [
 assert.doesNotMatch(
   dataBlock.slice(dataBlock.search(/^  \{\s*id:15,/m)),
   /ND_H1_Retail|source-slide|ppt-originals|data:image\//i,
-  "the eight pages must use native HTML/SVG rather than PPT screenshots",
+  "the six appended pages must use native HTML/SVG rather than PPT screenshots",
 );
 
 for (const component of [
@@ -186,7 +182,7 @@ assert.match(
 assert.match(
   app,
   /function H1RetailGrowthPage\([\s\S]*?<H1DataModulePageShell/,
-  "the eight imported pages must use the same data-module shell",
+  "the six imported pages must use the same data-module shell",
 );
 assert.doesNotMatch(
   app,
@@ -222,7 +218,7 @@ assert.doesNotMatch(
   /"\.h1-retail-growth-page-number"/,
   "the editor must not retain a duplicate imported-page exclusion",
 );
-assert.match(shell, /'Performance Data','经营数据','21 MODULES'/);
+assert.match(shell, /'Performance Data','经营数据','20 MODULES'/);
 const shellThemeCacheKeys = [
   ...shell.matchAll(
     /h1-figma-racing-theme\.css\?v=([^'"\s]+)/g,
@@ -283,6 +279,6 @@ assert.match(
   "new motion must respect reduced-motion preferences",
 );
 
-assert.equal(21 + 31 + 27 + 17, 96);
+assert.equal(20 + 31 + 27 + 17, 95);
 
-console.log("H1 ND Retail seven-page static integration contract passed.");
+console.log("H1 ND Retail six-page static integration contract passed.");
