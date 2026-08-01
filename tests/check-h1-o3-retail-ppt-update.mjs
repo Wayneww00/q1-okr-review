@@ -8,7 +8,7 @@ const registryStart = app.indexOf("const O3_REPORT_PAGES=");
 const registryEnd = app.indexOf("];", registryStart) + 2;
 const registry = app.slice(registryStart, registryEnd);
 const retailStart = app.indexOf("function O3RetailComparison");
-const retailEnd = app.indexOf("function O3Record", retailStart);
+const retailEnd = app.indexOf("function O3FigmaTitle", retailStart);
 const retail = app.slice(retailStart, retailEnd);
 
 assert.match(

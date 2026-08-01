@@ -16,7 +16,6 @@ const expectedPages = [
   "o3-chapter",
   "o3-retail-ftd",
   "o3-retail-tv",
-  "o3-vn-record",
   "o3-seo",
   "o3-geo",
   "o3-aso",
@@ -37,7 +36,7 @@ const registryStart = app.indexOf("const O3_REPORT_PAGES=");
 const registryEnd = app.indexOf("];", registryStart) + 2;
 assert.ok(
   registryStart >= 0 && registryEnd > registryStart,
-  "O3 must expose one explicit 18-page registry",
+  "O3 must expose one explicit 17-page registry",
 );
 const registry = app.slice(registryStart, registryEnd);
 
@@ -49,7 +48,7 @@ for (const pageId of expectedPages) {
 }
 assert.equal(
   [...registry.matchAll(/\bid:"o3-/g)].length,
-  18,
+  17,
   "O3 must contain the restored Vietnam sequence plus the India chapter",
 );
 assert.match(
@@ -76,14 +75,10 @@ assert.match(
 assert.match(
   app,
   /className="h1-o3-page-number"[\s\S]*?String\(index\+1\)\.padStart\(2,"0"\)[\s\S]*?String\(count\)\.padStart\(2,"0"\)/,
-  "O3 page numbering must run independently from 01/18",
+  "O3 page numbering must run independently from 01/17",
 );
 
 for (const fact of [
-  "4,808",
-  "+385%",
-  "24.42 Bn",
-  "+283%",
   "Top10 关键词",
   "122 → 310",
   "品牌可见性",

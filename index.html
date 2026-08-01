@@ -6108,7 +6108,6 @@ const O3_REPORT_PAGES=[
   {id:"o3-chapter",layout:"chapter",eyebrow:"O3 · 关键区域复盘",title:"关键区域打造 · 越南",description:"从经营增长、搜索与品牌可见性，到本地内容和转化闭环，复盘越南市场的阶段成果。"},
   {id:"o3-retail-ftd",layout:"retail-ftd",editorRevision:"vn-retail-h1-ppt-update-v1",eyebrow:"RETAIL · 整体表现",title:"越南 2026-H1 FTD 较2025 H2增长近三倍",description:"越南整体 FTD 绝对值较2025 H2增长 197.7%，FTD 越南占比提升 2.8 个百分点。"},
   {id:"o3-retail-tv",layout:"retail-tv",editorRevision:"vn-retail-h1-ppt-update-v1",eyebrow:"RETAIL · 整体表现",title:"越南 2026-H1 TV 较2025 H2增长超过三倍",description:"越南整体 TV 绝对值较2025 H2增长 214%，TV 越南占比提升 1.9 个百分点。"},
-  {id:"o3-vn-record",layout:"record",eyebrow:"越南增长",title:"越南 H1 增长，达到历史新高",description:"FTD 与 TV 同步突破；相对于区域其他品牌，越南不仅增速领先，PNL 表现也处于高位。"},
   {id:"o3-seo",layout:"seo",eyebrow:"SEO · 搜索引擎优化",title:"越南 SEO 自然流量已经成为行业第一",description:"核心关键词和特色关键词同步提升；Vantage 是自然流量增长最快的国家市场之一。"},
   {id:"o3-geo",layout:"geo",eyebrow:"GEO · 生成式引擎优化",title:"Vantage 在越南 GEO 的品牌可见性处于行业第一梯队",description:"围绕 7×24 黄金交易的相关主题，在越南主流 AI 平台形成稳定领先。"},
   {id:"o3-aso",layout:"aso",eyebrow:"ASO · 应用商店优化",title:"越南 ASO 构建了无可撼动的行业领先地位",description:"评分、关键词及品牌可见度全面领先，形成自然增长飞轮。"},
@@ -6305,22 +6304,6 @@ function O3RetailComparison({kind}){
         <O3Metric label={data.metricLabel} value={data.growth} note="2026 H1 vs 2025 H2" tone="orange"/>
         <O3Metric label="越南占比提升" value={data.shareGrowth} note={data.shareNote} />
       </div>
-    </div>
-  );
-}
-
-function O3Record(){
-  return (
-    <div className="h1-o3-record-layout">
-      <article className="h1-o3-card h1-o3-record-card">
-        <div className="h1-o3-record-copy"><span>FTD · H1</span><strong>4,808</strong><b>+385%</b><small>越南占比 12.9% → 21.0%</small></div>
-        <O3Bars items={[{period:"2025 H2",raw:992,value:"992",share:"12.9%"},{period:"2026 H1",raw:4808,value:"4,808",share:"21.0%"}]} unit="FTD"/>
-      </article>
-      <article className="h1-o3-card h1-o3-record-card">
-        <div className="h1-o3-record-copy"><span>TV · H1</span><strong>24.42 Bn</strong><b>+283%</b><small>越南占比 3.0% → 3.7%</small></div>
-        <O3Bars items={[{period:"2025 H2",raw:6.38,value:"6.38 Bn",share:"3.0%"},{period:"2026 H1",raw:24.42,value:"24.42 Bn",share:"3.7%"}]} unit="TV"/>
-      </article>
-      <div className="h1-o3-record-note"><O3RacingMark/><span>增长不只体现在速度，PNL 表现同样处于区域高位。</span></div>
     </div>
   );
 }
@@ -6947,7 +6930,6 @@ function O3ReportPage({page,index,count,onVideoPreview}){
   if(page.layout==="chapter")content=<O3Chapter page={page}/>;
   if(page.layout==="retail-ftd")content=<><O3PageHeader page={page}/><O3RetailComparison kind="ftd"/></>;
   if(page.layout==="retail-tv")content=<><O3PageHeader page={page}/><O3RetailComparison kind="tv"/></>;
-  if(page.layout==="record")content=<><O3PageHeader page={page}/><O3Record/></>;
   if(page.layout==="seo")content=<O3Seo/>;
   if(page.layout==="geo")content=<O3Geo/>;
   if(page.layout==="aso")content=<O3Aso/>;

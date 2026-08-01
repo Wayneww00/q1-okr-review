@@ -15,7 +15,7 @@ assert.match(
 );
 
 const retailStart = app.indexOf("function O3RetailComparison");
-const retailEnd = app.indexOf("function O3Record", retailStart);
+const retailEnd = app.indexOf("function O3FigmaTitle", retailStart);
 assert.ok(retailStart >= 0 && retailEnd > retailStart, "O3RetailComparison section should exist");
 const retailSection = app.slice(retailStart, retailEnd);
 

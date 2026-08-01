@@ -31,7 +31,7 @@ try {
   const reportFrame = page.locator("#reportFrame").contentFrame();
   await reportFrame.locator('body[data-h1-prepared="true"]').waitFor();
   const o3Pages = reportFrame.locator('[data-report-section="o3"] [data-report-page]');
-  assert.equal(await o3Pages.count(), 18);
+  assert.equal(await o3Pages.count(), 17);
   assert.deepEqual(
     await o3Pages.evaluateAll((pages) => pages.slice(-2).map((node) => node.dataset.pageId)),
     ["o3-vn-key-insight", "o3-india-chapter"],
@@ -101,7 +101,7 @@ try {
   assert.ok(state.wait.bottom <= state.artboard.bottom + 1);
   assert.notEqual(state.ghostStroke, "0px");
   assert.ok(state.fontSizes.number >= state.fontSizes.label * 2);
-  assert.match(state.text, /PROJECT COUNTDOWN 145\s*天的等待 18 \/ 18/);
+  assert.match(state.text, /PROJECT COUNTDOWN 145\s*天的等待 17 \/ 17/);
 
   const waitForReportPage = (pageId) => page.waitForFunction((targetPageId) => {
     const frame = document.querySelector("#reportFrame");

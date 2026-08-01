@@ -10,7 +10,6 @@ const browser = await chromium.launch({ headless: true });
 const expectedCopy = {
   "o3-retail-ftd": ["RETAIL · 整体表现", "越南 2026-H1 FTD 较2025 H2增长近三倍", "越南整体 FTD 绝对值较2025 H2增长 197.7%，FTD 越南占比提升 2.8 个百分点。"],
   "o3-retail-tv": ["RETAIL · 整体表现", "越南 2026-H1 TV 较2025 H2增长超过三倍", "越南整体 TV 绝对值较2025 H2增长 214%，TV 越南占比提升 1.9 个百分点。"],
-  "o3-vn-record": ["越南增长", "越南 H1 增长，达到历史新高", "FTD 与 TV 同步突破；相对于区域其他品牌，越南不仅增速领先，PNL 表现也处于高位。"],
   "o3-seo": ["SEO · 搜索引擎优化", "越南SEO自然流量已经成为行业第一", "核心关键词和特色关键词Copytrading均成为行业第一，是Vantage增速最快的国家"],
   "o3-geo": ["GEO · 生成式引擎优化", "Vantage在越南GEO的品牌可见性是行业第一梯队", "7×24黄金交易相关话题在越南AI平台全面领先其它品牌"],
   "o3-aso": ["ASO · 应用商店优化", "越南ASO构建了无可撼动的行业领先地位", "评分、关键词及品牌可见度全面领先，形成自然增长长期优势"],
@@ -88,10 +87,10 @@ try {
   const contentPages = reportFrame.locator(
     '[data-report-section="o3"] [data-report-page]:not([data-page-id="o3-chapter"]):not([data-page-id="o3-vn-key-insight"]):not([data-page-id="o3-india-chapter"])',
   );
-  assert.equal(await contentPages.count(), 15);
+  assert.equal(await contentPages.count(), 14);
 
   const states = [];
-  for (let index = 0; index < 15; index += 1) {
+  for (let index = 0; index < 14; index += 1) {
     const contentPage = contentPages.nth(index);
     await contentPage.evaluate((node) =>
       window.scrollTo({
@@ -191,7 +190,7 @@ try {
   }
 
   console.log(
-    "H1 O3 all 15 content pages share the approved Vietnam title system.",
+    "H1 O3 all 14 content pages share the approved Vietnam title system.",
   );
 } finally {
   await browser.close();
