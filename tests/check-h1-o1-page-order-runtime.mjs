@@ -52,7 +52,7 @@ try {
   await o1.waitFor();
   const pages = o1.locator(":scope > [data-report-page]");
 
-  assert.equal(await pages.count(), 33);
+  assert.equal(await pages.count(), 39);
   assert.deepEqual(
     (await pages.evaluateAll((nodes) =>
       nodes.map((node) => node.getAttribute("data-page-id")),
@@ -77,13 +77,26 @@ try {
     ["okr-brand-refresh", "05"],
     ["okr-tvc-matrix", "07"],
     ["okr-brand-experience-audit", "08"],
+    ["okr-awards-transition", "13"],
+    ["okr-awards", "14"],
+    ["okr-offline-events-transition", "15"],
+    ["okr-offline-event-01", "16"],
+    ["okr-elite-client-service-transition", "18"],
+    ["okr-elite-client-identity", "19"],
+    ["okr-merchandise-transition", "27"],
+    ["okr-merchandise", "28"],
+    ["okr-public-good-transition", "29"],
+    ["okr-cfd-public-good-story", "30"],
+    ["okr-integrated-marketing-transition", "34"],
+    ["okr-ai-recommendation", "35"],
+    ["okr-premium-unlimited", "39"],
   ]) {
     const pageNumber = (
       await o1.locator(`[data-page-id="${pageId}"] .h1-okr-page-number`).innerText()
     )
       .replace(/\s+/g, " ")
       .trim();
-    assert.match(pageNumber, new RegExp(`^${number}\\s*\\/\\s*33$`));
+    assert.match(pageNumber, new RegExp(`^${number}\\s*\\/\\s*39$`));
   }
 
   assert.deepEqual(runtimeErrors, []);

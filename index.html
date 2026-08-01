@@ -840,7 +840,6 @@ const H1_DASHBOARDS = [
     },
     searchMetrics:{
       title:"2026 H1：Vantage、Exness、IC Markets 与 XM 月度 Organic Traffic",
-      subtitle:"数据源：overview-trend-2026-07-31T15_27_38Z.xlsx｜Worldwide｜月度 Organic Traffic",
       months:["1月","2月","3月","4月","5月","6月"],
       axisDomain:[0,1200000],
       axisTicks:[0,200000,400000,600000,800000,1000000,1200000],
@@ -1431,7 +1430,7 @@ function H1BrandSearchFourSeriesChart({data}) {
     <div className="h1-brand-search-four-series">
       <header className="h1-brand-search-chart-heading">
         <h2>{data.title}</h2>
-        <p>{data.subtitle}</p>
+        {data.subtitle && <p>{data.subtitle}</p>}
       </header>
       <div className="h1-brand-search-series-legend" aria-label="自然流量趋势图例">
         {data.series.map(series=><span key={series.key} className={`is-${series.key}`}><i></i>{series.label}</span>)}
@@ -3619,70 +3618,51 @@ function OkrBrandResultsPage({index,count}){
   );
 }
 
-function OkrBrandBuildTransitionPage({page,index,count}){
-  const {pageRef,canvasRef}=useOkrCanvasScale();
+function OkrChapterTransitionPage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale({cover:true});
+  const transition=page.transition;
+  const emphasis=transition.emphasis;
+  const subtitleParts=emphasis ? transition.subtitle.split(emphasis) : null;
+  const titleId=`h1-okr-chapter-transition-${page.id}`;
   return (
     <section
       ref={pageRef}
-      className="h1-okr-page h1-okr-build-transition-page"
+      className="h1-okr-page h1-okr-chapter-transition-page"
       data-report-page
       data-page-id={page.id}
-      aria-labelledby="h1-okr-build-transition-title"
+      aria-labelledby={titleId}
     >
-      <div ref={canvasRef} className="h1-okr-canvas h1-okr-build-transition-canvas">
-        <div className="h1-okr-build-transition-veil" aria-hidden="true"></div>
-        <div className="h1-okr-build-transition-watermark" aria-hidden="true">1+6</div>
-        <div className="h1-okr-build-transition-content">
-          <div className="h1-okr-build-transition-kicker">
-            <ObjectiveChapterMark/>
-            <span>O1 · BRAND BUILDING SYSTEM</span>
-          </div>
-          <div className="h1-okr-build-transition-rule" aria-hidden="true"></div>
-          <h1 id="h1-okr-build-transition-title" className="h1-okr-build-transition-heading" aria-label="1 个升级加 6 个核心抓手">
-            <span className="h1-okr-build-transition-code" aria-hidden="true">1+6</span>
-            <span className="h1-okr-build-transition-title">1 个升级 + 6 个核心抓手</span>
-          </h1>
-          <p className="h1-okr-build-transition-english">ONE UPGRADE + SIX CORE LEVERS</p>
+      <div ref={canvasRef} className="h1-okr-canvas h1-okr-chapter-transition-canvas">
+        <div className="h1-okr-chapter-transition-veil" aria-hidden="true"></div>
+      </div>
+      <div className="h1-okr-chapter-transition-watermark" aria-hidden="true">{transition.watermark}</div>
+      <div className="h1-okr-chapter-transition-content">
+        <div className="h1-okr-chapter-transition-kicker">
+          <ObjectiveChapterMark/>
+          <span>{transition.eyebrow}</span>
         </div>
-        <div className="h1-okr-page-number" aria-hidden="true">
-          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
+        <div className="h1-okr-chapter-transition-rule" aria-hidden="true"></div>
+        <h1 id={titleId}>{transition.title}</h1>
+        <p>
+          {subtitleParts ? <>{subtitleParts[0]}<strong>{emphasis}</strong>{subtitleParts.slice(1).join(emphasis)}</> : transition.subtitle}
+        </p>
+        <div className="h1-okr-chapter-transition-progress" aria-hidden="true">
+          <i></i><i></i><i></i>
         </div>
+      </div>
+      <div className="h1-okr-page-number h1-okr-chapter-transition-page-number" aria-hidden="true">
+        {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
       </div>
     </section>
   );
 }
 
-function OkrBrandUpgradeTransitionPage({page,index,count}){
-  const {pageRef,canvasRef}=useOkrCanvasScale();
-  return (
-    <section
-      ref={pageRef}
-      className="h1-okr-page h1-okr-brand-upgrade-transition-page"
-      data-report-page
-      data-page-id={page.id}
-      aria-labelledby="h1-okr-brand-upgrade-transition-title"
-    >
-      <div ref={canvasRef} className="h1-okr-canvas h1-okr-brand-upgrade-transition-canvas">
-        <div className="h1-okr-brand-upgrade-transition-veil" aria-hidden="true"></div>
-        <div className="h1-okr-brand-upgrade-transition-watermark" aria-hidden="true">BRAND REFRESH</div>
-        <div className="h1-okr-brand-upgrade-transition-content">
-          <div className="h1-okr-brand-upgrade-transition-kicker">
-            <ObjectiveChapterMark/>
-            <span>BRAND REFRESH</span>
-          </div>
-          <div className="h1-okr-brand-upgrade-transition-rule" aria-hidden="true"></div>
-          <h1 id="h1-okr-brand-upgrade-transition-title">品牌升级</h1>
-          <p>让 <strong>Vantage</strong> 被识别</p>
-          <div className="h1-okr-brand-upgrade-transition-progress" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </div>
-        </div>
-        <div className="h1-okr-page-number" aria-hidden="true">
-          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
-        </div>
-      </div>
-    </section>
-  );
+function OkrBrandBuildTransitionPage(props){
+  return <OkrChapterTransitionPage {...props}/>;
+}
+
+function OkrBrandUpgradeTransitionPage(props){
+  return <OkrChapterTransitionPage {...props}/>;
 }
 
 function OkrTvcMatrixPage({index,count,onVideoPreview}){
@@ -3776,10 +3756,23 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-brand-build-transition',
     label:'1 个升级 + 6 个核心抓手',
+    transition:{
+      watermark:'1+6',
+      eyebrow:'BRAND BUILDING SYSTEM',
+      title:'1 个升级 + 6 个核心抓手',
+      subtitle:'ONE UPGRADE + SIX CORE LEVERS',
+    },
   },
   {
     id:'okr-brand-upgrade-transition',
     label:'品牌升级 - 让 Vantage 被识别',
+    transition:{
+      watermark:'BRAND REFRESH',
+      eyebrow:'BRAND REFRESH',
+      title:'品牌升级',
+      subtitle:'让 Vantage 被识别',
+      emphasis:'Vantage',
+    },
   },
   {
     id:'okr-brand-refresh',
@@ -3846,6 +3839,16 @@ const OKR_FIGMA_PAGES=[
     src:'previews/assets/o1-complete/figma-exact/okr-p34-source.png',
   },
   {
+    id:'okr-awards-transition',
+    label:'行业大奖 - 从“采买”到真正被评选为行业头部平台',
+    transition:{
+      watermark:'INDUSTRY AWARDS',
+      eyebrow:'INDUSTRY AWARDS',
+      title:'行业大奖',
+      subtitle:'从“采买”到真正被评选为行业头部平台',
+    },
+  },
+  {
     id:'okr-awards',
     label:'奖项',
     src:'previews/assets/o1-complete/figma-untitled/awards-group-1940698522.svg',
@@ -3855,6 +3858,16 @@ const OKR_FIGMA_PAGES=[
       {id:'global-forex',label:'Global Forex Awards',src:'previews/assets/o1-complete/figma-lightbox/awards/global-forex-awards.png',unit:'px',left:826,top:571,width:164,height:126},
       {id:'compare-forex',label:'Compare Forex Brokers',src:'previews/assets/o1-complete/figma-lightbox/awards/compare-forex-brokers.png',unit:'px',left:826,top:767,width:165,height:106},
     ],
+  },
+  {
+    id:'okr-offline-events-transition',
+    label:'线下活动 - 将品牌植入线下场景，成为前端的抓手',
+    transition:{
+      watermark:'OFFLINE EVENTS',
+      eyebrow:'OFFLINE EVENTS',
+      title:'线下活动',
+      subtitle:'将品牌植入线下场景，成为前端的抓手',
+    },
   },
   {
     id:'okr-offline-event-01',
@@ -3880,6 +3893,17 @@ const OKR_FIGMA_PAGES=[
       {id:'expo-auscrypto',label:'AusCryptoCon 悉尼',src:'previews/assets/o1-complete/figma-lightbox/expo/photo-3.jpg',unit:'px',left:981,top:718,width:309,height:118},
       {id:'expo-smart-vision',label:'Smart Vision 开罗',src:'previews/assets/o1-complete/figma-lightbox/expo/photo-4.jpg',unit:'px',left:1333,top:718,width:309,height:118},
     ],
+  },
+  {
+    id:'okr-elite-client-service-transition',
+    label:'高净值客户服务体系 - 与高净值客户共同打造 Vantage 核心圈层',
+    transition:{
+      watermark:'ELITE CLIENT SERVICE',
+      eyebrow:'ELITE CLIENT SERVICE',
+      title:'高净值客户服务体系',
+      subtitle:'用真诚的服务、用心的体验，与高净值客户共同打造 Vantage 核心圈层',
+      emphasis:'Vantage',
+    },
   },
   {id:'okr-elite-client-identity',label:'顶级客户身份体系',src:'previews/assets/o1-complete/figma-untitled/p38-39-1-elite-client-foreground.png'},
   {id:'okr-client-experience-model',label:'大客户体验体系',src:'previews/assets/o1-complete/figma-untitled/p69-client-experience-foreground.png'},
@@ -3943,6 +3967,17 @@ const OKR_FIGMA_PAGES=[
   {id:'okr-elite-black-label',label:'Black Label 礼遇',src:'previews/assets/o1-complete/figma-untitled/p71-black-label-foreground.png'},
   {id:'okr-elite-business-enablement',label:'业务赋能',src:'previews/assets/o1-complete/figma-untitled/p48-elite-business-enablement-foreground.png'},
   {
+    id:'okr-merchandise-transition',
+    label:'周边 - 让 Vantage 触手可及',
+    transition:{
+      watermark:'MERCHANDISE',
+      eyebrow:'MERCHANDISE',
+      title:'周边',
+      subtitle:'让 Vantage 触手可及',
+      emphasis:'Vantage',
+    },
+  },
+  {
     id:'okr-merchandise',
     label:'周边',
     src:'previews/assets/o1-complete/figma-untitled/p52-foreground-clean.png',
@@ -3960,6 +3995,17 @@ const OKR_FIGMA_PAGES=[
         height:75,
       },
     ],
+  },
+  {
+    id:'okr-public-good-transition',
+    label:'公益 - 成为 CFD 行业领军者',
+    transition:{
+      watermark:'PUBLIC GOOD',
+      eyebrow:'PUBLIC GOOD',
+      title:'公益',
+      subtitle:'成为 CFD 行业领军者',
+      emphasis:'CFD',
+    },
   },
   {
     id:'okr-cfd-public-good-story',
@@ -4017,6 +4063,16 @@ const OKR_FIGMA_PAGES=[
     id:'okr-un-ngo-engagement',
     label:'头部联合国+NGO连接',
     src:'previews/assets/o1-complete/figma-untitled/p65-ngo-foreground.svg',
+  },
+  {
+    id:'okr-integrated-marketing-transition',
+    label:'整合营销 - 全域联动，打造“心智”',
+    transition:{
+      watermark:'INTEGRATED MARKETING',
+      eyebrow:'INTEGRATED MARKETING',
+      title:'整合营销',
+      subtitle:'全域联动，打造“心智”',
+    },
   },
   {
     id:'okr-ai-recommendation',
@@ -4844,6 +4900,7 @@ function OkrReportDeck(){
         page.id==='okr-brand-results' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p26-foreground-clean.png"/> :
         page.id==='okr-brand-build-transition' ? <OkrBrandBuildTransitionPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-brand-upgrade-transition' ? <OkrBrandUpgradeTransitionPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
+        page.transition ? <OkrChapterTransitionPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-brand-refresh' ? <OkrBrandRefreshForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} onPreview={setPreview}/> :
         page.id==='okr-tvc-matrix' ? <OkrBrandContentMatrixForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :

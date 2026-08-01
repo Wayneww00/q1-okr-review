@@ -16,28 +16,23 @@ assert.match(
 );
 assert.match(
   app,
-  /function OkrBrandBuildTransitionPage\(\{page,index,count\}\)/,
-  "the transition must have a dedicated native O1 page component",
+  /function OkrBrandBuildTransitionPage\(props\)\{[\s\S]*?<OkrChapterTransitionPage \{\.\.\.props\}/,
+  "the 1+6 page must render through the shared transition master",
 );
 assert.match(
   app,
-  /className="h1-okr-build-transition-watermark"[^>]*>1\+6<\/div>/,
+  /id:'okr-brand-build-transition'[\s\S]*?watermark:'1\+6'[\s\S]*?eyebrow:'BRAND BUILDING SYSTEM'/,
   "the reference-led chapter cover must use an outlined 1+6 watermark",
 );
 assert.match(
   app,
-  /O1 · BRAND BUILDING SYSTEM/,
-  "the chapter cover must include the approved O1 eyebrow",
+  /title:'1 个升级 \+ 6 个核心抓手'[\s\S]*?subtitle:'ONE UPGRADE \+ SIX CORE LEVERS'/,
+  "the approved Chinese and English lines must use the shared chapter hierarchy",
 );
 assert.match(
   app,
-  /className="h1-okr-build-transition-code"[^>]*>1\+6<\/span>[\s\S]*?<span className="h1-okr-build-transition-title">1 个升级 \+ 6 个核心抓手<\/span>/,
-  "the approved Chinese message must follow the reference chapter hierarchy",
-);
-assert.match(
-  app,
-  /ONE UPGRADE[\s\S]*?SIX CORE LEVERS/,
-  "the approved English design line must support the Chinese message",
+  /function OkrChapterTransitionPage\(\{page,index,count\}\)[\s\S]*?useOkrCanvasScale\(\{cover:true\}\)/,
+  "all transition pages must use cover scaling instead of letterboxing",
 );
 assert.match(
   app,
@@ -46,23 +41,18 @@ assert.match(
 );
 assert.match(
   theme,
-  /\.h1-okr-build-transition-veil\s*\{[\s\S]*?linear-gradient\(/,
+  /\.h1-okr-chapter-transition-veil\s*\{[\s\S]*?linear-gradient\(/,
   "the transition must protect text contrast with a background-integrated veil",
 );
 assert.match(
   theme,
-  /\.h1-okr-build-transition-heading\s*\{/,
-  "the transition must use a dedicated projection-scale chapter heading",
-);
-assert.match(
-  theme,
-  /\.h1-okr-build-transition-watermark\s*\{[\s\S]*?-webkit-text-stroke:/,
+  /\.h1-okr-chapter-transition-watermark\s*\{[\s\S]*?-webkit-text-stroke:/,
   "the background 1+6 must be rendered as a restrained outline watermark",
 );
 assert.match(
   theme,
-  /\.h1-okr-build-transition-title\s*\{[\s\S]*?font-family:\s*"Noto Serif SC"[\s\S]*?font-weight:\s*900/,
-  "the approved A direction must use a high-weight modern serif display face",
+  /\.h1-okr-chapter-transition-content h1\s*\{[\s\S]*?font-size:\s*min\(132px,[\s\S]*?font-weight:\s*900/,
+  "1+6 must inherit the exact brand-refresh title scale and weight",
 );
 
 console.log("H1 O1 brand-building transition contract passed.");

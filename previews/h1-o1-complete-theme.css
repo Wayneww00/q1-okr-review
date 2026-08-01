@@ -1851,150 +1851,20 @@ svg.h1-okr-insight-icon circle {
   color: rgba(255,255,255,.5);
 }
 
-/* O1 transition — from brand definition to the operating method */
-.h1-okr-build-transition-canvas {
-  overflow: hidden;
+/* O1 section covers — one full-bleed grammar for 1+6 and all six levers. */
+.h1-okr-chapter-transition-page {
+  background: transparent;
 }
 
-.h1-okr-build-transition-veil {
+.h1-okr-chapter-transition-canvas {
+  overflow: hidden;
+  background: transparent;
+}
+
+.h1-okr-chapter-transition-veil {
   position: absolute;
   z-index: 1;
-  inset: 0;
-  background:
-    linear-gradient(180deg,
-      rgba(3,2,2,.76) 0%,
-      rgba(3,2,2,.52) 35%,
-      rgba(3,2,2,.46) 67%,
-      rgba(3,2,2,.72) 100%),
-    linear-gradient(90deg,
-      rgba(3,2,2,.38) 0%,
-      rgba(3,2,2,.28) 57%,
-      rgba(3,2,2,.84) 100%),
-    radial-gradient(circle at 53% 58%,rgba(174,76,23,.14),transparent 48%);
-  pointer-events: none;
-}
-
-.h1-okr-build-transition-watermark {
-  position: absolute;
-  z-index: 2;
-  top: 92px;
-  left: 62px;
-  color: transparent;
-  font-family: "Barlow Condensed", "Gilroy", sans-serif !important;
-  font-size: 282px;
-  font-style: italic;
-  font-weight: 900;
-  letter-spacing: -.075em;
-  line-height: 1;
-  -webkit-text-stroke: 2px rgba(255,255,255,.075);
-  pointer-events: none;
-}
-
-.h1-okr-build-transition-content {
-  position: absolute;
-  z-index: 3;
-  top: 320px;
-  left: 96px;
-  width: 1700px;
-  color: #fff;
-}
-
-.h1-okr-build-transition-kicker {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin: 0;
-  color: #ffc16d;
-  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: .13em;
-  line-height: 1;
-}
-
-.h1-okr-build-transition-rule {
-  width: 640px;
-  height: 4px;
-  margin-top: 43px;
-  border-radius: 999px;
-  background: linear-gradient(90deg,#f0a33d,rgba(242,206,151,.56),transparent);
-  box-shadow: 0 0 24px rgba(240,163,61,.28);
-}
-
-.h1-okr-build-transition-heading {
-  display: block;
-  margin: 44px 0 0;
-  color: #fff;
-  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif !important;
-  font-weight: 850;
-  line-height: 1;
-  letter-spacing: -.04em;
-  text-shadow: 0 6px 34px rgba(0,0,0,.72);
-}
-
-.h1-okr-build-transition-code {
-  display: block;
-  margin-bottom: 20px;
-  color: #f0a33d;
-  font-family: "Barlow Condensed", "Gilroy", sans-serif !important;
-  font-size: 88px;
-  font-weight: 900;
-  letter-spacing: -.035em;
-  line-height: .86;
-  text-shadow: 0 8px 28px rgba(0,0,0,.6),0 0 24px rgba(240,163,61,.16);
-}
-
-.h1-okr-build-transition-title {
-  display: block;
-  max-width: 1680px;
-  color: #fff;
-  font-family: "Noto Serif SC", "Songti SC", serif !important;
-  font-size: 84px;
-  font-weight: 900;
-  letter-spacing: -.065em;
-  line-height: 1.12;
-  text-wrap: balance;
-  white-space: nowrap;
-}
-
-.h1-okr-build-transition-english {
-  margin: 34px 0 0;
-  color: rgba(255,255,255,.74);
-  font-family: "Gilroy", "Inter", sans-serif !important;
-  font-size: 25px;
-  font-weight: 500;
-  letter-spacing: .075em;
-  line-height: 1.4;
-  text-shadow: 0 4px 20px rgba(0,0,0,.75);
-}
-
-.h1-okr-build-transition-page.vis .h1-okr-build-transition-content {
-  animation: h1OkrBuildTransitionIn .85s cubic-bezier(.16,1,.3,1) both;
-}
-
-.h1-okr-build-transition-page.vis .h1-okr-build-transition-watermark {
-  animation: h1OkrBuildTransitionWatermarkIn 1.1s cubic-bezier(.16,1,.3,1) both;
-}
-
-@keyframes h1OkrBuildTransitionIn {
-  from { opacity: 0; transform: translate3d(0,34px,0); }
-  to { opacity: 1; transform: translate3d(0,0,0); }
-}
-
-@keyframes h1OkrBuildTransitionWatermarkIn {
-  from { opacity: 0; transform: translate3d(-24px,0,0); }
-  to { opacity: 1; transform: translate3d(0,0,0); }
-}
-
-/* O1 chapter cover — brand refresh */
-.h1-okr-brand-upgrade-transition-canvas {
-  overflow: hidden;
-}
-
-.h1-okr-brand-upgrade-transition-veil {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
+  inset: -2px;
   background:
     linear-gradient(180deg,
       rgba(3,2,2,.76) 0%,
@@ -2009,14 +1879,14 @@ svg.h1-okr-insight-icon circle {
   pointer-events: none;
 }
 
-.h1-okr-brand-upgrade-transition-watermark {
+.h1-okr-chapter-transition-watermark {
   position: absolute;
   z-index: 2;
-  top: 110px;
-  left: 80px;
+  top: min(110px, 10.185185vh);
+  left: min(80px, 4.166667vw);
   color: transparent;
   font-family: "Barlow Condensed", "Gilroy", sans-serif !important;
-  font-size: 246px;
+  font-size: min(246px, 12.8125vw, 22.777778vh);
   font-style: italic;
   font-weight: 900;
   letter-spacing: -.055em;
@@ -2026,105 +1896,108 @@ svg.h1-okr-insight-icon circle {
   pointer-events: none;
 }
 
-.h1-okr-brand-upgrade-transition-content {
+.h1-okr-chapter-transition-content {
   position: absolute;
   z-index: 3;
-  top: 350px;
-  left: 96px;
-  width: 1710px;
+  top: min(350px, 32.407407vh);
+  left: min(96px, 5vw);
+  width: min(1710px, 89.0625vw);
   color: #fff;
 }
 
-.h1-okr-brand-upgrade-transition-kicker {
+.h1-okr-chapter-transition-kicker {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: min(18px, .9375vw, 1.666667vh);
   color: #ff7a40;
   font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
-  font-size: 27px;
+  font-size: min(27px, 1.40625vw, 2.5vh);
   font-weight: 800;
   letter-spacing: .075em;
   line-height: 1;
 }
 
-.h1-okr-brand-upgrade-transition-rule {
-  width: 650px;
-  height: 4px;
-  margin-top: 43px;
+.h1-okr-chapter-transition-rule {
+  width: min(650px, 33.854167vw, 60.185185vh);
+  height: min(4px, .208333vw, .37037vh);
+  margin-top: min(43px, 2.239583vw, 3.981481vh);
   border-radius: 999px;
   background: linear-gradient(90deg,#ff6a2b,rgba(238,181,112,.55),transparent);
   box-shadow: 0 0 24px rgba(255,100,38,.28);
 }
 
-.h1-okr-brand-upgrade-transition-content h1 {
-  margin: 48px 0 0;
+.h1-okr-chapter-transition-content h1 {
+  margin: min(48px, 2.5vw, 4.444444vh) 0 0;
+  max-width: 100%;
   color: #fff;
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif !important;
-  font-size: 132px;
+  font-size: min(132px, 6.875vw, 12.222222vh);
   font-weight: 900;
   letter-spacing: -.065em;
   line-height: .96;
   text-shadow: 0 8px 38px rgba(0,0,0,.78);
 }
 
-.h1-okr-brand-upgrade-transition-content p {
-  margin: 44px 0 0;
+.h1-okr-chapter-transition-content p {
+  margin: min(44px, 2.291667vw, 4.074074vh) 0 0;
+  max-width: min(1660px, 86.458333vw);
   color: rgba(255,255,255,.78);
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif !important;
-  font-size: 47px;
+  font-size: min(47px, 2.447917vw, 4.351852vh);
   font-weight: 400;
   letter-spacing: -.035em;
   line-height: 1.25;
+  text-wrap: balance;
   text-shadow: 0 5px 26px rgba(0,0,0,.86);
 }
 
-.h1-okr-brand-upgrade-transition-content p strong {
+.h1-okr-chapter-transition-content p strong {
   color: #fff;
   font-family: "Gilroy", "Barlow Condensed", sans-serif !important;
   font-weight: 700;
   letter-spacing: -.01em;
 }
 
-.h1-okr-brand-upgrade-transition-progress {
+.h1-okr-chapter-transition-progress {
   display: flex;
   align-items: center;
-  gap: 20px;
-  margin-top: 78px;
+  gap: min(20px, 1.041667vw, 1.851852vh);
+  margin-top: min(78px, 4.0625vw, 7.222222vh);
 }
 
-.h1-okr-brand-upgrade-transition-progress i {
+.h1-okr-chapter-transition-progress i {
   display: block;
-  width: 76px;
-  height: 13px;
+  width: min(76px, 3.958333vw, 7.037037vh);
+  height: min(13px, .677083vw, 1.203704vh);
   border-radius: 999px;
   background: rgba(192,55,25,.58);
 }
 
-.h1-okr-brand-upgrade-transition-progress i:first-child {
-  width: 166px;
+.h1-okr-chapter-transition-progress i:first-child {
+  width: min(166px, 8.645833vw, 15.37037vh);
   background: linear-gradient(90deg,#c5161d,#ff6a2b);
   box-shadow: 0 0 22px rgba(255,72,29,.22);
 }
 
-.h1-okr-brand-upgrade-transition-progress i:last-child {
-  width: 38px;
+.h1-okr-chapter-transition-progress i:last-child {
+  width: min(38px, 1.979167vw, 3.518519vh);
   opacity: .68;
 }
 
-.h1-okr-brand-upgrade-transition-page.vis .h1-okr-brand-upgrade-transition-content {
-  animation: h1OkrBrandUpgradeTransitionIn .85s cubic-bezier(.16,1,.3,1) both;
+.h1-okr-chapter-transition-page.vis .h1-okr-chapter-transition-content {
+  animation: h1OkrChapterTransitionIn .85s cubic-bezier(.16,1,.3,1) both;
 }
 
-.h1-okr-brand-upgrade-transition-page.vis .h1-okr-brand-upgrade-transition-watermark {
-  animation: h1OkrBrandUpgradeWatermarkIn 1.1s cubic-bezier(.16,1,.3,1) both;
+.h1-okr-chapter-transition-page.vis .h1-okr-chapter-transition-watermark {
+  animation: h1OkrChapterTransitionWatermarkIn 1.1s cubic-bezier(.16,1,.3,1) both;
 }
 
-@keyframes h1OkrBrandUpgradeTransitionIn {
+@keyframes h1OkrChapterTransitionIn {
   from { opacity: 0; transform: translate3d(0,34px,0); }
   to { opacity: 1; transform: translate3d(0,0,0); }
 }
 
-@keyframes h1OkrBrandUpgradeWatermarkIn {
+@keyframes h1OkrChapterTransitionWatermarkIn {
   from { opacity: 0; transform: translate3d(-24px,0,0); }
   to { opacity: 1; transform: translate3d(0,0,0); }
 }

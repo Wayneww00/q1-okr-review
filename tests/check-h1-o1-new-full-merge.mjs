@@ -43,9 +43,12 @@ const expectedO1Ids = [
   "okr-tvc-library",
   "okr-application-roadmap",
   "okr-high-value-actions",
+  "okr-awards-transition",
   "okr-awards",
+  "okr-offline-events-transition",
   "okr-offline-event-01",
   "okr-offline-event-02",
+  "okr-elite-client-service-transition",
   "okr-elite-client-identity",
   "okr-client-experience-model",
   "okr-client-experience-cases",
@@ -54,11 +57,14 @@ const expectedO1Ids = [
   "okr-elite-ferrari-experience",
   "okr-elite-black-label",
   "okr-elite-business-enablement",
+  "okr-merchandise-transition",
   "okr-merchandise",
+  "okr-public-good-transition",
   "okr-cfd-public-good-story",
   "okr-cfd-public-good",
   "okr-public-good-video",
   "okr-un-ngo-engagement",
+  "okr-integrated-marketing-transition",
   "okr-ai-recommendation",
   "okr-omnichannel-amplification",
   "okr-tvc-localization",
@@ -70,7 +76,7 @@ const o1Block = constantBlock(app, "const OKR_FIGMA_PAGES=[");
 assert.deepEqual(
   topLevelStringIds(o1Block),
   expectedO1Ids,
-  "O1 must use the approved 33-page presentation order",
+  "O1 must use the approved 39-page presentation order",
 );
 assert.doesNotMatch(
   app.slice(
@@ -78,12 +84,12 @@ assert.doesNotMatch(
     app.indexOf("// ═══ O2 growth review"),
   ),
   /<O1ChapterPage\b/,
-  "the package's 33 pages already include page 01; no extra O1 chapter may render",
+  "the package's 39 pages already include page 01; no extra O1 chapter may render",
 );
 assert.match(
   app,
   /const reportPageCount=OKR_FIGMA_PAGES\.length;/,
-  "the package page count must follow the 33-page registry",
+  "the package page count must follow the 39-page registry",
 );
 
 assert.deepEqual(
@@ -229,4 +235,4 @@ for (const [relativePath, expectedHash] of [
   assert.equal(actualHash, expectedHash, `${relativePath} must match the package`);
 }
 
-console.log("H1 O1 New 33-page isolated full-merge contract passed.");
+console.log("H1 O1 New 39-page isolated full-merge contract passed.");

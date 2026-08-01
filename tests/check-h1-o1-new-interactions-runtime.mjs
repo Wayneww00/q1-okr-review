@@ -20,9 +20,12 @@ const expectedO1Ids = [
   "okr-tvc-library",
   "okr-application-roadmap",
   "okr-high-value-actions",
+  "okr-awards-transition",
   "okr-awards",
+  "okr-offline-events-transition",
   "okr-offline-event-01",
   "okr-offline-event-02",
+  "okr-elite-client-service-transition",
   "okr-elite-client-identity",
   "okr-client-experience-model",
   "okr-client-experience-cases",
@@ -31,11 +34,14 @@ const expectedO1Ids = [
   "okr-elite-ferrari-experience",
   "okr-elite-black-label",
   "okr-elite-business-enablement",
+  "okr-merchandise-transition",
   "okr-merchandise",
+  "okr-public-good-transition",
   "okr-cfd-public-good-story",
   "okr-cfd-public-good",
   "okr-public-good-video",
   "okr-un-ngo-engagement",
+  "okr-integrated-marketing-transition",
   "okr-ai-recommendation",
   "okr-omnichannel-amplification",
   "okr-tvc-localization",
@@ -134,13 +140,13 @@ try {
     );
 
     const o1Pages = o1.locator(":scope > [data-report-page]");
-    assert.equal(await o1Pages.count(), 33);
+    assert.equal(await o1Pages.count(), 39);
     assert.deepEqual(
       await o1Pages.evaluateAll((nodes) =>
         nodes.map((node) => node.getAttribute("data-page-id")),
       ),
       expectedO1Ids,
-      "the package's exact 33-page order must render without an extra chapter",
+      "the package's exact 39-page order must render without an extra chapter",
     );
     assert.equal(
       await o1.locator('[data-page-id="o1-chapter"]').count(),
@@ -160,9 +166,9 @@ try {
         last: read("okr-premium-unlimited"),
       };
     });
-    assert.match(numbers.first || "", /01\s*\/\s*32/);
-    assert.match(numbers.moved || "", /07\s*\/\s*32/);
-    assert.match(numbers.last || "", /33\s*\/\s*33/);
+    assert.match(numbers.first || "", /01\s*\/\s*39/);
+    assert.match(numbers.moved || "", /08\s*\/\s*39/);
+    assert.match(numbers.last || "", /39\s*\/\s*39/);
 
     assert.equal(
       await o1.locator(".h1-okr-image-hotspot").count(),
@@ -285,7 +291,7 @@ try {
     await page.close();
   }
 
-  console.log("H1 O1 New 33-page runtime interaction contract passed.");
+  console.log("H1 O1 New 39-page runtime interaction contract passed.");
 } finally {
   await browser.close();
 }

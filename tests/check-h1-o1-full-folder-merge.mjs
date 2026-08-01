@@ -59,9 +59,12 @@ const expectedO1Ids = [
   "okr-tvc-library",
   "okr-application-roadmap",
   "okr-high-value-actions",
+  "okr-awards-transition",
   "okr-awards",
+  "okr-offline-events-transition",
   "okr-offline-event-01",
   "okr-offline-event-02",
+  "okr-elite-client-service-transition",
   "okr-elite-client-identity",
   "okr-client-experience-model",
   "okr-client-experience-cases",
@@ -70,11 +73,14 @@ const expectedO1Ids = [
   "okr-elite-ferrari-experience",
   "okr-elite-black-label",
   "okr-elite-business-enablement",
+  "okr-merchandise-transition",
   "okr-merchandise",
+  "okr-public-good-transition",
   "okr-cfd-public-good-story",
   "okr-cfd-public-good",
   "okr-public-good-video",
   "okr-un-ngo-engagement",
+  "okr-integrated-marketing-transition",
   "okr-ai-recommendation",
   "okr-omnichannel-amplification",
   "okr-tvc-localization",
@@ -98,7 +104,7 @@ assert.deepEqual(
 assert.deepEqual(
   o1Ids,
   expectedO1Ids,
-  "the O1 section must retain all 33 pages in the approved presentation order",
+  "the O1 section must retain all 39 pages in the approved presentation order",
 );
 assert.doesNotMatch(
   app.slice(
@@ -219,5 +225,5 @@ for (const relativePath of new Set(o1AssetReferences)) {
 }
 
 console.log(
-  "H1 complete 33-page O1 replacement, section preservation, and isolated-asset contract passed.",
+  "H1 complete 39-page O1 replacement, section preservation, and isolated-asset contract passed.",
 );

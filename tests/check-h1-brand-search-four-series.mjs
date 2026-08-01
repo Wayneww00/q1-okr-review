@@ -41,8 +41,9 @@ assert.equal(
   "2026 H1：Vantage、Exness、IC Markets 与 XM 月度 Organic Traffic",
 );
 assert.equal(
-  page11.searchMetrics.subtitle,
-  "数据源：overview-trend-2026-07-31T15_27_38Z.xlsx｜Worldwide｜月度 Organic Traffic",
+  "subtitle" in page11.searchMetrics,
+  false,
+  "the Organic Traffic card should not show the spreadsheet source line",
 );
 assert.equal(
   "annotation" in page11.searchMetrics,
@@ -83,6 +84,10 @@ assert.match(page11.sourceLine, /Excel（Worldwide Organic Traffic，2026 H1）/
 assert.doesNotMatch(page11.description, /Google Trends|搜索热度|1 月 21\.6|主动品牌搜索 \+43%/);
 assert.ok(index.includes("function H1BrandSearchFourSeriesChart"));
 assert.ok(index.includes("<H1BrandSearchFourSeriesChart data={data.searchMetrics}/>"));
+assert.ok(
+  index.includes("{data.subtitle && <p>{data.subtitle}</p>}"),
+  "the chart heading should not reserve an empty subtitle row",
+);
 assert.ok(index.includes('aria-label="自然流量趋势图例"'));
 assert.ok(index.includes('pageTitle = data.layoutType === "brand_voice_search_combined" ? "品牌声量、自然流量与口碑"'));
 assert.ok(index.includes("function formatH1OrganicTrafficAxis"));
