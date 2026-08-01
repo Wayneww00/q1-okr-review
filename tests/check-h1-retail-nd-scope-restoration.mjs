@@ -81,6 +81,11 @@ const connectorStart = vietnamChartBlock.indexOf('className="h1-retail-growth-sc
 assert.ok(currentCardStart >= 0 && comparisonStart > currentCardStart && connectorStart > comparisonStart, "Vietnam comparison must live inside the left data card before the scope connector");
 
 assert.match(theme, /\.h1-retail-growth-vietnam-scope-grid\s*\{[^}]*height:\s*100%;[^}]*grid-template-columns:\s*minmax\(0,\.9fr\)\s+68px\s+minmax\(0,1\.18fr\);/s);
+assert.match(
+  theme,
+  /\.h1-retail-growth-page\.is-vietnam-retail-nd\s*>\s*\.h1-extended-editorial-canvas\.is-retail-data-detail,\s*\.h1-retail-growth-page\.is-retail-nd-scope-restoration\s*>\s*\.h1-extended-editorial-canvas\.is-retail-data-detail\s*\{[^}]*padding:\s*30px\s+40px\s+24px;[^}]*grid-template-rows:\s*136px\s+minmax\(0,1fr\);[^}]*gap:\s*14px;[^}]*scale\(1\.14\);/s,
+  "pages 18 and 21 must share the compact, viewport-filling data layout",
+);
 assert.match(theme, /\.is-vietnam-retail-nd \.h1-retail-growth-comparison\s*\{[^}]*position:\s*relative;[^}]*grid-template-columns:\s*100px\s+minmax\(0,1fr\);/s);
 assert.match(vietnamChartBlock, /const leftPlot = \{left:50,right:490,top:24,bottom:342\};/);
 assert.match(vietnamChartBlock, /const restoredPlot = \{left:68,right:520,top:24,bottom:346\};/);

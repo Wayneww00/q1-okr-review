@@ -8057,6 +8057,20 @@ svg.h1-okr-insight-icon circle {
   grid-template-rows: 180px minmax(0,1fr);
 }
 
+/*
+ * Retail ND comparison pages use a 1600 x 900 editorial canvas while the
+ * shared report scale is calculated against 1920 x 1080. Give only the two
+ * comparison pages their own safe-area compensation and return the unused
+ * header height to the charts.
+ */
+.h1-retail-growth-page.is-vietnam-retail-nd > .h1-extended-editorial-canvas.is-retail-data-detail,
+.h1-retail-growth-page.is-retail-nd-scope-restoration > .h1-extended-editorial-canvas.is-retail-data-detail {
+  padding: 30px 40px 24px;
+  grid-template-rows: 136px minmax(0,1fr);
+  gap: 14px;
+  transform: translate(-50%,-50%) scale(var(--h1-figma-scale)) scale(1.14);
+}
+
 .h1-extended-editorial-canvas.is-retail-transition {
   grid-template-rows: minmax(0,1fr);
 }
