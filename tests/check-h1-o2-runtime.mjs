@@ -41,13 +41,13 @@ try {
   );
   assert.equal(
     await dataPages.count(),
-    21,
-    "the data section must retain all pages except the removed India chapter",
+    20,
+    "the data section must retain the current 20-page registry",
   );
   assert.equal(
     await okrPages.count(),
-    39,
-    "the complete 39-page O1 package must stay intact",
+    40,
+    "the complete 40-page O1 package must stay intact",
   );
   assert.equal(await o2Pages.count(), 27, "the O2 section must render all 27 pages");
   assert.equal(

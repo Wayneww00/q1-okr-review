@@ -13,7 +13,7 @@ const ids = [
   ...app.slice(start, end).matchAll(/^  \{(?:\n    )?id:["']([^"']+)["']/gm),
 ].map((match) => match[1]);
 
-assert.equal(ids.length, 39, "the O1 section transitions must extend the deck to 39 pages");
+assert.equal(ids.length, 40, "the Q3 strategy conclusion must extend the O1 deck to 40 pages");
 assert.deepEqual(
   ids.slice(0, 9),
   [

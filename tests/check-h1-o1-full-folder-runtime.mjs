@@ -67,8 +67,9 @@ const expectedO1Ids = [
   "okr-public-good-video",
   "okr-un-ngo-engagement",
   "okr-integrated-marketing-transition",
-  "okr-ai-recommendation",
   "okr-omnichannel-amplification",
+  "okr-ai-recommendation",
+  "okr-q3-24-7-mindshare",
   "okr-tvc-localization",
   "okr-superapp-activation",
   "okr-premium-unlimited",
@@ -104,7 +105,7 @@ try {
 
   assert.equal(
     await page.locator('[data-report-section="data"] [data-report-page]').count(),
-    22,
+    20,
   );
   assert.equal(
     await page.locator('[data-report-section="o2"] [data-report-page]').count(),
@@ -118,7 +119,7 @@ try {
   const o1Pages = page.locator(
     'main[data-report-section="okr"] > [data-report-page]',
   );
-  assert.equal(await o1Pages.count(), 39);
+  assert.equal(await o1Pages.count(), 40);
   assert.deepEqual(
     await o1Pages.evaluateAll((nodes) =>
       nodes.map((node) => node.getAttribute("data-page-id")),
@@ -180,8 +181,8 @@ try {
 
   assert.deepEqual(visualHealth.shortPages, []);
   assert.deepEqual(visualHealth.brokenImages, []);
-  assert.match(visualHealth.firstNumber || "", /01\s*\/\s*39/);
-  assert.match(visualHealth.lastNumber || "", /39\s*\/\s*39/);
+  assert.match(visualHealth.firstNumber || "", /01\s*\/\s*40/);
+  assert.match(visualHealth.lastNumber || "", /40\s*\/\s*40/);
   assert.deepEqual(runtimeErrors, []);
   await page.close();
   }
@@ -190,5 +191,5 @@ try {
 }
 
 console.log(
-  "H1 O1 39-page source package, asset health, and O1 → O2 boundary contract passed.",
+  "H1 O1 40-page source package, asset health, and O1 → O2 boundary contract passed.",
 );

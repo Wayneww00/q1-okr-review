@@ -15,7 +15,7 @@ const transitions = [
   ["okr-elite-client-service-transition", "ELITE CLIENT SERVICE", "高净值客户服务体系", "用真诚的服务、用心的体验，与高净值客户共同打造 Vantage 核心圈层", "okr-elite-client-identity"],
   ["okr-merchandise-transition", "MERCHANDISE", "周边", "让 Vantage 触手可及", "okr-merchandise"],
   ["okr-public-good-transition", "PUBLIC GOOD", "公益", "成为 CFD 行业领军者", "okr-cfd-public-good-story"],
-  ["okr-integrated-marketing-transition", "INTEGRATED MARKETING", "整合营销", "全域联动，打造“心智”", "okr-ai-recommendation"],
+  ["okr-integrated-marketing-transition", "INTEGRATED MARKETING", "整合营销", "全域联动，打造“心智”", "okr-omnichannel-amplification"],
 ];
 
 for (const [id, english, title, subtitle, nextId] of transitions) {

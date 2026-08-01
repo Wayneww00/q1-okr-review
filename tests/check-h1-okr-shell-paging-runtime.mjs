@@ -155,7 +155,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    /^03\s*\/\s*39$/,
+    /^03\s*\/\s*40$/,
   );
 
   await page.locator("body").press("PageDown");
@@ -170,7 +170,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    /^04\s*\/\s*39$/,
+    /^04\s*\/\s*40$/,
   );
 
   await scrollFrameToPage("okr-tvc-matrix");
@@ -233,5 +233,5 @@ try {
 }
 
 console.log(
-  "H1 immersive paging passed through the 39-page O1 package, O2 and O3.",
+  "H1 immersive paging passed through the 40-page O1 package, O2 and O3.",
 );

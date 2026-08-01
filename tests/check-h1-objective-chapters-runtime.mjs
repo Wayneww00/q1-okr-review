@@ -75,7 +75,7 @@ try {
     await reportFrame
       .locator('[data-report-section="okr"] [data-report-page]')
       .count(),
-    39,
+    40,
   );
   assert.equal(
     await reportFrame
@@ -94,7 +94,7 @@ try {
     {
       id: "o1-chapter",
       title: "O1 将 Vantage 建设成全球一线品牌",
-      number: "01 / 39",
+      number: "01 / 40",
       backgroundSelector: ".h1-okr-fixed-stage-background",
       backgroundNeedle: "p68-trophy-background.png",
     },
@@ -255,7 +255,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    "02 / 39",
+    "02 / 40",
   );
   assert.equal(
     (
@@ -267,7 +267,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    "39 / 39",
+    "40 / 40",
   );
 
   await page.setViewportSize({ width: 2560, height: 1440 });

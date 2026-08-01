@@ -16,8 +16,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-organic-chart-clarity-v1">
-<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260801-vn-retail-dual-axis-v1">
-<link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260801-brand-build-transition-v1">
+<link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260802-vn-sentiment-stack-v1">
+<link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260802-q3-mindshare-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -3665,6 +3665,72 @@ function OkrBrandUpgradeTransitionPage(props){
   return <OkrChapterTransitionPage {...props}/>;
 }
 
+function OkrQ3MindsharePage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale({cover:true});
+  const content=page.q3Mindshare;
+  return (
+    <section
+      ref={pageRef}
+      className="h1-okr-page h1-okr-q3-mindshare-page"
+      data-report-page
+      data-page-id={page.id}
+      aria-labelledby="h1-okr-q3-mindshare-title"
+    >
+      <div ref={canvasRef} className="h1-okr-canvas h1-okr-q3-mindshare-canvas" aria-hidden="true">
+        <div className="h1-okr-q3-mindshare-veil"></div>
+      </div>
+
+      <div className="h1-okr-q3-mindshare-watermark" aria-hidden="true">24/7</div>
+      <div className="h1-okr-q3-mindshare-frame">
+        <header className="h1-okr-q3-mindshare-header">
+          <div className="h1-okr-q3-mindshare-kicker">
+            <ObjectiveChapterMark/>
+            <span>{content.eyebrow}</span>
+          </div>
+          <h1 id="h1-okr-q3-mindshare-title" className="h1-okr-q3-mindshare-title">
+            Q3 会持续投入 <strong>24/7 心智建设</strong>
+          </h1>
+          <p>{content.subtitle}</p>
+        </header>
+
+        <div className="h1-okr-q3-mindshare-strategy">
+          <section className="h1-okr-q3-mindshare-leadership" aria-label="三项领先指标">
+            <div className="h1-okr-q3-mindshare-section-label">LEADERSHIP SIGNALS · 01—03</div>
+            {content.signals.map((signal,signalIndex)=>(
+              <article className="h1-okr-q3-mindshare-signal" key={signal.label} style={{'--h1-okr-q3-index':signalIndex}}>
+                <span>{String(signalIndex+1).padStart(2,'0')}</span>
+                <strong>{signal.label}</strong>
+                <p>{signal.statement.slice(signal.label.length).trim()}</p>
+                <b>NO.1</b>
+              </article>
+            ))}
+          </section>
+
+          <div className="h1-okr-q3-mindshare-flow" aria-hidden="true"><i></i><span>AMPLIFY</span></div>
+
+          <section className="h1-okr-q3-mindshare-amplifier" aria-label="Sales 与 IB 协同传播">
+            <div className="h1-okr-q3-mindshare-section-label">GROWTH AMPLIFIER · 04</div>
+            <div className="h1-okr-q3-mindshare-amplifier-mark"><span>SALES</span><i>×</i><span>IB</span></div>
+            <p>{content.amplifier}</p>
+          </section>
+
+          <div className="h1-okr-q3-mindshare-flow" aria-hidden="true"><i></i><span>BUILD</span></div>
+
+          <section className="h1-okr-q3-mindshare-outcome" aria-label="最终行业心智">
+            <div className="h1-okr-q3-mindshare-section-label">INDUSTRY MIND SHARE · 05</div>
+            <div className="h1-okr-q3-mindshare-equation"><strong>24/7</strong><i>=</i><b>VTG</b></div>
+            <p>{content.outcome}</p>
+          </section>
+        </div>
+      </div>
+
+      <div className="h1-okr-page-number h1-okr-q3-mindshare-page-number" aria-hidden="true">
+        {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
+      </div>
+    </section>
+  );
+}
+
 function OkrTvcMatrixPage({index,count,onVideoPreview}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   const matrixSource='previews/assets/o1-complete/figma-exact/okr-p32-matrix-source.jpg';
@@ -4075,6 +4141,12 @@ const OKR_FIGMA_PAGES=[
     },
   },
   {
+    id:'okr-omnichannel-amplification',
+    label:'海陆空全面资源实现 7/24 推广',
+    src:'previews/assets/o1-complete/figma-untitled/omnichannel-amplification-figma-145-716.png',
+    figmaNodeId:'145:716',
+  },
+  {
     id:'okr-ai-recommendation',
     label:'24/7 AI 推荐优势',
     src:'previews/assets/o1-complete/figma-untitled/p58-ai-recommendation-figma-152-1299.png',
@@ -4092,10 +4164,20 @@ const OKR_FIGMA_PAGES=[
     ],
   },
   {
-    id:'okr-omnichannel-amplification',
-    label:'海陆空全面资源实现 7/24 推广',
-    src:'previews/assets/o1-complete/figma-untitled/omnichannel-amplification-figma-145-716.png',
-    figmaNodeId:'145:716',
+    id:'okr-q3-24-7-mindshare',
+    label:'Q3 会持续投入 24/7 心智建设',
+    q3Mindshare:{
+      eyebrow:'Q3 · 24/7 MIND SHARE',
+      title:'Q3 会持续投入 24/7 心智建设',
+      subtitle:'从平台领先，到行业默认选择',
+      signals:[
+        {label:'GEO',statement:'GEO 持续维持第一'},
+        {label:'SEO',statement:'SEO 第一'},
+        {label:'SOCIAL MEDIA SOV',statement:'Social Media SOV 第一'},
+      ],
+      amplifier:'配合 Sales 进行 IB 传播',
+      outcome:'共同建立「24/7 交易就上 VTG」的行业认知',
+    },
   },
   {
     id:'okr-tvc-localization',
@@ -4924,6 +5006,7 @@ function OkrReportDeck(){
         page.id==='okr-cfd-public-good' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} onPreview={setPreview}/> :
         page.id==='okr-public-good-video' ? <OkrPublicGoodVideoPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
         page.id==='okr-un-ngo-engagement' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src}/> :
+        page.id==='okr-q3-24-7-mindshare' ? <OkrQ3MindsharePage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-ai-recommendation' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} artwork={{left:160,top:19,width:1608,height:1042}} onPreview={setPreview}/> :
         page.id==='okr-omnichannel-amplification' ? <OkrPositionedFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} artwork={{left:195,top:75,width:1575,height:987}}/> :
         page.id==='okr-tvc-localization' ? <OkrTvcLocalizationPage key={page.id} page={page} index={index+1} count={reportPageCount} onVideoPreview={setVideoPreview}/> :
@@ -6863,7 +6946,7 @@ function O3Sentiment(){
       <article className="h1-o3-figma-card h1-o3-100-sentiment-stage">
         <h3><O3RacingMark/> Vantage 与 Exness 品牌关键词情感对比</h3><small>数据来源：Meltwater · 2026 H1</small>
         <div className="h1-o3-100-stage">
-          <O3SentimentBrandCard brand="VANTAGE" tone="vantage" positive="62.7%" count="1.49K" delta="领先 Exness 15.5pp" metrics={[["正面","1.49K","62.7%","62.7"],["中性","766","32.3%","32.3"],["负面","116","4.89%","4.89"],["未评级","116","4.89%","4.89"]]}/>
+          <O3SentimentBrandCard brand="VANTAGE" tone="vantage" positive="62.7%" count="1.49K" delta="领先 Exness 15.5pp" metrics={[["正面","1.49K","62.7%","62.7"],["中性","766","32.3%","32.3"],["负面","116","4.89%","4.89"]]}/>
           <figure className="is-keywords"><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/sentiment-keywords.png`} alt="高频关键词与标题原始证据"/><figcaption>高频关键词与标题</figcaption></figure>
           <figure className="is-trend"><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/sentiment-trend.png`} alt="情感趋势原始证据"/><figcaption>情感趋势</figcaption></figure>
           <figure className="is-sentiment"><H1SourceImage src={`${O3_ASSET_ROOT}/ppt-native/sentiment-overview.png`} alt="品牌情绪原始证据"/></figure>

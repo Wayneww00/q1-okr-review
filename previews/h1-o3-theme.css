@@ -240,9 +240,9 @@
   display:grid;
   grid-template-areas:
     "vantage keywords trend"
-    "sentiment hashtags exness";
+    "exness sentiment hashtags";
   grid-template-columns:330px 1fr 1fr;
-  grid-template-rows:260px 250px;
+  grid-template-rows:repeat(2,255px);
   gap:16px;
   height:526px;
   margin-top:20px;

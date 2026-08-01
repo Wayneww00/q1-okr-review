@@ -43,7 +43,6 @@ for (const metric of [
   '["正面","1.49K","62.7%","62.7"]',
   '["中性","766","32.3%","32.3"]',
   '["负面","116","4.89%","4.89"]',
-  '["未评级","116","4.89%","4.89"]',
   '["正面","1.1K","47.2%","47.2"]',
   '["中性","934","40.2%","40.2"]',
   '["负面","292","12.6%","12.6"]',
@@ -53,6 +52,25 @@ for (const metric of [
     `sentiment card must preserve ${metric}`,
   );
 }
+assert.doesNotMatch(
+  sentimentSource,
+  /未评级/,
+  "the Vantage sentiment card must remove the unclassified row",
+);
+assert.match(
+  theme,
+  /\.h1-o3-100-stage\{[\s\S]*?grid-template-areas:\s*"vantage keywords trend"\s*"exness sentiment hashtags";/,
+  "Vantage and Exness must stack vertically in the left column while evidence stays 2×2",
+);
+assert.match(
+  theme,
+  /\.h1-o3-100-stage\{[\s\S]*?grid-template-rows:\s*repeat\(2,255px\);/,
+  "the two sentiment cards must have matching heights",
+);
+assert.ok(
+  app.includes("h1-o3-theme.css?v=20260802-vn-sentiment-stack-v1"),
+  "the production page must invalidate the cached O3 theme",
+);
 
 for (const selector of [
   ".h1-o3-100-brand-card",

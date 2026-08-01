@@ -42,8 +42,9 @@ const expectedO1Ids = [
   "okr-public-good-video",
   "okr-un-ngo-engagement",
   "okr-integrated-marketing-transition",
-  "okr-ai-recommendation",
   "okr-omnichannel-amplification",
+  "okr-ai-recommendation",
+  "okr-q3-24-7-mindshare",
   "okr-tvc-localization",
   "okr-superapp-activation",
   "okr-premium-unlimited",
@@ -124,7 +125,7 @@ try {
       await page
         .locator('[data-report-section="data"] [data-report-page]')
         .count(),
-      22,
+      20,
     );
     assert.equal(
       await page
@@ -140,13 +141,13 @@ try {
     );
 
     const o1Pages = o1.locator(":scope > [data-report-page]");
-    assert.equal(await o1Pages.count(), 39);
+    assert.equal(await o1Pages.count(), 40);
     assert.deepEqual(
       await o1Pages.evaluateAll((nodes) =>
         nodes.map((node) => node.getAttribute("data-page-id")),
       ),
       expectedO1Ids,
-      "the package's exact 39-page order must render without an extra chapter",
+      "the package's exact 40-page order must render without an extra chapter",
     );
     assert.equal(
       await o1.locator('[data-page-id="o1-chapter"]').count(),
@@ -166,9 +167,9 @@ try {
         last: read("okr-premium-unlimited"),
       };
     });
-    assert.match(numbers.first || "", /01\s*\/\s*39/);
-    assert.match(numbers.moved || "", /08\s*\/\s*39/);
-    assert.match(numbers.last || "", /39\s*\/\s*39/);
+    assert.match(numbers.first || "", /01\s*\/\s*40/);
+    assert.match(numbers.moved || "", /08\s*\/\s*40/);
+    assert.match(numbers.last || "", /40\s*\/\s*40/);
 
     assert.equal(
       await o1.locator(".h1-okr-image-hotspot").count(),
@@ -291,7 +292,7 @@ try {
     await page.close();
   }
 
-  console.log("H1 O1 New 39-page runtime interaction contract passed.");
+  console.log("H1 O1 New 40-page runtime interaction contract passed.");
 } finally {
   await browser.close();
 }

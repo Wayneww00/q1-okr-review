@@ -52,7 +52,7 @@ try {
   await o1.waitFor();
   const pages = o1.locator(":scope > [data-report-page]");
 
-  assert.equal(await pages.count(), 39);
+  assert.equal(await pages.count(), 40);
   assert.deepEqual(
     (await pages.evaluateAll((nodes) =>
       nodes.map((node) => node.getAttribute("data-page-id")),
@@ -88,15 +88,18 @@ try {
     ["okr-public-good-transition", "29"],
     ["okr-cfd-public-good-story", "30"],
     ["okr-integrated-marketing-transition", "34"],
-    ["okr-ai-recommendation", "35"],
-    ["okr-premium-unlimited", "39"],
+    ["okr-omnichannel-amplification", "35"],
+    ["okr-ai-recommendation", "36"],
+    ["okr-q3-24-7-mindshare", "37"],
+    ["okr-tvc-localization", "38"],
+    ["okr-premium-unlimited", "40"],
   ]) {
     const pageNumber = (
       await o1.locator(`[data-page-id="${pageId}"] .h1-okr-page-number`).innerText()
     )
       .replace(/\s+/g, " ")
       .trim();
-    assert.match(pageNumber, new RegExp(`^${number}\\s*\\/\\s*39$`));
+    assert.match(pageNumber, new RegExp(`^${number}\\s*\\/\\s*40$`));
   }
 
   assert.deepEqual(runtimeErrors, []);

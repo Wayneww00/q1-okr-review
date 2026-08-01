@@ -81,8 +81,9 @@ const expectedO1Ids = [
   "okr-public-good-video",
   "okr-un-ngo-engagement",
   "okr-integrated-marketing-transition",
-  "okr-ai-recommendation",
   "okr-omnichannel-amplification",
+  "okr-ai-recommendation",
+  "okr-q3-24-7-mindshare",
   "okr-tvc-localization",
   "okr-superapp-activation",
   "okr-premium-unlimited",
@@ -99,12 +100,12 @@ const o3Ids = topLevelStringIds(constantBlock(app, "const O3_REPORT_PAGES=["));
 assert.deepEqual(
   dataIds,
   Array.from({ length: 20 }, (_, index) => index + 1),
-  "the current 21 data pages must remain in order",
+  "the current 20 data pages must remain in order",
 );
 assert.deepEqual(
   o1Ids,
   expectedO1Ids,
-  "the O1 section must retain all 39 pages in the approved presentation order",
+  "the O1 section must retain all 40 pages in the approved presentation order",
 );
 assert.doesNotMatch(
   app.slice(
@@ -122,8 +123,8 @@ assert.deepEqual(
 );
 assert.equal(
   o3Ids.length,
-  18,
-  "the restored Vietnam sequence plus the India chapter must remain",
+  17,
+  "the current Vietnam sequence plus the India chapter must remain",
 );
 assert.deepEqual(
   o3Ids.slice(0, 2),
@@ -132,8 +133,8 @@ assert.deepEqual(
 );
 assert.equal(
   dataIds.length + o1Ids.length + o2Ids.length + o3Ids.length,
-  98,
-  "the unified embedded report must contain 98 pages after adding the O1 transition",
+  104,
+  "the unified embedded report must contain 104 pages after adding the Q3 strategy page",
 );
 assert.doesNotMatch(
   app.slice(
@@ -160,7 +161,7 @@ function numericPageBlock(block, id, finalId) {
 }
 for (let id = 1; id <= 14; id += 1) {
   assert.equal(
-    numericPageBlock(currentDataBlock, id, 21),
+    numericPageBlock(currentDataBlock, id, 20),
     numericPageBlock(rollbackDataBlock, id, 14),
     `retained data page ${id} must remain byte-for-byte unchanged`,
   );
@@ -225,5 +226,5 @@ for (const relativePath of new Set(o1AssetReferences)) {
 }
 
 console.log(
-  "H1 complete 39-page O1 replacement, section preservation, and isolated-asset contract passed.",
+  "H1 complete 40-page O1 replacement, section preservation, and isolated-asset contract passed.",
 );

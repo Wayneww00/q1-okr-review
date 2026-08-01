@@ -65,8 +65,9 @@ const expectedO1Ids = [
   "okr-public-good-video",
   "okr-un-ngo-engagement",
   "okr-integrated-marketing-transition",
-  "okr-ai-recommendation",
   "okr-omnichannel-amplification",
+  "okr-ai-recommendation",
+  "okr-q3-24-7-mindshare",
   "okr-tvc-localization",
   "okr-superapp-activation",
   "okr-premium-unlimited",
@@ -76,7 +77,7 @@ const o1Block = constantBlock(app, "const OKR_FIGMA_PAGES=[");
 assert.deepEqual(
   topLevelStringIds(o1Block),
   expectedO1Ids,
-  "O1 must use the approved 39-page presentation order",
+  "O1 must use the approved 40-page presentation order",
 );
 assert.doesNotMatch(
   app.slice(
@@ -84,12 +85,12 @@ assert.doesNotMatch(
     app.indexOf("// ═══ O2 growth review"),
   ),
   /<O1ChapterPage\b/,
-  "the package's 39 pages already include page 01; no extra O1 chapter may render",
+  "the package's 40 pages already include page 01; no extra O1 chapter may render",
 );
 assert.match(
   app,
   /const reportPageCount=OKR_FIGMA_PAGES\.length;/,
-  "the package page count must follow the 39-page registry",
+  "the package page count must follow the 40-page registry",
 );
 
 assert.deepEqual(
@@ -104,8 +105,8 @@ assert.equal(
 );
 assert.equal(
   topLevelStringIds(constantBlock(app, "const O3_REPORT_PAGES=[")).length,
-  18,
-  "the 18 O3 pages must remain untouched",
+  17,
+  "the 17 O3 pages must remain untouched",
 );
 
 for (const helper of [
@@ -235,4 +236,4 @@ for (const [relativePath, expectedHash] of [
   assert.equal(actualHash, expectedHash, `${relativePath} must match the package`);
 }
 
-console.log("H1 O1 New 39-page isolated full-merge contract passed.");
+console.log("H1 O1 New 40-page isolated full-merge contract passed.");
