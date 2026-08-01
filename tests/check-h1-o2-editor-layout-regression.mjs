@@ -13,7 +13,7 @@ const immersive = fs.readFileSync(
   path.join(repoRoot, "previews/vantage-h1-immersive.html"),
   "utf8",
 );
-const expectedThemeVersion = "20260801-unified-visual-release-v1";
+const expectedThemeVersion = "20260801-mib-bottom-compat-v1";
 const expectedReportVersion = "20260801-o1-static-images-v1";
 
 const regions = html.match(

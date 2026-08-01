@@ -131,7 +131,7 @@ assert.match(
   "page 12 reputation conclusion must remain legible at presentation scale",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260801-unified-visual-release-v1/g)].length,
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260801-mib-bottom-compat-v1/g)].length,
   2,
   "the formal shell and embedded report must both load the current cache-busted theme",
 );

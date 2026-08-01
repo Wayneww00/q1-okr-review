@@ -100,7 +100,7 @@ assert.match(
   "up/down trajectories must have distinct brand colors",
 );
 
-const expectedCacheKey = "20260801-unified-visual-release-v1";
+const expectedCacheKey = "20260801-mib-bottom-compat-v1";
 assert.ok(app.includes(`h1-figma-racing-theme.css?v=${expectedCacheKey}`));
 const shellCacheKeys = [
   ...shell.matchAll(

@@ -8,11 +8,27 @@ const theme = readFileSync(
   resolve(root, "previews/h1-figma-racing-theme.css"),
   "utf8",
 );
+const shell = readFileSync(
+  resolve(root, "previews/vantage-h1-immersive.html"),
+  "utf8",
+);
 
 const dataStart = app.indexOf("const H1_DASHBOARDS = [");
 const dataEnd = app.indexOf("const REPORT_MODE", dataStart);
 assert.ok(dataStart >= 0 && dataEnd > dataStart);
 const dataBlock = app.slice(dataStart, dataEnd);
+
+assert.match(
+  app,
+  /h1-figma-racing-theme\.css\?v=20260801-mib-bottom-compat-v1/,
+  "the compatibility release must invalidate cached copies of the layout CSS",
+);
+assert.equal(
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260801-mib-bottom-compat-v1/g)]
+    .length,
+  2,
+  "the shell and embedded report handoff must use the compatibility CSS revision",
+);
 
 assert.equal(
   [...dataBlock.matchAll(/editorRevision:"retail-nd-ppt-v5"/g)].length,
@@ -76,6 +92,7 @@ for (const token of [
   'rightFactorTitle:"2.Retail 转 IB导致下降（长期）"',
   'leftInsight:"40%的Q2 MIB用户不符合IB的显著特征，"',
   'rightInsight:"超过一半转入IB的用户在注册两个月后才发生归属迁移，"',
+  'mibChartTitle:"Q2 MIB 用户类型人数及其贡献ND占比"',
   'intervalTitle:"2026-Q2 Retail 转IB 用户 注册到IB转化日间隔和 ND 影响分布"',
 ]) {
   assert.ok(dataBlock.includes(token), `page 19 must preserve PPT slide 8 content: ${token}`);
@@ -98,8 +115,28 @@ for (const component of [
 
 assert.match(
   app,
-  /<h3>2026-Q2 MIB 用户类型人数及其贡献ND占比<\/h3>[\s\S]*?aria-label="2026-Q2 MIB 用户类型人数及其贡献ND占比"/,
-  "page 19 must show the full 2026-Q2 period on the highlighted MIB chart label",
+  /<div className="h1-retail-growth-mib-plot">[\s\S]*?aria-label=\{data\.mibChartTitle\}[\s\S]*?<\/div>\s*<p className="h1-retail-growth-mib-caption">\{data\.mibChartTitle\}<\/p>/,
+  "page 19 must render the MIB source caption below a shrink-safe plot wrapper",
+);
+assert.match(
+  app,
+  /<div className="h1-retail-growth-mib-plot">[\s\S]*?aria-label=\{data\.intervalTitle\}[\s\S]*?<\/div>\s*<p className="h1-retail-growth-mib-caption">\{data\.intervalTitle\}<\/p>/,
+  "page 19 must render the interval source caption below a shrink-safe plot wrapper",
+);
+assert.doesNotMatch(
+  app,
+  /<h3>(?:2026-Q2 MIB 用户类型人数及其贡献ND占比|\{data\.intervalTitle\})<\/h3>/,
+  "page 19 must not duplicate the source captions above the plots",
+);
+assert.match(
+  theme,
+  /\.h1-retail-growth-factor-panel\s*\{[\s\S]*?grid-template-rows:\s*auto\s+auto\s+minmax\(0,1fr\)\s+auto;/,
+  "page 19 panels must reserve an explicit bottom caption row",
+);
+assert.match(
+  theme,
+  /\.h1-retail-growth-mib-plot\s*\{[\s\S]*?min-height:\s*0;[\s\S]*?overflow:\s*hidden;/,
+  "page 19 plots must shrink inside the panel before overflow clipping applies",
 );
 
 for (const selector of [

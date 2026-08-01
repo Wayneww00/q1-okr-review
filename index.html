@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-unified-visual-release-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-mib-bottom-compat-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260801-vn-retail-dual-axis-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -1037,6 +1037,7 @@ const H1_DASHBOARDS = [
     leftImpact:"Q2 ND 5.9M (占比大盘1.4%)",
     rightInsight:"超过一半转入IB的用户在注册两个月后才发生归属迁移，",
     rightImpact:"Q2 ND 9.1M (占比大盘2.1%)",
+    mibChartTitle:"Q2 MIB 用户类型人数及其贡献ND占比",
     mibUserAxisTitle:"No.Users",
     mibNdAxisTitle:"Q2 ND",
     mibUserAxisTicks:[".0 K","2.0 K","4.0 K","6.0 K","8.0 K"],
@@ -2080,8 +2081,8 @@ function H1MibAttributionChart({data}) {
             <p>{data.leftInsight}</p>
             <strong>{data.leftImpact}</strong>
           </div>
-          <h3>2026-Q2 MIB 用户类型人数及其贡献ND占比</h3>
-          <svg className="h1-retail-growth-mib-svg" viewBox="0 0 620 390" role="img" aria-label="2026-Q2 MIB 用户类型人数及其贡献ND占比">
+          <div className="h1-retail-growth-mib-plot">
+            <svg className="h1-retail-growth-mib-svg" viewBox="0 0 620 390" role="img" aria-label={data.mibChartTitle}>
             <rect x="86" y="38" width="342" height="338" rx="9" className="h1-retail-growth-evidence-frame is-user-types"/>
             {data.mibUserAxisTicks.map((tick,index)=>{
               const y=leftPlot.bottom-(index/4)*leftHeight;
@@ -2112,7 +2113,9 @@ function H1MibAttributionChart({data}) {
                 <text x={point.x} y={point.y+(data.mibGroups[index].ndValue<0?22:-12)} className="h1-retail-growth-mib-line-value" textAnchor="middle">{data.mibGroups[index].ndChartText}</text>
               </g>
             ))}
-          </svg>
+            </svg>
+          </div>
+          <p className="h1-retail-growth-mib-caption">{data.mibChartTitle}</p>
         </section>
         <section className="h1-retail-growth-factor-panel h1-retail-growth-interval-panel">
           <h2>{data.rightFactorTitle}</h2>
@@ -2120,8 +2123,8 @@ function H1MibAttributionChart({data}) {
             <p>{data.rightInsight}</p>
             <strong>{data.rightImpact}</strong>
           </div>
-          <h3>{data.intervalTitle}</h3>
-          <svg className="h1-retail-growth-mib-svg" viewBox="0 0 620 390" role="img" aria-label={data.intervalTitle}>
+          <div className="h1-retail-growth-mib-plot">
+            <svg className="h1-retail-growth-mib-svg" viewBox="0 0 620 390" role="img" aria-label={data.intervalTitle}>
             <rect x="98" y="38" width="76" height="338" rx="9" className="h1-retail-growth-evidence-frame is-delayed-migration"/>
             {data.intervalUserAxisTicks.map((tick,index)=>{
               const y=rightPlot.bottom-(index/7)*rightHeight;
@@ -2151,7 +2154,9 @@ function H1MibAttributionChart({data}) {
                 <text x={point.x} y={point.y-12} className="h1-retail-growth-mib-line-value" textAnchor="middle">{data.intervals[index].nd}</text>
               </g>
             ))}
-          </svg>
+            </svg>
+          </div>
+          <p className="h1-retail-growth-mib-caption">{data.intervalTitle}</p>
         </section>
     </div>
   );
