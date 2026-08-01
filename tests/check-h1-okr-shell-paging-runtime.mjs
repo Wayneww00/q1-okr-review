@@ -155,7 +155,22 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    /^03\s*\/\s*32$/,
+    /^03\s*\/\s*33$/,
+  );
+
+  await page.locator("body").press("PageDown");
+  await waitForActivePage("okr-brand-upgrade-transition");
+  assert.match(
+    (
+      await reportFrame
+        .locator(
+          '[data-page-id="okr-brand-upgrade-transition"] .h1-okr-page-number',
+        )
+        .innerText()
+    )
+      .replace(/\s+/g, " ")
+      .trim(),
+    /^04\s*\/\s*33$/,
   );
 
   await scrollFrameToPage("okr-tvc-matrix");
@@ -218,5 +233,5 @@ try {
 }
 
 console.log(
-  "H1 immersive paging passed through the 32-page O1 package, O2 and O3.",
+  "H1 immersive paging passed through the 33-page O1 package, O2 and O3.",
 );

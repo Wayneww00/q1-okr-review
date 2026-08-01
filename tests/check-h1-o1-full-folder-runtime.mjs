@@ -36,6 +36,7 @@ const expectedO1Ids = [
   "okr-review",
   "okr-brand-results",
   "okr-brand-build-transition",
+  "okr-brand-upgrade-transition",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
@@ -111,7 +112,7 @@ try {
   const o1Pages = page.locator(
     'main[data-report-section="okr"] > [data-report-page]',
   );
-  assert.equal(await o1Pages.count(), 32);
+  assert.equal(await o1Pages.count(), 33);
   assert.deepEqual(
     await o1Pages.evaluateAll((nodes) =>
       nodes.map((node) => node.getAttribute("data-page-id")),
@@ -173,8 +174,8 @@ try {
 
   assert.deepEqual(visualHealth.shortPages, []);
   assert.deepEqual(visualHealth.brokenImages, []);
-  assert.match(visualHealth.firstNumber || "", /01\s*\/\s*32/);
-  assert.match(visualHealth.lastNumber || "", /32\s*\/\s*32/);
+  assert.match(visualHealth.firstNumber || "", /01\s*\/\s*33/);
+  assert.match(visualHealth.lastNumber || "", /33\s*\/\s*33/);
   assert.deepEqual(runtimeErrors, []);
   await page.close();
   }
@@ -183,5 +184,5 @@ try {
 }
 
 console.log(
-  "H1 O1 32-page source package, asset health, and O1 → O2 boundary contract passed.",
+  "H1 O1 33-page source package, asset health, and O1 → O2 boundary contract passed.",
 );

@@ -11,7 +11,7 @@ const theme = fs.readFileSync(
 
 assert.match(
   app,
-  /id:'okr-brand-results'[\s\S]*?id:'okr-brand-build-transition'[\s\S]*?id:'okr-brand-refresh'/,
+  /id:'okr-brand-results'[\s\S]*?id:'okr-brand-build-transition'[\s\S]*?id:'okr-brand-upgrade-transition'[\s\S]*?id:'okr-brand-refresh'/,
   "the transition must render immediately after 什么是全球一线品牌",
 );
 assert.match(

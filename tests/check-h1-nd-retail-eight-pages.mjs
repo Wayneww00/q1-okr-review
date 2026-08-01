@@ -279,6 +279,6 @@ assert.match(
   "new motion must respect reduced-motion preferences",
 );
 
-assert.equal(20 + 32 + 27 + 17, 96);
+assert.equal(20 + 33 + 27 + 17, 97);
 
 console.log("H1 ND Retail six-page static integration contract passed.");

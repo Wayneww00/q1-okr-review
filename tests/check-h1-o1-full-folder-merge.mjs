@@ -50,6 +50,7 @@ const expectedO1Ids = [
   "okr-review",
   "okr-brand-results",
   "okr-brand-build-transition",
+  "okr-brand-upgrade-transition",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
@@ -97,7 +98,7 @@ assert.deepEqual(
 assert.deepEqual(
   o1Ids,
   expectedO1Ids,
-  "the O1 section must retain all 32 pages in the approved presentation order",
+  "the O1 section must retain all 33 pages in the approved presentation order",
 );
 assert.doesNotMatch(
   app.slice(
@@ -218,5 +219,5 @@ for (const relativePath of new Set(o1AssetReferences)) {
 }
 
 console.log(
-  "H1 complete 32-page O1 replacement, section preservation, and isolated-asset contract passed.",
+  "H1 complete 33-page O1 replacement, section preservation, and isolated-asset contract passed.",
 );

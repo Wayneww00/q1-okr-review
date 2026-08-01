@@ -3652,6 +3652,39 @@ function OkrBrandBuildTransitionPage({page,index,count}){
   );
 }
 
+function OkrBrandUpgradeTransitionPage({page,index,count}){
+  const {pageRef,canvasRef}=useOkrCanvasScale();
+  return (
+    <section
+      ref={pageRef}
+      className="h1-okr-page h1-okr-brand-upgrade-transition-page"
+      data-report-page
+      data-page-id={page.id}
+      aria-labelledby="h1-okr-brand-upgrade-transition-title"
+    >
+      <div ref={canvasRef} className="h1-okr-canvas h1-okr-brand-upgrade-transition-canvas">
+        <div className="h1-okr-brand-upgrade-transition-veil" aria-hidden="true"></div>
+        <div className="h1-okr-brand-upgrade-transition-watermark" aria-hidden="true">BRAND REFRESH</div>
+        <div className="h1-okr-brand-upgrade-transition-content">
+          <div className="h1-okr-brand-upgrade-transition-kicker">
+            <ObjectiveChapterMark/>
+            <span>BRAND REFRESH</span>
+          </div>
+          <div className="h1-okr-brand-upgrade-transition-rule" aria-hidden="true"></div>
+          <h1 id="h1-okr-brand-upgrade-transition-title">品牌升级</h1>
+          <p>让 <strong>Vantage</strong> 被识别</p>
+          <div className="h1-okr-brand-upgrade-transition-progress" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </div>
+        </div>
+        <div className="h1-okr-page-number" aria-hidden="true">
+          {String(index+1).padStart(2,'0')} <span>/ {String(count).padStart(2,'0')}</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function OkrTvcMatrixPage({index,count,onVideoPreview}){
   const {pageRef,canvasRef}=useOkrCanvasScale();
   const matrixSource='previews/assets/o1-complete/figma-exact/okr-p32-matrix-source.jpg';
@@ -3743,6 +3776,10 @@ const OKR_FIGMA_PAGES=[
   {
     id:'okr-brand-build-transition',
     label:'1 个升级 + 6 个核心抓手',
+  },
+  {
+    id:'okr-brand-upgrade-transition',
+    label:'品牌升级 - 让 Vantage 被识别',
   },
   {
     id:'okr-brand-refresh',
@@ -4806,6 +4843,7 @@ function OkrReportDeck(){
       {OKR_FIGMA_PAGES.slice(1).map((page,index)=>(
         page.id==='okr-brand-results' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src="previews/assets/o1-complete/figma-untitled/p26-foreground-clean.png"/> :
         page.id==='okr-brand-build-transition' ? <OkrBrandBuildTransitionPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
+        page.id==='okr-brand-upgrade-transition' ? <OkrBrandUpgradeTransitionPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-brand-refresh' ? <OkrBrandRefreshForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :
         page.id==='okr-brand-operating-system' ? <OkrDirectFigmaForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount} src={page.src} onPreview={setPreview}/> :
         page.id==='okr-tvc-matrix' ? <OkrBrandContentMatrixForegroundPage key={page.id} page={page} index={index+1} count={reportPageCount}/> :

@@ -70,12 +70,12 @@ try {
   const reportFrame = page.locator("#reportFrame").contentFrame();
   await reportFrame.locator('body[data-h1-prepared="true"]').waitFor();
   const reportPages = reportFrame.locator("[data-report-page]");
-  assert.equal(await reportPages.count(), 97);
+  assert.equal(await reportPages.count(), 98);
   assert.equal(
     await reportFrame
       .locator('[data-report-section="okr"] [data-report-page]')
       .count(),
-    32,
+    33,
   );
   assert.equal(
     await reportFrame
@@ -94,7 +94,7 @@ try {
     {
       id: "o1-chapter",
       title: "O1 将 Vantage 建设成全球一线品牌",
-      number: "01 / 32",
+      number: "01 / 33",
       backgroundSelector: ".h1-okr-fixed-stage-background",
       backgroundNeedle: "p68-trophy-background.png",
     },
@@ -255,7 +255,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    "02 / 32",
+    "02 / 33",
   );
   assert.equal(
     (
@@ -267,7 +267,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    "32 / 32",
+    "33 / 33",
   );
 
   await page.setViewportSize({ width: 2560, height: 1440 });
