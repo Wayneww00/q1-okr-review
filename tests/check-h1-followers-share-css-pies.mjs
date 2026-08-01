@@ -27,6 +27,15 @@ const page13End = source.indexOf('id:14, layoutType:"followers_trend"', page13St
 const page13 = source.slice(page13Start, page13End);
 const editorRevision = "followers-share-css-ranking-v1";
 assert.ok(
+  page13.includes('sourceLine:"指标定义：social media 账号的粉丝数量"'),
+  "the page header should define the follower metric in the upper-right source-note position",
+);
+assert.match(
+  source,
+  /sourceLine && <small data-editor-ignore=\{data\.layoutType === "followers_share" \? "" : undefined\}>\{sourceLine\}<\/small>/,
+  "the new fixed metric definition must not be overwritten by a legacy editable-text slot",
+);
+assert.ok(
   page13.includes(`editorRevision:"${editorRevision}"`),
   "the rebuilt page must isolate its text IDs from the legacy chart's saved Supabase slots",
 );

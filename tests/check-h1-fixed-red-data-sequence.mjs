@@ -85,11 +85,11 @@ assert.ok(
   "the local formal deck must keep the same embedded H1 report",
 );
 assert.ok(
-  formal.includes('href="h1-figma-racing-theme.css?v=20260801-mib-bottom-compat-v1"'),
+  formal.includes('href="h1-figma-racing-theme.css?v=20260801-organic-chart-clarity-v1"'),
   "the formal shell must load the high-contrast chart and region-table stylesheet",
 );
 assert.ok(
-  formal.includes("figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=20260801-mib-bottom-compat-v1';"),
+  formal.includes("figmaTheme.href = '/previews/h1-figma-racing-theme.css?v=20260801-organic-chart-clarity-v1';"),
   "the embedded data report must load the high-contrast chart and region-table stylesheet",
 );
 

@@ -12,7 +12,7 @@ const immersive = fs.readFileSync(
   path.join(root, "previews", "vantage-h1-immersive.html"),
   "utf8",
 );
-const typeScaleRevision = "20260801-mib-bottom-compat-v1";
+const typeScaleRevision = "20260801-organic-chart-clarity-v1";
 
 const h1DataStart = report.indexOf("const H1_DASHBOARDS = [");
 const h1DataEnd = report.indexOf("const REPORT_MODE", h1DataStart);

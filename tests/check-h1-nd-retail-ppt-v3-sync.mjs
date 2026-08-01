@@ -20,11 +20,11 @@ const dataBlock = app.slice(dataStart, dataEnd);
 
 assert.match(
   app,
-  /h1-figma-racing-theme\.css\?v=20260801-mib-bottom-compat-v1/,
+  /h1-figma-racing-theme\.css\?v=20260801-organic-chart-clarity-v1/,
   "the compatibility release must invalidate cached copies of the layout CSS",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260801-mib-bottom-compat-v1/g)]
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260801-organic-chart-clarity-v1/g)]
     .length,
   2,
   "the shell and embedded report handoff must use the compatibility CSS revision",

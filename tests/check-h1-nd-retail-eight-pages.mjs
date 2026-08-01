@@ -229,7 +229,7 @@ const shellReportCacheKeys = [
 ].map((match) => match[1]);
 assert.deepEqual(
   new Set(shellThemeCacheKeys),
-  new Set(["20260801-mib-bottom-compat-v1"]),
+  new Set(["20260801-organic-chart-clarity-v1"]),
   "the preview shell must retain the approved presentation theme revision",
 );
 assert.deepEqual(

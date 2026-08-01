@@ -32,11 +32,11 @@ function topLevelNumericIds(block) {
 
 const expectedO1Ids = [
   "okr-review",
-  "okr-brand-experience-audit",
   "okr-brand-results",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
+  "okr-brand-experience-audit",
   "okr-tvc-framework",
   "okr-tvc-library",
   "okr-application-roadmap",
@@ -68,7 +68,7 @@ const o1Block = constantBlock(app, "const OKR_FIGMA_PAGES=[");
 assert.deepEqual(
   topLevelStringIds(o1Block),
   expectedO1Ids,
-  "O1 must use the downloaded package's exact 31-page order",
+  "O1 must use the approved 31-page presentation order",
 );
 assert.doesNotMatch(
   app.slice(

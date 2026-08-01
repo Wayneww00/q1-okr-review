@@ -9,11 +9,11 @@ const baseUrl = process.env.H1_O1_TEST_URL || "http://127.0.0.1:4180";
 const browserName = process.env.H1_O1_TEST_BROWSER || "chromium";
 const expectedO1Ids = [
   "okr-review",
-  "okr-brand-experience-audit",
   "okr-brand-results",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
+  "okr-brand-experience-audit",
   "okr-tvc-framework",
   "okr-tvc-library",
   "okr-application-roadmap",
@@ -154,12 +154,12 @@ try {
           .trim();
       return {
         first: read("okr-review"),
-        second: read("okr-brand-experience-audit"),
+        moved: read("okr-brand-experience-audit"),
         last: read("okr-premium-unlimited"),
       };
     });
     assert.match(numbers.first || "", /01\s*\/\s*31/);
-    assert.match(numbers.second || "", /02\s*\/\s*31/);
+    assert.match(numbers.moved || "", /06\s*\/\s*31/);
     assert.match(numbers.last || "", /31\s*\/\s*31/);
 
     assert.equal(

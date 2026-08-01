@@ -48,11 +48,11 @@ function topLevelNumericIds(block) {
 
 const expectedO1Ids = [
   "okr-review",
-  "okr-brand-experience-audit",
   "okr-brand-results",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
+  "okr-brand-experience-audit",
   "okr-tvc-framework",
   "okr-tvc-library",
   "okr-application-roadmap",
@@ -96,7 +96,7 @@ assert.deepEqual(
 assert.deepEqual(
   o1Ids,
   expectedO1Ids,
-  "the downloaded O1 section must replace the current O1 section in its exact 31-page order",
+  "the O1 section must retain all 31 pages in the approved presentation order",
 );
 assert.doesNotMatch(
   app.slice(

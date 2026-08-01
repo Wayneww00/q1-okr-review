@@ -7,7 +7,7 @@ const immersive = fs.readFileSync(
   "previews/vantage-h1-immersive.html",
   "utf8",
 );
-const centeringRevision = "20260801-mib-bottom-compat-v1";
+const centeringRevision = "20260801-organic-chart-clarity-v1";
 const reportRevision = "20260801-o1-static-images-v1";
 
 const imageRule = theme.match(

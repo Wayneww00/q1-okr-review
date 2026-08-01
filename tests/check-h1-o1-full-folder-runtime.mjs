@@ -34,11 +34,11 @@ const runtimeStub = `
 `;
 const expectedO1Ids = [
   "okr-review",
-  "okr-brand-experience-audit",
   "okr-brand-results",
   "okr-brand-refresh",
   "okr-brand-operating-system",
   "okr-tvc-matrix",
+  "okr-brand-experience-audit",
   "okr-tvc-framework",
   "okr-tvc-library",
   "okr-application-roadmap",

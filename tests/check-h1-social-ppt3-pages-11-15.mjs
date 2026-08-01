@@ -131,7 +131,7 @@ assert.match(
   "page 12 reputation conclusion must remain legible at presentation scale",
 );
 assert.equal(
-  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260801-mib-bottom-compat-v1/g)].length,
+  [...shell.matchAll(/h1-figma-racing-theme\.css\?v=20260801-organic-chart-clarity-v1/g)].length,
   2,
   "the formal shell and embedded report must both load the current cache-busted theme",
 );
@@ -169,8 +169,6 @@ assert.equal(Math.round((data11.voiceMetrics.points[0].value / data11.voiceMetri
 for (const token of [
   "2026 H1：Vantage、Exness、IC Markets 与 XM 月度 Organic Traffic",
   "数据源：overview-trend-2026-07-31T15_27_38Z.xlsx｜Worldwide｜月度 Organic Traffic",
-  "Vantage 从 1 月 281,879 增长至 6 月 346,906；2 月起持续领先 IC Markets",
-  "关键结论：2026 H1，Vantage Organic Traffic 从 281,879 增长至 346,906（+23.1%）",
   "口碑关键词 · Meltwater",
   "transparent ecosystem",
   "reliable platform",
@@ -180,6 +178,8 @@ for (const token of [
 ]) {
   assert.ok(page11.includes(token), `combined page 11 should preserve PPT token: ${token}`);
 }
+assert.equal("annotation" in data11.searchMetrics, false, "the Organic Traffic legend summary should be removed");
+assert.equal("conclusion" in data11.searchMetrics, false, "the Organic Traffic chart conclusion should be removed");
 for (const month of ["1月","2月","3月","4月","5月","6月"]) {
   assert.ok(page11.includes(`"${month}"`), `combined page 11 should preserve month label ${month}`);
 }

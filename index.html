@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-mib-bottom-compat-v1">
+<link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-organic-chart-clarity-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260801-vn-retail-dual-axis-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260731-o1-new-merge-v1">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
@@ -822,7 +822,7 @@ const H1_DASHBOARDS = [
     chart:{title:"SEO 日均点击",leftAxisLabel:"日均点击",rightAxisLabel:"",barLegend:"日均点击",lineLegend:"",leftDomain:[0,15000],leftTicks:[0,5000,10000,15000],format:"number"}
   },
   {
-    id:11, layoutType:"brand_voice_search_combined", editorRevision:"organic-traffic-four-series-v1", moduleTitle:"品牌整体数据 品牌SOV",
+    id:11, layoutType:"brand_voice_search_combined", editorRevision:"organic-traffic-four-series-v2", moduleTitle:"品牌整体数据 品牌SOV",
     title:"品牌整体数据 品牌SOV", subtitle:"2025 H2 vs 2026 年 H1 月度表现及整体对比",
     sourceLine:"声量：Meltwater · 自然流量：Excel（Worldwide Organic Traffic，2026 H1）· 口碑：Meltwater",
     description:"竞品声量对比中 Vantage 位列第 2（29.3%，仅次于 Exness 30.3%）；自身同比从 2025 H2 高点回落 30%（36.8k → 25.7k）——主因 2025 H2 有一波高声量、今年回归常态。自然搜索方面，2026 H1 Vantage Organic Traffic 由 281,879 增至 346,906（+23.1%），自 2 月起持续领先 IC Markets，但与 Exness 和 XM 仍有明显差距；口碑正面且定位专业可信。H2 核心：扩大自然搜索覆盖并持续缩小竞品差距。",
@@ -841,7 +841,6 @@ const H1_DASHBOARDS = [
     searchMetrics:{
       title:"2026 H1：Vantage、Exness、IC Markets 与 XM 月度 Organic Traffic",
       subtitle:"数据源：overview-trend-2026-07-31T15_27_38Z.xlsx｜Worldwide｜月度 Organic Traffic",
-      annotation:"Vantage 从 1 月 281,879 增长至 6 月 346,906；2 月起持续领先 IC Markets",
       months:["1月","2月","3月","4月","5月","6月"],
       axisDomain:[0,1200000],
       axisTicks:[0,200000,400000,600000,800000,1000000,1200000],
@@ -850,8 +849,7 @@ const H1_DASHBOARDS = [
         {key:"exness",label:"Exness",values:[968962,965658,930173,970707,673913,762862]},
         {key:"ic-markets",label:"IC Markets",values:[286463,274734,258355,277135,269437,290741]},
         {key:"xm",label:"XM",values:[955636,942214,884564,975333,1013629,1105283]}
-      ],
-      conclusion:"关键结论：2026 H1，Vantage Organic Traffic 从 281,879 增长至 346,906（+23.1%），2 月起持续领先 IC Markets；但与 Exness、XM 仍有显著差距，后续需继续扩大自然搜索流量。"
+      ]
     },
     reputation:{
       title:"口碑关键词 · Meltwater",
@@ -887,6 +885,7 @@ const H1_DASHBOARDS = [
   {
     id:13, layoutType:"followers_share", editorRevision:"followers-share-css-ranking-v1", title:"整体数据 GM Social Media",
     subtitle:"VANTAGE MARKETS’ SHARE OF CFD INDUSTRY FOLLOWERS",
+    sourceLine:"指标定义：social media 账号的粉丝数量",
     description:"Vantage整体排第二，且离第一越来越近了。虽然算上区域号后，咱们的单独占比看起来变小了，但这其实是把“盘子”做大了。接下来我们要把全球号和区域号拧成一股绳，通过协同运营，一起做大整个行业占比。",
     followerScopes:[
       {scope:"Global Accounts Only",industry:10783372,industryText:"10,783,372",vantage:2291951,vantageText:"2,291,951",share:21.3,shareText:"21.3%"},
@@ -1367,6 +1366,35 @@ const H1_BRAND_SEARCH_SERIES_TONES = {
   xm:"#b91820"
 };
 
+const H1_BRAND_SEARCH_VALUE_OFFSETS = {
+  higher:-15,
+  lower:19,
+  highPairLower:12
+};
+
+function getH1BrandSearchValueOffset(data,seriesKey,index) {
+  const peerKey = seriesKey === "vantage"
+    ? "ic-markets"
+    : seriesKey === "ic-markets"
+      ? "vantage"
+      : seriesKey === "exness"
+        ? "xm"
+        : "exness";
+  const series = data.series.find(item=>item.key===seriesKey);
+  const peer = data.series.find(item=>item.key===peerKey);
+  const isHighPair = seriesKey === "exness" || seriesKey === "xm";
+  const gap = Math.abs(series.values[index]-peer.values[index]);
+  if (isHighPair && gap >= 180000) {
+    return H1_BRAND_SEARCH_VALUE_OFFSETS.higher;
+  }
+  if (isHighPair && series.values[index] < peer.values[index]) {
+    return H1_BRAND_SEARCH_VALUE_OFFSETS.highPairLower;
+  }
+  return series.values[index] >= peer.values[index]
+    ? H1_BRAND_SEARCH_VALUE_OFFSETS.higher
+    : H1_BRAND_SEARCH_VALUE_OFFSETS.lower;
+}
+
 function formatH1OrganicTrafficAxis(value) {
   if (value >= 1000000) return `${(value/1000000).toFixed(1)}M`;
   if (value >= 1000) return `${Math.round(value/1000)}K`;
@@ -1379,12 +1407,12 @@ function formatH1OrganicTrafficValue(value) {
   return String(value);
 }
 
-function H1BrandSearchValueLabel({x,y,value,seriesKey}) {
+function H1BrandSearchValueLabel({x,y,value,seriesKey,index,labelOffset}) {
   if (value === undefined || value === null) return null;
-  const labelOffset = seriesKey === "ic-markets" || seriesKey === "xm" ? 14 : -9;
+  const edgeOffset = index === 0 ? 8 : index === 5 ? -8 : 0;
   return (
     <text
-      x={x}
+      x={x+edgeOffset}
       y={y+labelOffset}
       fill={H1_BRAND_SEARCH_SERIES_TONES[seriesKey]}
       className={`h1-brand-search-series-value is-${seriesKey}`}
@@ -1408,32 +1436,30 @@ function H1BrandSearchFourSeriesChart({data}) {
       <div className="h1-brand-search-series-legend" aria-label="自然流量趋势图例">
         {data.series.map(series=><span key={series.key} className={`is-${series.key}`}><i></i>{series.label}</span>)}
       </div>
-      <div className="h1-brand-search-chart-annotation">{data.annotation}</div>
       <div className="h1-brand-search-chart-plot">
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={chartData} margin={{top:14,right:12,left:-14,bottom:2}}>
+          <ComposedChart data={chartData} margin={{top:22,right:24,left:-8,bottom:8}}>
             <CartesianGrid stroke="rgba(255,255,255,.13)" vertical={false} strokeDasharray="3 5"/>
-            <XAxis dataKey="month" axisLine={{stroke:"rgba(255,255,255,.32)"}} tickLine={false} tick={{fill:"rgba(255,255,255,.7)",fontSize:9.5,fontWeight:650}} dy={5}/>
-            <YAxis domain={data.axisDomain} ticks={data.axisTicks} axisLine={false} tickLine={false} width={42} tick={{fill:"rgba(255,255,255,.48)",fontSize:8.5}} tickFormatter={formatH1OrganicTrafficAxis}/>
+            <XAxis dataKey="month" axisLine={{stroke:"rgba(255,255,255,.32)"}} tickLine={false} tick={{fill:"rgba(255,255,255,.74)",fontSize:11,fontWeight:700}} dy={7}/>
+            <YAxis domain={data.axisDomain} ticks={data.axisTicks} axisLine={false} tickLine={false} width={44} tick={{fill:"rgba(255,255,255,.52)",fontSize:9.5,fontWeight:600}} tickFormatter={formatH1OrganicTrafficAxis}/>
             {data.series.map(series=>(
               <Line
                 key={series.key}
                 type="linear"
                 dataKey={series.key}
                 stroke={H1_BRAND_SEARCH_SERIES_TONES[series.key]}
-                strokeWidth={series.key === "vantage" ? 3 : 2.35}
+                strokeWidth={series.key === "vantage" ? 3.6 : 2.8}
                 strokeDasharray={series.key === "ic-markets" ? "5 4" : undefined}
-                dot={{r:3.2,fill:H1_BRAND_SEARCH_SERIES_TONES[series.key],stroke:"#120203",strokeWidth:1.3}}
-                activeDot={{r:4.2}}
+                dot={{r:4.1,fill:H1_BRAND_SEARCH_SERIES_TONES[series.key],stroke:"#120203",strokeWidth:1.5}}
+                activeDot={{r:5.4}}
                 isAnimationActive={false}
               >
-                <LabelList dataKey={series.key} content={(props)=><H1BrandSearchValueLabel {...props} seriesKey={series.key}/>}/>
+                <LabelList dataKey={series.key} content={(props)=><H1BrandSearchValueLabel {...props} seriesKey={series.key} labelOffset={getH1BrandSearchValueOffset(data,series.key,props.index)}/>}/>
               </Line>
             ))}
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-      <p className="h1-brand-search-chart-conclusion">{data.conclusion}</p>
     </div>
   );
 }
@@ -2270,7 +2296,7 @@ function H1DataModulePageShell({
               data-vantage-single-line
               data-vantage-placeholder="点击添加下方小标题"
             >{contextLine || ""}</p>
-            {sourceLine && <small>{sourceLine}</small>}
+            {sourceLine && <small data-editor-ignore={data.layoutType === "followers_share" ? "" : undefined}>{sourceLine}</small>}
           </header>
         )}
         <main className="h1-extended-editorial-main">{children}</main>
@@ -3677,20 +3703,6 @@ const OKR_FIGMA_PAGES=[
     src:'previews/assets/o1-complete/figma-exact/p25-source.png',
   },
   {
-    id:'okr-brand-experience-audit',
-    label:'品牌体验审视',
-    src:'previews/assets/o1-complete/figma-untitled/p63-foreground.png',
-    imagePreview:false,
-    imageSlots:[
-      {id:'app-digital',label:'APP / DIGITAL',src:'previews/assets/o1-complete/figma-lightbox/audit/app-digital.png',unit:'px',left:135,top:132,width:481,height:196},
-      {id:'activation',label:'ACTIVATION',src:'previews/assets/o1-complete/figma-lightbox/audit/activation.png',unit:'px',left:630,top:132,width:236,height:196},
-      {id:'event',label:'EVENT',src:'previews/assets/o1-complete/figma-lightbox/audit/event.png',unit:'px',left:135,top:393,width:359,height:196},
-      {id:'experience',label:'EXPERIENCE',src:'previews/assets/o1-complete/figma-lightbox/audit/experience.png',unit:'px',left:507,top:393,width:359,height:196},
-      {id:'expo',label:'EXPO',src:'previews/assets/o1-complete/figma-lightbox/audit/expo.png',unit:'px',left:135,top:654,width:240,height:196},
-      {id:'campaign',label:'CAMPAIGN',src:'previews/assets/o1-complete/figma-lightbox/audit/campaign.png',unit:'px',left:387,top:655,width:317,height:196},
-    ],
-  },
-  {
     id:'okr-brand-results',
     label:'什么是全球一线品牌',
     src:'previews/assets/o1-complete/figma-exact/p27-source.png',
@@ -3713,6 +3725,20 @@ const OKR_FIGMA_PAGES=[
     videoSlots:[
       {id:'hero-1',label:'HERO 1 年度品牌母片',left:12.2,top:56.7,width:29.8,height:22.4},
       {id:'hero-2',label:'HERO 2 年度旗舰 Campaign 片',left:59.1,top:56.7,width:29.4,height:22.4},
+    ],
+  },
+  {
+    id:'okr-brand-experience-audit',
+    label:'品牌体验审视',
+    src:'previews/assets/o1-complete/figma-untitled/p63-foreground.png',
+    imagePreview:false,
+    imageSlots:[
+      {id:'app-digital',label:'APP / DIGITAL',src:'previews/assets/o1-complete/figma-lightbox/audit/app-digital.png',unit:'px',left:135,top:132,width:481,height:196},
+      {id:'activation',label:'ACTIVATION',src:'previews/assets/o1-complete/figma-lightbox/audit/activation.png',unit:'px',left:630,top:132,width:236,height:196},
+      {id:'event',label:'EVENT',src:'previews/assets/o1-complete/figma-lightbox/audit/event.png',unit:'px',left:135,top:393,width:359,height:196},
+      {id:'experience',label:'EXPERIENCE',src:'previews/assets/o1-complete/figma-lightbox/audit/experience.png',unit:'px',left:507,top:393,width:359,height:196},
+      {id:'expo',label:'EXPO',src:'previews/assets/o1-complete/figma-lightbox/audit/expo.png',unit:'px',left:135,top:654,width:240,height:196},
+      {id:'campaign',label:'CAMPAIGN',src:'previews/assets/o1-complete/figma-lightbox/audit/campaign.png',unit:'px',left:387,top:655,width:317,height:196},
     ],
   },
   {

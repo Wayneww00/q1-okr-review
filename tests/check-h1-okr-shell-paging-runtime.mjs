@@ -129,6 +129,22 @@ try {
     /^01\s*\/\s*31$/,
   );
   await page.locator("body").press("PageDown");
+  await waitForActivePage("okr-brand-results");
+  assert.match(
+    (
+      await reportFrame
+        .locator(
+          '[data-page-id="okr-brand-results"] .h1-okr-page-number',
+        )
+        .innerText()
+    )
+      .replace(/\s+/g, " ")
+      .trim(),
+    /^02\s*\/\s*31$/,
+  );
+
+  await scrollFrameToPage("okr-tvc-matrix");
+  await page.locator("body").press("PageDown");
   await waitForActivePage("okr-brand-experience-audit");
   assert.match(
     (
@@ -140,7 +156,7 @@ try {
     )
       .replace(/\s+/g, " ")
       .trim(),
-    /^02\s*\/\s*31$/,
+    /^06\s*\/\s*31$/,
   );
 
   await scrollFrameToPage("okr-premium-unlimited");
