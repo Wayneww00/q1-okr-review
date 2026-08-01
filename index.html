@@ -822,7 +822,7 @@ const H1_DASHBOARDS = [
     chart:{title:"SEO 日均点击",leftAxisLabel:"日均点击",rightAxisLabel:"",barLegend:"日均点击",lineLegend:"",leftDomain:[0,15000],leftTicks:[0,5000,10000,15000],format:"number"}
   },
   {
-    id:11, layoutType:"brand_voice_search_combined", editorRevision:"organic-traffic-four-series-v2", moduleTitle:"品牌整体数据 品牌SOV",
+    id:11, layoutType:"brand_voice_search_combined", editorRevision:"brand-voice-combined-semantic-v3", moduleTitle:"品牌整体数据 品牌SOV",
     title:"品牌整体数据 品牌SOV", subtitle:"2025 H2 vs 2026 年 H1 月度表现及整体对比",
     sourceLine:"声量：Meltwater · 自然流量：Excel（Worldwide Organic Traffic，2026 H1）· 口碑：Meltwater",
     description:"竞品声量对比中 Vantage 位列第 2（29.3%，仅次于 Exness 30.3%）；自身同比从 2025 H2 高点回落 30%（36.8k → 25.7k）——主因 2025 H2 有一波高声量、今年回归常态。自然搜索方面，2026 H1 Vantage Organic Traffic 由 281,879 增至 346,906（+23.1%），自 2 月起持续领先 IC Markets，但与 Exness 和 XM 仍有明显差距；口碑正面且定位专业可信。H2 核心：扩大自然搜索覆盖并持续缩小竞品差距。",
@@ -1420,7 +1420,7 @@ function H1BrandSearchValueLabel({x,y,value,seriesKey,index,labelOffset}) {
   );
 }
 
-function H1BrandSearchFourSeriesChart({data}) {
+function H1BrandSearchFourSeriesChart({data,editorKey}) {
   const chartData = data.months.map((month,index)=>{
     const row = {month};
     data.series.forEach(series=>{ row[series.key] = series.values[index]; });
@@ -1429,8 +1429,8 @@ function H1BrandSearchFourSeriesChart({data}) {
   return (
     <div className="h1-brand-search-four-series">
       <header className="h1-brand-search-chart-heading">
-        <h2>{data.title}</h2>
-        {data.subtitle && <p>{data.subtitle}</p>}
+        <h2 data-vantage-text-key={editorKey}>{data.title}</h2>
+        {data.subtitle && <p data-vantage-text-key={editorKey ? `${editorKey}-subtitle` : undefined}>{data.subtitle}</p>}
       </header>
       <div className="h1-brand-search-series-legend" aria-label="自然流量趋势图例">
         {data.series.map(series=><span key={series.key} className={`is-${series.key}`}><i></i>{series.label}</span>)}
@@ -1549,28 +1549,28 @@ function H1BrandVoiceSearchCombinedChart({data}) {
     <div className="h1-brand-combined-layout">
       <section className="h1-editorial-chart-surface h1-brand-combined-voice">
         <div className="h1-editorial-chart-title">
-          <div><span>{data.voiceMetrics.title}</span><h2>{data.voiceMetrics.figureTitle}</h2></div>
-          <strong>{data.voiceMetrics.change}</strong>
+          <div><span data-vantage-text-key="brand-combined-voice-title">{data.voiceMetrics.title}</span><h2 data-vantage-text-key="brand-combined-voice-subtitle">{data.voiceMetrics.figureTitle}</h2></div>
+          <strong data-vantage-text-key="brand-combined-voice-change">{data.voiceMetrics.change}</strong>
         </div>
         <div className="h1-brand-combined-kpis">
           <article className="h1-brand-combined-kpi">
-            <small>2026 全球声量占比</small>
-            <strong>29.3%</strong>
-            <p>{data.voiceMetrics.share}</p>
-            <em>{data.voiceMetrics.competitor}</em>
+            <small data-vantage-text-key="brand-combined-share-label">2026 全球声量占比</small>
+            <strong data-vantage-text-key="brand-combined-share-value">29.3%</strong>
+            <p data-vantage-text-key="brand-combined-share-copy">{data.voiceMetrics.share}</p>
+            <em data-vantage-text-key="brand-combined-share-competitor">{data.voiceMetrics.competitor}</em>
           </article>
           <article className="h1-brand-combined-kpi is-sentiment">
-            <small>正面情感</small>
-            <strong>第 2</strong>
-            <p>≈ 37% · 仅次于 XM</p>
+            <small data-vantage-text-key="brand-combined-sentiment-label">正面情感</small>
+            <strong data-vantage-text-key="brand-combined-sentiment-value">第 2</strong>
+            <p data-vantage-text-key="brand-combined-sentiment-copy">≈ 37% · 仅次于 XM</p>
           </article>
           <article className="h1-brand-combined-kpi is-accent">
-            <small>竞争格局</small>
-            <strong>行业第 2</strong>
-            <p>缩小与 Exness 的差距、冲击第一</p>
+            <small data-vantage-text-key="brand-combined-competition-label">竞争格局</small>
+            <strong data-vantage-text-key="brand-combined-competition-value">行业第 2</strong>
+            <p data-vantage-text-key="brand-combined-competition-copy">缩小与 Exness 的差距、冲击第一</p>
           </article>
         </div>
-        <div className="h1-editorial-axis-label is-left">{data.voiceMetrics.axisLabel}</div>
+        <div className="h1-editorial-axis-label is-left" data-vantage-text-key="brand-combined-axis-label">{data.voiceMetrics.axisLabel}</div>
         <div className="h1-brand-combined-voice-plot">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData} margin={{top:30,right:20,left:10,bottom:24}}>
@@ -1607,18 +1607,18 @@ function H1BrandVoiceSearchCombinedChart({data}) {
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-        <div className="h1-editorial-comparison-line">{data.voiceMetrics.comparison}</div>
+        <div className="h1-editorial-comparison-line" data-vantage-text-key="brand-combined-comparison">{data.voiceMetrics.comparison}</div>
       </section>
       <div className="h1-brand-combined-side">
         <section className="h1-editorial-chart-surface h1-brand-combined-search">
-          <H1BrandSearchFourSeriesChart data={data.searchMetrics}/>
+          <H1BrandSearchFourSeriesChart data={data.searchMetrics} editorKey="brand-combined-search-title"/>
         </section>
         <aside className="h1-reputation-panel h1-brand-combined-reputation">
-          <header><span></span><h2>{data.reputation.title}</h2></header>
+          <header><span></span><h2 data-vantage-text-key="brand-combined-reputation-title">{data.reputation.title}</h2></header>
           <div className="h1-reputation-keywords">
-            {data.reputation.keywords.map(keyword=><strong key={keyword}>{keyword}</strong>)}
+            {data.reputation.keywords.map((keyword,index)=><strong key={keyword} data-vantage-text-key={`brand-combined-reputation-keyword-${index+1}`}>{keyword}</strong>)}
           </div>
-          <p>{data.reputation.conclusion}</p>
+          <p data-vantage-text-key="brand-combined-reputation-conclusion">{data.reputation.conclusion}</p>
         </aside>
       </div>
     </div>
@@ -2269,6 +2269,7 @@ function H1DataModulePageShell({
 }) {
   const pageClassName = ["h1-extended-editorial-page",className].filter(Boolean).join(" ");
   const canvasClasses = ["h1-extended-editorial-canvas",canvasClassName].filter(Boolean).join(" ");
+  const isBrandCombined = data.layoutType === "brand_voice_search_combined";
   return (
     <div className={pageClassName}>
       <div className={canvasClasses}>
@@ -2278,31 +2279,34 @@ function H1DataModulePageShell({
               <span></span>
               <b
                 data-vantage-header-field="eyebrow"
+                data-vantage-text-key={isBrandCombined ? "brand-combined-header-eyebrow" : undefined}
                 data-vantage-single-line
                 data-vantage-placeholder="点击添加上方小标题"
               >{sectionLabel}</b>
             </div>
             <h1
               data-vantage-header-field="title"
+              data-vantage-text-key={isBrandCombined ? "brand-combined-header-title" : undefined}
               data-vantage-single-line
               data-vantage-placeholder="点击添加大标题"
             >{pageTitle}</h1>
             <p
               data-vantage-header-field="subtitle"
-              data-vantage-text-key="header-subtitle"
+              data-vantage-text-key={isBrandCombined ? "brand-combined-header-subtitle" : "header-subtitle"}
               data-vantage-empty-editable
               data-vantage-legacy-indexed={contextLine ? "true" : undefined}
               data-vantage-single-line
               data-vantage-placeholder="点击添加下方小标题"
             >{contextLine || ""}</p>
-            {sourceLine && <small data-editor-ignore={data.layoutType === "followers_share" ? "" : undefined}>{sourceLine}</small>}
+            {sourceLine && !isBrandCombined && <small data-editor-ignore={data.layoutType === "followers_share" ? "" : undefined}>{sourceLine}</small>}
+            {sourceLine && isBrandCombined && <small data-vantage-text-key="brand-combined-header-source">{sourceLine}</small>}
           </header>
         )}
         <main className="h1-extended-editorial-main">{children}</main>
         {conclusion && (
           <footer className={"h1-extended-editorial-conclusion"+(takeaway ? " has-takeaway" : "")}>
-            <div><b>关键结论</b><p>{conclusion}</p></div>
-            {takeaway && <strong>{takeaway}</strong>}
+            <div><b data-vantage-text-key={isBrandCombined ? "brand-combined-conclusion-label" : undefined}>关键结论</b><p data-vantage-text-key={isBrandCombined ? "brand-combined-conclusion-copy" : undefined}>{conclusion}</p></div>
+            {takeaway && <strong data-vantage-text-key={isBrandCombined ? "brand-combined-takeaway" : undefined}>{takeaway}</strong>}
           </footer>
         )}
         <div className="h1-extended-editorial-page-number" data-editor-ignore aria-hidden="true">

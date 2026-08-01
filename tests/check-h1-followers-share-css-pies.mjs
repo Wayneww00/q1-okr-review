@@ -32,7 +32,7 @@ assert.ok(
 );
 assert.match(
   source,
-  /sourceLine && <small data-editor-ignore=\{data\.layoutType === "followers_share" \? "" : undefined\}>\{sourceLine\}<\/small>/,
+  /sourceLine && !isBrandCombined && <small data-editor-ignore=\{data\.layoutType === "followers_share" \? "" : undefined\}>\{sourceLine\}<\/small>/,
   "the new fixed metric definition must not be overwritten by a legacy editable-text slot",
 );
 assert.ok(

@@ -34,7 +34,7 @@ const page11Source = h1.slice(page11Start, page12Start);
 const normalizedPage11 = page11Source.trim().replace(/,\s*$/, "");
 const page11 = Function(`"use strict"; return (${normalizedPage11});`)();
 
-assert.equal(page11.editorRevision, "organic-traffic-four-series-v2");
+assert.equal(page11.editorRevision, "brand-voice-combined-semantic-v3");
 assert.deepEqual(page11.searchMetrics.months, ["1月", "2月", "3月", "4月", "5月", "6月"]);
 assert.equal(
   page11.searchMetrics.title,
