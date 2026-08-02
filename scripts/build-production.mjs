@@ -57,6 +57,7 @@ await Promise.all([
   "previews/h1-o1-complete-theme.css",
   "previews/h1-o3-theme.css",
   "previews/h1-objective-chapters.css",
+  "previews/h1-mib-attribution-preview.css",
 ].map((file) => copyPublicFile(file)));
 
 await copyPublicFile("previews/assets/vantage-h1-opening-final-4k.mp4");
