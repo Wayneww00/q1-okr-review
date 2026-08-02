@@ -19,6 +19,7 @@
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260802-vn-sentiment-stack-v1">
 <link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260802-q3-scoreboard-v3">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
+<link id="h1-mib-attribution-preview-theme" rel="stylesheet" href="previews/h1-mib-attribution-preview.css?v=20260802-mib-preview-v1">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -664,7 +665,7 @@
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
 
-function H1SourceImage({src,alt,className="",loading="lazy",fullSrc=src}){
+function H1SourceImage({src,alt,className="",loading="lazy",fullSrc=src,showCaption=true}){
   const [open,setOpen]=useState(false);
   const close=useCallback(()=>setOpen(false),[]);
   useEffect(()=>{
@@ -697,9 +698,9 @@ function H1SourceImage({src,alt,className="",loading="lazy",fullSrc=src}){
           aria-label={`图片预览：${alt}`}
           onClick={close}
         >
-          <div className="h1-source-image-modal-panel" onClick={event=>event.stopPropagation()}>
+          <div className={`h1-source-image-modal-panel${showCaption ? "" : " is-captionless"}`} onClick={event=>event.stopPropagation()}>
             <img src={fullSrc} alt={alt}/>
-            <div className="h1-source-image-modal-caption">{alt}</div>
+            {showCaption&&<div className="h1-source-image-modal-caption">{alt}</div>}
             <button
               type="button"
               className="h1-source-image-modal-close"
@@ -1030,6 +1031,7 @@ const H1_DASHBOARDS = [
     editorRevision:"retail-nd-ppt-v5",
     title:"可能对Retail ND占比有影响的因素",
     leftFactorTitle:"1.MIB口径变化导致数据影响",
+    leftPreview:{src:"previews/assets/figma-racing/mib-attribution-flow-source.png",alt:"MIB五月份口径原因导致的变更流程图"},
     rightFactorTitle:"2.Retail 转 IB导致下降（长期）",
     leftInsight:"40%的Q2 MIB用户不符合IB的显著特征，",
     leftImpact:"Q2 ND 5.9M (占比大盘1.4%)",
@@ -2101,7 +2103,16 @@ function H1MibAttributionChart({data}) {
   return (
     <div className="h1-retail-growth-chart h1-editorial-chart-surface is-mib" data-editor-ignore>
         <section className="h1-retail-growth-factor-panel h1-retail-growth-mib-panel">
-          <h2>{data.leftFactorTitle}</h2>
+          <div className="h1-retail-growth-factor-heading">
+            <h2>{data.leftFactorTitle}</h2>
+            <H1SourceImage
+              src={data.leftPreview.src}
+              alt={data.leftPreview.alt}
+              className="h1-retail-growth-factor-preview"
+              loading="eager"
+              showCaption={false}
+            />
+          </div>
           <div className="h1-retail-growth-factor-summary">
             <p>{data.leftInsight}</p>
             <strong>{data.leftImpact}</strong>

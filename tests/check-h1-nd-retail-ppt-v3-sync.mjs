@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
@@ -11,6 +11,17 @@ const theme = readFileSync(
 const shell = readFileSync(
   resolve(root, "previews/vantage-h1-immersive.html"),
   "utf8",
+);
+const previewThemePath = resolve(
+  root,
+  "previews/h1-mib-attribution-preview.css",
+);
+const previewTheme = existsSync(previewThemePath)
+  ? readFileSync(previewThemePath, "utf8")
+  : "";
+const previewImagePath = resolve(
+  root,
+  "previews/assets/figma-racing/mib-attribution-flow-source.png",
 );
 
 const dataStart = app.indexOf("const H1_DASHBOARDS = [");
@@ -89,6 +100,7 @@ for (const token of [
 for (const token of [
   'title:"可能对Retail ND占比有影响的因素"',
   'leftFactorTitle:"1.MIB口径变化导致数据影响"',
+  'leftPreview:{src:"previews/assets/figma-racing/mib-attribution-flow-source.png",alt:"MIB五月份口径原因导致的变更流程图"}',
   'rightFactorTitle:"2.Retail 转 IB导致下降（长期）"',
   'leftInsight:"40%的Q2 MIB用户不符合IB的显著特征，"',
   'rightInsight:"超过一半转入IB的用户在注册两个月后才发生归属迁移，"',
@@ -117,6 +129,32 @@ assert.match(
   app,
   /<div className="h1-retail-growth-mib-plot">[\s\S]*?aria-label=\{data\.mibChartTitle\}[\s\S]*?<\/div>\s*<p className="h1-retail-growth-mib-caption">\{data\.mibChartTitle\}<\/p>/,
   "page 19 must render the MIB source caption below a shrink-safe plot wrapper",
+);
+assert.match(
+  app,
+  /<div className="h1-retail-growth-factor-heading">[\s\S]*?<h2>\{data\.leftFactorTitle\}<\/h2>[\s\S]*?<H1SourceImage[\s\S]*?src=\{data\.leftPreview\.src\}[\s\S]*?showCaption=\{false\}/,
+  "page 19 must place the confirmed source preview immediately after the left factor title",
+);
+assert.match(
+  app,
+  /function H1SourceImage\(\{src,alt,className="",loading="lazy",fullSrc=src,showCaption=true\}\)[\s\S]*?\{showCaption&&<div className="h1-source-image-modal-caption">\{alt\}<\/div>\}/,
+  "the shared source-image viewer must support a captionless modal",
+);
+assert.ok(existsSync(previewImagePath), "the supplied MIB flowchart must be copied into production assets");
+assert.match(
+  app,
+  /h1-mib-attribution-preview\.css\?v=20260802-mib-preview-v1/,
+  "the page must load a cache-busted stylesheet for the new preview",
+);
+assert.match(
+  previewTheme,
+  /\.h1-retail-growth-factor-preview\.h1-source-image-trigger\s*\{[\s\S]*?width:\s*120px;[\s\S]*?height:\s*68px;/,
+  "the approved thumbnail must render at 120 by 68 CSS pixels",
+);
+assert.match(
+  previewTheme,
+  /\.h1-retail-growth-factor-preview\s*>\s*img\s*\{[\s\S]*?object-fit:\s*contain;/,
+  "the thumbnail must show the full flowchart without cropping",
 );
 assert.match(
   app,

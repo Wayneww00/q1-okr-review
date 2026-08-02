@@ -37,7 +37,7 @@ try {
     await reportFrame.locator('[data-report-section="data"] [data-report-page]').count(),
     20,
   );
-  assert.equal(await reportFrame.locator("[data-report-page]").count(), 95);
+  assert.equal(await reportFrame.locator("[data-report-page]").count(), 104);
   assert.equal(await reportFrame.locator('[data-page-id="data-21"]').count(), 0);
 
   const waitForActivePage = (pageId) =>
@@ -104,7 +104,7 @@ try {
   await scrollToPage("data-16");
   assert.match(
     await reportFrame.locator('[data-page-id="data-16"]').innerText(),
-    /APAC数据拆解：为何 ND 占比下降？[\s\S]*Sales端Non-Retail数据表现亮眼，逆势上扬[\s\S]*133\.1M[\s\S]*143\.1M[\s\S]*10\.0M[\s\S]*7\.5%[\s\S]*38\.8M[\s\S]*37\.2M[\s\S]*-1\.6M[\s\S]*-4\.0%[\s\S]*195\.6M[\s\S]*177\.4M[\s\S]*-18\.2M[\s\S]*-9\.3%[\s\S]*74\.7M[\s\S]*69\.3M[\s\S]*-5\.4M[\s\S]*-7\.3%/,
+    /Q2 APAC数据拆解：Sales端逆势上扬，一枝独秀[\s\S]*Sales端Non-Retail数据表现亮眼，成为4大类型中唯一绝对值上涨大类[\s\S]*133\.1M[\s\S]*143\.1M[\s\S]*10\.0M[\s\S]*7\.5%[\s\S]*38\.8M[\s\S]*37\.2M[\s\S]*-1\.6M[\s\S]*-4\.0%[\s\S]*195\.6M[\s\S]*177\.4M[\s\S]*-18\.2M[\s\S]*-9\.3%[\s\S]*74\.7M[\s\S]*69\.3M[\s\S]*-5\.4M[\s\S]*-7\.3%/,
   );
   assert.equal(
     await reportFrame.locator('[data-page-id="data-16"] .h1-retail-growth-region-group').count(),
@@ -140,6 +140,50 @@ try {
     assert.equal(order.titleBeforeSummary, true);
     assert.equal(order.summaryBeforeChart, true);
   }
+
+  const sourcePreview = reportFrame.locator(
+    '[data-page-id="data-19"] .h1-retail-growth-factor-preview',
+  );
+  assert.equal(await sourcePreview.count(), 1);
+  const previewContract = await sourcePreview.evaluate((button) => {
+    const title = button
+      .closest(".h1-retail-growth-factor-heading")
+      .querySelector("h2")
+      .getBoundingClientRect();
+    const preview = button.getBoundingClientRect();
+    const image = button.querySelector("img");
+    const style = getComputedStyle(button);
+    return {
+      titleCenter: title.top + title.height / 2,
+      previewCenter: preview.top + preview.height / 2,
+      width: style.width,
+      height: style.height,
+      objectFit: getComputedStyle(image).objectFit,
+    };
+  });
+  assert.ok(Math.abs(previewContract.titleCenter - previewContract.previewCenter) <= 2);
+  assert.equal(previewContract.width, "120px");
+  assert.equal(previewContract.height, "68px");
+  assert.equal(previewContract.objectFit, "contain");
+
+  await sourcePreview.click();
+  const sourceModal = reportFrame.locator(".h1-source-image-modal");
+  await sourceModal.waitFor();
+  assert.equal(await sourceModal.locator(".h1-source-image-modal-caption").count(), 0);
+  assert.deepEqual(
+    await sourceModal.locator("img").evaluate((image) => ({
+      naturalWidth: image.naturalWidth,
+      naturalHeight: image.naturalHeight,
+    })),
+    { naturalWidth: 2264, naturalHeight: 1436 },
+  );
+  await reportFrame.locator("body").press("Escape");
+  assert.equal(await sourceModal.count(), 0);
+
+  await sourcePreview.click();
+  await sourceModal.waitFor();
+  await sourceModal.click({ position: { x: 8, y: 8 } });
+  assert.equal(await sourceModal.count(), 0);
   await assertContained("data-19");
 
   assert.match(
