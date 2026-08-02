@@ -1000,11 +1000,13 @@ const H1_DASHBOARDS = [
   },
   {
     id:18,
-    layoutType:"vietnam_retail_nd",
-    editorRevision:"retail-nd-scope-restoration-v1",
+    layoutType:"vietnam_retail_nd_ppt",
+    editorRevision:"retail-nd-ppt-four-page-v1",
     title:"从越南市场切入",
     subtitle:"SEO、GEO、SOV 等多指标领先，但ND占比仅4.3%，远低于全球平均值25.2%",
     chartTitle:"越南2026-Q1 vs 2026-Q2 Retail ND 占比",
+    leftAxisTitle:"ND (Million)",
+    rightAxisTitle:"Retail ND 占比%",
     periods:[
       {label:"26–Q1",nd:-0.2,ndText:"($0.2M)",share:-2,shareText:"−2.0%"},
       {label:"26–Q2",nd:1,ndText:"$1.0M",share:8.8,shareText:"8.8%"}
@@ -1012,21 +1014,74 @@ const H1_DASHBOARDS = [
     leftAxisTicks:["−$0.4","$0.0","$0.4","$0.8","$1.2"],
     rightAxisTicks:["-5.0%","0.0%","10.0%","20.0%","30.0%"],
     delta:"ND +$1.2M",
-    comparisonLeft:"越南 Retail ND $0.9M｜国家内部占比 4.3%",
-    comparisonRight:"集团 Retail ND $221.6M｜大盘占比 25.2%",
-    restoredChartTitle:"口径回归后越南 2026 Q2 Retail ND 表现",
-    restoredAxisTitle:"ND (million)",
-    restoredShareAxisTitle:"ND 占比 %",
-    restoredLeftAxisTicks:["−$1.00M","−$0.50M","$0.00M","$0.50M","$1.00M","$1.50M","$2.00M","$2.50M","$3.00M"],
-    restoredRightAxisTicks:["0.00%","5.00%","10.00%","15.00%","20.00%","25.00%","30.00%"],
-    restoredLegend:["当前口径","全RE IB 动态分类ND贡献","5月份MIB 口径变更ND贡献","修正后ND国家占比"],
-    restoredPeriods:[
-      {label:"2026 Q1",current:-.2,currentText:"−$0.20M",dynamic:2.4,dynamicText:"$2.40M",mib:-.6,mibText:"−$0.60M",share:18.8,shareText:"18.80%"},
-      {label:"2026 Q2",current:1,currentText:"$1.00M",dynamic:2.8,dynamicText:"$2.80M",mib:-.4,mibText:"−$0.40M",share:28.7,shareText:"28.70%"}
-    ]
+    comparisonLabel:"H1口径对照",
+    comparisonLeft:"越南 Retail ND $1.0M｜国家内部占比 4.3%",
+    comparisonRight:"集团 Retail ND $221.6M｜大盘占比 25.2%"
   },
   {
     id:19,
+    layoutType:"vietnam_marketing_transition",
+    editorRevision:"retail-nd-ppt-four-page-v1",
+    title:"为什么Marketing做得好，反而ND占比低？",
+    transitionBackground:"previews/assets/figma-racing/nd-retail-transition-vietnam-original.png"
+  },
+  {
+    id:20,
+    layoutType:"vietnam_ib_reclassification",
+    editorRevision:"retail-nd-ppt-four-page-v1",
+    title:"越南受 IB 归类口径变化影响最显著",
+    subtitle:"越南 IB 用户占比接近 50%，IB 渗透率高",
+    flowTitle:"多层返佣结构使 IB 网络覆盖面更广",
+    flowDiagramTitle:"【现有垂直返佣】层级与返佣示意",
+    salesLabel:"销售层级",
+    ibLabel:"IB 层级",
+    salesLevels:[
+      {level:"Level 1",name:"销售A"},
+      {level:"Level 2",name:"销售B"},
+      {level:"Level 末级",name:"末级销售C"}
+    ],
+    ibLevels:[
+      {level:"Level 1",name:"IB James",client:""},
+      {level:"Level 2",name:"IB Stan",client:"Client"},
+      {level:"Level 3",name:"IB Tony",client:"Client"},
+      {level:"Level 4",name:"IB Hulk",client:"Client"},
+      {level:"Level 5",name:"IB Philip",client:"Client交易"}
+    ],
+    refundLabel:"返佣",
+    flowNotes:["系统集成+人工一键开户","按照固定层级规则值，可全层级返佣"],
+    structureTitle:"两类 IB 口径变化重塑越南 ND 结构",
+    total:"$20.33M",
+    totalLabel:"总 Net Deposit",
+    segments:[
+      {key:"ib",label:"IB $19.44M",shareLabel:"占总 ND 95.65%",share:95.65},
+      {key:"retail",label:"Retail $0.88M",shareLabel:"占总 ND 4.31%",share:4.31},
+      {key:"cpa",label:"CPA/Hybrid $0.01M",shareLabel:"占总 ND 0.04%",share:.04}
+    ],
+    changes:[
+      {key:"dynamic",label:"全民IB动态分类",shareLabel:"占总ND 25.6%",share:25.6},
+      {key:"mib",label:"5月 MIB口径变更",shareLabel:"占总ND -4.9%",share:4.9}
+    ],
+    legends:["IB","Retail","CPA/Hybrid","全民IB 动态分类","5月 MIB 口径变更"]
+  },
+  {
+    id:21,
+    layoutType:"vietnam_retail_nd_restored",
+    editorRevision:"retail-nd-ppt-four-page-v1",
+    title:"还原口径影响后，越南 Retail ND 在 2026-H1 显著提升",
+    subtitle:"全民IB与MIB变更回归后，越南2026-H1 Retail ND国家占比从4.3%上升到24.6%",
+    chartTitle:"口径还原后，越南 Retail ND 规模及占比对比（2026 Q1 vs. Q2）",
+    leftAxisTitle:"ND (Million)",
+    rightAxisTitle:"Retail ND 占比%",
+    leftAxisTicks:["−$1.0M","−$0.5M","$0.0M","$0.5M","$1.0M","$1.5M","$2.0M","$2.5M","$3.0M"],
+    rightAxisTicks:["0.0%","5.0%","10.0%","15.0%","20.0%","25.0%","30.0%"],
+    periods:[
+      {label:"2026 Q1",current:-.2,currentText:"−$0.2M",dynamic:2.4,dynamicText:"$2.4M",mib:-.6,mibText:"−$0.6M",share:18.8,shareText:"18.8%"},
+      {label:"2026 Q2",current:1,currentText:"$1.0M",dynamic:2.8,dynamicText:"$2.8M",mib:-.4,mibText:"−$0.4M",share:28.7,shareText:"28.7%"}
+    ],
+    legends:["当前口径","全民IB 动态分类ND贡献","5月份MIB 口径变更ND贡献","修正后ND国家占比"]
+  },
+  {
+    id:22,
     layoutType:"mib_attribution",
     editorRevision:"retail-nd-ppt-v5",
     title:"可能对Retail ND占比有影响的因素",
@@ -1061,7 +1116,7 @@ const H1_DASHBOARDS = [
     ]
   },
   {
-    id:20,
+    id:23,
     layoutType:"retail_nd_scope_restoration",
     editorRevision:"retail-nd-scope-restoration-v1",
     title:"口径回归后 Retail ND 占比上升",
@@ -1810,7 +1865,10 @@ const H1_RETAIL_GROWTH_LAYOUTS = new Set([
   "retail_nd_share_shift",
   "apac_nd_breakdown",
   "apac_question",
-  "vietnam_retail_nd",
+  "vietnam_retail_nd_ppt",
+  "vietnam_marketing_transition",
+  "vietnam_ib_reclassification",
+  "vietnam_retail_nd_restored",
   "attribution_question",
   "mib_attribution",
   "retail_nd_scope_restoration",
@@ -1819,7 +1877,9 @@ const H1_RETAIL_GROWTH_LAYOUTS = new Set([
 const H1_RETAIL_GROWTH_SECTION_LABELS = {
   retail_nd_share_shift:"整体数据 · RETAIL ND｜区域占比",
   apac_nd_breakdown:"整体数据 · RETAIL ND｜APAC 数据拆解",
-  vietnam_retail_nd:"整体数据 · RETAIL ND｜越南市场",
+  vietnam_retail_nd_ppt:"整体数据 · RETAIL ND｜越南市场",
+  vietnam_ib_reclassification:"整体数据 · RETAIL ND｜越南 IB 口径",
+  vietnam_retail_nd_restored:"整体数据 · RETAIL ND｜越南口径还原",
   mib_attribution:"整体数据 · RETAIL ND｜归因诊断",
   retail_nd_scope_restoration:"整体数据 · RETAIL ND｜口径回归",
 };
@@ -2038,6 +2098,207 @@ function H1VietnamRetailNdChart({data}) {
             {data.restoredLegend.map((legend,index)=><span key={legend}><i className={`is-${["current","dynamic","mib","share"][index]}`}/>{legend}</span>)}
           </div>
         </section>
+      </div>
+    </div>
+  );
+}
+
+function H1VietnamRetailNdPptChart({data}) {
+  const plot = {left:112,right:1088,top:58,bottom:420};
+  const moneyValues = [-.4,0,.4,.8,1.2];
+  const moneyY = (value)=>plot.bottom-((value+.4)/1.6)*(plot.bottom-plot.top);
+  const shareY = (value)=>plot.bottom-((value+5)/35)*(plot.bottom-plot.top);
+  const xs = [360,840];
+  const sharePoints = data.periods.map((period,index)=>({x:xs[index],y:shareY(period.share)}));
+  return (
+    <div className="h1-retail-growth-chart h1-editorial-chart-surface is-vietnam-ppt" data-editor-ignore>
+      <div className="h1-retail-growth-ppt-chart-heading">
+        <span>{data.leftAxisTitle}</span>
+        <h2>{data.chartTitle}</h2>
+        <span>{data.rightAxisTitle}</span>
+      </div>
+      <svg viewBox="0 0 1200 500" role="img" aria-label={data.chartTitle}>
+        <defs>
+          <marker id="vietnam-ppt-share-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" className="h1-retail-growth-arrowhead is-up"/>
+          </marker>
+        </defs>
+        {moneyValues.map((value,index)=>{
+          const y=moneyY(value);
+          return <g key={`vietnam-ppt-axis-${value}`}>
+            <line x1={plot.left} x2={plot.right} y1={y} y2={y} className={value===0?"h1-retail-growth-zero":"h1-retail-growth-grid"}/>
+            <text x={plot.left-18} y={y+6} className="h1-retail-growth-axis" textAnchor="end">{data.leftAxisTicks[index]}</text>
+            <text x={plot.right+18} y={y+6} className="h1-retail-growth-axis" textAnchor="start">{data.rightAxisTicks[index]}</text>
+          </g>;
+        })}
+        {data.periods.map((period,index)=>{
+          const zero=moneyY(0);
+          const y=moneyY(period.nd);
+          const isNegative=period.nd<0;
+          return <g key={period.label} className="h1-retail-growth-bar-group" style={{"--bar-delay":`${.18+index*.16}s`}}>
+            <rect x={xs[index]-100} y={Math.min(y,zero)} width="200" height={Math.abs(zero-y)} rx="8" className={`h1-retail-growth-bar ${isNegative?"is-muted":"is-orange"}`}/>
+            <text x={xs[index]} y={isNegative?y+34:y+48} className={`h1-retail-growth-value ${isNegative?"is-negative":"is-inside"}`} textAnchor="middle">{period.ndText}</text>
+            <text x={xs[index]} y="468" className="h1-retail-growth-x-label" textAnchor="middle">{period.label}</text>
+          </g>;
+        })}
+        <path d={`M ${sharePoints[0].x} ${sharePoints[0].y} C 520 ${sharePoints[0].y-18} 680 ${sharePoints[1].y+30} ${sharePoints[1].x} ${sharePoints[1].y}`} className="h1-retail-growth-share-line is-dotted" markerEnd="url(#vietnam-ppt-share-arrow)"/>
+        {sharePoints.map((point,index)=><g key={`vietnam-ppt-share-${index}`}>
+          <circle cx={point.x} cy={point.y} r="7" className="h1-retail-growth-share-dot"/>
+          <text x={point.x} y={point.y-20} className="h1-retail-growth-share-label is-saffron is-endpoint" textAnchor="middle">{data.periods[index].shareText}</text>
+        </g>)}
+        <g className="h1-retail-growth-delta-chip is-ppt-delta">
+          <rect x="512" y="188" width="176" height="64" rx="14"/>
+          <text x="600" y="228" textAnchor="middle">{data.delta}</text>
+        </g>
+      </svg>
+      <div className="h1-retail-growth-ppt-comparison">
+        <strong>{data.comparisonLabel}</strong>
+        <span>{data.comparisonLeft}</span>
+        <span>{data.comparisonRight}</span>
+      </div>
+    </div>
+  );
+}
+
+function H1VietnamMarketingTransition({data}) {
+  return (
+    <div className="h1-vietnam-marketing-transition" data-editor-ignore>
+      <img src={data.transitionBackground} alt={data.title}/>
+      <span className="h1-visually-hidden">{data.title}</span>
+    </div>
+  );
+}
+
+function H1VietnamIbReclassification({data}) {
+  const radius = 114;
+  const circumference = 2*Math.PI*radius;
+  let cumulative = 0;
+  const segments = data.segments.map((segment)=>{
+    const result = {...segment,offset:cumulative};
+    cumulative += segment.share;
+    return result;
+  });
+  return (
+    <div className="h1-retail-growth-chart h1-editorial-chart-surface is-vietnam-ib" data-editor-ignore>
+      <section className="h1-vietnam-ib-flow-panel">
+        <h2>{data.flowTitle}</h2>
+        <div className="h1-vietnam-ib-flow-title">{data.flowDiagramTitle}</div>
+        <div className="h1-vietnam-ib-flow-map">
+          <div className="h1-vietnam-ib-flow-group is-sales">
+            <strong>{data.salesLabel}</strong>
+            <div className="h1-vietnam-ib-flow-rows">
+              {data.salesLevels.map((item,index)=><div key={item.name} className={`h1-vietnam-ib-flow-row${index<data.salesLevels.length-1?" is-linked":""}`}>
+                <span>{item.level}</span><b>{item.name}</b>
+              </div>)}
+            </div>
+          </div>
+          <div className="h1-vietnam-ib-flow-group is-ib">
+            <strong>{data.ibLabel}</strong>
+            <div className="h1-vietnam-ib-flow-rows">
+              {data.ibLevels.map((item,index)=><div key={item.name} className={`h1-vietnam-ib-flow-row${index<data.ibLevels.length-1?" is-linked":""}`}>
+                <span>{item.level}</span><b>{item.name}</b>{item.client&&<em>{item.client}</em>}
+              </div>)}
+            </div>
+            <div className="h1-vietnam-ib-refund-rail" aria-label={data.refundLabel}>
+              {data.ibLevels.map((item)=><span key={`${item.name}-refund`}>{data.refundLabel}</span>)}
+            </div>
+          </div>
+        </div>
+        <div className="h1-vietnam-ib-flow-notes">
+          {data.flowNotes.map((note)=><p key={note}>{note}</p>)}
+        </div>
+      </section>
+      <section className="h1-vietnam-ib-structure-panel">
+        <h2>{data.structureTitle}</h2>
+        <svg viewBox="0 0 620 430" role="img" aria-label={data.structureTitle}>
+          <defs>
+            <pattern id="vietnam-ib-diagonal" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="9" height="9" fill="rgba(83,18,24,.96)"/>
+              <line x1="0" y1="0" x2="0" y2="9" stroke="#ff6a13" strokeWidth="3"/>
+            </pattern>
+            <pattern id="vietnam-ib-cross" width="11" height="11" patternUnits="userSpaceOnUse">
+              <rect width="11" height="11" fill="rgba(143,22,32,.96)"/>
+              <path d="M0 0L11 11M11 0L0 11" stroke="#fff1e3" strokeWidth="1.6"/>
+            </pattern>
+          </defs>
+          <g transform="rotate(-90 310 206)">
+            {segments.map((segment)=><circle key={segment.key} cx="310" cy="206" r={radius} fill="none" className={`h1-vietnam-ib-donut-segment is-${segment.key}`} strokeWidth="76" strokeDasharray={`${circumference*(segment.share/100)} ${circumference}`} strokeDashoffset={-circumference*(segment.offset/100)}/>)}
+            <circle cx="310" cy="206" r={radius} fill="none" stroke="url(#vietnam-ib-diagonal)" strokeWidth="76" strokeDasharray={`${circumference*.256} ${circumference}`} strokeDashoffset={-circumference*.69}/>
+            <circle cx="310" cy="206" r={radius} fill="none" stroke="url(#vietnam-ib-cross)" strokeWidth="76" strokeDasharray={`${circumference*.049} ${circumference}`} strokeDashoffset={-circumference*.641}/>
+          </g>
+          <text x="310" y="197" className="h1-vietnam-ib-total" textAnchor="middle">{data.total}</text>
+          <text x="310" y="226" className="h1-vietnam-ib-total-label" textAnchor="middle">{data.totalLabel}</text>
+          <text x="310" y="80" className="h1-vietnam-ib-callout is-primary" textAnchor="middle"><tspan x="310">{data.segments[0].label}</tspan><tspan x="310" dy="22">{data.segments[0].shareLabel}</tspan></text>
+          <path d="M 425 292 L 476 322 L 546 322" className="h1-vietnam-ib-callout-line"/>
+          <text x="548" y="318" className="h1-vietnam-ib-callout" textAnchor="start"><tspan x="548">{data.segments[1].label}</tspan><tspan x="548" dy="22">{data.segments[1].shareLabel}</tspan></text>
+          <path d="M 282 349 L 268 388 L 170 388" className="h1-vietnam-ib-callout-line"/>
+          <text x="166" y="381" className="h1-vietnam-ib-callout" textAnchor="end"><tspan x="166">{data.segments[2].label}</tspan><tspan x="166" dy="22">{data.segments[2].shareLabel}</tspan></text>
+          <path d="M 203 275 L 150 316 L 80 316" className="h1-vietnam-ib-change-line"/>
+          <text x="74" y="296" className="h1-vietnam-ib-change-label" textAnchor="end"><tspan x="74">{data.changes[0].label}</tspan><tspan x="74" dy="22">{data.changes[0].shareLabel}</tspan></text>
+          <path d="M 198 205 L 150 186 L 82 186" className="h1-vietnam-ib-change-line"/>
+          <text x="76" y="166" className="h1-vietnam-ib-change-label" textAnchor="end"><tspan x="76">{data.changes[1].label}</tspan><tspan x="76" dy="22">{data.changes[1].shareLabel}</tspan></text>
+        </svg>
+        <div className="h1-vietnam-ib-legend">
+          {data.legends.map((label,index)=><span key={label}><i className={`is-${["ib","retail","cpa","dynamic","mib"][index]}`}/>{label}</span>)}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function H1VietnamRetailNdRestoredChart({data}) {
+  const plot = {left:128,right:1072,top:54,bottom:430};
+  const moneyValues = [-1,-.5,0,.5,1,1.5,2,2.5,3];
+  const shareValues = [0,5,10,15,20,25,30];
+  const moneyY = (value)=>plot.bottom-((value+1)/4)*(plot.bottom-plot.top);
+  const shareY = (value)=>plot.bottom-(value/30)*(plot.bottom-plot.top);
+  const xs = [386,814];
+  const sharePoints = data.periods.map((period,index)=>({x:xs[index],y:shareY(period.share)}));
+  return (
+    <div className="h1-retail-growth-chart h1-editorial-chart-surface is-vietnam-restored" data-editor-ignore>
+      <div className="h1-retail-growth-ppt-chart-heading">
+        <span>{data.leftAxisTitle}</span>
+        <h2>{data.chartTitle}</h2>
+        <span>{data.rightAxisTitle}</span>
+      </div>
+      <svg viewBox="0 0 1200 520" role="img" aria-label={data.chartTitle}>
+        {moneyValues.map((value,index)=>{
+          const y=moneyY(value);
+          return <g key={`vietnam-restored-money-${value}`}>
+            <line x1={plot.left} x2={plot.right} y1={y} y2={y} className={value===0?"h1-retail-growth-zero":"h1-retail-growth-grid"}/>
+            <text x={plot.left-18} y={y+5} className="h1-retail-growth-axis" textAnchor="end">{data.leftAxisTicks[index]}</text>
+          </g>;
+        })}
+        {shareValues.map((value,index)=><text key={`vietnam-restored-share-${value}`} x={plot.right+18} y={shareY(value)+5} className="h1-retail-growth-axis" textAnchor="start">{data.rightAxisTicks[index]}</text>)}
+        {data.periods.map((period,index)=>{
+          const x=xs[index];
+          const zero=moneyY(0);
+          const currentY=moneyY(period.current);
+          const dynamicBaseValue=period.current>0?period.current:0;
+          const dynamicTop=moneyY(period.dynamic);
+          const dynamicBottom=moneyY(dynamicBaseValue);
+          const mibTopValue=period.current<0?period.current:0;
+          const mibBottomValue=period.current<0?period.current+period.mib:period.mib;
+          const mibTop=moneyY(mibTopValue);
+          const mibBottom=moneyY(mibBottomValue);
+          return <g key={period.label} className="h1-retail-growth-bar-group" style={{"--bar-delay":`${.18+index*.15}s`}}>
+            <rect x={x-92} y={dynamicTop} width="184" height={dynamicBottom-dynamicTop} rx="6" className="h1-vietnam-restored-segment is-dynamic"/>
+            <rect x={x-92} y={Math.min(zero,currentY)} width="184" height={Math.abs(currentY-zero)} rx="4" className="h1-vietnam-restored-segment is-current"/>
+            <rect x={x-92} y={Math.min(mibTop,mibBottom)} width="184" height={Math.abs(mibBottom-mibTop)} rx="4" className="h1-vietnam-restored-segment is-mib"/>
+            <text x={x} y={(dynamicTop+dynamicBottom)/2+7} className="h1-vietnam-restored-value" textAnchor="middle">{period.dynamicText}</text>
+            <text x={x} y={(zero+currentY)/2+7} className="h1-vietnam-restored-value" textAnchor="middle">{period.currentText}</text>
+            <text x={x} y={(mibTop+mibBottom)/2+7} className="h1-vietnam-restored-value" textAnchor="middle">{period.mibText}</text>
+            <text x={x} y="490" className="h1-retail-growth-x-label" textAnchor="middle">{period.label}</text>
+          </g>;
+        })}
+        <path d={`M ${sharePoints[0].x} ${sharePoints[0].y} L ${sharePoints[1].x} ${sharePoints[1].y}`} className="h1-vietnam-restored-share-line"/>
+        {sharePoints.map((point,index)=><g key={`vietnam-restored-point-${index}`}>
+          <circle cx={point.x} cy={point.y} r="6" className="h1-vietnam-restored-share-dot"/>
+          <text x={point.x} y={point.y-18} className="h1-vietnam-restored-share-label" textAnchor="middle">{data.periods[index].shareText}</text>
+        </g>)}
+      </svg>
+      <div className="h1-vietnam-restored-legend">
+        {data.legends.map((legend,index)=><span key={legend}><i className={`is-${["current","dynamic","mib","share"][index]}`}/>{legend}</span>)}
       </div>
     </div>
   );
@@ -2329,10 +2590,12 @@ function H1DataModulePageShell({
 }
 
 function H1RetailGrowthPage({data,count}) {
-  const isTransition = ["apac_question","attribution_question","india_chapter"].includes(data.layoutType);
+  const isTransition = ["apac_question","attribution_question","india_chapter","vietnam_marketing_transition"].includes(data.layoutType);
   const chart = data.layoutType === "retail_nd_share_shift" ? <H1RetailShareShiftChart data={data}/>
     : data.layoutType === "apac_nd_breakdown" ? <H1ApacNdBreakdownChart data={data}/>
-    : data.layoutType === "vietnam_retail_nd" ? <H1VietnamRetailNdChart data={data}/>
+    : data.layoutType === "vietnam_retail_nd_ppt" ? <H1VietnamRetailNdPptChart data={data}/>
+    : data.layoutType === "vietnam_ib_reclassification" ? <H1VietnamIbReclassification data={data}/>
+    : data.layoutType === "vietnam_retail_nd_restored" ? <H1VietnamRetailNdRestoredChart data={data}/>
     : data.layoutType === "mib_attribution" ? <H1MibAttributionChart data={data}/>
     : data.layoutType === "retail_nd_scope_restoration" ? <H1RetailNdScopeRestorationChart data={data}/>
     : null;
@@ -2347,7 +2610,11 @@ function H1RetailGrowthPage({data,count}) {
       className={`h1-retail-growth-page is-${data.layoutType.replaceAll("_","-")}${isTransition?" is-retail-transition":""}`}
       canvasClassName={isTransition ? "is-retail-transition" : "is-retail-data-detail"}
     >
-      {isTransition ? <H1RetailGrowthTransition data={data}/> : chart}
+      {data.layoutType === "vietnam_marketing_transition"
+        ? <H1VietnamMarketingTransition data={data}/>
+        : isTransition
+          ? <H1RetailGrowthTransition data={data}/>
+          : chart}
     </H1DataModulePageShell>
   );
 }
