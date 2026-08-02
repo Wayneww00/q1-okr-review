@@ -92,6 +92,8 @@ const requiredByPage = {
     "按照固定层级规则值，可全层级返佣",
     "两类 IB 口径变化重塑越南 ND 结构",
     "2026-H1 越南用户 ND 贡献占比",
+    "vietnam-ib-refund-original.jpg",
+    "vietnam-ib-nd-donut-original.jpg",
     "$20.33M",
     "IB $19.44M",
     "95.65%",
@@ -159,6 +161,15 @@ assert.ok(
   ),
   "the PPT transition must use its original embedded background asset",
 );
+for (const file of [
+  "vietnam-ib-refund-original.jpg",
+  "vietnam-ib-nd-donut-original.jpg",
+]) {
+  assert.ok(
+    existsSync(resolve(root, "previews/assets/figma-racing", file)),
+    `page 20 source image must be deployed: ${file}`,
+  );
+}
 assert.match(
   shell,
   /'Performance Data','经营数据','23 MODULES'/,
@@ -213,5 +224,9 @@ assert.ok(
 );
 assert.match(vietnamIbComponent, /data-vietnam-ib-callout="retail"/);
 assert.match(vietnamIbComponent, /data-vietnam-ib-callout="cpa"/);
+assert.match(vietnamIbComponent, /data-vietnam-ib-source="flow"/);
+assert.match(vietnamIbComponent, /data-vietnam-ib-source="structure"/);
+assert.match(vietnamIbComponent, /src=\{data\.flowSourceImage\}/);
+assert.match(vietnamIbComponent, /src=\{data\.structureSourceImage\}/);
 
 console.log("H1 Retail ND PPT four-page insertion checks passed.");

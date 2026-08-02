@@ -665,7 +665,7 @@
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
 
-function H1SourceImage({src,alt,className="",loading="lazy",fullSrc=src,showCaption=true}){
+function H1SourceImage({src,alt,className="",loading="lazy",fullSrc=src,showCaption=true,triggerLabel=""}){
   const [open,setOpen]=useState(false);
   const close=useCallback(()=>setOpen(false),[]);
   useEffect(()=>{
@@ -688,6 +688,7 @@ function H1SourceImage({src,alt,className="",loading="lazy",fullSrc=src,showCapt
         onClick={()=>setOpen(true)}
       >
         <img src={src} alt={alt} loading={loading} draggable="false"/>
+        {triggerLabel&&<span className="h1-source-image-trigger-label">{triggerLabel}</span>}
         <span className="h1-source-image-zoom" aria-hidden="true">↗</span>
       </button>
       {open&&ReactDOM.createPortal(
@@ -1049,8 +1050,10 @@ const H1_DASHBOARDS = [
     ],
     refundLabel:"返佣",
     flowNotes:["系统集成+人工一键开户","按照固定层级规则值，可全层级返佣"],
+    flowSourceImage:"previews/assets/figma-racing/vietnam-ib-refund-original.jpg",
     structureTitle:"两类 IB 口径变化重塑越南 ND 结构",
     structureChartTitle:"2026-H1 越南用户 ND 贡献占比",
+    structureSourceImage:"previews/assets/figma-racing/vietnam-ib-nd-donut-original.jpg",
     total:"$20.33M",
     totalLabel:"总 Net Deposit",
     segments:[
@@ -2188,6 +2191,15 @@ function H1VietnamIbReclassification({data}) {
   return (
     <div className="h1-retail-growth-chart h1-editorial-chart-surface is-vietnam-ib" data-editor-ignore>
       <section className="h1-vietnam-ib-flow-panel">
+        <div className="h1-vietnam-ib-source-entry" data-vietnam-ib-source="flow">
+          <H1SourceImage
+            src={data.flowSourceImage}
+            alt="现有垂直返佣层级与返佣示意原图"
+            className="h1-vietnam-ib-source-link"
+            loading="eager"
+            triggerLabel="查看原图"
+          />
+        </div>
         <h2>{data.flowTitle}</h2>
         <div className="h1-vietnam-ib-flow-title">{data.flowDiagramTitle}</div>
         <svg className="h1-vietnam-ib-flow-map" viewBox="0 0 660 440" role="img" aria-label={data.flowDiagramTitle}>
@@ -2244,6 +2256,15 @@ function H1VietnamIbReclassification({data}) {
         </div>
       </section>
       <section className="h1-vietnam-ib-structure-panel">
+        <div className="h1-vietnam-ib-source-entry" data-vietnam-ib-source="structure">
+          <H1SourceImage
+            src={data.structureSourceImage}
+            alt="2026-H1 越南用户 ND 贡献占比原图"
+            className="h1-vietnam-ib-source-link"
+            loading="eager"
+            triggerLabel="查看原图"
+          />
+        </div>
         <h2>{data.structureTitle}</h2>
         <h3>{data.structureChartTitle}</h3>
         <svg viewBox="0 0 760 500" role="img" aria-label={data.structureChartTitle}>

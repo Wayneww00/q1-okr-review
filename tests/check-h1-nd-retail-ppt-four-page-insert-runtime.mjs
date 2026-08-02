@@ -76,6 +76,13 @@ try {
     '[data-page-id="data-19"] .h1-vietnam-marketing-transition img',
   );
   await transitionImage.waitFor();
+  await transitionImage.evaluate((image) => {
+    if (image.complete && image.naturalWidth > 0) return;
+    return new Promise((resolve, reject) => {
+      image.addEventListener("load", resolve, { once: true });
+      image.addEventListener("error", reject, { once: true });
+    });
+  });
   assert.equal(await transitionImage.evaluate((image) => image.complete), true);
   assert.equal(await transitionImage.evaluate((image) => image.naturalWidth), 2542);
   const transitionPage = reportFrame.locator('[data-page-id="data-19"]');
@@ -106,6 +113,35 @@ try {
   assert.equal(transitionCoverage.stageHeight, transitionCoverage.pageHeight);
   assert.equal(transitionCoverage.imageCoversStage, true);
   assert.equal(transitionCoverage.objectFit, "cover");
+
+  const sourceViewers = [
+    { key: "flow", width: 2070 },
+    { key: "structure", width: 1388 },
+  ];
+  for (const viewer of sourceViewers) {
+    const trigger = reportFrame.locator(
+      `[data-page-id="data-20"] [data-vietnam-ib-source="${viewer.key}"] .h1-source-image-trigger`,
+    );
+    await trigger.click();
+    const modal = reportFrame.locator(".h1-source-image-modal");
+    await modal.waitFor();
+    const modalImage = modal.locator("img");
+    await modalImage.waitFor();
+    await modalImage.evaluate((image) => {
+      if (image.complete && image.naturalWidth > 0) return;
+      return new Promise((resolve, reject) => {
+        image.addEventListener("load", resolve, { once: true });
+        image.addEventListener("error", reject, { once: true });
+      });
+    });
+    assert.equal(
+      await modalImage.evaluate((image) => image.naturalWidth),
+      viewer.width,
+      `${viewer.key} source viewer must open the supplied original image`,
+    );
+    await modal.locator(".h1-source-image-modal-close").click();
+    await modal.waitFor({ state: "detached" });
+  }
   assert.deepEqual(pageErrors, []);
 } finally {
   await browser.close();
