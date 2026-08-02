@@ -12,6 +12,12 @@ assert.ok(start >= 0 && end > start, "Retail ND share chart component should exi
 
 const component = app.slice(start, end);
 
+assert.match(
+  component,
+  /const groupX = \[300,900\];/,
+  "GS and APAC bar groups should align to the centers of the two equal-width summary cards",
+);
+
 function readNumericConstant(name) {
   const match = component.match(new RegExp(`const ${name} = (\\d+);`));
   assert.ok(match, `${name} should be an explicit chart geometry constant`);

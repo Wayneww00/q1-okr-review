@@ -56,7 +56,7 @@ for (const token of [
   '{label:"2025 H2",value:145.4,valueText:"$145.4M",share:24.3,shareText:"24.3%"}',
   '{label:"2026 H1",value:221.6,valueText:"$221.6M",share:25.2,shareText:"25.2%"}',
   'title:"2026 H1 口径回归表现及整体占比变化*"',
-  'leftAxisTicks:["$0.00M","$50.00M","$100.00M","$150.00M","$200.00M","$250.00M","$300.00M"]',
+  'leftAxisTicks:["$0.0M","$50.0M","$100.0M","$150.0M","$200.0M","$250.0M","$300.0M"]',
   'rightAxisTicks:["0.0%","5.0%","10.0%","15.0%","20.0%","25.0%","30.0%"]',
   '{label:"2025 H2",value:159.3,valueText:"$159.30M",share:30,shareText:"30.0%"}',
   '{label:"2026 H1",value:269.1,valueText:"$269.10M",share:30.6,shareText:"30.6%"}',

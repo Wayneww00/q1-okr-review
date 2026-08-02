@@ -68,7 +68,7 @@ const requiredByPage = {
     "−2.0%",
     "8.8%",
     "ND +$1.2M",
-    "越南 Retail ND $1.0M｜国家内部占比 4.3%",
+    "越南 Retail ND $0.9M｜国家内部占比 4.3%",
     "集团 Retail ND $221.6M｜大盘占比 25.2%",
   ],
   19: [
@@ -91,6 +91,7 @@ const requiredByPage = {
     "系统集成+人工一键开户",
     "按照固定层级规则值，可全层级返佣",
     "两类 IB 口径变化重塑越南 ND 结构",
+    "2026-H1 越南用户 ND 贡献占比",
     "$20.33M",
     "IB $19.44M",
     "95.65%",
@@ -166,5 +167,24 @@ assert.match(
 assert.match(theme, /\.is-vietnam-marketing-transition/);
 assert.match(theme, /\.is-vietnam-ib-reclassification/);
 assert.match(theme, /\.is-vietnam-retail-nd-restored/);
+
+const vietnamIbStart = app.indexOf("function H1VietnamIbReclassification({data})");
+const vietnamIbEnd = app.indexOf("function H1VietnamRetailNdRestoredChart", vietnamIbStart);
+const vietnamIbComponent = app.slice(vietnamIbStart, vietnamIbEnd);
+assert.match(
+  vietnamIbComponent,
+  /const donut = \{cx:390,cy:224,radius:148,strokeWidth:100\};/,
+  "the Vietnam IB donut should follow the PPT's large-ring geometry",
+);
+assert.match(
+  vietnamIbComponent,
+  /data-vietnam-ib-refund-network/,
+  "the PPT's complete multi-level refund arrow network must be rendered",
+);
+assert.match(
+  vietnamIbComponent,
+  /data-vietnam-ib-change-overlay/,
+  "the dynamic-IB and MIB classification changes must be visible as donut overlays",
+);
 
 console.log("H1 Retail ND PPT four-page insertion checks passed.");

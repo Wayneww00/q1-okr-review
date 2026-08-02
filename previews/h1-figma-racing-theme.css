@@ -9182,6 +9182,175 @@ svg.h1-okr-insight-icon circle {
   border: 1px solid #ff6a13;
 }
 
+/* Page 20: PPT-faithful native-vector reconstruction, translated to the data-module palette. */
+.is-vietnam-ib-reclassification .h1-retail-growth-chart.is-vietnam-ib {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+  padding: 10px 12px 12px !important;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-flow-panel,
+.is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel {
+  padding: 10px 12px 10px;
+  border-color: rgba(255,241,227,.1);
+  border-radius: 8px;
+  background: linear-gradient(160deg,rgba(255,255,255,.018),rgba(12,2,3,.72));
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-flow-panel > h2,
+.is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel > h2 {
+  width: calc(100% - 54px);
+  min-height: 30px;
+  margin: 0 auto 5px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 17px;
+  line-height: 1.15;
+  border: 1px solid color-mix(in srgb,var(--h1-data-accent) 62%,#e7b25b);
+  border-radius: 7px;
+  background: rgba(143,22,32,.13);
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-flow-title {
+  height: 30px;
+  margin: 0 34px 4px;
+  font-size: 14px;
+  border-radius: 2px;
+  background: linear-gradient(90deg,var(--h1-data-primary),var(--h1-data-accent));
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-flow-map {
+  width: 100%;
+  height: calc(100% - 111px);
+  min-height: 0;
+  margin: 0;
+  display: block;
+  overflow: visible;
+}
+
+.h1-vietnam-ib-tier-block {
+  fill: rgba(231,178,91,.105);
+  stroke: rgba(231,178,91,.28);
+}
+
+.h1-vietnam-ib-tier-block.is-ib {
+  fill: rgba(143,22,32,.12);
+  stroke: rgba(255,91,17,.28);
+}
+
+.h1-vietnam-ib-level-box,
+.h1-vietnam-ib-name-box {
+  fill: rgba(231,178,91,.09);
+  stroke: rgba(231,178,91,.24);
+}
+
+.h1-vietnam-ib-level-box.is-ib,
+.h1-vietnam-ib-name-box.is-ib,
+.h1-vietnam-ib-client-box {
+  fill: rgba(143,22,32,.12);
+  stroke: rgba(255,91,17,.25);
+}
+
+.h1-vietnam-ib-client-box.is-empty {
+  fill: transparent;
+  stroke: transparent;
+}
+
+.h1-vietnam-ib-tier-label,
+.h1-vietnam-ib-flow-text {
+  fill: rgba(255,241,227,.78);
+  font: 650 13px/1 Inter,"Noto Sans SC",sans-serif;
+}
+
+.h1-vietnam-ib-tier-label { font-size:14px; font-weight:760; }
+.h1-vietnam-ib-flow-text.is-name { fill:#fff; font-weight:760; }
+.h1-vietnam-ib-flow-text.is-client { fill:#e7b25b; font-size:12px; font-weight:720; }
+
+.h1-vietnam-ib-flow-link,
+.h1-vietnam-ib-client-link {
+  fill: none;
+  stroke: rgba(255,241,227,.64);
+  stroke-width: 1.5;
+}
+
+.h1-vietnam-ib-flow-arrowhead { fill:rgba(255,241,227,.78); }
+.h1-vietnam-ib-refund-arrowhead { fill:var(--h1-data-accent); }
+
+.h1-vietnam-ib-refund-link {
+  fill: none;
+  stroke: color-mix(in srgb,var(--h1-data-accent) 78%,#fff);
+  stroke-width: 1.6;
+  opacity: .84;
+}
+
+.h1-vietnam-ib-refund-label {
+  fill: var(--h1-data-accent);
+  font: 760 9px/1 Inter,"Noto Sans SC",sans-serif;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,.9);
+  stroke-width: 3px;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-flow-notes {
+  left: 22px;
+  right: 22px;
+  bottom: 7px;
+  padding: 5px 10px;
+  gap: 1px;
+  border: 1px solid rgba(255,241,227,.1);
+  background: rgba(255,255,255,.025);
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-flow-notes p {
+  font-size: 10.5px;
+  line-height: 1.14;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel > h3 {
+  height: 22px;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(255,241,227,.56);
+  font: 680 13px/1 Inter,"Noto Sans SC",sans-serif;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel > svg {
+  width: 100%;
+  height: calc(100% - 92px);
+  margin: 0;
+  overflow: visible;
+}
+
+.h1-vietnam-ib-donut-segment { stroke-linecap:butt; }
+.h1-vietnam-ib-donut-separator {
+  stroke: rgba(255,241,227,.76);
+  stroke-width: 2;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-total {
+  font-size: 38px;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-callout,
+.is-vietnam-ib-reclassification .h1-vietnam-ib-callout.is-primary,
+.is-vietnam-ib-reclassification .h1-vietnam-ib-change-label {
+  font-size: 12px;
+  stroke-width: 3px;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-change-label {
+  font-size: 11.5px;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-legend {
+  min-height: 30px;
+  gap: 4px 14px;
+  padding: 0 12px;
+  font-size: 9.8px;
+}
+
 .is-vietnam-retail-nd-restored .h1-retail-growth-chart.is-vietnam-restored {
   grid-template-rows: 52px minmax(0,1fr) 42px;
 }
