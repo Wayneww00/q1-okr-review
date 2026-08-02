@@ -187,4 +187,31 @@ assert.match(
   "the dynamic-IB and MIB classification changes must be visible as donut overlays",
 );
 
+const calloutAnchorMatch = vietnamIbComponent.match(
+  /const calloutAnchors = \{retail:\{x:(\d+),y:(\d+)\},cpa:\{x:(\d+),y:(\d+)\}\};/,
+);
+assert.ok(
+  calloutAnchorMatch,
+  "Retail and CPA callouts should expose explicit anchors tied to their donut slices",
+);
+const [, retailX, retailY, cpaX, cpaY] = calloutAnchorMatch.map(Number);
+const donutCenter = { x: 390, y: 224 };
+const anchorAngle = (x, y) => {
+  const degrees =
+    (Math.atan2(y - donutCenter.y, x - donutCenter.x) * 180) / Math.PI;
+  return degrees < 0 ? degrees + 360 : degrees;
+};
+assert.ok(
+  anchorAngle(retailX, retailY) >= 82 &&
+    anchorAngle(retailX, retailY) <= 97.6,
+  "the Retail leader must start on the light Retail slice",
+);
+assert.ok(
+  anchorAngle(cpaX, cpaY) >= 97.6 &&
+    anchorAngle(cpaX, cpaY) <= 98.6,
+  "the CPA/Hybrid leader must start on the thin gold slice",
+);
+assert.match(vietnamIbComponent, /data-vietnam-ib-callout="retail"/);
+assert.match(vietnamIbComponent, /data-vietnam-ib-callout="cpa"/);
+
 console.log("H1 Retail ND PPT four-page insertion checks passed.");
