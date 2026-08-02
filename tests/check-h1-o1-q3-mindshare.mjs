@@ -66,8 +66,13 @@ assert.match(
   /\.h1-okr-q3-mindshare-rank\s*\{[\s\S]*?font-size:\s*min\(112px/,
   "NO.1 must be the dominant visual signal on the selected design",
 );
+assert.match(
+  theme,
+  /\.h1-embedded-report main\.h1-okr-report \.h1-okr-q3-mindshare-scoreboard,\s*[\s\S]*?\.h1-okr-q3-mindshare-outcome-rail\s*\{[\s\S]*?margin-bottom:\s*0\s*!important;[\s\S]*?padding-top:\s*0\s*!important;/,
+  "the Q3 nested sections must neutralize the immersive shell's global section spacing",
+);
 assert.ok(
-  app.includes("h1-o1-complete-theme.css?v=20260802-q3-scoreboard-v2"),
+  app.includes("h1-o1-complete-theme.css?v=20260802-q3-scoreboard-v3"),
   "the production page must invalidate the cached O1 theme",
 );
 

@@ -2479,6 +2479,14 @@ svg.h1-okr-insight-icon circle {
   letter-spacing: -.035em;
 }
 
+/* The immersive shell applies spacing to every nested section. These two
+   structural sections own their spacing and must remain inside the slide. */
+.h1-embedded-report main.h1-okr-report .h1-okr-q3-mindshare-scoreboard,
+.h1-embedded-report main.h1-okr-report .h1-okr-q3-mindshare-outcome-rail {
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
 .h1-okr-q3-mindshare-outcome-rail {
   flex: 0 0 min(166px,15.37037vh);
   display: grid;
