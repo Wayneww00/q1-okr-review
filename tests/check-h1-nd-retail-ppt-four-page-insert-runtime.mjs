@@ -36,7 +36,7 @@ try {
   const expectedText = new Map([
     [18, /从越南市场切入[\s\S]*ND \+\$1\.2M[\s\S]*\$221\.6M/],
     [19, /为什么Marketing做得好，反而ND占比低/],
-    [20, /越南受 IB 归类口径变化影响最显著[\s\S]*IB James[\s\S]*\$20\.33M[\s\S]*25\.6%/],
+    [20, /越南受 IB 归类口径变化影响最显著[\s\S]*IB James[\s\S]*\$20\.3M[\s\S]*95\.7%[\s\S]*25\.6%/],
     [21, /还原口径影响后[\s\S]*\$2\.4M[\s\S]*\$2\.8M[\s\S]*18\.8%[\s\S]*28\.7%/],
     [22, /可能对Retail ND占比有影响的因素[\s\S]*Q2 ND 5\.9M[\s\S]*Q2 ND 9\.1M/],
     [23, /口径回归后 Retail ND 占比上升[\s\S]*\$145\.4M[\s\S]*\$269\.10M/],
@@ -72,47 +72,119 @@ try {
     assert.equal(geometry.chartFits, true, `data-${id} chart content must fit`);
   }
 
-  const transitionImage = reportFrame.locator(
-    '[data-page-id="data-19"] .h1-vietnam-marketing-transition img',
-  );
-  await transitionImage.waitFor();
-  await transitionImage.evaluate((image) => {
-    if (image.complete && image.naturalWidth > 0) return;
-    return new Promise((resolve, reject) => {
-      image.addEventListener("load", resolve, { once: true });
-      image.addEventListener("error", reject, { once: true });
-    });
-  });
-  assert.equal(await transitionImage.evaluate((image) => image.complete), true);
-  assert.equal(await transitionImage.evaluate((image) => image.naturalWidth), 2542);
   const transitionPage = reportFrame.locator('[data-page-id="data-19"]');
   assert.equal(
     await transitionPage.locator(".h1-extended-editorial-canvas").count(),
     0,
     "the PPT transition must not sit inside a second data-module canvas",
   );
+  assert.equal(
+    await transitionPage.locator('img[src*="nd-retail-transition-vietnam-original"]').count(),
+    0,
+    "the watermarked PPT export must not be rendered on page 19",
+  );
   const transitionCoverage = await transitionPage.evaluate((pageRoot) => {
     const stage = pageRoot.querySelector(".h1-vietnam-marketing-transition");
-    const image = stage.querySelector("img");
+    const fixedStage = document.querySelector(".h1-figma-fixed-stage");
+    const title = stage.querySelector(".h1-vietnam-marketing-transition-title");
+    const progress = stage.querySelector(".h1-vietnam-marketing-transition-progress");
     const stageRect = stage.getBoundingClientRect();
-    const imageRect = image.getBoundingClientRect();
+    const titleRect = title.getBoundingClientRect();
+    const progressRect = progress.getBoundingClientRect();
     return {
       stageWidth: stageRect.width,
       stageHeight: stageRect.height,
       pageWidth: pageRoot.getBoundingClientRect().width,
       pageHeight: pageRoot.getBoundingClientRect().height,
-      imageCoversStage:
-        imageRect.left <= stageRect.left + 1 &&
-        imageRect.top <= stageRect.top + 1 &&
-        imageRect.right >= stageRect.right - 1 &&
-        imageRect.bottom >= stageRect.bottom - 1,
-      objectFit: getComputedStyle(image).objectFit,
+      background: getComputedStyle(stage).backgroundColor,
+      fixedStageBackground: getComputedStyle(fixedStage).backgroundImage,
+      titleVisible:
+        getComputedStyle(title).visibility !== "hidden" &&
+        titleRect.width > 0 &&
+        titleRect.height > 0,
+      titleFontSize: parseFloat(getComputedStyle(title).fontSize),
+      progressVisible:
+        getComputedStyle(progress).visibility !== "hidden" &&
+        progressRect.width > 0 &&
+        progressRect.height > 0,
     };
   });
   assert.equal(transitionCoverage.stageWidth, transitionCoverage.pageWidth);
   assert.equal(transitionCoverage.stageHeight, transitionCoverage.pageHeight);
-  assert.equal(transitionCoverage.imageCoversStage, true);
-  assert.equal(transitionCoverage.objectFit, "cover");
+  assert.equal(transitionCoverage.background, "rgba(0, 0, 0, 0)");
+  assert.match(
+    transitionCoverage.fixedStageBackground,
+    /figma-vantage-wordmark-car-stage-140-36\.png/,
+  );
+  assert.equal(transitionCoverage.titleVisible, true);
+  assert.ok(
+    transitionCoverage.titleFontSize >= 60,
+    "the live transition title must retain the PPT's hero-title scale",
+  );
+  assert.equal(transitionCoverage.progressVisible, true);
+
+  const vietnamIbPage = reportFrame.locator('[data-page-id="data-20"]');
+  const vietnamIbGeometry = await vietnamIbPage.evaluate((pageRoot) => {
+    const chartRect = pageRoot
+      .querySelector(".h1-retail-growth-chart.is-vietnam-ib")
+      .getBoundingClientRect();
+    const pageRect = pageRoot.getBoundingClientRect();
+    const panels = [
+      pageRoot.querySelector(".h1-vietnam-ib-flow-panel"),
+      pageRoot.querySelector(".h1-vietnam-ib-structure-panel"),
+    ].map((panel) => panel.getBoundingClientRect());
+    return {
+      chartWidthRatio: chartRect.width / pageRect.width,
+      chartLeftRatio: (chartRect.left - pageRect.left) / pageRect.width,
+      panelWidthRatio: panels[0].width / pageRect.width,
+      panelWidthDifference: Math.abs(panels[0].width - panels[1].width),
+    };
+  });
+  assert.ok(
+    vietnamIbGeometry.chartWidthRatio >= 0.975,
+    "page 20 must span the reference image's near-full-width canvas",
+  );
+  assert.ok(
+    vietnamIbGeometry.chartLeftRatio <= 0.03,
+    "page 20 must retain the reference image's narrow left safe area",
+  );
+  assert.ok(
+    vietnamIbGeometry.panelWidthRatio >= 0.47,
+    "each page-20 panel must retain the reference image's half-canvas proportion",
+  );
+  assert.ok(
+    vietnamIbGeometry.panelWidthDifference <= 2,
+    "the structure and attribution panels must remain equal-width",
+  );
+
+  await reportFrame.locator("body").evaluate(() => {
+    Element.prototype.requestFullscreen = function requestFullscreenForTest() {
+      this.dataset.fullscreenRequested = "true";
+      return Promise.resolve();
+    };
+  });
+  for (const key of ["flow", "structure"]) {
+    const actionGroup = vietnamIbPage.locator(
+      `[data-vietnam-ib-source="${key}"]`,
+    );
+    assert.equal(
+      await actionGroup.locator("button").count(),
+      2,
+      `${key} panel must retain both enlarge and original-image actions`,
+    );
+    await actionGroup.locator(`[data-vietnam-ib-enlarge="${key}"]`).click();
+    assert.equal(
+      await vietnamIbPage
+        .locator(
+          key === "flow"
+            ? ".h1-vietnam-ib-flow-panel"
+            : ".h1-vietnam-ib-structure-panel",
+        )
+        .getAttribute("data-fullscreen-requested"),
+      "true",
+      `${key} enlarge action must target its live panel`,
+    );
+  }
 
   const sourceViewers = [
     { key: "flow", width: 2070 },

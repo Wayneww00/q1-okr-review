@@ -73,12 +73,12 @@ const requiredByPage = {
   ],
   19: [
     "为什么Marketing做得好，反而ND占比低？",
-    "nd-retail-transition-vietnam-original.png",
   ],
   20: [
     "越南受 IB 归类口径变化影响最显著",
     "越南 IB 用户占比接近 50%，IB 渗透率高",
     "多层返佣结构使 IB 网络覆盖面更广",
+    "现有垂直返佣 · 层级与返佣示意",
     "【现有垂直返佣】层级与返佣示意",
     "销售层级",
     "IB 层级",
@@ -94,11 +94,11 @@ const requiredByPage = {
     "2026-H1 越南用户 ND 贡献占比",
     "vietnam-ib-refund-original.jpg",
     "vietnam-ib-nd-donut-original.jpg",
-    "$20.33M",
-    "IB $19.44M",
-    "95.65%",
-    "Retail $0.88M",
-    "4.31%",
+    "$20.3M",
+    "IB $19.4M",
+    "95.7%",
+    "Retail $0.9M",
+    "4.3%",
     "CPA/Hybrid $0.01M",
     "0.04%",
     "全民IB动态分类",
@@ -152,14 +152,28 @@ for (const component of [
   assert.ok(app.includes(`function ${component}`), `${component} must exist`);
 }
 
-assert.ok(
-  existsSync(
-    resolve(
-      root,
-      "previews/assets/figma-racing/nd-retail-transition-vietnam-original.png",
-    ),
-  ),
-  "the PPT transition must use its original embedded background asset",
+assert.doesNotMatch(
+  pageSource(19),
+  /nd-retail-transition-vietnam-original\.png/,
+  "page 19 must not render the watermarked PPT export as its background",
+);
+const transitionStart = app.indexOf("function H1VietnamMarketingTransition({data,count})");
+const transitionEnd = app.indexOf("function H1VietnamIbReclassification", transitionStart);
+const transitionComponent = app.slice(transitionStart, transitionEnd);
+assert.match(
+  transitionComponent,
+  /className="h1-vietnam-marketing-transition-title"[^>]*>\{data\.title\}<\/h1>/,
+  "page 19 must render the transition title as live visible text",
+);
+assert.match(
+  transitionComponent,
+  /className="h1-vietnam-marketing-transition-progress"/,
+  "page 19 must preserve the 18–19–20 transition progress as live markup",
+);
+assert.doesNotMatch(
+  transitionComponent,
+  /<img\s+src=\{data\.transitionBackground\}/,
+  "page 19 must reuse the shared default car stage instead of stacking another background image",
 );
 for (const file of [
   "vietnam-ib-refund-original.jpg",
@@ -176,6 +190,16 @@ assert.match(
   "the chapter counter must reflect the three inserted pages",
 );
 assert.match(theme, /\.is-vietnam-marketing-transition/);
+assert.match(
+  theme,
+  /\.h1-vietnam-marketing-transition\s*\{[\s\S]*?background:\s*transparent;/,
+  "the transition must expose the shared default car background",
+);
+assert.doesNotMatch(
+  theme,
+  /\.h1-vietnam-marketing-transition\s+img\s*\{/,
+  "the transition must not keep a second full-page image layer",
+);
 assert.match(theme, /\.is-vietnam-ib-reclassification/);
 assert.match(theme, /\.is-vietnam-retail-nd-restored/);
 
@@ -191,6 +215,36 @@ assert.match(
   vietnamIbComponent,
   /data-vietnam-ib-refund-network/,
   "the PPT's complete multi-level refund arrow network must be rendered",
+);
+assert.match(
+  vietnamIbComponent,
+  /h1-vietnam-ib-ib-row-outline/,
+  "the PPT's dotted IB row groupings must be preserved",
+);
+assert.match(
+  vietnamIbComponent,
+  /data-vietnam-ib-refund-legend/,
+  "the PPT's single refund-arrow legend must replace repeated curve labels",
+);
+assert.match(
+  vietnamIbComponent,
+  /const originY=ibRows\[ibRows\.length-1\]\.y\+19;/,
+  "every refund curve must originate from the bottom Client transaction node",
+);
+assert.match(
+  vietnamIbComponent,
+  /M 556 \$\{originY\} C \$\{target\.railX\} \$\{originY\}/,
+  "the refund curves must fan out from one Client-transaction anchor before returning to each target",
+);
+assert.match(
+  vietnamIbComponent,
+  /rect x="238" y=\{item\.y\} width="165"/,
+  "the IB-name column must retain the reference image's wider proportion",
+);
+assert.match(
+  vietnamIbComponent,
+  /rect x="440" y=\{item\.y\} width="116"/,
+  "the Client column must retain the reference image's right-side alignment",
 );
 assert.match(
   vietnamIbComponent,
@@ -228,5 +282,22 @@ assert.match(vietnamIbComponent, /data-vietnam-ib-source="flow"/);
 assert.match(vietnamIbComponent, /data-vietnam-ib-source="structure"/);
 assert.match(vietnamIbComponent, /src=\{data\.flowSourceImage\}/);
 assert.match(vietnamIbComponent, /src=\{data\.structureSourceImage\}/);
+assert.equal(
+  (vietnamIbComponent.match(/data-vietnam-ib-enlarge=/g) || []).length,
+  2,
+  "both page-20 panels must expose a dedicated enlarge action",
+);
+assert.match(
+  vietnamIbComponent,
+  /requestFullscreen\?\.\(\)/,
+  "the enlarge actions must open their corresponding live vector panels",
+);
+assert.match(vietnamIbComponent, />01 \/ STRUCTURE</);
+assert.match(vietnamIbComponent, />02 \/ ATTRIBUTION</);
+assert.match(
+  theme,
+  /\.h1-retail-growth-page\.is-vietnam-ib-reclassification\s*>\s*\.h1-extended-editorial-canvas\.is-retail-data-detail\s*\{[\s\S]*?width:\s*1624px;[\s\S]*?padding:\s*37px\s+20px\s+0\s+42px;[\s\S]*?grid-template-rows:\s*160px\s+minmax\(0,1fr\);[\s\S]*?gap:\s*19px;[\s\S]*?scale\(1\.28\);/,
+  "page 20 must use the approved full-canvas geometry from the reference image",
+);
 
 console.log("H1 Retail ND PPT four-page insertion checks passed.");

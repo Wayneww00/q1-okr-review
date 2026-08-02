@@ -8873,17 +8873,60 @@ svg.h1-okr-insight-icon circle {
   min-height: 100vh;
   height: 100vh;
   overflow: hidden;
-  background: #000;
+  background: transparent;
 }
 
-.h1-vietnam-marketing-transition img {
+.h1-vietnam-marketing-transition-progress {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
+  z-index: 2;
+  top: 32.5%;
+  left: 50%;
+  width: min(380px,32vw);
+  transform: translate(-50%,-50%);
+  display: grid;
+  grid-template-columns: 38px minmax(48px,1fr) 42px minmax(48px,1fr) 38px;
+  align-items: center;
+  color: rgba(255,241,227,.42);
+  font: 700 15px/1 "Noto Sans SC","PingFang SC",sans-serif !important;
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0,0,0,.95);
+}
+
+.h1-vietnam-marketing-transition-progress i {
+  height: 1px;
+  background: linear-gradient(90deg,rgba(255,91,17,.18),rgba(255,91,17,.62));
+}
+
+.h1-vietnam-marketing-transition-progress i:last-of-type {
+  background: linear-gradient(90deg,rgba(255,91,17,.62),rgba(255,91,17,.18));
+}
+
+.h1-vietnam-marketing-transition-progress strong {
+  color: var(--h1-data-accent);
+  font-size: 18px;
+  text-shadow: 0 0 18px rgba(255,91,17,.5),0 2px 14px rgba(0,0,0,.95);
+}
+
+.h1-vietnam-marketing-transition-title {
+  position: absolute;
+  z-index: 2;
+  top: 48.5%;
+  left: 50%;
+  width: min(1450px,90vw);
+  margin: 0;
+  transform: translate(-50%,-50%);
+  color: #fff;
+  font: 800 clamp(44px,3.6vw,70px)/1.12 "Noto Sans SC","PingFang SC",sans-serif !important;
+  letter-spacing: -.035em !important;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 8px 38px rgba(0,0,0,.94),0 2px 8px rgba(0,0,0,.94);
+}
+
+.h1-embedded-report .dash-page .h1-vietnam-marketing-transition-title {
+  font-size: clamp(50px,3.6vw,70px) !important;
+  line-height: 1.12 !important;
+  font-weight: 800 !important;
 }
 
 .h1-visually-hidden {
@@ -9183,42 +9226,96 @@ svg.h1-okr-insight-icon circle {
 }
 
 /* Page 20: PPT-faithful native-vector reconstruction, translated to the data-module palette. */
+.h1-retail-growth-page.is-vietnam-ib-reclassification > .h1-extended-editorial-canvas.is-retail-data-detail {
+  width: 1624px;
+  padding: 37px 20px 0 42px;
+  grid-template-rows: 160px minmax(0,1fr);
+  gap: 19px;
+  transform: translate(-50%,-50%) scale(var(--h1-figma-scale)) scale(1.28);
+}
+
+.is-vietnam-ib-reclassification .h1-extended-editorial-header {
+  padding-left: 30px;
+  grid-template-rows: 40px 60px 60px !important;
+}
+
+.is-vietnam-ib-reclassification .h1-extended-editorial-header::before {
+  bottom: 20px;
+}
+
+.h1-figma-racing-report .is-vietnam-ib-reclassification .h1-extended-editorial-header h1 {
+  font-size: 55px !important;
+}
+
 .is-vietnam-ib-reclassification .h1-retail-growth-chart.is-vietnam-ib {
   grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 12px;
-  padding: 10px 12px 12px !important;
+  gap: 15px;
+  padding: 13px 12px 0 !important;
 }
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-flow-panel,
 .is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel {
-  padding: 10px 12px 10px;
+  margin-bottom: 0 !important;
+  padding: 80px 12px 10px !important;
   border-color: rgba(255,241,227,.1);
   border-radius: 8px;
   background: linear-gradient(160deg,rgba(255,255,255,.018),rgba(12,2,3,.72));
 }
 
-.h1-vietnam-ib-source-entry {
+.h1-vietnam-ib-panel-index {
   position: absolute;
   z-index: 8;
-  top: 12px;
-  right: 12px;
+  top: 18px;
+  left: 20px;
+  color: rgba(255,241,227,.34);
+  font: 760 11px/1 "Barlow Condensed","Noto Sans SC",sans-serif !important;
+  letter-spacing: .24em !important;
 }
 
-.h1-vietnam-ib-source-link.h1-source-image-trigger {
-  width: auto;
-  min-width: 78px;
-  height: 30px;
-  padding: 0 9px 0 11px;
+.h1-vietnam-ib-panel-actions {
+  position: absolute;
+  z-index: 8;
+  top: 13px;
+  right: 14px;
   display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.h1-vietnam-ib-enlarge,
+.h1-vietnam-ib-source-link.h1-source-image-trigger {
+  min-width: 90px;
+  height: 34px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 8px;
   color: rgba(255,241,227,.9);
   background: rgba(8,3,3,.72);
   border: 1px solid rgba(255,91,17,.72);
   border-radius: 5px;
   box-shadow: 0 4px 16px rgba(0,0,0,.28);
+  cursor: pointer;
   transition: background-color .18s ease,border-color .18s ease,color .18s ease;
+}
+
+.h1-vietnam-ib-enlarge span,
+.h1-vietnam-ib-enlarge i {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 720;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.h1-vietnam-ib-enlarge i {
+  color: var(--h1-data-accent);
+  font-size: 13px;
+}
+
+.h1-vietnam-ib-source-link.h1-source-image-trigger {
+  width: auto;
 }
 
 .h1-vietnam-ib-source-link.h1-source-image-trigger > img {
@@ -9250,12 +9347,14 @@ svg.h1-okr-insight-icon circle {
   opacity: 1;
 }
 
+.h1-vietnam-ib-enlarge:hover,
 .h1-vietnam-ib-source-link.h1-source-image-trigger:hover {
   color: #fff;
   background: rgba(83,18,24,.82);
   border-color: var(--h1-data-accent);
 }
 
+.h1-vietnam-ib-enlarge:focus-visible,
 .h1-vietnam-ib-source-link.h1-source-image-trigger:focus-visible {
   outline: 2px solid var(--h1-data-accent);
   outline-offset: 2px;
@@ -9263,13 +9362,13 @@ svg.h1-okr-insight-icon circle {
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-flow-panel > h2,
 .is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel > h2 {
-  width: calc(100% - 54px);
-  min-height: 30px;
-  margin: 0 auto 5px;
+  width: calc(100% - 68px);
+  min-height: 50px;
+  margin: 0 auto;
   display: grid;
   place-items: center;
   color: #fff;
-  font-size: 17px;
+  font-size: 24px !important;
   line-height: 1.15;
   border: 1px solid color-mix(in srgb,var(--h1-data-accent) 62%,#e7b25b);
   border-radius: 7px;
@@ -9277,20 +9376,35 @@ svg.h1-okr-insight-icon circle {
 }
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-flow-title {
-  height: 30px;
-  margin: 0 34px 4px;
-  font-size: 14px;
+  height: 35px;
+  margin: 0 46px;
+  font-size: 15px;
   border-radius: 2px;
   background: linear-gradient(90deg,var(--h1-data-primary),var(--h1-data-accent));
 }
 
+.is-vietnam-ib-reclassification .h1-vietnam-ib-flow-panel > h3,
+.is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel > h3 {
+  height: 20px;
+  margin: 15px 0 20px;
+  display: grid;
+  place-items: center;
+  color: rgba(255,241,227,.56);
+  font: 680 13px/1 "Noto Sans SC",sans-serif !important;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-flow-panel > h3 {
+  margin: 7px 0 28px;
+}
+
 .is-vietnam-ib-reclassification .h1-vietnam-ib-flow-map {
   width: 100%;
-  height: calc(100% - 111px);
+  height: 340px;
   min-height: 0;
-  margin: 0;
+  margin: 3px 0 0;
   display: block;
   overflow: visible;
+  transform: translateX(-64px);
 }
 
 .h1-vietnam-ib-tier-block {
@@ -9348,19 +9462,33 @@ svg.h1-okr-insight-icon circle {
   opacity: .84;
 }
 
-.h1-vietnam-ib-refund-label {
+.h1-vietnam-ib-ib-row-outline {
+  fill: none;
+  stroke: color-mix(in srgb,var(--h1-data-accent) 58%,transparent);
+  stroke-width: 1.15;
+  stroke-dasharray: 3 3;
+}
+
+.h1-vietnam-ib-refund-legend-arrow {
+  fill: none;
+  stroke: var(--h1-data-accent);
+  stroke-width: 1.8;
+}
+
+.h1-vietnam-ib-refund-legend-text {
   fill: var(--h1-data-accent);
-  font: 760 9px/1 Inter,"Noto Sans SC",sans-serif;
+  font: 760 11.5px/1 Inter,"Noto Sans SC",sans-serif;
   paint-order: stroke;
   stroke: rgba(0,0,0,.9);
   stroke-width: 3px;
 }
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-flow-notes {
-  left: 22px;
-  right: 22px;
-  bottom: 7px;
-  padding: 5px 10px;
+  left: 64px;
+  right: 64px;
+  bottom: 35px;
+  min-height: 48px;
+  padding: 6px 10px;
   gap: 1px;
   border: 1px solid rgba(255,241,227,.1);
   background: rgba(255,255,255,.025);
@@ -9373,18 +9501,15 @@ svg.h1-okr-insight-icon circle {
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel > h3 {
   height: 22px;
-  margin: 0;
-  display: grid;
-  place-items: center;
-  color: rgba(255,241,227,.56);
-  font: 680 13px/1 Inter,"Noto Sans SC",sans-serif;
+  margin: 15px 0 14px;
 }
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel > svg {
   width: 100%;
-  height: calc(100% - 92px);
+  height: 384px;
   margin: 0;
   overflow: visible;
+  transform: translateX(20px);
 }
 
 .h1-vietnam-ib-donut-segment { stroke-linecap:butt; }
@@ -9409,10 +9534,20 @@ svg.h1-okr-insight-icon circle {
 }
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-legend {
-  min-height: 30px;
+  min-height: 42px;
   gap: 4px 14px;
   padding: 0 12px;
   font-size: 9.8px;
+}
+
+.h1-vietnam-ib-flow-panel:fullscreen,
+.h1-vietnam-ib-structure-panel:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  margin: 0 !important;
+  padding-top: 80px !important;
+  background: #100506;
+  border: 0;
 }
 
 .is-vietnam-retail-nd-restored .h1-retail-growth-chart.is-vietnam-restored {

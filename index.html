@@ -1023,8 +1023,7 @@ const H1_DASHBOARDS = [
     id:19,
     layoutType:"vietnam_marketing_transition",
     editorRevision:"retail-nd-ppt-four-page-v1",
-    title:"为什么Marketing做得好，反而ND占比低？",
-    transitionBackground:"previews/assets/figma-racing/nd-retail-transition-vietnam-original.png"
+    title:"为什么Marketing做得好，反而ND占比低？"
   },
   {
     id:20,
@@ -1033,6 +1032,7 @@ const H1_DASHBOARDS = [
     title:"越南受 IB 归类口径变化影响最显著",
     subtitle:"越南 IB 用户占比接近 50%，IB 渗透率高",
     flowTitle:"多层返佣结构使 IB 网络覆盖面更广",
+    flowSubtitle:"现有垂直返佣 · 层级与返佣示意",
     flowDiagramTitle:"【现有垂直返佣】层级与返佣示意",
     salesLabel:"销售层级",
     ibLabel:"IB 层级",
@@ -1054,11 +1054,11 @@ const H1_DASHBOARDS = [
     structureTitle:"两类 IB 口径变化重塑越南 ND 结构",
     structureChartTitle:"2026-H1 越南用户 ND 贡献占比",
     structureSourceImage:"previews/assets/figma-racing/vietnam-ib-nd-donut-original.jpg",
-    total:"$20.33M",
+    total:"$20.3M",
     totalLabel:"总 Net Deposit",
     segments:[
-      {key:"ib",label:"IB $19.44M",shareLabel:"占总 ND 95.65%",share:95.65},
-      {key:"retail",label:"Retail $0.88M",shareLabel:"占总 ND 4.31%",share:4.31},
+      {key:"ib",label:"IB $19.4M",shareLabel:"占总 ND 95.7%",share:95.7},
+      {key:"retail",label:"Retail $0.9M",shareLabel:"占总 ND 4.3%",share:4.3},
       {key:"cpa",label:"CPA/Hybrid $0.01M",shareLabel:"占总 ND 0.04%",share:.04}
     ],
     changes:[
@@ -2167,8 +2167,10 @@ function H1VietnamRetailNdPptChart({data}) {
 function H1VietnamMarketingTransition({data,count}) {
   return (
     <div className="h1-extended-editorial-page h1-retail-growth-page is-vietnam-marketing-transition is-retail-transition h1-vietnam-marketing-transition" data-editor-ignore>
-      <img src={data.transitionBackground} alt={data.title}/>
-      <span className="h1-visually-hidden">{data.title}</span>
+      <div className="h1-vietnam-marketing-transition-progress" aria-label="第19页，前后为第18页与第20页">
+        <span>18</span><i aria-hidden="true"></i><strong>19</strong><i aria-hidden="true"></i><span>20</span>
+      </div>
+      <h1 className="h1-vietnam-marketing-transition-title">{data.title}</h1>
       <div className="h1-extended-editorial-page-number" aria-hidden="true">
         {String(data.id).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span>
       </div>
@@ -2188,10 +2190,20 @@ function H1VietnamIbReclassification({data}) {
     y:item.y+17,
     railX:604+index*7,
   }));
+  const originY=ibRows[ibRows.length-1].y+19;
+  const enlargePanel = (event)=>event.currentTarget.closest("section")?.requestFullscreen?.();
   return (
     <div className="h1-retail-growth-chart h1-editorial-chart-surface is-vietnam-ib" data-editor-ignore>
       <section className="h1-vietnam-ib-flow-panel">
-        <div className="h1-vietnam-ib-source-entry" data-vietnam-ib-source="flow">
+        <span className="h1-vietnam-ib-panel-index">01 / STRUCTURE</span>
+        <div className="h1-vietnam-ib-panel-actions" data-vietnam-ib-source="flow">
+          <button
+            type="button"
+            className="h1-vietnam-ib-enlarge"
+            data-vietnam-ib-enlarge="flow"
+            aria-label="放大查看：多层返佣结构"
+            onClick={enlargePanel}
+          ><span>放大查看</span><i aria-hidden="true">↗</i></button>
           <H1SourceImage
             src={data.flowSourceImage}
             alt="现有垂直返佣层级与返佣示意原图"
@@ -2201,6 +2213,7 @@ function H1VietnamIbReclassification({data}) {
           />
         </div>
         <h2>{data.flowTitle}</h2>
+        <h3>{data.flowSubtitle}</h3>
         <div className="h1-vietnam-ib-flow-title">{data.flowDiagramTitle}</div>
         <svg className="h1-vietnam-ib-flow-map" viewBox="0 0 660 440" role="img" aria-label={data.flowDiagramTitle}>
           <defs>
@@ -2218,37 +2231,39 @@ function H1VietnamIbReclassification({data}) {
 
           {salesRows.map((item)=><g key={item.name}>
             <rect x="120" y={item.y} width="104" height="34" rx="3" className="h1-vietnam-ib-level-box is-sales"/>
-            <rect x="238" y={item.y} width="150" height="34" rx="3" className="h1-vietnam-ib-name-box is-sales"/>
+            <rect x="238" y={item.y} width="165" height="34" rx="3" className="h1-vietnam-ib-name-box is-sales"/>
             <text x="172" y={item.y+22} className="h1-vietnam-ib-flow-text" textAnchor="middle">{item.level}</text>
-            <text x="313" y={item.y+22} className="h1-vietnam-ib-flow-text is-name" textAnchor="middle">{item.name}</text>
+            <text x="320.5" y={item.y+22} className="h1-vietnam-ib-flow-text is-name" textAnchor="middle">{item.name}</text>
           </g>)}
           {ibRows.map((item)=><g key={item.name}>
+            <rect x="230" y={item.y-5} width="326" height="48" rx="3" className="h1-vietnam-ib-ib-row-outline"/>
             <rect x="120" y={item.y} width="104" height="38" rx="3" className="h1-vietnam-ib-level-box is-ib"/>
-            <rect x="238" y={item.y} width="150" height="38" rx="3" className="h1-vietnam-ib-name-box is-ib"/>
-            <rect x="410" y={item.y} width="116" height="38" rx="3" className={`h1-vietnam-ib-client-box${item.client?"":" is-empty"}`}/>
+            <rect x="238" y={item.y} width="165" height="38" rx="3" className="h1-vietnam-ib-name-box is-ib"/>
+            <rect x="440" y={item.y} width="116" height="38" rx="3" className={`h1-vietnam-ib-client-box${item.client?"":" is-empty"}`}/>
             <text x="172" y={item.y+25} className="h1-vietnam-ib-flow-text" textAnchor="middle">{item.level}</text>
-            <text x="313" y={item.y+25} className="h1-vietnam-ib-flow-text is-name" textAnchor="middle">{item.name}</text>
-            {item.client&&<text x="468" y={item.y+25} className="h1-vietnam-ib-flow-text is-client" textAnchor="middle">{item.client}</text>}
+            <text x="320.5" y={item.y+25} className="h1-vietnam-ib-flow-text is-name" textAnchor="middle">{item.name}</text>
+            {item.client&&<text x="498" y={item.y+25} className="h1-vietnam-ib-flow-text is-client" textAnchor="middle">{item.client}</text>}
           </g>)}
 
           {allRows.slice(0,-1).map((item,index)=>{
             const next=allRows[index+1];
             const rowHeight=index<3?34:38;
-            return <path key={`vertical-${index}`} d={`M313 ${item.y+rowHeight} L313 ${next.y-5}`} className="h1-vietnam-ib-flow-link" markerEnd="url(#vietnam-flow-arrow)"/>;
+            return <path key={`vertical-${index}`} d={`M320.5 ${item.y+rowHeight} L320.5 ${next.y-5}`} className="h1-vietnam-ib-flow-link" markerEnd="url(#vietnam-flow-arrow)"/>;
           })}
           {ibRows.slice(0,-1).map((item,index)=>{
             const next=ibRows[index+1];
-            return <path key={`client-${next.name}`} d={`M313 ${item.y+38} L468 ${next.y+19}`} className="h1-vietnam-ib-client-link" markerEnd="url(#vietnam-flow-arrow)"/>;
+            return <path key={`client-${next.name}`} d={`M320.5 ${item.y+38} L498 ${next.y+19}`} className="h1-vietnam-ib-client-link" markerEnd="url(#vietnam-flow-arrow)"/>;
           })}
           <g data-vietnam-ib-refund-network aria-label={data.refundLabel}>
             {refundTargets.map((target,index)=>{
-              const origin=ibRows[Math.min(index,ibRows.length-1)];
-              const originY=origin.y+19;
               return <g key={`refund-${index}`}>
-                <path d={`M ${target.railX} ${originY} C ${target.railX} ${Math.min(originY,target.y)-28} ${target.railX-18} ${target.y} 393 ${target.y}`} className="h1-vietnam-ib-refund-link" markerEnd="url(#vietnam-refund-arrow)"/>
-                <text x={target.railX-4} y={Math.max(target.y+12,originY-6)} className="h1-vietnam-ib-refund-label" textAnchor="end">{data.refundLabel}</text>
+                <path d={`M 556 ${originY} C ${target.railX} ${originY} ${target.railX} ${target.y} 408 ${target.y}`} className="h1-vietnam-ib-refund-link" markerEnd="url(#vietnam-refund-arrow)"/>
               </g>;
             })}
+          </g>
+          <g data-vietnam-ib-refund-legend>
+            <path d="M 592 431 Q 626 414 658 431" className="h1-vietnam-ib-refund-legend-arrow" markerEnd="url(#vietnam-refund-arrow)"/>
+            <text x="674" y="435" className="h1-vietnam-ib-refund-legend-text">红色箭头=返佣</text>
           </g>
         </svg>
         <div className="h1-vietnam-ib-flow-notes">
@@ -2256,7 +2271,15 @@ function H1VietnamIbReclassification({data}) {
         </div>
       </section>
       <section className="h1-vietnam-ib-structure-panel">
-        <div className="h1-vietnam-ib-source-entry" data-vietnam-ib-source="structure">
+        <span className="h1-vietnam-ib-panel-index">02 / ATTRIBUTION</span>
+        <div className="h1-vietnam-ib-panel-actions" data-vietnam-ib-source="structure">
+          <button
+            type="button"
+            className="h1-vietnam-ib-enlarge"
+            data-vietnam-ib-enlarge="structure"
+            aria-label="放大查看：越南 ND 结构"
+            onClick={enlargePanel}
+          ><span>放大查看</span><i aria-hidden="true">↗</i></button>
           <H1SourceImage
             src={data.structureSourceImage}
             alt="2026-H1 越南用户 ND 贡献占比原图"
