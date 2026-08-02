@@ -17,7 +17,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link id="h1-standalone-racing-theme" rel="stylesheet" href="previews/h1-figma-racing-theme.css?v=20260801-organic-chart-clarity-v1">
 <link id="h1-o3-theme" rel="stylesheet" href="previews/h1-o3-theme.css?v=20260802-vn-sentiment-stack-v1">
-<link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260802-q3-mindshare-v1">
+<link id="h1-o1-complete-theme" rel="stylesheet" href="previews/h1-o1-complete-theme.css?v=20260802-q3-scoreboard-v2">
 <link id="h1-objective-chapters-theme" rel="stylesheet" href="previews/h1-objective-chapters.css?v=20260731-o3-chapter-right-layout-v1">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -3684,48 +3684,51 @@ function OkrQ3MindsharePage({page,index,count}){
         <div className="h1-okr-q3-mindshare-veil"></div>
       </div>
 
-      <div className="h1-okr-q3-mindshare-watermark" aria-hidden="true">24/7</div>
+      <div className="h1-okr-q3-mindshare-watermark" aria-hidden="true">LEAD</div>
       <div className="h1-okr-q3-mindshare-frame">
         <header className="h1-okr-q3-mindshare-header">
-          <div className="h1-okr-q3-mindshare-kicker">
-            <ObjectiveChapterMark/>
-            <span>{content.eyebrow}</span>
+          <div className="h1-okr-q3-mindshare-heading-group">
+            <div className="h1-okr-q3-mindshare-kicker">
+              <ObjectiveChapterMark/>
+              <span>{content.eyebrow}</span>
+            </div>
+            <h1 id="h1-okr-q3-mindshare-title" className="h1-okr-q3-mindshare-title">
+              Q3 会持续投入 <strong>24/7 心智建设</strong>
+            </h1>
           </div>
-          <h1 id="h1-okr-q3-mindshare-title" className="h1-okr-q3-mindshare-title">
-            Q3 会持续投入 <strong>24/7 心智建设</strong>
-          </h1>
-          <p>{content.subtitle}</p>
+          <p><strong>三项第一</strong><span>，建立一个默认选择</span></p>
         </header>
 
-        <div className="h1-okr-q3-mindshare-strategy">
-          <section className="h1-okr-q3-mindshare-leadership" aria-label="三项领先指标">
-            <div className="h1-okr-q3-mindshare-section-label">LEADERSHIP SIGNALS · 01—03</div>
-            {content.signals.map((signal,signalIndex)=>(
-              <article className="h1-okr-q3-mindshare-signal" key={signal.label} style={{'--h1-okr-q3-index':signalIndex}}>
-                <span>{String(signalIndex+1).padStart(2,'0')}</span>
+        <section className="h1-okr-q3-mindshare-scoreboard" aria-label="三项领先指标">
+          {content.signals.map((signal,signalIndex)=>(
+            <article
+              className="h1-okr-q3-mindshare-score"
+              data-score-index={String(signalIndex+1).padStart(2,'0')}
+              key={signal.label}
+            >
+              <div className="h1-okr-q3-mindshare-score-copy">
                 <strong>{signal.label}</strong>
                 <p>{signal.statement.slice(signal.label.length).trim()}</p>
+              </div>
+              <div className="h1-okr-q3-mindshare-rank">
                 <b>NO.1</b>
-              </article>
-            ))}
-          </section>
+                <em>{signalIndex===0?'持续领先':'第一'}</em>
+              </div>
+            </article>
+          ))}
+        </section>
 
-          <div className="h1-okr-q3-mindshare-flow" aria-hidden="true"><i></i><span>AMPLIFY</span></div>
-
-          <section className="h1-okr-q3-mindshare-amplifier" aria-label="Sales 与 IB 协同传播">
-            <div className="h1-okr-q3-mindshare-section-label">GROWTH AMPLIFIER · 04</div>
+        <section className="h1-okr-q3-mindshare-outcome-rail" aria-label="Sales 与 IB 协同建立行业心智">
+          <div className="h1-okr-q3-mindshare-amplifier">
             <div className="h1-okr-q3-mindshare-amplifier-mark"><span>SALES</span><i>×</i><span>IB</span></div>
             <p>{content.amplifier}</p>
-          </section>
-
-          <div className="h1-okr-q3-mindshare-flow" aria-hidden="true"><i></i><span>BUILD</span></div>
-
-          <section className="h1-okr-q3-mindshare-outcome" aria-label="最终行业心智">
-            <div className="h1-okr-q3-mindshare-section-label">INDUSTRY MIND SHARE · 05</div>
+          </div>
+          <div className="h1-okr-q3-mindshare-rail-arrow" aria-hidden="true"><i></i></div>
+          <div className="h1-okr-q3-mindshare-outcome">
             <div className="h1-okr-q3-mindshare-equation"><strong>24/7</strong><i>=</i><b>VTG</b></div>
             <p>{content.outcome}</p>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
 
       <div className="h1-okr-page-number h1-okr-q3-mindshare-page-number" aria-hidden="true">

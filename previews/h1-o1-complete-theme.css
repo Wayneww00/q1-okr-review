@@ -2329,6 +2329,276 @@ svg.h1-okr-insight-icon circle {
   to { opacity: 1; transform: translate3d(0,0,0); }
 }
 
+/* Selected direction B · leadership scoreboard.
+   The three category wins become the hero; Sales × IB resolves them into one
+   short industry-memory equation at the bottom. */
+.h1-okr-q3-mindshare-page .h1-okr-q3-mindshare-veil {
+  background:
+    linear-gradient(180deg,rgba(1,1,1,.64) 0%,rgba(0,0,0,.28) 44%,rgba(0,0,0,.76) 100%),
+    linear-gradient(90deg,rgba(0,0,0,.14),rgba(0,0,0,.58) 77%,rgba(0,0,0,.9));
+}
+
+.h1-okr-q3-mindshare-page .h1-okr-q3-mindshare-watermark {
+  top: min(116px,10.740741vh);
+  right: min(42px,2.1875vw);
+  font-size: min(250px,13.020833vw,23.148148vh);
+  letter-spacing: -.06em;
+  -webkit-text-stroke: 2px rgba(255,255,255,.045);
+}
+
+.h1-okr-q3-mindshare-page .h1-okr-q3-mindshare-frame {
+  top: min(112px,10.37037vh);
+  right: min(92px,4.791667vw);
+  bottom: min(72px,6.666667vh);
+  left: min(92px,4.791667vw);
+}
+
+.h1-okr-q3-mindshare-page .h1-okr-q3-mindshare-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: min(70px,3.645833vw);
+  max-width: none;
+}
+
+.h1-okr-q3-mindshare-heading-group {
+  min-width: 0;
+}
+
+.h1-okr-q3-mindshare-page .h1-okr-q3-mindshare-title {
+  margin-top: min(28px,1.458333vw,2.592593vh);
+  font-size: min(72px,3.75vw,6.666667vh);
+}
+
+.h1-okr-q3-mindshare-page .h1-okr-q3-mindshare-header > p {
+  flex: 0 0 auto;
+  margin: 0 0 min(5px,.462963vh);
+  color: rgba(255,255,255,.68);
+  font-size: min(27px,1.40625vw,2.5vh);
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.h1-okr-q3-mindshare-page .h1-okr-q3-mindshare-header > p strong {
+  color: #fff;
+  font-weight: 800;
+}
+
+.h1-okr-q3-mindshare-scoreboard {
+  flex: 0 1 min(460px,42.592593vh);
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  min-height: min(356px,32.962963vh);
+  margin-top: min(50px,2.604167vw,4.62963vh);
+  border-top: 1px solid rgba(242,185,110,.56);
+  border-bottom: 1px solid rgba(242,185,110,.48);
+}
+
+.h1-okr-q3-mindshare-score {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: min(29px,1.510417vw,2.685185vh) min(46px,2.395833vw,4.259259vh);
+  border-right: 1px solid rgba(255,255,255,.15);
+}
+
+.h1-okr-q3-mindshare-score:last-child {
+  border-right: 0;
+}
+
+.h1-okr-q3-mindshare-score::after {
+  position: absolute;
+  top: min(8px,.740741vh);
+  right: min(24px,1.25vw);
+  content: attr(data-score-index);
+  color: transparent;
+  font-family: "Barlow Condensed", "Gilroy", sans-serif !important;
+  font-size: min(142px,7.395833vw,13.148148vh);
+  font-style: italic;
+  font-weight: 900;
+  line-height: .82;
+  -webkit-text-stroke: 1px rgba(255,255,255,.075);
+  pointer-events: none;
+}
+
+.h1-okr-q3-mindshare-score-copy,
+.h1-okr-q3-mindshare-rank {
+  position: relative;
+  z-index: 1;
+}
+
+.h1-okr-q3-mindshare-score-copy > strong {
+  display: block;
+  max-width: min(480px,25vw);
+  color: #fff;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: min(34px,1.770833vw,3.148148vh);
+  font-weight: 800;
+  letter-spacing: -.015em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.h1-okr-q3-mindshare-score-copy > p {
+  margin: min(12px,.625vw,1.111111vh) 0 0;
+  color: rgba(255,255,255,.58);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: min(24px,1.25vw,2.222222vh);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.h1-okr-q3-mindshare-rank {
+  display: flex;
+  align-items: baseline;
+  gap: min(19px,.989583vw,1.759259vh);
+  margin-top: min(35px,1.822917vw,3.240741vh);
+  white-space: nowrap;
+}
+
+.h1-okr-q3-mindshare-rank > b {
+  color: #fff;
+  font-family: "Barlow Condensed", "Gilroy", sans-serif !important;
+  font-size: min(112px,5.833333vw,10.37037vh);
+  font-weight: 900;
+  letter-spacing: -.065em;
+  line-height: .76;
+  text-shadow: 0 10px 40px rgba(0,0,0,.72);
+}
+
+.h1-okr-q3-mindshare-rank > em {
+  color: #f3a13a;
+  font-family: "Barlow Condensed", "Noto Sans SC", sans-serif !important;
+  font-size: min(44px,2.291667vw,4.074074vh);
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+
+.h1-okr-q3-mindshare-outcome-rail {
+  flex: 0 0 min(166px,15.37037vh);
+  display: grid;
+  grid-template-columns:
+    minmax(min(345px,17.96875vw),.72fr)
+    min(118px,6.145833vw)
+    minmax(0,2.28fr);
+  align-items: center;
+  min-height: 0;
+  margin-top: min(32px,1.666667vw,2.962963vh);
+  border-top: 1px solid rgba(255,255,255,.15);
+  border-bottom: 1px solid rgba(255,255,255,.15);
+  background: linear-gradient(90deg,rgba(8,8,8,.66),rgba(50,24,10,.46),rgba(7,7,7,.7));
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-amplifier {
+  display: block;
+  padding: 0 0 0 min(34px,1.770833vw);
+  border: 0;
+  background: transparent;
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-amplifier-mark {
+  display: flex;
+  align-items: baseline;
+  gap: min(9px,.46875vw,.833333vh);
+  color: #fff;
+  font-size: min(39px,2.03125vw,3.611111vh);
+  white-space: nowrap;
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-amplifier-mark i {
+  color: #f3a13a;
+  font-size: .8em;
+  font-weight: 700;
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-amplifier > p {
+  margin: min(13px,.677083vw,1.203704vh) 0 0;
+  color: rgba(255,255,255,.58);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: min(21px,1.09375vw,1.944444vh);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.h1-okr-q3-mindshare-rail-arrow {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100%;
+}
+
+.h1-okr-q3-mindshare-rail-arrow i {
+  position: relative;
+  display: block;
+  width: min(82px,4.270833vw);
+  height: 1px;
+  background: linear-gradient(90deg,#f05a28,#dba55a);
+}
+
+.h1-okr-q3-mindshare-rail-arrow i::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: min(10px,.520833vw,.925926vh);
+  height: min(10px,.520833vw,.925926vh);
+  border-top: 2px solid #dba55a;
+  border-right: 2px solid #dba55a;
+  content: "";
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-outcome {
+  display: flex;
+  min-width: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: min(34px,1.770833vw);
+  padding: 0 min(34px,1.770833vw) 0 0;
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-equation {
+  flex: 0 0 auto;
+  gap: min(16px,.833333vw,1.481481vh);
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-equation strong,
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-equation b {
+  font-size: min(76px,3.958333vw,7.037037vh);
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-equation i {
+  font-size: min(36px,1.875vw,3.333333vh);
+}
+
+.h1-okr-q3-mindshare-outcome-rail .h1-okr-q3-mindshare-outcome > p {
+  min-width: 0;
+  margin: 0;
+  color: rgba(255,255,255,.82);
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif !important;
+  font-size: min(25px,1.302083vw,2.314815vh);
+  font-weight: 500;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.h1-okr-q3-mindshare-page.vis .h1-okr-q3-mindshare-scoreboard,
+.h1-okr-q3-mindshare-page.vis .h1-okr-q3-mindshare-outcome-rail {
+  animation: h1OkrQ3MindshareIn .8s cubic-bezier(.16,1,.3,1) both;
+}
+
+.h1-okr-q3-mindshare-page.vis .h1-okr-q3-mindshare-scoreboard {
+  animation-delay: .06s;
+}
+
+.h1-okr-q3-mindshare-page.vis .h1-okr-q3-mindshare-outcome-rail {
+  animation-delay: .12s;
+}
+
 .h1-okr-video-modal {
   position: fixed;
   z-index: 10000;

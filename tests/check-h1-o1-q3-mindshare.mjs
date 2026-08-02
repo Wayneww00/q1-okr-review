@@ -46,8 +46,28 @@ assert.match(
   /\.h1-okr-q3-mindshare-title\s*\{[\s\S]*?font-size:\s*min\(/,
   "the Q3 strategy title must scale safely across presentation viewports",
 );
+assert.match(
+  app,
+  /h1-okr-q3-mindshare-scoreboard[\s\S]*?content\.signals\.map[\s\S]*?h1-okr-q3-mindshare-score[\s\S]*?h1-okr-q3-mindshare-rank/,
+  "the selected design must render all three leadership signals as the primary scoreboard",
+);
+assert.match(
+  app,
+  /h1-okr-q3-mindshare-outcome-rail[\s\S]*?h1-okr-q3-mindshare-amplifier-mark[\s\S]*?h1-okr-q3-mindshare-equation/,
+  "the selected design must resolve Sales × IB into the 24\/7 = VTG outcome rail",
+);
+assert.match(
+  theme,
+  /\.h1-okr-q3-mindshare-scoreboard\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,minmax\(0,1fr\)\)/,
+  "the three leadership metrics must receive equal visual weight",
+);
+assert.match(
+  theme,
+  /\.h1-okr-q3-mindshare-rank\s*\{[\s\S]*?font-size:\s*min\(112px/,
+  "NO.1 must be the dominant visual signal on the selected design",
+);
 assert.ok(
-  app.includes("h1-o1-complete-theme.css?v=20260802-q3-mindshare-v1"),
+  app.includes("h1-o1-complete-theme.css?v=20260802-q3-scoreboard-v2"),
   "the production page must invalidate the cached O1 theme",
 );
 
