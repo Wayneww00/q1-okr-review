@@ -56,7 +56,7 @@ try {
   assert.deepEqual(
     (await pages.evaluateAll((nodes) =>
       nodes.map((node) => node.getAttribute("data-page-id")),
-    )).slice(0, 9),
+    )).slice(0, 11),
     [
       "okr-review",
       "okr-brand-results",
@@ -65,8 +65,10 @@ try {
       "okr-brand-refresh",
       "okr-brand-operating-system",
       "okr-tvc-matrix",
-      "okr-brand-experience-audit",
       "okr-tvc-framework",
+      "okr-tvc-library",
+      "okr-brand-experience-audit",
+      "okr-application-roadmap",
     ],
   );
 
@@ -76,7 +78,10 @@ try {
     ["okr-brand-upgrade-transition", "04"],
     ["okr-brand-refresh", "05"],
     ["okr-tvc-matrix", "07"],
-    ["okr-brand-experience-audit", "08"],
+    ["okr-tvc-framework", "08"],
+    ["okr-tvc-library", "09"],
+    ["okr-brand-experience-audit", "10"],
+    ["okr-application-roadmap", "11"],
     ["okr-awards-transition", "13"],
     ["okr-awards", "14"],
     ["okr-offline-events-transition", "15"],
@@ -90,8 +95,8 @@ try {
     ["okr-integrated-marketing-transition", "34"],
     ["okr-omnichannel-amplification", "35"],
     ["okr-ai-recommendation", "36"],
-    ["okr-q3-24-7-mindshare", "37"],
-    ["okr-tvc-localization", "38"],
+    ["okr-tvc-localization", "37"],
+    ["okr-q3-24-7-mindshare", "38"],
     ["okr-premium-unlimited", "40"],
   ]) {
     const pageNumber = (

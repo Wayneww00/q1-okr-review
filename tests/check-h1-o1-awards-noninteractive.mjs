@@ -15,7 +15,7 @@ assert.ok(awardsStart >= 0 && awardsEnd > awardsStart, "awards page must exist")
 const awardsPage = app.slice(awardsStart, awardsEnd);
 
 const auditStart = app.indexOf("id:'okr-brand-experience-audit'");
-const auditEnd = app.indexOf("id:'okr-tvc-framework'", auditStart);
+const auditEnd = app.indexOf("id:'okr-application-roadmap'", auditStart);
 assert.ok(auditStart >= 0 && auditEnd > auditStart, "brand audit page must exist");
 const auditPage = app.slice(auditStart, auditEnd);
 

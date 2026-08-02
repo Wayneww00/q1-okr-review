@@ -175,12 +175,12 @@ try {
 
   await scrollFrameToPage("okr-tvc-matrix");
   await page.locator("body").press("PageDown");
-  await waitForActivePage("okr-brand-experience-audit");
+  await waitForActivePage("okr-tvc-framework");
   assert.match(
     (
       await reportFrame
         .locator(
-          '[data-page-id="okr-brand-experience-audit"] .h1-okr-page-number',
+          '[data-page-id="okr-tvc-framework"] .h1-okr-page-number',
         )
         .innerText()
     )

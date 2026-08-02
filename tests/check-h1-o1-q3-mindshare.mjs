@@ -11,8 +11,8 @@ const theme = fs.readFileSync(
 
 assert.match(
   app,
-  /id:'okr-integrated-marketing-transition'[\s\S]*?id:'okr-omnichannel-amplification'[\s\S]*?id:'okr-ai-recommendation'[\s\S]*?id:'okr-q3-24-7-mindshare'[\s\S]*?id:'okr-tvc-localization'/,
-  "the omnichannel and AI pages must swap, with the new Q3 page immediately after 24/7 GEO",
+  /id:'okr-integrated-marketing-transition'[\s\S]*?id:'okr-omnichannel-amplification'[\s\S]*?id:'okr-ai-recommendation'[\s\S]*?id:'okr-tvc-localization'[\s\S]*?id:'okr-q3-24-7-mindshare'/,
+  "the TVC localization page must precede the Q3 mindshare page",
 );
 
 for (const copy of [

@@ -21,7 +21,7 @@ const expectedVideos = new Map([
 ]);
 
 const libraryStart = app.indexOf("id:'okr-tvc-library'");
-const libraryEnd = app.indexOf("id:'okr-application-roadmap'", libraryStart);
+const libraryEnd = app.indexOf("id:'okr-brand-experience-audit'", libraryStart);
 assert.ok(libraryStart >= 0 && libraryEnd > libraryStart);
 const library = app.slice(libraryStart, libraryEnd);
 

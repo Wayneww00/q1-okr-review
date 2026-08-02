@@ -15,7 +15,7 @@ const ids = [
 
 assert.equal(ids.length, 40, "the Q3 strategy conclusion must extend the O1 deck to 40 pages");
 assert.deepEqual(
-  ids.slice(0, 9),
+  ids.slice(0, 11),
   [
     "okr-review",
     "okr-brand-results",
@@ -24,10 +24,12 @@ assert.deepEqual(
     "okr-brand-refresh",
     "okr-brand-operating-system",
     "okr-tvc-matrix",
-    "okr-brand-experience-audit",
     "okr-tvc-framework",
+    "okr-tvc-library",
+    "okr-brand-experience-audit",
+    "okr-application-roadmap",
   ],
-  "the approved transitions must lead from the definition into the upgrade pages",
+  "the brand audit must sit immediately before the application roadmap",
 );
 
 console.log("H1 O1 requested page order contract passed.");
