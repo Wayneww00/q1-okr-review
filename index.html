@@ -2160,11 +2160,14 @@ function H1VietnamRetailNdPptChart({data}) {
   );
 }
 
-function H1VietnamMarketingTransition({data}) {
+function H1VietnamMarketingTransition({data,count}) {
   return (
-    <div className="h1-vietnam-marketing-transition" data-editor-ignore>
+    <div className="h1-extended-editorial-page h1-retail-growth-page is-vietnam-marketing-transition is-retail-transition h1-vietnam-marketing-transition" data-editor-ignore>
       <img src={data.transitionBackground} alt={data.title}/>
       <span className="h1-visually-hidden">{data.title}</span>
+      <div className="h1-extended-editorial-page-number" aria-hidden="true">
+        {String(data.id).padStart(2,"0")} <span>/ {String(count).padStart(2,"0")}</span>
+      </div>
     </div>
   );
 }
@@ -2599,6 +2602,9 @@ function H1RetailGrowthPage({data,count}) {
     : data.layoutType === "mib_attribution" ? <H1MibAttributionChart data={data}/>
     : data.layoutType === "retail_nd_scope_restoration" ? <H1RetailNdScopeRestorationChart data={data}/>
     : null;
+  if (data.layoutType === "vietnam_marketing_transition") {
+    return <H1VietnamMarketingTransition data={data} count={count}/>;
+  }
   return (
     <H1DataModulePageShell
       data={data}
@@ -2610,9 +2616,7 @@ function H1RetailGrowthPage({data,count}) {
       className={`h1-retail-growth-page is-${data.layoutType.replaceAll("_","-")}${isTransition?" is-retail-transition":""}`}
       canvasClassName={isTransition ? "is-retail-transition" : "is-retail-data-detail"}
     >
-      {data.layoutType === "vietnam_marketing_transition"
-        ? <H1VietnamMarketingTransition data={data}/>
-        : isTransition
+      {isTransition
           ? <H1RetailGrowthTransition data={data}/>
           : chart}
     </H1DataModulePageShell>

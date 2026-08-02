@@ -78,6 +78,34 @@ try {
   await transitionImage.waitFor();
   assert.equal(await transitionImage.evaluate((image) => image.complete), true);
   assert.equal(await transitionImage.evaluate((image) => image.naturalWidth), 2542);
+  const transitionPage = reportFrame.locator('[data-page-id="data-19"]');
+  assert.equal(
+    await transitionPage.locator(".h1-extended-editorial-canvas").count(),
+    0,
+    "the PPT transition must not sit inside a second data-module canvas",
+  );
+  const transitionCoverage = await transitionPage.evaluate((pageRoot) => {
+    const stage = pageRoot.querySelector(".h1-vietnam-marketing-transition");
+    const image = stage.querySelector("img");
+    const stageRect = stage.getBoundingClientRect();
+    const imageRect = image.getBoundingClientRect();
+    return {
+      stageWidth: stageRect.width,
+      stageHeight: stageRect.height,
+      pageWidth: pageRoot.getBoundingClientRect().width,
+      pageHeight: pageRoot.getBoundingClientRect().height,
+      imageCoversStage:
+        imageRect.left <= stageRect.left + 1 &&
+        imageRect.top <= stageRect.top + 1 &&
+        imageRect.right >= stageRect.right - 1 &&
+        imageRect.bottom >= stageRect.bottom - 1,
+      objectFit: getComputedStyle(image).objectFit,
+    };
+  });
+  assert.equal(transitionCoverage.stageWidth, transitionCoverage.pageWidth);
+  assert.equal(transitionCoverage.stageHeight, transitionCoverage.pageHeight);
+  assert.equal(transitionCoverage.imageCoversStage, true);
+  assert.equal(transitionCoverage.objectFit, "cover");
   assert.deepEqual(pageErrors, []);
 } finally {
   await browser.close();
