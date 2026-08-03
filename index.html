@@ -1050,10 +1050,10 @@ const H1_DASHBOARDS = [
     ],
     refundLabel:"返佣",
     flowNotes:["系统集成+人工一键开户","按照固定层级规则值，可全层级返佣"],
-    flowSourceImage:"previews/assets/figma-racing/vietnam-ib-refund-original.jpg",
+    flowSourceImage:"previews/assets/figma-racing/vietnam-ib-hierarchy-standalone.svg",
     structureTitle:"两类 IB 口径变化重塑越南 ND 结构",
     structureChartTitle:"2026-H1 越南用户 ND 贡献占比",
-    structureSourceImage:"previews/assets/figma-racing/vietnam-ib-nd-donut-original.jpg",
+    structureSourceImage:"previews/assets/figma-racing/vietnam-ib-distribution-standalone.svg",
     total:"$20.3M",
     totalLabel:"总 Net Deposit",
     segments:[
@@ -2179,18 +2179,6 @@ function H1VietnamMarketingTransition({data,count}) {
 }
 
 function H1VietnamIbReclassification({data}) {
-  const donut = {cx:390,cy:224,radius:148,strokeWidth:100};
-  const calloutAnchors = {retail:{x:391,y:422},cpa:{x:362,y:420}};
-  const circumference = 2*Math.PI*donut.radius;
-  const arcLength = (share)=>circumference*(share/100);
-  const salesRows = data.salesLevels.map((item,index)=>({...item,y:22+index*43}));
-  const ibRows = data.ibLevels.map((item,index)=>({...item,y:176+index*51}));
-  const allRows = [...salesRows,...ibRows];
-  const refundTargets = [salesRows[0],salesRows[1],salesRows[2],...ibRows.slice(1)].map((item,index)=>({
-    y:item.y+17,
-    railX:604+index*7,
-  }));
-  const originY=ibRows[ibRows.length-1].y+19;
   return (
     <div className="h1-retail-growth-chart h1-editorial-chart-surface is-vietnam-ib" data-editor-ignore>
       <section className="h1-vietnam-ib-flow-panel">
@@ -2206,60 +2194,17 @@ function H1VietnamIbReclassification({data}) {
         </div>
         <h2>{data.flowTitle}</h2>
         <h3>{data.flowSubtitle}</h3>
-        <div className="h1-vietnam-ib-flow-title">{data.flowDiagramTitle}</div>
-        <svg className="h1-vietnam-ib-flow-map" viewBox="0 0 660 440" role="img" aria-label={data.flowDiagramTitle}>
-          <defs>
-            <marker id="vietnam-flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M0 0L10 5L0 10Z" className="h1-vietnam-ib-flow-arrowhead"/>
-            </marker>
-            <marker id="vietnam-refund-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M0 0L10 5L0 10Z" className="h1-vietnam-ib-refund-arrowhead"/>
-            </marker>
-          </defs>
-          <rect x="12" y="16" width="96" height="132" rx="5" className="h1-vietnam-ib-tier-block is-sales"/>
-          <text x="60" y="86" className="h1-vietnam-ib-tier-label" textAnchor="middle">{data.salesLabel}</text>
-          <rect x="12" y="164" width="96" height="266" rx="5" className="h1-vietnam-ib-tier-block is-ib"/>
-          <text x="60" y="302" className="h1-vietnam-ib-tier-label" textAnchor="middle">{data.ibLabel}</text>
-
-          {salesRows.map((item)=><g key={item.name}>
-            <rect x="120" y={item.y} width="104" height="34" rx="3" className="h1-vietnam-ib-level-box is-sales"/>
-            <rect x="238" y={item.y} width="165" height="34" rx="3" className="h1-vietnam-ib-name-box is-sales"/>
-            <text x="172" y={item.y+22} className="h1-vietnam-ib-flow-text" textAnchor="middle">{item.level}</text>
-            <text x="320.5" y={item.y+22} className="h1-vietnam-ib-flow-text is-name" textAnchor="middle">{item.name}</text>
-          </g>)}
-          {ibRows.map((item)=><g key={item.name}>
-            <rect x="230" y={item.y-5} width="326" height="48" rx="3" className="h1-vietnam-ib-ib-row-outline"/>
-            <rect x="120" y={item.y} width="104" height="38" rx="3" className="h1-vietnam-ib-level-box is-ib"/>
-            <rect x="238" y={item.y} width="165" height="38" rx="3" className="h1-vietnam-ib-name-box is-ib"/>
-            <rect x="440" y={item.y} width="116" height="38" rx="3" className={`h1-vietnam-ib-client-box${item.client?"":" is-empty"}`}/>
-            <text x="172" y={item.y+25} className="h1-vietnam-ib-flow-text" textAnchor="middle">{item.level}</text>
-            <text x="320.5" y={item.y+25} className="h1-vietnam-ib-flow-text is-name" textAnchor="middle">{item.name}</text>
-            {item.client&&<text x="498" y={item.y+25} className="h1-vietnam-ib-flow-text is-client" textAnchor="middle">{item.client}</text>}
-          </g>)}
-
-          {allRows.slice(0,-1).map((item,index)=>{
-            const next=allRows[index+1];
-            const rowHeight=index<3?34:38;
-            return <path key={`vertical-${index}`} d={`M320.5 ${item.y+rowHeight} L320.5 ${next.y-5}`} className="h1-vietnam-ib-flow-link" markerEnd="url(#vietnam-flow-arrow)"/>;
-          })}
-          {ibRows.slice(0,-1).map((item,index)=>{
-            const next=ibRows[index+1];
-            return <path key={`client-${next.name}`} d={`M320.5 ${item.y+38} L498 ${next.y+19}`} className="h1-vietnam-ib-client-link" markerEnd="url(#vietnam-flow-arrow)"/>;
-          })}
-          <g data-vietnam-ib-refund-network aria-label={data.refundLabel}>
-            {refundTargets.map((target,index)=>{
-              return <g key={`refund-${index}`}>
-                <path d={`M 556 ${originY} C ${target.railX} ${originY} ${target.railX} ${target.y} 408 ${target.y}`} className="h1-vietnam-ib-refund-link" markerEnd="url(#vietnam-refund-arrow)"/>
-              </g>;
-            })}
-          </g>
-          <g data-vietnam-ib-refund-legend>
-            <path d="M 592 431 Q 626 414 658 431" className="h1-vietnam-ib-refund-legend-arrow" markerEnd="url(#vietnam-refund-arrow)"/>
-            <text x="674" y="435" className="h1-vietnam-ib-refund-legend-text">红色箭头=返佣</text>
-          </g>
-        </svg>
-        <div className="h1-vietnam-ib-flow-notes">
-          {data.flowNotes.map((note)=><p key={note}>{note}</p>)}
+        <div className="h1-vietnam-ib-standalone-artboard is-flow">
+          <img
+            src={data.flowSourceImage}
+            alt="Standalone 现有垂直返佣层级与返佣示意"
+            width="1600"
+            height="1120"
+            loading="eager"
+            decoding="async"
+            draggable="false"
+            data-vietnam-ib-standalone-chart="flow"
+          />
         </div>
       </section>
       <section className="h1-vietnam-ib-structure-panel">
@@ -2275,41 +2220,17 @@ function H1VietnamIbReclassification({data}) {
         </div>
         <h2>{data.structureTitle}</h2>
         <h3>{data.structureChartTitle}</h3>
-        <svg viewBox="0 0 760 500" role="img" aria-label={data.structureChartTitle}>
-          <defs>
-            <pattern id="vietnam-ib-diagonal" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <rect width="9" height="9" fill="rgba(83,18,24,.96)"/>
-              <line x1="0" y1="0" x2="0" y2="9" stroke="#ff6a13" strokeWidth="3"/>
-            </pattern>
-            <pattern id="vietnam-ib-cross" width="11" height="11" patternUnits="userSpaceOnUse">
-              <rect width="11" height="11" fill="rgba(143,22,32,.96)"/>
-              <path d="M0 0L11 11M11 0L0 11" stroke="#fff1e3" strokeWidth="1.6"/>
-            </pattern>
-          </defs>
-          <g>
-            <circle cx={donut.cx} cy={donut.cy} r={donut.radius} fill="none" className="h1-vietnam-ib-donut-segment is-ib" strokeWidth={donut.strokeWidth}/>
-            <circle cx={donut.cx} cy={donut.cy} r={donut.radius} fill="none" className="h1-vietnam-ib-donut-segment is-retail" strokeWidth={donut.strokeWidth} strokeDasharray={`${arcLength(data.segments[1].share)} ${circumference}`} transform={`rotate(82 ${donut.cx} ${donut.cy})`}/>
-            <circle cx={donut.cx} cy={donut.cy} r={donut.radius} fill="none" className="h1-vietnam-ib-donut-segment is-cpa" strokeWidth={donut.strokeWidth} strokeDasharray={`${Math.max(2.4,arcLength(data.segments[2].share))} ${circumference}`} transform={`rotate(97.6 ${donut.cx} ${donut.cy})`}/>
-            <g data-vietnam-ib-change-overlay>
-              <circle cx={donut.cx} cy={donut.cy} r={donut.radius} fill="none" stroke="url(#vietnam-ib-diagonal)" strokeWidth={donut.strokeWidth} strokeDasharray={`${arcLength(data.changes[0].share)} ${circumference}`} transform={`rotate(92 ${donut.cx} ${donut.cy})`}/>
-              <circle cx={donut.cx} cy={donut.cy} r={donut.radius} fill="none" stroke="url(#vietnam-ib-cross)" strokeWidth={donut.strokeWidth} strokeDasharray={`${arcLength(data.changes[1].share)} ${circumference}`} transform={`rotate(184.2 ${donut.cx} ${donut.cy})`}/>
-            </g>
-            {[82,92,97.6,184.2,201.8].map((angle)=><line key={angle} x1={donut.cx+donut.radius-50} y1={donut.cy} x2={donut.cx+donut.radius+50} y2={donut.cy} transform={`rotate(${angle} ${donut.cx} ${donut.cy})`} className="h1-vietnam-ib-donut-separator"/>)}
-          </g>
-          <text x={donut.cx} y={donut.cy-2} className="h1-vietnam-ib-total" textAnchor="middle">{data.total}</text>
-          <text x={donut.cx} y={donut.cy+30} className="h1-vietnam-ib-total-label" textAnchor="middle">{data.totalLabel}</text>
-          <text x={donut.cx} y="47" className="h1-vietnam-ib-callout is-primary" textAnchor="middle"><tspan x={donut.cx}>{data.segments[0].label}</tspan><tspan x={donut.cx} dy="22">{data.segments[0].shareLabel}</tspan></text>
-          <path data-vietnam-ib-callout="retail" d={`M ${calloutAnchors.retail.x} ${calloutAnchors.retail.y} L 402 448 L 600 448`} className="h1-vietnam-ib-callout-line"/>
-          <text x="608" y="442" className="h1-vietnam-ib-callout" textAnchor="start"><tspan x="608">{data.segments[1].label}</tspan><tspan x="608" dy="22">{data.segments[1].shareLabel}</tspan></text>
-          <path data-vietnam-ib-callout="cpa" d={`M ${calloutAnchors.cpa.x} ${calloutAnchors.cpa.y} L 348 448 L 168 448`} className="h1-vietnam-ib-callout-line"/>
-          <text x="160" y="442" className="h1-vietnam-ib-callout" textAnchor="end"><tspan x="160">{data.segments[2].label}</tspan><tspan x="160" dy="22">{data.segments[2].shareLabel}</tspan></text>
-          <path d="M 231 296 L 186 338 L 66 338" className="h1-vietnam-ib-change-line"/>
-          <text x="58" y="316" className="h1-vietnam-ib-change-label" textAnchor="start"><tspan x="58">{data.changes[0].label}</tspan><tspan x="58" dy="22">{data.changes[0].shareLabel}</tspan></text>
-          <path d="M 204 193 L 166 156 L 66 156" className="h1-vietnam-ib-change-line"/>
-          <text x="58" y="132" className="h1-vietnam-ib-change-label" textAnchor="start"><tspan x="58">{data.changes[1].label}</tspan><tspan x="58" dy="22">{data.changes[1].shareLabel}</tspan></text>
-        </svg>
-        <div className="h1-vietnam-ib-legend">
-          {data.legends.map((label,index)=><span key={label}><i className={`is-${["ib","retail","cpa","dynamic","mib"][index]}`}/>{label}</span>)}
+        <div className="h1-vietnam-ib-standalone-artboard is-structure">
+          <img
+            src={data.structureSourceImage}
+            alt="Standalone 2026-H1 越南用户 ND 贡献占比环形图"
+            width="1684"
+            height="1510"
+            loading="eager"
+            decoding="async"
+            draggable="false"
+            data-vietnam-ib-standalone-chart="structure"
+          />
         </div>
       </section>
     </div>

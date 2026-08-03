@@ -9255,6 +9255,8 @@ svg.h1-okr-insight-icon circle {
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-flow-panel,
 .is-vietnam-ib-reclassification .h1-vietnam-ib-structure-panel {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 0 !important;
   padding: 80px 12px 10px !important;
   border-color: rgba(255,241,227,.1);
@@ -9378,6 +9380,30 @@ svg.h1-okr-insight-icon circle {
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-flow-panel > h3 {
   margin: 7px 0 28px;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-standalone-artboard {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-standalone-artboard > img {
+  display: block;
+  width: 84%;
+  height: 90%;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
+}
+
+.is-vietnam-ib-reclassification .h1-vietnam-ib-standalone-artboard.is-structure > img {
+  width: 70%;
+  height: 90%;
 }
 
 .is-vietnam-ib-reclassification .h1-vietnam-ib-flow-map {

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120">
+  <defs>
+    <marker id="arrowBlack" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#c8beb8"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="11" markerHeight="9" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L9,4 L1,7" fill="none" stroke="#ff5a1f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <linearGradient id="titleGradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a31527"/>
+      <stop offset="1" stop-color="#ff5a1f"/>
+    </linearGradient>
+    <style>
+      .font { font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif; }
+      .ink { fill:#f5f1ee; }
+      .muted { fill:#b9aca6; }
+      .nodeText { font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif; fill:#f8f3ef; font-size:28px; text-anchor:middle; dominant-baseline:middle; }
+      .levelText { font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif; fill:#ded4cf; font-size:27px; text-anchor:middle; dominant-baseline:middle; }
+      .structure { fill:none; stroke:#c8beb8; stroke-width:3; marker-end:url(#arrowBlack); stroke-linecap:round; stroke-linejoin:round; }
+      .rebate { fill:none; stroke:#ff5a1f; stroke-width:2.5; marker-end:url(#arrowRed); stroke-linecap:round; }
+      .rebateLabel { font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif; fill:#ff7a36; font-size:27px; font-weight:700; }
+    </style>
+  </defs>
+
+  <!-- Title -->
+  <rect x="38" y="28" width="1524" height="82" rx="4" fill="url(#titleGradient)"/>
+  <text class="font" x="800" y="82" text-anchor="middle" font-size="38" font-weight="700" fill="#ffffff">【现有垂直返佣】层级与返佣示意</text>
+
+  <!-- Sales hierarchy backgrounds -->
+  <rect x="55" y="145" width="190" height="250" rx="5" fill="#2b1d14" stroke="#76502d" stroke-width="2"/>
+  <text class="font ink" x="150" y="280" text-anchor="middle" font-size="31">销售层级</text>
+
+  <rect x="270" y="145" width="180" height="70" rx="4" fill="#2b1d14" stroke="#76502d" stroke-width="2"/>
+  <rect x="270" y="235" width="180" height="70" rx="4" fill="#2b1d14" stroke="#76502d" stroke-width="2"/>
+  <rect x="270" y="325" width="180" height="70" rx="4" fill="#2b1d14" stroke="#76502d" stroke-width="2"/>
+  <text class="levelText" x="360" y="180">Level 1</text>
+  <text class="levelText" x="360" y="270">Level 2</text>
+  <text class="levelText" x="360" y="360">Level 末级</text>
+
+  <rect x="485" y="145" width="300" height="70" rx="4" fill="#2b1d14" stroke="#76502d" stroke-width="2"/>
+  <rect x="485" y="235" width="300" height="70" rx="4" fill="#2b1d14" stroke="#76502d" stroke-width="2"/>
+  <rect x="485" y="325" width="300" height="70" rx="4" fill="#2b1d14" stroke="#76502d" stroke-width="2"/>
+  <text class="nodeText" x="635" y="180">销售 A</text>
+  <text class="nodeText" x="635" y="270">销售 B</text>
+  <text class="nodeText" x="635" y="360">末级销售 C</text>
+
+  <!-- Sales chain arrows -->
+  <path class="structure" d="M635 215 L635 232"/>
+  <path class="structure" d="M635 305 L635 322"/>
+  <path class="structure" d="M635 395 L635 432"/>
+
+  <!-- IB hierarchy backgrounds -->
+  <rect x="55" y="440" width="190" height="500" rx="5" fill="#281316" stroke="#7d2b22" stroke-width="2"/>
+  <text class="font ink" x="150" y="700" text-anchor="middle" font-size="31">IB 层级</text>
+
+  <g fill="#281316" stroke="#7d2b22" stroke-width="2">
+    <rect x="270" y="440" width="180" height="78" rx="4"/>
+    <rect x="270" y="535" width="180" height="78" rx="4"/>
+    <rect x="270" y="630" width="180" height="78" rx="4"/>
+    <rect x="270" y="725" width="180" height="78" rx="4"/>
+    <rect x="270" y="820" width="180" height="78" rx="4"/>
+  </g>
+  <text class="levelText" x="360" y="479">Level 1</text>
+  <text class="levelText" x="360" y="574">Level 2</text>
+  <text class="levelText" x="360" y="669">Level 3</text>
+  <text class="levelText" x="360" y="764">Level 4</text>
+  <text class="levelText" x="360" y="859">Level 5</text>
+
+  <!-- Dotted IB row containers -->
+  <g fill="none" stroke="#a54831" stroke-width="2.5" stroke-dasharray="5 5">
+    <rect x="470" y="440" width="600" height="78" rx="4"/>
+    <rect x="470" y="535" width="600" height="78" rx="4"/>
+    <rect x="470" y="630" width="600" height="78" rx="4"/>
+    <rect x="470" y="725" width="600" height="78" rx="4"/>
+    <rect x="470" y="820" width="600" height="78" rx="4"/>
+  </g>
+
+  <!-- IB and client nodes -->
+  <g fill="#281316" stroke="#7d2b22" stroke-width="2">
+    <rect x="495" y="451" width="300" height="56" rx="4"/>
+    <rect x="495" y="546" width="300" height="56" rx="4"/>
+    <rect x="495" y="641" width="300" height="56" rx="4"/>
+    <rect x="495" y="736" width="300" height="56" rx="4"/>
+    <rect x="495" y="831" width="300" height="56" rx="4"/>
+
+    <rect x="855" y="546" width="185" height="56" rx="4"/>
+    <rect x="855" y="641" width="185" height="56" rx="4"/>
+    <rect x="855" y="736" width="185" height="56" rx="4"/>
+    <rect x="855" y="831" width="185" height="56" rx="4"/>
+  </g>
+  <text class="nodeText" x="645" y="479">IB James</text>
+  <text class="nodeText" x="645" y="574">IB Stan</text>
+  <text class="nodeText" x="645" y="669">IB Tony</text>
+  <text class="nodeText" x="645" y="764">IB Hulk</text>
+  <text class="nodeText" x="645" y="859">IB Philip</text>
+  <text class="nodeText" x="947" y="574">Client</text>
+  <text class="nodeText" x="947" y="669">Client</text>
+  <text class="nodeText" x="947" y="764">Client</text>
+  <text class="font ink" x="947" y="868" text-anchor="middle" font-size="27" font-weight="700">Client交易</text>
+
+  <!-- IB vertical chain arrows -->
+  <path class="structure" d="M645 507 L645 543"/>
+  <path class="structure" d="M645 602 L645 638"/>
+  <path class="structure" d="M645 697 L645 733"/>
+  <path class="structure" d="M645 792 L645 828"/>
+
+  <!-- Each IB can introduce a client on the next level -->
+  <path class="structure" d="M690 507 C735 525 800 548 852 572"/>
+  <path class="structure" d="M690 602 C735 620 800 643 852 667"/>
+  <path class="structure" d="M690 697 C735 715 800 738 852 762"/>
+  <path class="structure" d="M690 792 C735 810 800 833 852 857"/>
+
+  <!-- Full-level rebate paths, originating from Client交易 and returning upstream -->
+  <path class="rebate" d="M1040 851 C1430 825 850 135 790 180"/>
+  <path class="rebate" d="M1040 853 C1380 830 850 225 790 270"/>
+  <path class="rebate" d="M1040 855 C1330 835 850 315 790 360"/>
+  <path class="rebate" d="M1040 857 C1280 840 830 434 800 479"/>
+  <path class="rebate" d="M1040 859 C1230 845 830 529 800 574"/>
+  <path class="rebate" d="M1040 861 C1180 850 830 624 800 669"/>
+  <path class="rebate" d="M1040 863 C1130 855 830 719 800 764"/>
+
+  <!-- Single legend explaining all red arrows -->
+  <path class="rebate" d="M1130 932 C1175 918 1218 918 1260 932"/>
+  <text class="rebateLabel" x="1280" y="941">红色箭头＝返佣</text>
+
+  <!-- Operating notes -->
+  <rect x="55" y="972" width="1490" height="112" rx="4" fill="#160d10" stroke="#5b2923" stroke-width="1.5"/>
+  <rect x="78" y="994" width="20" height="20" fill="#ff5a1f"/>
+  <text class="font ink" x="115" y="1014" font-size="29">系统集成+人工一键开户</text>
+  <rect x="78" y="1038" width="20" height="20" fill="#ff5a1f"/>
+  <text class="font ink" x="115" y="1058" font-size="29">按照固定层级规则值，可全层级返佣</text>
+</svg>

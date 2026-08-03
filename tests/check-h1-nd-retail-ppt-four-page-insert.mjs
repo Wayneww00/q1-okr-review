@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -92,8 +93,8 @@ const requiredByPage = {
     "按照固定层级规则值，可全层级返佣",
     "两类 IB 口径变化重塑越南 ND 结构",
     "2026-H1 越南用户 ND 贡献占比",
-    "vietnam-ib-refund-original.jpg",
-    "vietnam-ib-nd-donut-original.jpg",
+    "vietnam-ib-hierarchy-standalone.svg",
+    "vietnam-ib-distribution-standalone.svg",
     "$20.3M",
     "IB $19.4M",
     "95.7%",
@@ -176,8 +177,8 @@ assert.doesNotMatch(
   "page 19 must reuse the shared default car stage instead of stacking another background image",
 );
 for (const file of [
-  "vietnam-ib-refund-original.jpg",
-  "vietnam-ib-nd-donut-original.jpg",
+  "vietnam-ib-hierarchy-standalone.svg",
+  "vietnam-ib-distribution-standalone.svg",
 ]) {
   assert.ok(
     existsSync(resolve(root, "previews/assets/figma-racing", file)),
@@ -206,78 +207,42 @@ assert.match(theme, /\.is-vietnam-retail-nd-restored/);
 const vietnamIbStart = app.indexOf("function H1VietnamIbReclassification({data})");
 const vietnamIbEnd = app.indexOf("function H1VietnamRetailNdRestoredChart", vietnamIbStart);
 const vietnamIbComponent = app.slice(vietnamIbStart, vietnamIbEnd);
-assert.match(
+const standaloneChartAssets = [
+  {
+    path: "previews/assets/figma-racing/vietnam-ib-hierarchy-standalone.svg",
+    hash: "399d6bb34589beedf1e46510091c40b8635b17078334a2615356b4c951fcc104",
+  },
+  {
+    path: "previews/assets/figma-racing/vietnam-ib-distribution-standalone.svg",
+    hash: "39a6acdff625840a4922e15557319b872eb340a324a943845b19abde8feff946",
+  },
+];
+for (const asset of standaloneChartAssets) {
+  const absolutePath = resolve(root, asset.path);
+  assert.equal(
+    existsSync(absolutePath),
+    true,
+    `${asset.path} must be extracted from the approved Standalone report`,
+  );
+  assert.equal(
+    createHash("sha256").update(readFileSync(absolutePath)).digest("hex"),
+    asset.hash,
+    `${asset.path} must remain byte-identical to the Standalone embedded SVG`,
+  );
+}
+const page20Source = pageSource(20);
+assert.match(page20Source, /flowSourceImage:"previews\/assets\/figma-racing\/vietnam-ib-hierarchy-standalone\.svg"/);
+assert.match(page20Source, /structureSourceImage:"previews\/assets\/figma-racing\/vietnam-ib-distribution-standalone\.svg"/);
+assert.equal(
+  (vietnamIbComponent.match(/data-vietnam-ib-standalone-chart=/g) || []).length,
+  2,
+  "page 20 must render exactly the two approved Standalone chart canvases",
+);
+assert.doesNotMatch(
   vietnamIbComponent,
-  /const donut = \{cx:390,cy:224,radius:148,strokeWidth:100\};/,
-  "the Vietnam IB donut should follow the PPT's large-ring geometry",
+  /<svg|h1-vietnam-ib-flow-map|h1-vietnam-ib-flow-title|h1-vietnam-ib-flow-notes|data-vietnam-ib-change-overlay/,
+  "the replaced live chart drawings must not remain underneath the Standalone artwork",
 );
-assert.match(
-  vietnamIbComponent,
-  /data-vietnam-ib-refund-network/,
-  "the PPT's complete multi-level refund arrow network must be rendered",
-);
-assert.match(
-  vietnamIbComponent,
-  /h1-vietnam-ib-ib-row-outline/,
-  "the PPT's dotted IB row groupings must be preserved",
-);
-assert.match(
-  vietnamIbComponent,
-  /data-vietnam-ib-refund-legend/,
-  "the PPT's single refund-arrow legend must replace repeated curve labels",
-);
-assert.match(
-  vietnamIbComponent,
-  /const originY=ibRows\[ibRows\.length-1\]\.y\+19;/,
-  "every refund curve must originate from the bottom Client transaction node",
-);
-assert.match(
-  vietnamIbComponent,
-  /M 556 \$\{originY\} C \$\{target\.railX\} \$\{originY\}/,
-  "the refund curves must fan out from one Client-transaction anchor before returning to each target",
-);
-assert.match(
-  vietnamIbComponent,
-  /rect x="238" y=\{item\.y\} width="165"/,
-  "the IB-name column must retain the reference image's wider proportion",
-);
-assert.match(
-  vietnamIbComponent,
-  /rect x="440" y=\{item\.y\} width="116"/,
-  "the Client column must retain the reference image's right-side alignment",
-);
-assert.match(
-  vietnamIbComponent,
-  /data-vietnam-ib-change-overlay/,
-  "the dynamic-IB and MIB classification changes must be visible as donut overlays",
-);
-
-const calloutAnchorMatch = vietnamIbComponent.match(
-  /const calloutAnchors = \{retail:\{x:(\d+),y:(\d+)\},cpa:\{x:(\d+),y:(\d+)\}\};/,
-);
-assert.ok(
-  calloutAnchorMatch,
-  "Retail and CPA callouts should expose explicit anchors tied to their donut slices",
-);
-const [, retailX, retailY, cpaX, cpaY] = calloutAnchorMatch.map(Number);
-const donutCenter = { x: 390, y: 224 };
-const anchorAngle = (x, y) => {
-  const degrees =
-    (Math.atan2(y - donutCenter.y, x - donutCenter.x) * 180) / Math.PI;
-  return degrees < 0 ? degrees + 360 : degrees;
-};
-assert.ok(
-  anchorAngle(retailX, retailY) >= 82 &&
-    anchorAngle(retailX, retailY) <= 97.6,
-  "the Retail leader must start on the light Retail slice",
-);
-assert.ok(
-  anchorAngle(cpaX, cpaY) >= 97.6 &&
-    anchorAngle(cpaX, cpaY) <= 98.6,
-  "the CPA/Hybrid leader must start on the thin gold slice",
-);
-assert.match(vietnamIbComponent, /data-vietnam-ib-callout="retail"/);
-assert.match(vietnamIbComponent, /data-vietnam-ib-callout="cpa"/);
 assert.match(vietnamIbComponent, /data-vietnam-ib-source="flow"/);
 assert.match(vietnamIbComponent, /data-vietnam-ib-source="structure"/);
 assert.match(vietnamIbComponent, /src=\{data\.flowSourceImage\}/);
@@ -291,6 +256,11 @@ assert.equal(
   (vietnamIbComponent.match(/triggerLabel="查看原图"/g) || []).length,
   2,
   "both page-20 panels must retain their original-image actions",
+);
+assert.match(
+  theme,
+  /\.is-vietnam-ib-reclassification \.h1-vietnam-ib-standalone-artboard/,
+  "Standalone chart sizing must remain scoped to page 20",
 );
 assert.match(vietnamIbComponent, />01 \/ STRUCTURE</);
 assert.match(vietnamIbComponent, />02 \/ ATTRIBUTION</);

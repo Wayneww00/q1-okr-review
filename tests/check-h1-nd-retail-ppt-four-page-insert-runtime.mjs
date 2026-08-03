@@ -36,7 +36,7 @@ try {
   const expectedText = new Map([
     [18, /从越南市场切入[\s\S]*ND \+\$1\.2M[\s\S]*\$221\.6M/],
     [19, /为什么Marketing做得好，反而ND占比低/],
-    [20, /越南受 IB 归类口径变化影响最显著[\s\S]*IB James[\s\S]*\$20\.3M[\s\S]*95\.7%[\s\S]*25\.6%/],
+    [20, /越南受 IB 归类口径变化影响最显著[\s\S]*多层返佣结构使 IB 网络覆盖面更广[\s\S]*两类 IB 口径变化重塑越南 ND 结构/],
     [21, /还原口径影响后[\s\S]*\$2\.4M[\s\S]*\$2\.8M[\s\S]*18\.8%[\s\S]*28\.7%/],
     [22, /可能对Retail ND占比有影响的因素[\s\S]*Q2 ND 5\.9M[\s\S]*Q2 ND 9\.1M/],
     [23, /口径回归后 Retail ND 占比上升[\s\S]*\$145\.4M[\s\S]*\$269\.10M/],
@@ -157,6 +157,32 @@ try {
     "the structure and attribution panels must remain equal-width",
   );
 
+  const standaloneCharts = [
+    { key: "flow", width: 1600, height: 1120 },
+    { key: "structure", width: 1684, height: 1510 },
+  ];
+  for (const chart of standaloneCharts) {
+    const image = vietnamIbPage.locator(
+      `[data-vietnam-ib-standalone-chart="${chart.key}"]`,
+    );
+    await image.waitFor();
+    await image.evaluate((target) => {
+      if (target.complete && target.naturalWidth > 0) return;
+      return new Promise((resolve, reject) => {
+        target.addEventListener("load", resolve, { once: true });
+        target.addEventListener("error", reject, { once: true });
+      });
+    });
+    assert.deepEqual(
+      await image.evaluate((target) => ({
+        width: target.naturalWidth,
+        height: target.naturalHeight,
+      })),
+      { width: chart.width, height: chart.height },
+      `${chart.key} chart must use the exact Standalone vector canvas`,
+    );
+  }
+
   assert.equal(
     await vietnamIbPage.locator("[data-vietnam-ib-enlarge]").count(),
     0,
@@ -175,8 +201,8 @@ try {
   }
 
   const sourceViewers = [
-    { key: "flow", width: 2070 },
-    { key: "structure", width: 1388 },
+    { key: "flow", width: 1600 },
+    { key: "structure", width: 1684 },
   ];
   for (const viewer of sourceViewers) {
     const trigger = reportFrame.locator(
