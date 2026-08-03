@@ -9282,7 +9282,6 @@ svg.h1-okr-insight-icon circle {
   gap: 8px;
 }
 
-.h1-vietnam-ib-enlarge,
 .h1-vietnam-ib-source-link.h1-source-image-trigger {
   min-width: 90px;
   height: 34px;
@@ -9298,20 +9297,6 @@ svg.h1-okr-insight-icon circle {
   box-shadow: 0 4px 16px rgba(0,0,0,.28);
   cursor: pointer;
   transition: background-color .18s ease,border-color .18s ease,color .18s ease;
-}
-
-.h1-vietnam-ib-enlarge span,
-.h1-vietnam-ib-enlarge i {
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 720;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.h1-vietnam-ib-enlarge i {
-  color: var(--h1-data-accent);
-  font-size: 13px;
 }
 
 .h1-vietnam-ib-source-link.h1-source-image-trigger {
@@ -9347,14 +9332,12 @@ svg.h1-okr-insight-icon circle {
   opacity: 1;
 }
 
-.h1-vietnam-ib-enlarge:hover,
 .h1-vietnam-ib-source-link.h1-source-image-trigger:hover {
   color: #fff;
   background: rgba(83,18,24,.82);
   border-color: var(--h1-data-accent);
 }
 
-.h1-vietnam-ib-enlarge:focus-visible,
 .h1-vietnam-ib-source-link.h1-source-image-trigger:focus-visible {
   outline: 2px solid var(--h1-data-accent);
   outline-offset: 2px;
@@ -9538,16 +9521,6 @@ svg.h1-okr-insight-icon circle {
   gap: 4px 14px;
   padding: 0 12px;
   font-size: 9.8px;
-}
-
-.h1-vietnam-ib-flow-panel:fullscreen,
-.h1-vietnam-ib-structure-panel:fullscreen {
-  width: 100vw;
-  height: 100vh;
-  margin: 0 !important;
-  padding-top: 80px !important;
-  background: #100506;
-  border: 0;
 }
 
 .is-vietnam-retail-nd-restored .h1-retail-growth-chart.is-vietnam-restored {

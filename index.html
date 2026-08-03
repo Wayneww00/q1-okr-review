@@ -2191,19 +2191,11 @@ function H1VietnamIbReclassification({data}) {
     railX:604+index*7,
   }));
   const originY=ibRows[ibRows.length-1].y+19;
-  const enlargePanel = (event)=>event.currentTarget.closest("section")?.requestFullscreen?.();
   return (
     <div className="h1-retail-growth-chart h1-editorial-chart-surface is-vietnam-ib" data-editor-ignore>
       <section className="h1-vietnam-ib-flow-panel">
         <span className="h1-vietnam-ib-panel-index">01 / STRUCTURE</span>
         <div className="h1-vietnam-ib-panel-actions" data-vietnam-ib-source="flow">
-          <button
-            type="button"
-            className="h1-vietnam-ib-enlarge"
-            data-vietnam-ib-enlarge="flow"
-            aria-label="放大查看：多层返佣结构"
-            onClick={enlargePanel}
-          ><span>放大查看</span><i aria-hidden="true">↗</i></button>
           <H1SourceImage
             src={data.flowSourceImage}
             alt="现有垂直返佣层级与返佣示意原图"
@@ -2273,13 +2265,6 @@ function H1VietnamIbReclassification({data}) {
       <section className="h1-vietnam-ib-structure-panel">
         <span className="h1-vietnam-ib-panel-index">02 / ATTRIBUTION</span>
         <div className="h1-vietnam-ib-panel-actions" data-vietnam-ib-source="structure">
-          <button
-            type="button"
-            className="h1-vietnam-ib-enlarge"
-            data-vietnam-ib-enlarge="structure"
-            aria-label="放大查看：越南 ND 结构"
-            onClick={enlargePanel}
-          ><span>放大查看</span><i aria-hidden="true">↗</i></button>
           <H1SourceImage
             src={data.structureSourceImage}
             alt="2026-H1 越南用户 ND 贡献占比原图"

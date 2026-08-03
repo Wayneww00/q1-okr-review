@@ -157,33 +157,21 @@ try {
     "the structure and attribution panels must remain equal-width",
   );
 
-  await reportFrame.locator("body").evaluate(() => {
-    Element.prototype.requestFullscreen = function requestFullscreenForTest() {
-      this.dataset.fullscreenRequested = "true";
-      return Promise.resolve();
-    };
-  });
+  assert.equal(
+    await vietnamIbPage.locator("[data-vietnam-ib-enlarge]").count(),
+    0,
+    "page 20 must not render any enlarge actions",
+  );
   for (const key of ["flow", "structure"]) {
     const actionGroup = vietnamIbPage.locator(
       `[data-vietnam-ib-source="${key}"]`,
     );
     assert.equal(
       await actionGroup.locator("button").count(),
-      2,
-      `${key} panel must retain both enlarge and original-image actions`,
+      1,
+      `${key} panel must retain only its original-image action`,
     );
-    await actionGroup.locator(`[data-vietnam-ib-enlarge="${key}"]`).click();
-    assert.equal(
-      await vietnamIbPage
-        .locator(
-          key === "flow"
-            ? ".h1-vietnam-ib-flow-panel"
-            : ".h1-vietnam-ib-structure-panel",
-        )
-        .getAttribute("data-fullscreen-requested"),
-      "true",
-      `${key} enlarge action must target its live panel`,
-    );
+    await actionGroup.locator(".h1-source-image-trigger").waitFor();
   }
 
   const sourceViewers = [

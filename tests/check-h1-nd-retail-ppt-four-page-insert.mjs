@@ -282,15 +282,15 @@ assert.match(vietnamIbComponent, /data-vietnam-ib-source="flow"/);
 assert.match(vietnamIbComponent, /data-vietnam-ib-source="structure"/);
 assert.match(vietnamIbComponent, /src=\{data\.flowSourceImage\}/);
 assert.match(vietnamIbComponent, /src=\{data\.structureSourceImage\}/);
-assert.equal(
-  (vietnamIbComponent.match(/data-vietnam-ib-enlarge=/g) || []).length,
-  2,
-  "both page-20 panels must expose a dedicated enlarge action",
-);
-assert.match(
+assert.doesNotMatch(
   vietnamIbComponent,
-  /requestFullscreen\?\.\(\)/,
-  "the enlarge actions must open their corresponding live vector panels",
+  /data-vietnam-ib-enlarge=|requestFullscreen\?\.\(\)|放大查看/,
+  "page 20 must not expose the removed enlarge actions or fullscreen logic",
+);
+assert.equal(
+  (vietnamIbComponent.match(/triggerLabel="查看原图"/g) || []).length,
+  2,
+  "both page-20 panels must retain their original-image actions",
 );
 assert.match(vietnamIbComponent, />01 \/ STRUCTURE</);
 assert.match(vietnamIbComponent, />02 \/ ATTRIBUTION</);
