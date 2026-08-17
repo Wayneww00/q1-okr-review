@@ -381,6 +381,64 @@ globalThis.__VANTAGE_VIDEO_MANIFEST__ = {
     bytes: 4,
   },
 };
+
+const directMediaUrlCases = [
+  {
+    label: "https URL on localhost",
+    path: "https://media.example/video.mp4?version=1#opening",
+    hostname: "localhost",
+    expected: "https://media.example/video.mp4?version=1#opening",
+  },
+  {
+    label: "http URL on localhost",
+    path: "http://media.example/video.mp4",
+    hostname: "localhost",
+    expected: "http://media.example/video.mp4",
+  },
+  {
+    label: "protocol-relative URL on localhost",
+    path: "//cdn.example/video.mp4",
+    hostname: "localhost",
+    expected: "//cdn.example/video.mp4",
+  },
+  {
+    label: "data URL on localhost",
+    path: "data:video/mp4;base64,AAAA",
+    hostname: "localhost",
+    expected: "data:video/mp4;base64,AAAA",
+  },
+  {
+    label: "blob URL on localhost",
+    path: "blob:https://localhost/video-id",
+    hostname: "localhost",
+    expected: "blob:https://localhost/video-id",
+  },
+  ...["", null, undefined].flatMap((path, index) =>
+    ["localhost", "vantage-h1.vercel.app"].map((hostname) => ({
+      label: `empty media input ${index + 1} on ${hostname}`,
+      path,
+      hostname,
+      expected: "",
+    })),
+  ),
+];
+const failedDirectMediaUrlCases = directMediaUrlCases
+  .map(({ label, path, hostname, expected }) => ({
+    label,
+    expected,
+    actual: resolveMediaUrl(path, { hostname }),
+  }))
+  .filter(({ actual, expected }) => actual !== expected);
+assert.deepEqual(
+  failedDirectMediaUrlCases,
+  [],
+  `already-resolved and empty media URL cases must be safe:\n${JSON.stringify(
+    failedDirectMediaUrlCases,
+    null,
+    2,
+  )}`,
+);
+
 assert.equal(
   resolveMediaUrl("/previews/assets/video.mp4"),
   "https://blob.example/video.mp4",
@@ -393,24 +451,50 @@ assert.equal(
   "https://blob.example/video.mp4",
   "cache-busting query strings and fragments must not prevent production video manifest lookup",
 );
+
+globalThis.__VANTAGE_VIDEO_MANIFEST__["previews/assets/string-video.mp4"] =
+  "https://blob.example/string-video.mp4";
+assert.equal(
+  resolveMediaUrl("previews/assets/string-video.mp4", {
+    hostname: "localhost",
+  }),
+  "https://blob.example/string-video.mp4",
+  "string manifest entries must resolve on localhost",
+);
+delete globalThis.__VANTAGE_VIDEO_MANIFEST__["previews/assets/string-video.mp4"];
+
 assert.equal(
   resolveMediaUrl("previews/assets/video.mp4", {
     hostname: "127.0.0.1",
   }),
-  "/previews/assets/video.mp4",
-  "local development must bypass a stale remote manifest and use the local video",
+  "https://blob.example/video.mp4",
+  "local development must use a manifest mapping when the video is not available locally",
 );
+
+globalThis.__VANTAGE_VIDEO_MANIFEST__["previews/assets/relative-video.mp4"] = {
+  url: "previews/assets/cdn/relative-video.mp4",
+  bytes: 3,
+};
 assert.equal(
-  resolveMediaUrl("/previews/assets/video.mp4", {
+  resolveMediaUrl("/previews/assets/relative-video.mp4", {
     hostname: "localhost",
   }),
-  "/previews/assets/video.mp4",
-  "local video URLs must stay root-absolute from both shell and report pages",
+  "/previews/assets/cdn/relative-video.mp4",
+  "relative manifest URLs must resolve from the site root on localhost",
+);
+delete globalThis.__VANTAGE_VIDEO_MANIFEST__["previews/assets/relative-video.mp4"];
+
+assert.equal(
+  resolveMediaUrl("previews/assets/missing.mp4", { hostname: "localhost" }),
+  "/previews/assets/missing.mp4",
+  "local development must fall back to a root-absolute path when the manifest has no mapping",
 );
 assert.equal(
-  resolveMediaUrl("previews/assets/missing.mp4"),
-  "previews/assets/missing.mp4",
-  "local development must keep an unmapped media path unchanged",
+  resolveMediaUrl("previews/assets/missing.mp4?version=1#closing", {
+    hostname: "vantage-h1.vercel.app",
+  }),
+  "previews/assets/missing.mp4?version=1#closing",
+  "production must preserve an unmapped relative media path",
 );
 
 assert.deepEqual(listPresentationMedia(), [

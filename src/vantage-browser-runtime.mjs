@@ -56,6 +56,10 @@ export function isLocalDevelopmentHost(hostname) {
   return ["127.0.0.1", "localhost", "::1"].includes(String(hostname || ""));
 }
 
+function isResolvedMediaUrl(url) {
+  return /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(url);
+}
+
 function isLocalDevelopment() {
   return isLocalDevelopmentHost(globalThis.location?.hostname);
 }
@@ -279,13 +283,20 @@ export function resolveMediaUrl(
   path,
   { hostname = globalThis.location?.hostname || "" } = {},
 ) {
-  const normalizedPath = String(path || "").replace(/^\/+/, "");
-  if (isLocalDevelopmentHost(hostname)) return `/${normalizedPath}`;
+  const mediaPath = path == null ? "" : String(path);
+  if (!mediaPath || isResolvedMediaUrl(mediaPath)) return mediaPath;
+  const normalizedPath = mediaPath.replace(/^\/+/, "");
   const manifest = globalThis.__VANTAGE_VIDEO_MANIFEST__ || {};
   const manifestPath = normalizedPath.split(/[?#]/, 1)[0];
   const entry = manifest[manifestPath];
-  if (typeof entry === "string") return entry;
-  return entry?.url || path;
+  const manifestUrl = typeof entry === "string" ? entry : entry?.url;
+  if (manifestUrl) {
+    const normalizedUrl = String(manifestUrl);
+    if (isResolvedMediaUrl(normalizedUrl)) return normalizedUrl;
+    return `/${normalizedUrl.replace(/^\/+/, "")}`;
+  }
+  if (isLocalDevelopmentHost(hostname)) return `/${normalizedPath}`;
+  return path;
 }
 
 export function setVideoSource(video, url, { type = "video/mp4" } = {}) {
