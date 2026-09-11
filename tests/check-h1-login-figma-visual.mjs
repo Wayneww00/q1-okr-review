@@ -28,8 +28,8 @@ assert.match(
 
 assert.match(
   loginPage,
-  /class="login-field"[\s\S]*?class="login-field-label">Account <em>\*<\/em>[\s\S]*?id="loginUsername"[\s\S]*?value="vantage"[\s\S]*?class="login-field-label">Password <em>\*<\/em>[\s\S]*?id="loginPassword"[\s\S]*?value="vantage"/,
-  "the Figma-style inset labels must wrap the existing credential inputs without changing their defaults",
+  /class="login-field"[\s\S]*?class="login-field-label">Account <em>\*<\/em>[\s\S]*?id="loginUsername"[\s\S]*?value=""[\s\S]*?class="login-field-label">Password <em>\*<\/em>[\s\S]*?id="loginPassword"[\s\S]*?value=""/,
+  "the Figma-style inset labels must wrap blank credential inputs",
 );
 
 assert.match(

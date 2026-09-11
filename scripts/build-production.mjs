@@ -13,24 +13,34 @@ import { build } from "esbuild";
 const root = resolve(".");
 const vendorDir = resolve(root, "vendor");
 const distDir = resolve(root, "dist");
-const requiredConfig = {
+const authMode = process.env.VANTAGE_AUTH_MODE || "server-session";
+const supabaseConfig = {
   supabaseUrl: process.env.VANTAGE_SUPABASE_URL || "",
   supabasePublishableKey:
     process.env.VANTAGE_SUPABASE_PUBLISHABLE_KEY || "",
   loginEmail: process.env.VANTAGE_LOGIN_EMAIL || "",
-  loginUsername: "vantage",
-  loginPassword: "vantage",
 };
+const runtimeConfig =
+  authMode === "supabase"
+    ? { authMode, ...supabaseConfig }
+    : { authMode };
 
 if (
+  authMode === "supabase" &&
   !process.env.VANTAGE_ALLOW_EMPTY_CONFIG &&
-  Object.entries(requiredConfig)
-    .filter(([key]) => key !== "loginUsername")
-    .some(([, value]) => !value)
+  [
+    supabaseConfig.supabaseUrl,
+    supabaseConfig.supabasePublishableKey,
+    supabaseConfig.loginEmail,
+  ].some((value) => !value)
 ) {
   throw new Error(
     "Missing VANTAGE_SUPABASE_URL, VANTAGE_SUPABASE_PUBLISHABLE_KEY, or VANTAGE_LOGIN_EMAIL.",
   );
+}
+
+if (!["server-session", "supabase"].includes(authMode)) {
+  throw new Error(`Unsupported VANTAGE_AUTH_MODE: ${authMode}`);
 }
 
 await rm(distDir, { recursive: true, force: true });
@@ -147,7 +157,7 @@ try {
 await writeFile(
   resolve(root, "runtime-config.js"),
   [
-    `window.__VANTAGE_CONFIG__ = ${JSON.stringify(requiredConfig)};`,
+    `window.__VANTAGE_CONFIG__ = ${JSON.stringify(runtimeConfig)};`,
     `window.__VANTAGE_VIDEO_MANIFEST__ = ${JSON.stringify(videoManifest)};`,
     "",
   ].join("\n"),

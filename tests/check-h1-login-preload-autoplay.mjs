@@ -15,8 +15,8 @@ assert.match(
 
 assert.match(
   formal,
-  /id="loginUsername"[\s\S]*?value="vantage"[\s\S]*?id="loginPassword"[\s\S]*?value="vantage"/,
-  "the login must retain the confirmed default credentials",
+  /id="loginUsername"[\s\S]*?value=""[\s\S]*?id="loginPassword"[\s\S]*?value=""/,
+  "the login must require both credentials to be typed manually",
 );
 
 assert.match(

@@ -223,6 +223,91 @@ export function createLocalDevelopmentClient({
   return client;
 }
 
+export function createServerSessionClient({
+  endpoint = "/api/auth",
+  fetchImpl = globalThis.fetch,
+  storage = globalThis.localStorage,
+} = {}) {
+  const client = createLocalDevelopmentClient({ storage });
+  const authListeners = new Set();
+
+  const request = async (method, body) => {
+    if (typeof fetchImpl !== "function") {
+      throw new Error("Authentication service is unavailable.");
+    }
+    const options = {
+      method,
+      credentials: "same-origin",
+      headers: { accept: "application/json" },
+    };
+    if (body) {
+      options.headers["content-type"] = "application/json";
+      options.body = JSON.stringify(body);
+    }
+    const response = await fetchImpl(endpoint, options);
+    let payload = {};
+    try {
+      payload = await response.json();
+    } catch {
+      // Non-JSON upstream failures are surfaced through the generic message.
+    }
+    if (!response.ok) {
+      const error = new Error(payload.error || "Authentication failed");
+      error.status = response.status;
+      throw error;
+    }
+    return payload;
+  };
+
+  client.auth = {
+    async signInWithPassword({ username, password }) {
+      try {
+        const { session = null } = await request("POST", {
+          username,
+          password,
+        });
+        for (const listener of authListeners) {
+          listener("SIGNED_IN", session);
+        }
+        return { data: { session }, error: null };
+      } catch (error) {
+        return { data: { session: null }, error };
+      }
+    },
+    async getSession() {
+      try {
+        const { session = null } = await request("GET");
+        return { data: { session }, error: null };
+      } catch (error) {
+        return { data: { session: null }, error };
+      }
+    },
+    onAuthStateChange(callback) {
+      authListeners.add(callback);
+      return {
+        data: {
+          subscription: {
+            unsubscribe: () => authListeners.delete(callback),
+          },
+        },
+      };
+    },
+    async signOut() {
+      try {
+        await request("DELETE");
+        for (const listener of authListeners) {
+          listener("SIGNED_OUT", null);
+        }
+        return { error: null };
+      } catch (error) {
+        return { error };
+      }
+    },
+  };
+
+  return client;
+}
+
 function requireRuntimeConfig() {
   const config = getRuntimeConfig();
   if (!config.supabaseUrl || !config.supabasePublishableKey) {
@@ -234,12 +319,16 @@ function requireRuntimeConfig() {
 export function getSupabaseClient() {
   if (sharedClient) return sharedClient;
   const runtimeConfig = getRuntimeConfig();
+  if (runtimeConfig.authMode === "server-session") {
+    sharedClient = createServerSessionClient();
+    return sharedClient;
+  }
   if (
     isLocalDevelopment() &&
     (!runtimeConfig.supabaseUrl || !runtimeConfig.supabasePublishableKey)
   ) {
     sharedClient = createLocalDevelopmentClient({
-      expectedPassword: runtimeConfig.loginPassword || "vantage",
+      expectedPassword: "vantage",
     });
     return sharedClient;
   }
@@ -260,8 +349,22 @@ export function getSupabaseClient() {
 
 export async function signInWithSharedCredentials({ username, password }) {
   const config = getRuntimeConfig();
+  const normalizedUsername = normalizePlainText(username).trim();
+  if (!normalizedUsername || !password) {
+    throw new Error("Invalid login credentials");
+  }
+
+  if (config.authMode === "server-session") {
+    const { data, error } = await getSupabaseClient().auth.signInWithPassword({
+      username: normalizedUsername,
+      password,
+    });
+    if (error) throw error;
+    return data.session;
+  }
+
   const expectedUsername = config.loginUsername || "vantage";
-  if (normalizePlainText(username).trim() !== expectedUsername) {
+  if (normalizedUsername !== expectedUsername) {
     throw new Error("Invalid login credentials");
   }
 

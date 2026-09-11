@@ -3480,8 +3480,8 @@ function StarBorder({color='cyan',speed='5s',thickness=1,children,style:extra}){
 
 // ═══ Login Overlay ═══
 function LoginOverlay({onLogin}){
-  const [user,setUser]=useState('vantage');
-  const [pass,setPass]=useState(window.__VANTAGE_CONFIG__?.loginPassword||'vantage');
+  const [user,setUser]=useState('');
+  const [pass,setPass]=useState('');
   const [error,setError]=useState(false);
   const [shaking,setShaking]=useState(false);
   const [loading,setLoading]=useState(false);

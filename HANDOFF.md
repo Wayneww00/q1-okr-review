@@ -356,7 +356,7 @@ node tests/check-h1-ai-data-products-runtime.mjs
 npm test
 ```
 
-正式 `npm run build` 需要注入 `VANTAGE_SUPABASE_URL`、`VANTAGE_SUPABASE_PUBLISHABLE_KEY` 和 `VANTAGE_LOGIN_EMAIL`；本地仅生成依赖和空配置时可使用 `VANTAGE_ALLOW_EMPTY_CONFIG=1 npm run build`。
+正式环境默认使用 `/api/auth` 的服务端共享凭据认证，需要在 Vercel Production 环境配置 `VANTAGE_LOGIN_USERNAME`、`VANTAGE_LOGIN_PASSWORD` 和不少于 32 字符的 `VANTAGE_SESSION_SECRET`。这些值不会写入浏览器生成物。若显式设置 `VANTAGE_AUTH_MODE=supabase`，构建才会要求 `VANTAGE_SUPABASE_URL`、`VANTAGE_SUPABASE_PUBLISHABLE_KEY` 和 `VANTAGE_LOGIN_EMAIL`。
 
 涉及沉浸式壳的浏览器测试要求 4180 端口已有本地服务；涉及 O1 TVC 的测试还要求本地 `tvc-library/` 素材完整。
 

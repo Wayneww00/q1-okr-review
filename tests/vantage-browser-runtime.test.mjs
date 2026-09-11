@@ -7,6 +7,7 @@ const {
   applyTextRevision,
   collectTextEntries,
   createLocalDevelopmentClient,
+  createServerSessionClient,
   discoverEditableText,
   isLocalDevelopmentHost,
   listPresentationMedia,
@@ -44,6 +45,53 @@ assert.equal(
   "vantage-local-user",
   "local development session should persist without Supabase configuration",
 );
+
+const serverSession = {
+  access_token: "cookie-session",
+  user: { id: "shared-test-user", email: null },
+};
+const serverRequests = [];
+const serverClient = createServerSessionClient({
+  storage: localStorage,
+  fetchImpl: async (url, options = {}) => {
+    serverRequests.push({ url, options });
+    if (options.method === "POST") {
+      const credentials = JSON.parse(options.body);
+      if (
+        credentials.username !== "manual-account" ||
+        credentials.password !== "manual-password"
+      ) {
+        return Response.json(
+          { error: "Invalid credentials" },
+          { status: 401 },
+        );
+      }
+      return Response.json({ session: serverSession });
+    }
+    return Response.json({ session: serverSession });
+  },
+});
+assert.equal(
+  (
+    await serverClient.auth.signInWithPassword({
+      username: "manual-account",
+      password: "incorrect",
+    })
+  ).error.message,
+  "Invalid credentials",
+);
+const serverLogin = await serverClient.auth.signInWithPassword({
+  username: "manual-account",
+  password: "manual-password",
+});
+assert.equal(serverLogin.error, null);
+assert.equal(serverLogin.data.session.user.id, "shared-test-user");
+assert.equal(
+  (await serverClient.auth.getSession()).data.session.user.id,
+  "shared-test-user",
+);
+assert.equal(serverRequests[0].url, "/api/auth");
+assert.equal(serverRequests[0].options.credentials, "same-origin");
 
 const dom = new JSDOM(`<!doctype html><body>
   <main data-report-section="data">

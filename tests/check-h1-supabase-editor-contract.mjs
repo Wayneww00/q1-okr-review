@@ -24,17 +24,26 @@ assert.ok(
 );
 assert.match(
   immersive,
-  /id="loginUsername"[^>]+value="vantage"/,
-  "the shared username should be filled in by default",
+  /id="loginUsername"[^>]+value=""/,
+  "the shared username must be empty until the user types it",
 );
 assert.match(
   immersive,
-  /id="loginPassword"[^>]+value="vantage"/,
-  "the shared password should be filled in by default",
+  /id="loginPassword"[^>]+value=""/,
+  "the shared password must be empty until the user types it",
 );
 assert.ok(
   runtime.includes("signInWithPassword"),
-  "the browser runtime must use Supabase password authentication",
+  "the browser runtime must delegate password authentication to an auth provider",
+);
+assert.ok(
+  runtime.includes('endpoint = "/api/auth"'),
+  "production authentication must use the same-origin server endpoint",
+);
+assert.ok(
+  !runtime.includes("loginPassword") &&
+    !immersive.includes("__VANTAGE_CONFIG__?.loginPassword"),
+  "production passwords must never be embedded in browser-delivered configuration",
 );
 assert.ok(
   runtime.includes('["127.0.0.1", "localhost", "::1"]'),
